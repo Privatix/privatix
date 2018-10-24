@@ -11,6 +11,11 @@ First Internet Broadband Marketplace powered by P2P VPN Network on Blockchain.
 
 [Releases](https://github.com/Privatix/privatix/releases)
 
+## Building
+
+* [linux](doc/build/linux/README.md)
+* [mac](doc/build/mac/README.md)
+* [win](doc/build/win/README.md)
 
 ## Contributing
 
