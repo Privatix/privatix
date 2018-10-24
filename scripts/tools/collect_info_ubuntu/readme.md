@@ -15,13 +15,13 @@ It is include:
 ## Usage
 
 ```
-collect_info.py
+collect_info_ubuntu.py
 ```
 
 ### Example of usage:
 
 ```
-sudo python collect_info.py
+sudo python collect_info_ubuntu.py
 ```
 
 ### Result
