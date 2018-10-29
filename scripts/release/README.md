@@ -1,18 +1,28 @@
 # Release scripts
 
+Ordinary release starts with executing the following scripts:
+
+```bash
+./start.sh <release_version>
+./update_versions.sh
+``` 
+
 ## start.sh
 
-To start the release in all repositories, execute:
+This script goes through all privatix repositories. 
+
+In repositories, where `master`!=`develop`, it executes:
 
 ```bash
-./start.sh
+git flow release start <release_version>
+git flow release publish <release_version>
 ```
 
-### Example
+
+### Example of usage
 
 ```bash
-/usr/bin/env bash ~/Projects/github.com/Privatix/privatix/scripts/release/start.sh
-Enter the release version: 0.14.0
+./start.sh 0.14.0
 ```
 
 ### Result
@@ -30,4 +40,20 @@ Please, review the changes.
 
 
 Press any key to push the changes to origin...
+```
+
+## update_versions.sh
+
+This script updates version of the specific repositories.
+
+In `dapp-gui` it executes:
+
+```bash
+npm run update_versions
+```
+
+In `dappctrl` it executes:
+
+```bash
+python ~/go/src/github.com/privatix/dappctrl/scripts/update_versions/update_versions.py
 ```

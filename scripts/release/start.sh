@@ -45,8 +45,8 @@ process_repository(){
 }
 
 main(){
-    printf "Enter the release version: "
-    read release_version
+    release_version=${1}
+    printf "Release version: %s" ${release_version}
 
     modified_repositories=""
 
@@ -78,4 +78,4 @@ main(){
     read
 }
 
-main
+main $1
