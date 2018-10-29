@@ -1,33 +1,77 @@
 # Release scripts
 
-## start.sh
-
-To start the release in all repositories, execute:
+Ordinary release starts with executing the following scripts:
 
 ```bash
-./start.sh
+start_release.sh <path_to_config>
+update_versions.sh <path_to_config>
+push_release.sh <path_to_config>
 ```
 
-### Example
+##  Example of usage
+
 
 ```bash
-/usr/bin/env bash ~/Projects/github.com/Privatix/privatix/scripts/release/start.sh
-Enter the release version: 0.14.0
+./start_release.sh release.config
+./update_versions.sh release.config
+./push_release.sh release.config
 ```
 
-### Result
+## release.config
+
+This file contains all common variables (eg repositories list), that are used in release scripts:
 
 ```
-Modified repositories:
+RELEASE_VERSION=0.14.0
 
-~/Projects/github.com/Privatix/dapp-somc(1)
-~/go/src/github.com/privatix/dappctrl(44)
-~/go/src/github.com/privatix/dapp-installer(2)
-~go/src/github.com/privatix/dapp-openvpn(32)
+DAPP_GUI_DIR=~/Projects/github.com/Privatix/dapp-gui
+DAPP_CTRL_DIR=~/go/src/github.com/privatix/dappctrl
 
-In these repositories release has been started.
-Please, review the changes.
+REPOSITORIES=(
+            ~/Projects/github.com/Privatix/dapp-gui
+            ~/Projects/github.com/Privatix/dapp-smart-contract
+            ~/Projects/github.com/Privatix/dapp-som
+            ~/Projects/github.com/Privatix/privatix
 
+            ~/go/src/github.com/privatix/dappctrl
+            ~/go/src/github.com/privatix/dapp-installer
+            ~/go/src/github.com/privatix/dapp-openvpn
+)
 
-Press any key to push the changes to origin...
+```
+
+## start_release.sh
+
+This script goes through all privatix repositories. 
+
+In repositories, where `master`!=`develop`, it executes:
+
+```bash
+git flow release start <release_version>
+```
+
+## push_release.sh
+
+This script goes through all privatix repositories.
+
+In repositories, where current release branch exists, it executes:
+
+```bash
+git push origin HEAD
+```
+
+## update_versions.sh
+
+This script updates version of the specific repositories.
+
+In `dapp-gui` it executes:
+
+```bash
+npm run update_versions
+```
+
+In `dappctrl` it executes:
+
+```bash
+python ~/go/src/github.com/privatix/dappctrl/scripts/update_versions/update_versions.py
 ```
