@@ -53,6 +53,7 @@ git flow release start <release_version>
 ## push_release.sh
 
 This script goes through all privatix repositories.
+
 In repositories, where current release branch exists, it executes:
 
 ```bash
