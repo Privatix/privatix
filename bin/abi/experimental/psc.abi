@@ -383,6 +383,26 @@
 				"indexed": true,
 				"name": "_offering_hash",
 				"type": "bytes32"
+			},
+			{
+				"indexed": true,
+				"name": "_min_deposit",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"name": "_current_supply",
+				"type": "uint16"
+			},
+			{
+				"indexed": false,
+				"name": "_source_type",
+				"type": "uint8"
+			},
+			{
+				"indexed": false,
+				"name": "_source",
+				"type": "bytes"
 			}
 		],
 		"name": "LogOfferingPopedUp",
@@ -814,6 +834,14 @@
 			{
 				"name": "_offering_hash",
 				"type": "bytes32"
+			},
+			{
+				"name": "_source_type",
+				"type": "uint8"
+			},
+			{
+				"name": "_source",
+				"type": "bytes"
 			}
 		],
 		"name": "popupServiceOffering",
