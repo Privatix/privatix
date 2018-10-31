@@ -16,7 +16,7 @@ To start build, run the following script:
 ## Manual build
 
 If you want to build all parts of the privatix application manually, 
-execute the following steps.
+follow the steps.
 
 ### Build dappctrl
 
