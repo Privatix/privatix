@@ -11,6 +11,8 @@ To start build, run the following script:
 
 ```bash
 git/git_clone.sh ../build.config 
+git/git_checkout.sh ../build.config 
+
 ./build.sh ../build.config
 ```
 
