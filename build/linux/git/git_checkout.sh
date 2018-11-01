@@ -2,13 +2,15 @@
 
 . ${1}
 
-for repository in ${ALL_REPOSITORIES[@]}
+for repository in ${REPOSITORIES[@]}
 do
-    cd ${repository}
-    if [ "$(git branch --list ${GIT_BRANCH})" ]
+    echo "${repository}"
+    cd "${repository}"
+    if [ "$(git branch --list "${GIT_BRANCH}")" ]
     then
-        git checkout ${GIT_BRANCH}
+        git checkout "${GIT_BRANCH}"
     else
         git checkout develop
     fi
+    echo
 done
