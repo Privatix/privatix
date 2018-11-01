@@ -1,4 +1,4 @@
-![](img/logo.png)
+![](logo.png)
 
 First Internet Broadband Marketplace powered by P2P VPN Network on Blockchain.
 
