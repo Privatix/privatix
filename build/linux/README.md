@@ -10,7 +10,8 @@ Supported OS
 To start build, run the following script:
 
 ```bash
-./build.sh
+git/git_clone.sh ../build.config 
+./build.sh ../build.config
 ```
 
 ## Manual build
