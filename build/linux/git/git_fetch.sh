@@ -4,8 +4,9 @@
 
 . ${1}
 
-for repository in ${ALL_REPOSITORIES[@]}
+for repository in ${REPOSITORIES[@]}
 do
-    cd ${repository}
+    echo "${repository}"
+    cd "${repository}"
     git fetch origin
 done

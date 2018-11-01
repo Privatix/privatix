@@ -14,6 +14,12 @@ git/git_clone.sh ../build.config
 ./build.sh ../build.config
 ```
 
+In case you want to fetch changes to local repositories, run the following script:
+
+```bash
+git/git_fetch.sh ../build.config 
+```
+
 ## Manual build
 
 If you want to build all parts of the privatix application manually, 
