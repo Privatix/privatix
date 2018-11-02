@@ -43,20 +43,20 @@ To update all required repositories, execute the following script:
 #### Build
 
 ```bash
-cd nix
+cd unix
 ./build.sh ../build.config
 ```
 
 #### Run
 
 ```bash
-cd nix
+cd unix
 ./run.sh ../build.config
 ```
 
 #### Documentation
 
-[nix/README.md](nix/README.md)
+[nix/README.md](unix/README.md)
 
 ### Windows
 
