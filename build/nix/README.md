@@ -1,25 +1,29 @@
-# How to build privatix application on Linux
-
-Supported OS
-* All LTS Desktop Ubuntu from 16.04
-* Debian 8 Desktop 
-* Debian 9 Desktop
+# How to build privatix application on UNIX-like operating systems
 
 ## Build
 
 To start build, run the following script:
 
 ```bash
-git/git_clone.sh ../build.config 
-git/git_checkout.sh ../build.config 
-
 ./build.sh ../build.config
 ```
 
-In case you want to fetch changes to local repositories, run the following script:
+### Build only backend
 
 ```bash
-git/git_fetch.sh ../build.config 
+./build_backend.sh ../build.config
+```
+
+### Build only GUI
+
+```bash
+./build_gui.sh ../build.config
+```
+
+## Run
+
+```bash
+./run.sh ../build.config
 ```
 
 ## Manual build

@@ -1,23 +1,75 @@
-# Linux build
+# Build the Privatix Application
+
+## Install Prerequisites
+
+Install prerequisite software if it's not installed.
+
+* [Golang](https://golang.org/doc/install) 1.11+. Make sure that `$GOPATH/bin` is added to system path `$PATH`.
+
+* [PostgreSQL](https://www.postgresql.org/download/)
+
+* [gcc](https://gcc.gnu.org/install/)
+
+* [OpenVPN](https://openvpn.net/get-open-vpn/) 2.4+
+
+* [npm](https://www.npmjs.com/) 5.6+
+
+* [node.js](https://nodejs.org/en/) 9.3+
+
+## Prepare Build Config
+
+Config is located here: [build.config](build.config).
+
+## Clone Required Repositories
+
+To clone all required repositories, execute the following script:
 
 ```bash
-./build_linux.sh build.config
+./git/git_clone.sh ./build.config 
 ```
 
-[Documentation](linux/README.md)
+## Update Repositories
 
-
-# Mac build
+To update all required repositories, execute the following script:
 
 ```bash
-./build_mac.sh build.config
+./git/git_pull.sh ./build.config 
 ```
-[Documentation](mac/README.md)
 
-# Windows build
+## Build 
+
+### Linux/Mac
+
+#### Build
 
 ```bash
-./build_win.cmd build.config
+cd nix
+./build.sh ../build.config
 ```
 
-[Documentation](win/README.md)
+#### Run
+
+```bash
+cd nix
+./run.sh ../build.config
+```
+
+#### Documentation
+
+[nix/README.md](nix/README.md)
+
+### Windows
+
+#### Build
+
+```bash
+```
+
+#### Run 
+
+```bash
+```
+
+#### Documentation
+
+[win/README.md](win/README.md)
