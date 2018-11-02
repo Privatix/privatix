@@ -13,8 +13,12 @@ build_dappctrl(){
 
 build_dapp_openvpn(){
     echo Start dapp-openvpn build
-    cd "${DAPP_OPENVPN_DIR}"
+
+    cd "${DAPP_OPENVPN_DIR}"/scripts
+
+    ./install.sh
+    ./run_installer.sh
 }
 
-build_dappctrl
+#build_dappctrl
 build_dapp_openvpn
