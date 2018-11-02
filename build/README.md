@@ -18,7 +18,7 @@ Install prerequisite software if it's not installed.
 
 ## Prepare Build Config
 
-Config is located here: [build.config](build.config).
+Config is located here: [build.config](build.config)
 
 ## Clone Required Repositories
 
