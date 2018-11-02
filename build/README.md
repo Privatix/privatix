@@ -51,7 +51,7 @@ cd nix
 
 ```bash
 cd nix
-./build.sh ../build.config
+./run.sh ../build.config
 ```
 
 #### Documentation
