@@ -1,44 +1,29 @@
-# How to build privatix application on Mac
+# How to build privatix application on UNIX-like operating systems
 
 ## Build
 
 To start build, run the following script:
 
 ```bash
-./git/git_clone.sh ../build.config 
-./git/git_checkout.sh ../build.config 
-
 ./build.sh ../build.config
-```
-
-In case you want to fetch or pull changes to local repositories, run the following script:
-
-```bash
-./git/git_fetch.sh ../build.config 
-
-#or
-
-./git/git_pull.sh ../build.config 
 ```
 
 ### Build only backend
 
-#### Build from scratch:
-
 ```bash
-./git/git_clone.sh ../build.config 
-./git/git_checkout.sh ../build.config 
-
 ./build_backend.sh ../build.config
 ```
 
-#### Build from existing sources:
+### Build only GUI
 
 ```bash
-./git/pull.sh ../build.config 
-./git/git_checkout.sh ../build.config 
+./build_gui.sh ../build.config
+```
 
-./build_backend.sh ../build.config
+## Run
+
+```bash
+./run.sh ../build.config
 ```
 
 ## Manual build

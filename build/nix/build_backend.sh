@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 . ${1}
+export POSTGRES_PORT
 
 build_dappctrl(){
     echo Start dappctrl build
@@ -14,11 +15,11 @@ build_dappctrl(){
 build_dapp_openvpn(){
     echo Start dapp-openvpn build
 
-    cd "${DAPP_OPENVPN_DIR}"/scripts
+    cd "${DAPP_OPENVPN_DIR}"
 
-    ./install.sh
-    ./run_installer.sh
+    "${DAPP_OPENVPN_DIR}"/scripts/install.sh
+    "${DAPP_OPENVPN_DIR}"/scripts/run_installer.sh
 }
 
-#build_dappctrl
+build_dappctrl
 build_dapp_openvpn
