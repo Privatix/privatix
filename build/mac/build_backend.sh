@@ -8,7 +8,7 @@ build_dappctrl(){
     cd "${DAPP_CTRL_DIR}"
 
     "${DAPPCTRL_DIR}"/scripts/build.sh
-    "${DAPP_CTRL_DIR}"/scripts/create_database.sh
+    "${DAPPCTRL_DIR}"/scripts/create_database.sh
 }
 
 build_dapp_openvpn(){
@@ -16,11 +16,5 @@ build_dapp_openvpn(){
     cd "${DAPP_OPENVPN_DIR}"
 }
 
-build_dapp_gui(){
-    echo Start dapp-gui build
-    cd "${DAPP_GUI_DIR}"
-}
-
 build_dappctrl
 build_dapp_openvpn
-build_dapp_gui
