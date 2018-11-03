@@ -17,7 +17,7 @@ build_dapp_openvpn(){
 
     cd "${DAPP_OPENVPN_DIR}"
 
-    "${DAPP_OPENVPN_DIR}"/scripts/install.sh
+    "${DAPP_OPENVPN_DIR}"/scripts/build.sh
     "${DAPP_OPENVPN_DIR}"/scripts/run_installer.sh
 }
 

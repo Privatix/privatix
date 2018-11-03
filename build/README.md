@@ -47,11 +47,18 @@ cd unix
 ./build.sh ../build.config
 ```
 
-#### Run
+#### Run Agent
 
 ```bash
 cd unix
-./run.sh ../build.config
+./run_agent.sh ../build.config
+```
+
+#### Run Client
+
+```bash
+cd unix
+./run_client.sh ../build.config
 ```
 
 #### Documentation
