@@ -33,13 +33,10 @@ To start a complete build, run the following script:
 ```
 ## Clear after run
 
-Don't forget kill all child processes:
+Don't forget to kill all child processes:
 
 ```bash
-ps | grep dappctrl
-ps | grep dappvpn
-
-sudo ps | grep vpn
+./kill_app.sh
 ```
 
 ## Manual build
