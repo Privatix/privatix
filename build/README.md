@@ -4,13 +4,12 @@
 
 Install prerequisite software if it's not installed.
 
-* [Golang](https://golang.org/doc/install) 1.11+. Make sure that `$GOPATH/bin` is added to system path `$PATH`.
+* [Golang](https://golang.org/doc/install) 1.11+. Make sure that 
+`$GOPATH/bin` is added to system path `$PATH`.
 
 * [PostgreSQL](https://www.postgresql.org/download/)
 
 * [gcc](https://gcc.gnu.org/install/)
-
-* [OpenVPN](https://openvpn.net/get-open-vpn/) 2.4+
 
 * [npm](https://www.npmjs.com/) 5.6+
 

@@ -4,3 +4,6 @@
 \.DS_Store
 
 bin/
+
+build/unix/openvpn_server/config/
+build/unix/openvpn_server/log/*.log
