@@ -2,7 +2,7 @@
 
 ## Build
 
-To start build, run the following script:
+To start a complete build, run the following script:
 
 ```bash
 ./build.sh ../build.config
@@ -20,10 +20,26 @@ To start build, run the following script:
 ./build_gui.sh ../build.config
 ```
 
-## Run
+## Run Client
 
 ```bash
-./run.sh ../build.config
+./run_client.sh ../build.config
+```
+
+## Run Agent
+
+```bash
+./run_agent.sh ../build.config
+```
+## Clear after run
+
+Don't forget kill all child processes:
+
+```bash
+ps | grep dappctrl
+ps | grep dappvpn
+
+sudo ps | grep vpn
 ```
 
 ## Manual build
