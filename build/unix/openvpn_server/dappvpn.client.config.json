@@ -5,7 +5,7 @@
         "StackLevel": "error",
         "Prefix": "",
         "UTC": false,
-        "Filename": "/var/log/dappvpn-%Y-%m-%d.log",
+        "Filename": "./openvpn_server/log/dappvpn-%Y-%m-%d.log",
         "FileMode": 420
     },
     "Monitor": {
@@ -15,12 +15,12 @@
     "OpenVPN": {
         "Name": "openvpn",
         "Args": null,
-        "ConfigRoot": "/etc/openvpn/config",
+        "ConfigRoot": "./openvpn_server/openvpn/config",
         "StartDelay": 1000
     },
     "Pusher": {
-        "CaCertPath": "/etc/openvpn/config/ca.crt",
-        "ConfigPath": "/etc/openvpn/config/server.conf",
+        "CaCertPath": "./openvpn_server/openvpn/config/ca.crt",
+        "ConfigPath": "./openvpn_server/openvpn/config/server.conf",
         "ExportConfigKeys": [
             "proto",
             "cipher",

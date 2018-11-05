@@ -14,7 +14,6 @@ sudo openvpn-inst install -config=../installer.config_agent.json
 echo run openvpn server
 sudo openvpn-inst run &
 
-#sleep 10
 cd ../../
 echo prepare dappctrl config
 cp "${DAPPCTRL_DIR}"/dappctrl-dev.config.json \
