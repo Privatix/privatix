@@ -15,12 +15,12 @@
     "OpenVPN": {
         "Name": "openvpn",
         "Args": null,
-        "ConfigRoot": "./openvpn_server/openvpn/config",
+        "ConfigRoot": "./openvpn_server/config",
         "StartDelay": 1000
     },
     "Pusher": {
-        "CaCertPath": "./openvpn_server/openvpn/config/ca.crt",
-        "ConfigPath": "./openvpn_server/openvpn/config/server.conf",
+        "CaCertPath": "./openvpn_server/config/ca.crt",
+        "ConfigPath": "./openvpn_server/config/server.conf",
         "ExportConfigKeys": [
             "proto",
             "cipher",
