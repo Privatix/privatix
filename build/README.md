@@ -19,63 +19,58 @@ Install prerequisite software if it's not installed.
 
 Config is located here: [build.config](build.config)
 
-## Clone Required Repositories
+## Linux/Mac
+
+### Clone Required Repositories
 
 To clone all required repositories, execute the following script:
 
 ```bash
-./git/git_clone.sh ./build.config 
+cd unix && ./git/git_clone.sh ../build.config 
 ```
 
-## Update Repositories
+### Update Repositories
 
 To update all required repositories, execute the following script:
 
 ```bash
-./git/git_pull.sh ./build.config 
+cd unix && ./git/git_pull.sh ../build.config 
 ```
 
-## Build 
-
-### Linux/Mac
-
-#### Build
+### Build 
 
 ```bash
-cd unix
-./build.sh ../build.config
+cd unix && ./build.sh ../build.config
 ```
 
-#### Run Agent
+### Run Agent
 
 ```bash
-cd unix
-./run_agent.sh ../build.config
+cd unix && ./run_agent.sh ../build.config
 ```
 
-#### Run Client
+### Run Client
 
 ```bash
-cd unix
-./run_client.sh ../build.config
+cd unix && ./run_client.sh ../build.config
 ```
 
-#### Documentation
+### Documentation
 
 [nix/README.md](unix/README.md)
 
-### Windows
+## Windows
 
-#### Build
-
-```bash
-```
-
-#### Run 
+### Build
 
 ```bash
 ```
 
-#### Documentation
+### Run 
+
+```bash
+```
+
+### Documentation
 
 [win/README.md](win/README.md)
