@@ -2,6 +2,8 @@
 
 . ${1}
 
+mkdir -p "./bin"
+
 echo copy dappvpn config
 cp ./openvpn_server/dappvpn.agent.config.json \
    ./openvpn_server/config/dappvpn.config.json
