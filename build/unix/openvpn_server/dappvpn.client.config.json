@@ -1,0 +1,43 @@
+{
+    "ChannelDir": ".",
+    "FileLog": {
+        "Level": "info",
+        "StackLevel": "error",
+        "Prefix": "",
+        "UTC": false,
+        "Filename": "/var/log/dappvpn-%Y-%m-%d.log",
+        "FileMode": 420
+    },
+    "Monitor": {
+        "Addr": "localhost:7505",
+        "ByteCountPeriod": 5
+    },
+    "OpenVPN": {
+        "Name": "openvpn",
+        "Args": null,
+        "ConfigRoot": "/etc/openvpn/config",
+        "StartDelay": 1000
+    },
+    "Pusher": {
+        "CaCertPath": "/etc/openvpn/config/ca.crt",
+        "ConfigPath": "/etc/openvpn/config/server.conf",
+        "ExportConfigKeys": [
+            "proto",
+            "cipher",
+            "ping-restart",
+            "ping",
+            "connect-retry",
+            "ca",
+            "comp-lzo",
+            "keepalive"
+        ],
+        "TimeOut": 12
+    },
+    "Connector": {
+        "Addr": "localhost:8000",
+        "TLS": null,
+        "Username": "4f20b9ff-c33c-4f94-907d-5c3220c7c70c",
+        "Password": "8Q4iV9kP3FZ5"
+    },
+    "TC": {}
+}

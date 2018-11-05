@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+mkdir -p "./bin"
+
 ./git/git_checkout.sh ${1}
 
 ./build_backend.sh ${1}
