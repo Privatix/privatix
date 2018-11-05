@@ -15,6 +15,13 @@ sudo openvpn-inst install -config=../installer.config_agent.json
 
 # RUN
 sudo openvpn-inst run &
-#"${DAPP_OPENVPN_DIR}"/scripts/run_adapter_agent.sh &
+
+sleep 10
+"${DAPP_OPENVPN_DIR}"/scripts/run_adapter_agent.sh &
+
+cp "${DAPPCTRL_DIR}"/dappctrl-dev.config.json "${DAPPCTRL_DIR}"/dappctrl.config.local.json
+sed -i.bu 's/"port":  *"[[:digit:]]*"/"port": "'${POSTGRES_PORT}'"/g' "${DAPPCTRL_DIR}"/dappctrl.config.local.json
+
+"${DAPPCTRL_DIR}"/scripts/run.sh &
 
 jobs -l
