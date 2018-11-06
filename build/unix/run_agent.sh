@@ -3,10 +3,10 @@
 . ${1}
 
 echo run dappctrl
-dappctrl -config="./bin/dappctrl.config.json" &
+./bin/dappctrl -config="./bin/dappctrl.agent.config.json" &
 
 echo run dapp-openvpn
-./openvpn_server/bin/dappvpn -config=./openvpn_server/config/dappvpn.config.json &
+./bin/openvpn_server/bin/dappvpn -config=./bin/openvpn_server/config/dappvpn.config.json &
 
 echo run dapp-gui
 cd ${DAPP_GUI_DIR}

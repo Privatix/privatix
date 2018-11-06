@@ -12,5 +12,6 @@
 ./cp_configs.sh.sh ${1}
 
 ./create_database.sh ${1}
+./create_products.sh ${1}
 
-start_openvpn.sh ${1}
+./start_openvpn.sh ${1}

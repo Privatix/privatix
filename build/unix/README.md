@@ -1,22 +1,13 @@
 # How to build privatix application on UNIX-like operating systems
 
-## Full build scenario
+## One-command build
 
-Easy way to build an run the application is to execute following
-commands:
+Easy way to build the application is to execute the following
+command:
 
-Run as a Client:
-
+### Build
 ```bash
 ./build.sh ../build.config
-./run_client.sh ../build.config
-```
-
-Run as an Agent:
-
-```bash
-./build.sh ../build.config
-./run_agent.sh ../build.config
 ```
 
 ## Recommended way (Step by step)
@@ -25,18 +16,40 @@ This is a recommended way to build and run the application.
 
 That provides more transparency and simplicity to the debugging process.
 
+### Build
+
+Please execute step by step the following commands:
+
 ```bash
+./clear.sh
+
 ./git/git_checkout.sh ../build.config
 
-./build_backend.sh ../build.config
+./build_dappctrl.sh ../build.config
+./build_dappopenvpn.sh ../build.config
+./build_dappgui.sh ../build.config
 
-./build_gui.sh ../build.config
+./cp_binaries.sh ../build.config
+./cp_configs.sh.sh ../build.config
 
-./prepare_openvpn.sh
+./create_database.sh ../build.config
+./create_products.sh ../build.config
 
+./start_openvpn.sh ../build.config
+```
+
+## Run
+
+### Client
+
+```bash
 ./run_client.sh ../build.config
-# or 
-# ./run_agent.sh ../build.config
+```
+
+### Agent
+
+```bash
+./run_agent.sh ../build.config
 ```
 
 ## Clear after run
@@ -45,14 +58,19 @@ Don't forget to kill all child processes after application work:
 
 ```bash
 ./kill_app.sh
+./stop_openvpn.sh
 ```
+
 ## Changing the Role
 
 If you want to change the application role (Agent|Client), we recommend to
-perform the building process from the beginning:
+perform the building process from the create database step:
 
 ```bash
-./build.sh ../build.config
+./create_database.sh ../build.config
+
+./start_openvpn.sh ../build.config
+
 ./run_client.sh ../build.config
 ```
 

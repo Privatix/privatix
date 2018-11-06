@@ -2,12 +2,7 @@
 
 . ${1}
 
-echo copy dappvpn config
-cp ./bin/dapp_openvpn/dappvpn.client.config.json \
-   ./bin/openvpn_client/config/dappvpn.config.json
 
-cp ./bin/dapp_openvpn/dappvpn.agent.config.json \
-   ./bin/openvpn_server/config/dappvpn.config.json
 
 # CLIENT
 echo install openvpn_client

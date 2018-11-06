@@ -19,22 +19,22 @@ cp "${DAPP_OPENVPN_DIR}"/files/example/dappvpn.client.config.json \
 
 # change log location to `./openvpn_server`
 sed -i.bu \
-    's/\/var/.\/openvpn_server/g' \
+    's/\/var/.\/bin\/openvpn_server/g' \
     ./bin/dapp_openvpn/dappvpn.agent.config.json
 
 # change log location to `./openvpn_client`
 sed -i.bu \
-    's/\/var/.\/openvpn_client/g' \
+    's/\/var/.\/bin\/openvpn_client/g' \
     ./bin/dapp_openvpn/dappvpn.client.config.json
 
 
 # change open_vpn location to `./openvpn_server`
 sed -i.bu \
-    's/\/etc\/openvpn/.\/openvpn_server/g' \
+    's/\/etc\/openvpn/.\/bin\/openvpn_server/g' \
     ./bin/dapp_openvpn/dappvpn.agent.config.json
 # change open_vpn location to `./openvpn_client`
 sed -i.bu \
-    's/\/etc\/openvpn/.\/openvpn_client/g' \
+    's/\/etc\/openvpn/.\/bin\/openvpn_client/g' \
     ./bin/dapp_openvpn/dappvpn.client.config.json
 
 
