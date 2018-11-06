@@ -46,13 +46,13 @@ cd unix && ./build.sh ../build.config
 ### Run Agent
 
 ```bash
-cd unix && ./run_agent.sh ../build.config
+cd unix && ./run_agent.sh
 ```
 
 ### Run Client
 
 ```bash
-cd unix && ./run_client.sh ../build.config
+cd unix && ./run_client.sh
 ```
 
 ### Documentation
