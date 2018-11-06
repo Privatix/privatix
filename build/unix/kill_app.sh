@@ -4,11 +4,10 @@ echo before:
 ps
 sudo ps
 
+./stop_openvpn.sh
+
 pkill -9 dappvpn
 pkill -9 dappctrl
-
-sudo pkill -9 openvpn-inst
-sudo pkill -9 openvpn
 
 echo
 echo after:
