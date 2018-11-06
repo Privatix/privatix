@@ -3,6 +3,7 @@
 rm -rf ./bin/
 
 mkdir -p "./bin/log"
+mkdir -p "./bin/dapp_gui"
 mkdir -p "./bin/dapp_openvpn"
 
 mkdir -p "./bin/openvpn_server/bin"

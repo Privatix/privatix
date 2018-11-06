@@ -2,7 +2,7 @@
 
 ## One-command build
 
-Easy way to build the application is to execute the following
+The easy way to build the application is to execute the following
 command:
 
 ### Build
@@ -21,35 +21,78 @@ That provides more transparency and simplicity to the debugging process.
 Please execute step by step the following commands:
 
 ```bash
+# Clear the bin directory and
+# create a folder structure
 ./clear.sh
 
+# Checkout repositories at ${GIT_BRANCH} branch
 ./git/git_checkout.sh ../build.config
 
+# Build the `dappctrl` by using
+# "${DAPPCTRL_DIR}"/scripts/build.sh
 ./build_dappctrl.sh ../build.config
+
+# Build the dapp-openvpn by using
+# "${DAPP_OPENVPN_DIR}"/scripts/build.sh
 ./build_dappopenvpn.sh ../build.config
+
+# Build the dapp-gui by using
+# nmp i && npm run build
 ./build_dappgui.sh ../build.config
 
+# Copy all binaries to the ./bin folder
 ./cp_binaries.sh ../build.config
+
+# Copy all necessary configs to the ./bin folder
+# patch configs according to the environment
 ./cp_configs.sh.sh ../build.config
 
+# Create the database by using
+# "${DAPPCTRL_DIR}"/scripts/create_database.sh
 ./create_database.sh ../build.config
+
+# Create products in the database according 
+# to the templates from ./bin/dapp_openvpn/
+# Copy new dapp-openvpn configs to 
+# the ./bin/openvpn_client and the ./bin/openvpn_server
 ./create_products.sh ../build.config
 
+# Prepare ./bin/openvpn_client and ./bin/openvpn_server
+# create all necessary configs.
+# Register ./bin/openvpn_server/bin/openvpn as daemon
+# starts ./bin/openvpn_server/bin/openvpn as daemon
 ./start_openvpn.sh ../build.config
+# to stop and unregister openvpn use:
+# ./stop_openvpn.sh ../build.config
 ```
 
 ## Run
 
 ### Client
 
+To run:
+
+* dappctrl
+* dapp-openvpn
+* dapp-gui
+
+in Client mode, execute the following script:
+
 ```bash
-./run_client.sh ../build.config
+./run_client.sh
 ```
 
 ### Agent
+To run:
+
+* dappctrl
+* dapp-openvpn
+* dapp-gui
+
+in Agent mode, execute the following script:
 
 ```bash
-./run_agent.sh ../build.config
+./run_agent.sh
 ```
 
 ## Clear after run
