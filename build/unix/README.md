@@ -5,7 +5,6 @@
 The easy way to build the application is to execute the following
 command:
 
-### Build
 ```bash
 ./build.sh ../build.config
 ```
