@@ -2,7 +2,7 @@
 
 . ${1}
 
-echo Start dapp-gui build
+echo start dapp-gui build
 
 cd "${DAPP_GUI_DIR}"
 

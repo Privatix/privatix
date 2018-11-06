@@ -3,6 +3,7 @@
 . ${1}
 
 mkdir -p "./bin"
+mkdir -p "./bin/log"
 
 echo copy dappvpn config
 cp ./openvpn_server/dappvpn.agent.config.json \
@@ -21,8 +22,13 @@ echo prepare dappctrl config
 cp "${DAPPCTRL_DIR}"/dappctrl-dev.config.json \
     ./bin/dappctrl.config.json
 
+# change port to `${POSTGRES_PORT}`
 sed -i.bu \
     's/"port":  *"[[:digit:]]*"/"port": "'${POSTGRES_PORT}'"/g' \
+    ./bin/dappctrl.config.json
+#change log location to `./bin/log`
+sed -i.bu \
+    's/\/var\/log/.\/bin\/log/g' \
     ./bin/dappctrl.config.json
 
 echo run dappctrl

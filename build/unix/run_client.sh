@@ -2,11 +2,9 @@
 
 . ${1}
 
-mkdir -p "./bin"
-
 echo copy dappvpn config
-cp ./openvpn_server/dappvpn.client.config.json \
-   ./openvpn_server/config/dappvpn.config.json
+cp ./bin/dapp_openvpn/dappvpn.client.config.json \
+   ./bin/openvpn_server/config/dappvpn.config.json
 
 echo install openvpn client
 cd ./openvpn_server/bin/
@@ -18,12 +16,17 @@ echo prepare dappctrl config
 cp "${DAPPCTRL_DIR}"/dappctrl-dev.config.json \
     ./bin/dappctrl.config.json
 
-
+# change port to `${POSTGRES_PORT}`
 sed -i.bu \
     's/"port":  *"[[:digit:]]*"/"port": "'${POSTGRES_PORT}'"/g' \
     ./bin/dappctrl.config.json
+# change role to `client`
 sed -i.bu \
     's/"Role":  *"agent"/"Role": "client"/g' \
+    ./bin/dappctrl.config.json
+#change log location to `./bin/log`
+sed -i.bu \
+    's/\/var\/log/.\/bin\/log/g' \
     ./bin/dappctrl.config.json
 
 echo run dappctrl

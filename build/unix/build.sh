@@ -1,8 +1,14 @@
 #!/usr/bin/env bash
 
+./clear.sh
+
 ./git/git_checkout.sh ${1}
 
-./build_backend.sh ${1}
-./build_gui.sh ${1}
+./build_dappctrl.sh ${1}
+./build_dappopenvpn.sh ${1}
+./build_dappgui.sh ${1}
 
-./prepare_openvpn.sh
+./cp_binaries.sh ${1}
+./cp_configs.sh.sh ${1}
+
+./create_database.sh ${1}
