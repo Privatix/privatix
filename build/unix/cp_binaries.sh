@@ -33,11 +33,12 @@ cp "${GOPATH}"/bin/dappvpn \
 
 # DAPP_GUI
 echo copy dapp gui \(it may takes time\)
-cp -a ${DAPP_GUI_DIR}/build \
-      ./bin/dapp_gui/build
 
-cp -a ${DAPP_GUI_DIR}/node_modules \
-      ./bin/dapp_gui/node_modules
+rsync -avzh ${DAPP_GUI_DIR}/build \
+         ./bin/dapp_gui/
+
+rsync -avzh ${DAPP_GUI_DIR}/node_modules \
+         ./bin/dapp_gui/
 
 cp    ${DAPP_GUI_DIR}/package.json \
       ./bin/dapp_gui/package.json
