@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+cd `dirname $0`
+. ./build.config
+
 # run dappctrl
 echo run dappctrl
 ./bin/dappctrl -config="./bin/dappctrl.agent.config.json" &

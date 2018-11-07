@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
 
-. ${1}
+cd `dirname $0`
+. ../build.config
 
 for repository in ${REPOSITORIES[@]}
 do
     echo "${repository}"
     cd "${repository}"
-    git fetch origin
+    git pull --all
 done

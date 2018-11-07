@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
-. ${1}
+cd `dirname $0`
+. ../build.config
 
 for ((i=0;i<${#REPOSITORIES[@]};++i));
 do

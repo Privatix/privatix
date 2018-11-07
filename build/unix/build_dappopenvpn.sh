@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
-. ${1}
+cd `dirname $0`
+. ./build.config
+
 export DAPP_OPENVPN_DIR
 
 echo start dapp-openvpn build

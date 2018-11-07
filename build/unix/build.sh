@@ -1,17 +1,19 @@
 #!/usr/bin/env bash
 
+cd `dirname $0`
+
 ./clear.sh
 
-./git/git_checkout.sh ${1}
+git/checkout.sh
 
-./build_dappctrl.sh ${1}
-./build_dappopenvpn.sh ${1}
-./build_dappgui.sh ${1}
+./build_dappctrl.sh
+./build_dappopenvpn.sh 
+./build_dappgui.sh 
 
-./cp_binaries.sh ${1}
-./cp_configs.sh.sh ${1}
+./cp_binaries.sh 
+./cp_configs.sh.sh 
 
-./create_database.sh ${1}
-./create_products.sh ${1}
+./create_database.sh 
+./create_products.sh 
 
-./start_openvpn.sh ${1}
+./start_openvpn.sh 

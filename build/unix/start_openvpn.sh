@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 
-. ${1}
-
-
+cd `dirname $0`
+. ./build.config
 
 # CLIENT
 echo install openvpn_client

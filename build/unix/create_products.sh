@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
-. ${1}
+cd `dirname $0`
+. ./build.config
 
 ./bin/dapp_openvpn/dapp-openvpn-inst \
  -rootdir=./bin/dapp_openvpn/ \

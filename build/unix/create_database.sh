@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
-. ${1}
+cd `dirname $0`
+. ./build.config
 
 export POSTGRES_PORT
 

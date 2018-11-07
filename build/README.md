@@ -4,6 +4,8 @@
 
 Install prerequisite software if it's not installed.
 
+* [git](https://git-scm.com/downloads)
+
 * [Golang](https://golang.org/doc/install) 1.11+. Make sure that 
 `$GOPATH/bin` is added to system path `$PATH`.
 
@@ -15,49 +17,41 @@ Install prerequisite software if it's not installed.
 
 * [node.js](https://nodejs.org/en/) 9.3+
 
-## Prepare Build Config
-
-Config is located here: [build.config](build.config)
 
 ## Linux/Mac
 
-### Clone Required Repositories
+### Clone required repositories
 
 To clone all required repositories, execute the following script:
 
 ```bash
-cd unix && ./git/git_clone.sh ../build.config 
+./git/clone.sh
 ```
 
-### Update Repositories
-
-To update all required repositories, execute the following script:
-
-```bash
-cd unix && ./git/git_pull.sh ../build.config 
-```
+Repositories paths are located here: [build.config](unix/build.config)
 
 ### Build 
 
 ```bash
-cd unix && ./build.sh ../build.config
+./unix/build.sh
 ```
 
 ### Run Agent
 
 ```bash
-cd unix && ./run_agent.sh
+./unix/run_agent.sh
 ```
 
 ### Run Client
 
 ```bash
-cd unix && ./run_client.sh
+./unix/run_client.sh
 ```
 
 ### Documentation
 
-[nix/README.md](unix/README.md)
+More information about unix build:
+[unix/README.md](unix/README.md)
 
 ## Windows
 
