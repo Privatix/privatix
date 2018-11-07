@@ -76,8 +76,6 @@ function new-package {
     New-Folder $rootAppPath "tor" | Out-Null
     #TODO(sofabeat): fix when unpacked, seen as empty file, thus using dumb file
     Get-Date | Out-File -FilePath "$rootAppPath\log\date.txt"
-    #TODO(sofabeat): fix when unpacked, seen as empty file, thus using dumb file
-    #Get-Date | Out-File -FilePath "$pgsqlPath\data\date.txt"
     $rootProductPath = New-Folder $rootAppPath "product"
     #endregion
 
@@ -108,7 +106,7 @@ function new-package {
     $dappguiFolder = (Get-Item "$artefactDir\dappctrlgui-win32-x64").FullName
     $pgFolder = (Get-Item "$staticArtefactsDir\pgsql").FullName
     $utilFolder = (Get-Item "$staticArtefactsDir\util").FullName
-    $dappopenvpnbin = (Get-Item "$gopath\bin\adapter.exe").FullName
+    $dappopenvpnbin = (Get-Item "$gopath\bin\dappvpn.exe").FullName
     $dappopenvpninst = (Get-Item "$gopath\bin\inst.exe").FullName
     $dappopenvpninstaller = (Get-Item "$gopath\bin\installer.exe").FullName
     $dappopenvpninstallerconfig = (Get-Item "$gopath\src\github.com\privatix\dapp-installer\dapp-installer.config.json").FullName
@@ -120,11 +118,6 @@ function new-package {
     $torFolder = (Get-Item "$staticArtefactsDir\tor").FullName
 
     #region core app
-
-    #region dapp-installer artefact
-    #Copy-Item -Path $dappinstallerbin -Destination "$rootAppPath\dapp-installer.exe"
-    #Copy-Item -Path $dappopenvpninstallerconfig -Destination "$rootAppPath\dapp-installer.config.json"
-    #endregion
 
     #region dappctrl
     Copy-Item -Path $dappctrlbin -Destination "$rootAppPath\dappctrl\dappctrl.exe"
@@ -156,7 +149,7 @@ function new-package {
     Copy-Item -Path $dappopenvpnbin -Destination "$prodInstancePath\bin\dappvpn.exe"
     Copy-Item -Path $dappopenvpninst -Destination "$prodInstancePath\bin\inst.exe"
     Copy-Item -Path $dappopenvpninstaller -Destination "$prodInstancePath\bin\installer.exe"
-    Copy-Item -Path "$openvpnFolder\*" -Destination "$prodInstancePath\bin\openvpn" -Recurse -Force
+    Copy-Item -Path "$openvpnFolder" -Destination "$prodInstancePath\bin\openvpn" -Recurse -Force
     #endregion
 
     #region templates
