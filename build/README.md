@@ -64,6 +64,8 @@ cd unix && ./run_client.sh
 ### Build
 
 ```bash
+cd win
+publish-dapp
 ```
 
 ### Run 
