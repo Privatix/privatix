@@ -1,7 +1,19 @@
 # How to build privatix application on UNIX-like operating systems
 
-Ensure that all [prerequisites software](https://github.com/Privatix/privatix/tree/develop/build#install-prerequisites)
-has been installed.
+## Install Prerequisites
+
+Install prerequisite software if it's not installed.
+
+* [git](https://git-scm.com/downloads)
+
+* [Golang](https://golang.org/doc/install) 1.11+. Make sure that 
+`$GOPATH/bin` is added to system path `$PATH`.
+
+* [PostgreSQL](https://www.postgresql.org/download/)
+
+* [gcc](https://gcc.gnu.org/install/)
+
+* [node.js](https://nodejs.org/en/) 9.3+
 
 ## Prepare Build Config
 

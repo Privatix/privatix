@@ -1,5 +1,19 @@
 # How to build privatix application on win10+ operating systems
 
+
+## Install Prerequisites
+
+Install prerequisite software if it's not installed.
+
+* [git](https://git-scm.com/downloads)
+
+* [Golang](https://golang.org/doc/install) 1.11+. Make sure that 
+`$GOPATH/bin` is added to system path `$PATH`.
+
+* [gcc](https://gcc.gnu.org/install/)
+
+* [node.js](https://nodejs.org/en/) 9.3+
+
 ## Build
 
 ```bash
