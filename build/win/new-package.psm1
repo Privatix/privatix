@@ -101,21 +101,26 @@ function new-package {
     if (!($gopath)) {throw "GOPATH is not defined"}
 
     # artefacts
+    # core installer
+    $adpaterinstallerconfig = (Get-Item "$gopath\src\github.com\privatix\dapp-openvpn\inst\installer.config.json").FullName
+    $dappinstallerbin = (Get-Item "$gopath\bin\dapp-installer.exe").FullName
+    # common
     $dappctrlbin = (Get-Item "$gopath\bin\dappctrl.exe").FullName
     $dappctrlconfig = (Get-Item "$gopath\src\github.com\privatix\dappctrl\dappctrl-dev.config.json").FullName
     $dappguiFolder = (Get-Item "$artefactDir\dappctrlgui-win32-x64").FullName
     $pgFolder = (Get-Item "$staticArtefactsDir\pgsql").FullName
     $utilFolder = (Get-Item "$staticArtefactsDir\util").FullName
+    $torFolder = (Get-Item "$staticArtefactsDir\tor").FullName
+    # openvpn product
     $dappopenvpnbin = (Get-Item "$gopath\bin\dappvpn.exe").FullName
     $dappopenvpninst = (Get-Item "$gopath\bin\inst.exe").FullName
     $dappopenvpninstaller = (Get-Item "$gopath\bin\installer.exe").FullName
     $dappopenvpninstallerconfig = (Get-Item "$gopath\src\github.com\privatix\dapp-installer\dapp-installer.config.json").FullName
-    $templatesFolder = (Get-Item "$gopath\src\github.com\privatix\dapp-openvpn\statik\package\template").FullName
+    $templatesFolder = (Get-Item "$gopath\src\github.com\privatix\dapp-openvpn\files\example").FullName
     $adapterconfig = (Get-Item "$gopath\src\github.com\privatix\dapp-openvpn\statik\package\config\adapter.config.json").FullName
-    $adpaterinstallerconfig = (Get-Item "$gopath\src\github.com\privatix\dapp-openvpn\inst\installer.config.json").FullName
-    $dappinstallerbin = (Get-Item "$gopath\bin\dapp-installer.exe").FullName
+    
     $openvpnFolder = (Get-Item "$staticArtefactsDir\openvpn").FullName
-    $torFolder = (Get-Item "$staticArtefactsDir\tor").FullName
+    
 
     #region core app
 
@@ -153,7 +158,7 @@ function new-package {
     #endregion
 
     #region templates
-    Copy-Item -Path "$templatesFolder\*" -Destination "$prodInstancePath\template" -Recurse -Force
+    Copy-Item -Path "$templatesFolder\*" -Destination "$prodInstancePath\template" -Recurse -Force -Verbose
     #endregion
 
     #region adapter config
