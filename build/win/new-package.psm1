@@ -158,7 +158,7 @@ function new-package {
     #endregion
 
     #region templates
-    Copy-Item -Path "$templatesFolder\*" -Destination "$prodInstancePath\template" -Recurse -Force -Verbose
+    Copy-Item -Path "$templatesFolder\*" -Destination "$prodInstancePath\template" -Recurse -Force
     #endregion
 
     #region adapter config
