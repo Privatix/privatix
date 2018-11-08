@@ -200,7 +200,7 @@ function new-package {
     $lnkInstalled = New-Shortcut -Path "$deployAppPath\remove_agent.lnk" -TargetPath "%ComSpec%" -Arguments $lnkcmd -WorkDir "%~dp0" -Description "Privatix Core remove agent"
     if (-not $lnkInstalled) {Write-Error "Agent remover shortcut creation failed"}
     
-    $lnkcmd = '/c start "" /b .\dapp-installer.exe install --workdir .\client'
+    $lnkcmd = '/c start "" /b .\dapp-installer.exe remove --workdir .\client'
     $lnkInstalled = New-Shortcut -Path "$deployAppPath\remove_client.lnk" -TargetPath "%ComSpec%" -Arguments $lnkcmd -WorkDir "%~dp0" -Description "Privatix Core remove client"
     if (-not $lnkInstalled) {Write-Error "Client remover shortcut creation failed"}
     
