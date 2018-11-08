@@ -6,7 +6,7 @@ Install prerequisite software if it's not installed.
 
 * [git](https://git-scm.com/downloads)
 
-* [Golang](https://golang.org/doc/install) 1.11+. Make sure that 
+* [Golang](https://golang.org/doc/install) 1.12+. Make sure that 
 `$GOPATH/bin` is added to system path `$PATH`.
 
 * [PostgreSQL](https://www.postgresql.org/download/)
@@ -14,6 +14,20 @@ Install prerequisite software if it's not installed.
 * [gcc](https://gcc.gnu.org/install/)
 
 * [node.js](https://nodejs.org/en/) 9.3+
+
+
+### mac
+
+```bash
+brew install git
+brew install go
+
+brew install postgresql
+brew services start postgresql
+
+brew install gcc
+brew install node
+```
 
 ## Prepare Build Config
 
