@@ -9,7 +9,7 @@ function Install-GoDep {
     $osArch = ($ENV:PROCESSOR_ARCHITECTURE).ToLower()
     
     try {
-        $RunGoDepLatest = Invoke-WebRequest "https://api.github.com/repos/golang/dep/releases/latest" | ConvertFrom-Json
+        $RunGoDepLatest = Invoke-WebRequest "https://api.github.com/repos/golang/dep/releases/latest" -UseBasicParsing | ConvertFrom-Json
         $RunGoDepLatestObj = $RunGoDepLatest.assets | Where-Object {$_.name -eq ("dep-windows-" + $osArch + ".exe")}
     }
     catch {
