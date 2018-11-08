@@ -274,3 +274,95 @@ function New-Folder {
     }
     catch {throw "Failed to create folder using $root as parent path and $childDirectory as child path. Original error: $($error[0].Exception.Message)"}
 }
+
+function Invoke-GoCommonOperations {
+    [CmdletBinding()]
+    param(
+        [string]$gopath,
+        [string]$PROJECT,
+        [bool]$godep,
+        [string]$branch,
+        [bool]$gitpull,
+        [string]$gitUrl
+    )
+    $gitQuiet = "-q"
+    if (($VerbosePreference -ne 'SilentlyContinue') -or ($PSBoundParameters.ContainsKey('Verbose')) ) {
+        $goVerbose = ' -v '
+        $gitQuiet = ""
+    }
+    #region checks
+    
+    # Check git exists
+    Find-App -appname "git" -versioncmd "git.exe --version" | Out-Null
+
+    # Check go installed
+    Find-App -appname "go" -versioncmd "go.exe version" | Out-Null
+
+    # Check gcc exists
+    Find-App -appname "gcc" -versioncmd "gcc.exe --version" | Out-Null
+
+    $PROJECT_PATH = "$gopath\src\$PROJECT"
+
+    # Create go essential folders
+    if (!(Test-Path $gopath\src)) {New-Item -ItemType Directory -Path $gopath\src | Out-Null}
+
+    if (!(Test-Path $gopath\bin)) {New-Item -ItemType Directory -Path $gopath\bin | Out-Null}
+    
+    # Check GOPATH bin is on %PATH
+    if (!((($env:PATH).split(";")) -contains "$gopath\bin") ) {throw "GOPATH bin is not found in %PATH. Please, resolve."}
+
+    #Check go dep installed
+    if (Test-Path "$gopath\bin\dep.exe") {
+        Write-Verbose "Go dep is installed"
+        $GoDepInstalled = $true
+    } 
+    #endregion
+   
+    # Install go dep
+    if (!$GoDepInstalled -and $godep -and (Install-GoDep($gopath) -ne $null)) {        
+        Write-Warning "Failed to install go dep"
+    }
+    else {$GoDepInstalled = $true}
+
+    #region git
+
+    Copy-Gitrepo -path $PROJECT_PATH -gitUrl $gitUrl -ErrorAction Stop
+        
+    #region Git checkout branch
+    if ($PSBoundParameters.ContainsKey('branch')) {
+        Invoke-Scriptblock -ScriptBlock "git.exe --git-dir=$PROJECT_PATH\.git --work-tree=$PROJECT_PATH fetch --all $gitQuiet"
+        Invoke-Scriptblock -ScriptBlock "git.exe --git-dir=$PROJECT_PATH\.git --work-tree=$PROJECT_PATH checkout $branch  $gitQuiet "
+        $currentBranch = Invoke-Expression "git.exe --git-dir=$PROJECT_PATH\.git --work-tree=$PROJECT_PATH rev-parse --abbrev-ref HEAD"
+        if ($branch -ne $currentBranch) {
+            $currentBranch = Invoke-Expression "git.exe --git-dir=$PROJECT_PATH\.git --work-tree=$PROJECT_PATH rev-parse HEAD"    
+            if ($branch -ne $currentBranch) {throw "failed to chekout $branch"}
+        }
+    }
+    #endregion
+
+    # Git pull
+    if ($gitpull) {
+        Write-Host "Pulling from Git..."
+        Invoke-Scriptblock -ScriptBlock "git.exe --git-dir=$PROJECT_PATH\.git --work-tree=$PROJECT_PATH pull $gitQuiet" -StderrPrefix "" -erraction "Continue"
+    }
+    else {Write-Warning "Skipping git pull"}
+    #endregion
+
+    #region go dep
+    # Go dep
+    If ($godep -and $GoDepInstalled) {
+        try {
+            Write-Host "executing dep ensure..."
+            $lastLocation = (Get-Location).Path
+            Set-Location $PROJECT_PATH
+            Invoke-Expression "$gopath\bin\dep.exe ensure $goVerbose"
+        }
+        catch {
+            Write-Error "dep ensure execution failed"
+        }
+        finally {Set-Location $lastLocation}
+    }
+    else {Write-Warning "Skipping dep ensure"}
+
+    #endregion
+} 
