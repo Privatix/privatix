@@ -29,7 +29,7 @@ echo copy and patch configs
 
 echo
 echo agent
-cp -v "${DAPPCTRL_DIR}"/dappctrl-dev.config.json \
+cp -v "${DAPPCTRL_DIR}"/"${DAPPCTRL_CONFIG}" \
     ./bin/dappctrl.agent.config.json
 
 # change port to `${POSTGRES_PORT}`
