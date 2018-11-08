@@ -2,7 +2,7 @@
 
 root_dir=$(cd `dirname $0` && pwd)
 cd ${root_dir}
-. ./build.config
+. ./build.local.config
 
 echo
 echo dapp-gui

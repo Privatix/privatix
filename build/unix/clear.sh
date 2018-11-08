@@ -2,9 +2,6 @@
 
 cd `dirname $0`
 
-./kill_app.sh
-./stop_openvpn.sh
-
 rm -rf ./bin/
 
 mkdir -p "./bin/log"

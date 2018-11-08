@@ -54,7 +54,15 @@ sudo apt-get install -y nodejs
 ## Prepare Build Config
 
 Config is located here: [build.config](build.config)
-Check that all variables in the config are correct.
+
+
+Make a copy of `build.config`:
+
+```bash
+cp build.config build.local.config
+```
+
+Modify `build.local.config` if you need non-default configuration.
 
 All build scripts use this config.
 
@@ -127,7 +135,7 @@ Please execute step by step the following commands:
 # starts ./bin/openvpn_server/bin/openvpn as daemon
 ./start_openvpn.sh
 # to stop and unregister openvpn use:
-# ./stop_openvpn.sh ../build.config
+# ./stop_openvpn.sh
 ```
 
 ## Run

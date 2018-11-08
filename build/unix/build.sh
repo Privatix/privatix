@@ -4,7 +4,7 @@ cd `dirname $0`
 
 ./clear.sh
 
-git/checkout.sh
+./git/checkout.sh
 
 ./build_dappctrl.sh
 ./build_dappopenvpn.sh 
