@@ -10,12 +10,20 @@ Install prerequisite software if it's not installed.
 * [Golang](https://golang.org/doc/install) 1.11+. Make sure that 
 `$GOPATH/bin` is added to system path `$PATH`.
 
-* [gcc](https://gcc.gnu.org/install/)
+* [gcc](https://sourceforge.net/projects/mingw-w64/). During the installation
+choose `x86_64-win32-seh-rev0 version`. Make sure that `bin`
+is added to  system path `$PATH`
 
 * [node.js](https://nodejs.org/en/) 9.3+
 
 ## Build
 
+First of all, please, set the execution policy: 
+```bash
+Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope CurrentUser
+```
+
+Then execute the following command:
 ```bash
 publish-dapp.ps1 [[-wkdir] <string>] [[-staticArtefactsDir] <string>] 
                  [[-dappguibranch] <string>] [[-dappctrlbranch] <string>] 
