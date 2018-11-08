@@ -6,10 +6,16 @@ Install prerequisite software if it's not installed.
 
 * [git](https://git-scm.com/downloads)
 
-* [Golang](https://golang.org/doc/install) 1.12+. Make sure that 
+* [Golang](https://golang.org/doc/install) 1.11.2+. Make sure that 
 `$GOPATH/bin` is added to system path `$PATH`.
 
 * [PostgreSQL](https://www.postgresql.org/download/)
+by default, the Application will try to connect to a postgress
+via ```{"dbname": "dappctrl",
+                   "user": "postgres",
+                   "host": "localhost",
+                   "port": "5432"
+               }```
 
 * [gcc](https://gcc.gnu.org/install/)
 
@@ -32,20 +38,18 @@ brew install node
 ### ubuntu
 
 ```bash
-sudo apt install git
-sudo apt install golang
-sudo apt install gcc
-sudo apt install nodejs
+sudo apt update
 
-# postgres
-# https://tecadmin.net/install-postgresql-server-on-ubuntu/
-sudo apt-get install wget ca-certificates
-wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
-sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt/ `lsb_release -cs`-pgdg main" >> /etc/apt/sources.list.d/pgdg.list'
-sudo apt-get update
-sudo apt-get install postgresql postgresql-contrib
+sudo apt install git
+sudo apt install gcc
+
+# node
+curl -sL https://deb.nodesource.com/setup_11.x | sudo -E bash -
+sudo apt-get install -y nodejs
 
 ```
+* [postgress](https://tecadmin.net/install-postgresql-server-on-ubuntu/)
+* [golang](https://github.com/golang/go/wiki/Ubuntu)
 
 ## Prepare Build Config
 
