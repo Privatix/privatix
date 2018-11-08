@@ -319,7 +319,7 @@ function Invoke-GoCommonOperations {
     #endregion
    
     # Install go dep
-    if (!$GoDepInstalled -and $godep -and (Install-GoDep($gopath) -ne $null)) {        
+    if (!$GoDepInstalled -and $godep -and ($null -ne (Install-GoDep($gopath)))) {        
         Write-Warning "Failed to install go dep"
     }
     else {$GoDepInstalled = $true}
