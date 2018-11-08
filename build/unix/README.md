@@ -75,13 +75,6 @@ Please execute step by step the following commands:
 # nmp i && npm run build
 ./build_dappgui.sh
 
-# Copy all binaries to the ./bin folder
-./cp_binaries.sh
-
-# Copy all necessary configs to the ./bin folder
-# patch configs according to the environment
-./cp_configs.sh
-
 # Create the database by using
 # "${DAPPCTRL_DIR}"/scripts/create_database.sh
 ./create_database.sh
@@ -146,15 +139,11 @@ Don't forget to kill all child processes after application work:
 ## Changing the Role
 
 If you want to change the application role (Agent|Client), we recommend to
-perform the building process from the "copy binaries" step:
+perform the building process from the beginning:
 
 ```bash
-./cp_binaries.sh
-./cp_configs.sh
-./create_database.sh
-# if openvpn is stopped
-# ./start_openvpn.sh
-./run_client.sh # or ./run_agent.sh
+./clear.sh
+#...
 ```
 
 instead of:
