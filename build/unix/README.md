@@ -29,6 +29,24 @@ brew install gcc
 brew install node
 ```
 
+### ubuntu
+
+```bash
+sudo apt install git
+sudo apt install golang
+sudo apt install gcc
+sudo apt install nodejs
+
+# postgres
+# https://tecadmin.net/install-postgresql-server-on-ubuntu/
+sudo apt-get install wget ca-certificates
+wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt/ `lsb_release -cs`-pgdg main" >> /etc/apt/sources.list.d/pgdg.list'
+sudo apt-get update
+sudo apt-get install postgresql postgresql-contrib
+
+```
+
 ## Prepare Build Config
 
 Config is located here: [build.config](build.config)
