@@ -6,7 +6,7 @@ Install prerequisite software if it's not installed.
 
 * [git](https://git-scm.com/downloads)
 
-* [Golang](https://golang.org/doc/install) 1.11.2+. Make sure that 
+* [Golang](https://golang.org/doc/install) 1.11+. Make sure that 
 `$GOPATH/bin` is added to system path `$PATH`.
 
 * [PostgreSQL](https://www.postgresql.org/download/)
@@ -42,14 +42,13 @@ sudo apt update
 
 sudo apt install git
 sudo apt install gcc
+sudo apt install curl
 
-# node
-curl -sL https://deb.nodesource.com/setup_11.x | sudo -E bash -
-sudo apt-get install -y nodejs
-
+cd ./prerequisites/ubuntu/
+./install_go.sh
+./install_node.sh
+./install_postgress.sh
 ```
-* [postgress](https://tecadmin.net/install-postgresql-server-on-ubuntu/)
-* [golang](https://github.com/golang/go/wiki/Ubuntu)
 
 ## Prepare Build Config
 
