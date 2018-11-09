@@ -37,6 +37,7 @@ function new-package {
         $global:VerbosePreference = [System.Management.Automation.ActionPreference]::Continue
     }
 
+    Write-Host "Working on packaging whole app..." -ForegroundColor Green
     # import helpers
     import-module (join-path $PSScriptRoot "build-helpers.psm1" -resolve) -DisableNameChecking
 
@@ -179,7 +180,31 @@ function new-package {
     Copy-Item -Path $dappopenvpninstallerconfig -Destination "$deployAppPath\dapp-installer.config.json"
     #endregion
 
+    #region dapp-openvpn install shorcut
+    Write-Verbose "Parse dappctrl config DB section"
+    $dappctrlconf = "$rootAppPath\dappctrl\dappctrl.config.json"
+    $DBconf = (Get-Content $dappctrlconf | ConvertFrom-Json).DB.conn
+    $connstr = "host=$($DBconf.host) dbname=$($DBconf.dbname) user=$($DBconf.user) port=$($DBconf.port)"
+    if ($($DBconf.password)) {$connstr += " password=$($DBconf.password)"}
+    $connstr += " sslmode=disable"
+    
+    $lnkcmd = '/c start "" /b .\installer.exe --connstr ' + $connstr + ' --rootdir="..\template" -setauth'
+    $lnkInstalled = New-Shortcut -Path "$prodInstancePath\bin\install_product.lnk" -TargetPath "%ComSpec%" -Arguments $lnkcmd -WorkDir "%~dp0" -Description "Privatix product install"
+    if (-not $lnkInstalled) {Write-Error "Product install shortcut creation failed"}
+    #endregion
+
+    #region dapp-openvpn inst shortcut
+    $lnkcmd = '/c start "" /b .\inst.exe install --config "..\config\installer.config.json"'
+    $lnkInstalled = New-Shortcut -Path "$prodInstancePath\bin\install_adapter.lnk" -TargetPath "%ComSpec%" -Arguments $lnkcmd -WorkDir "%~dp0" -Description "Privatix adapter install"
+    if (-not $lnkInstalled) {Write-Error "Adapter install shortcut creation failed"}
+
+    $lnkcmd = '/c start "" /b .\inst.exe remove"'
+    $lnkInstalled = New-Shortcut -Path "$prodInstancePath\bin\remove_adapter.lnk" -TargetPath "%ComSpec%" -Arguments $lnkcmd -WorkDir "%~dp0" -Description "Privatix adapter remove"
+    if (-not $lnkInstalled) {Write-Error "Adapter install shortcut creation failed"}
+    #endregion
+    
     #region archive app
+    Write-Verbose "Making archive for deploy..."
     add-type -AssemblyName System.IO.Compression.FileSystem
     [System.IO.Compression.ZipFile]::CreateFromDirectory($rootAppPath, "$deployAppPath\app.zip", 'NoCompression', $false)
     #endregion
