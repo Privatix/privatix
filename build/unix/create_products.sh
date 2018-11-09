@@ -20,6 +20,14 @@ echo copy binaries
 cp -av ./openvpn_server/openvpn/ \
        ./bin/openvpn_server/bin/openvpn/
 
+# openvpn & openssl
+cp -v $(which openssl) \
+      ./bin/openvpn_server/bin/openvpn/openssl
+
+cp -v $(which openvpn) \
+      ./bin/openvpn_server/bin/openvpn/openvpn
+
+# openvpn-inst & dappvpn
 cp -v "${GOPATH}"/bin/openvpn-inst \
       ./bin/openvpn_server/bin/openvpn-inst
 

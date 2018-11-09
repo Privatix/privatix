@@ -21,6 +21,10 @@ via ```{"dbname": "dappctrl",
 
 * [node.js](https://nodejs.org/en/) 9.3+
 
+* [OpenVPN](https://openvpn.net/)
+
+* [OpenSSL](https://www.openssl.org/)
+
 
 ### mac
 
@@ -33,6 +37,9 @@ brew services start postgresql
 
 brew install gcc
 brew install node
+
+brew install openvpn
+brew install openssl
 ```
 
 ### ubuntu
@@ -43,6 +50,9 @@ sudo apt update
 sudo apt install git
 sudo apt install gcc
 sudo apt install curl
+sudo apt install openvpn easy-rsa
+sudo apt install openssl
+
 
 cd ./prerequisites/ubuntu/
 ./install_go.sh
