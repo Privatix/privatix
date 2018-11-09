@@ -348,7 +348,7 @@
 			{
 				"indexed": false,
 				"name": "_source",
-				"type": "bytes"
+				"type": "string"
 			}
 		],
 		"name": "LogOfferingCreated",
@@ -402,7 +402,7 @@
 			{
 				"indexed": false,
 				"name": "_source",
-				"type": "bytes"
+				"type": "string"
 			}
 		],
 		"name": "LogOfferingPopedUp",
@@ -805,7 +805,7 @@
 			},
 			{
 				"name": "_source",
-				"type": "bytes"
+				"type": "string"
 			}
 		],
 		"name": "registerServiceOffering",
@@ -841,7 +841,7 @@
 			},
 			{
 				"name": "_source",
-				"type": "bytes"
+				"type": "string"
 			}
 		],
 		"name": "popupServiceOffering",
