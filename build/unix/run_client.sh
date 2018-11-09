@@ -7,6 +7,8 @@ cd `dirname $0`
 echo run dappctrl
 ./bin/dappctrl -config="./bin/dappctrl.client.config.json" &
 
+sleep 3
+
 # run dapp-openvpn
 echo run dapp-openvpn
 ./bin/openvpn_client/bin/dappvpn -config=./bin/openvpn_client/config/dappvpn.config.json &

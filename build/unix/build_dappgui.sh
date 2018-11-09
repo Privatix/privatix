@@ -19,10 +19,10 @@ cd ${root_dir}
 
 echo
 echo copy binaries
-rsync -avzh ${DAPP_GUI_DIR}/build \
+rsync -avzh ${DAPP_GUI_DIR}/build/ \
          ./bin/dapp_gui/
 
-rsync -avzh ${DAPP_GUI_DIR}/node_modules \
+rsync -avzh ${DAPP_GUI_DIR}/node_modules/ \
          ./bin/dapp_gui/
 
 cp -v ${DAPP_GUI_DIR}/package.json \
