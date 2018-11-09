@@ -47,7 +47,8 @@ sudo apt install curl
 cd ./prerequisites/ubuntu/
 ./install_go.sh
 ./install_node.sh
-./install_postgress.sh
+
+sudo ./install_postgress.sh
 ```
 
 ## Prepare Build Config
