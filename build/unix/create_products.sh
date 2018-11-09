@@ -7,8 +7,8 @@ cd `dirname $0`
 echo
 echo install products
 
-./bin/dapp_openvpn/dapp-openvpn-inst \
- -rootdir=./bin/dapp_openvpn/ \
+${DAPP_OPENVPN_BIN}/${DAPP_OPENVPN_INST} \
+ -rootdir=${DAPP_OPENVPN_BIN}/ \
  -connstr="dbname=dappctrl host=localhost user=postgres \
   sslmode=disable port=${POSTGRES_PORT}" -setauth
 
@@ -16,39 +16,50 @@ echo install products
 echo
 echo copy binaries
 
+#clear
+openvpn=${OPENVPN_SERVER_BIN}/bin/openvpn
+
+rm -rf ${OPENVPN_SERVER_BIN}
+rm -rf ${OPENVPN_CLIENT_BIN}
+
+mkdir -p ${OPENVPN_SERVER_BIN}/bin
+mkdir -p ${OPENVPN_SERVER_BIN}/config
+mkdir -p ${OPENVPN_SERVER_BIN}/log
+mkdir -p ${openvpn}
+
 # openvpn_server
-cp -av ./openvpn_server/openvpn/ \
-       ./bin/openvpn_server/bin/openvpn/
+cp -v ${OPENVPN_INST_DIR}/openvpn-down-root.so \
+      ${openvpn}/openvpn-down-root.so
 
 # openvpn & openssl
 cp -v $(which openssl) \
-      ./bin/openvpn_server/bin/openvpn/openssl
+      ${openvpn}/openssl
 
 cp -v $(which openvpn) \
-      ./bin/openvpn_server/bin/openvpn/openvpn
+      ${openvpn}/openvpn
 
 # openvpn-inst & dappvpn
-cp -v "${GOPATH}"/bin/openvpn-inst \
-      ./bin/openvpn_server/bin/openvpn-inst
+cp -v ${DAPP_OPENVPN_BIN}/${OPENVPN_INST} \
+      ${OPENVPN_SERVER_BIN}/bin/${OPENVPN_INST}
 
-cp -v "${GOPATH}"/bin/dappvpn \
-      ./bin/openvpn_server/bin/dappvpn
+cp -v ${DAPP_OPENVPN_BIN}/${DAPP_OPENVPN} \
+      ${OPENVPN_SERVER_BIN}/bin/${DAPP_OPENVPN}
 
 # openvpn_client
-cp -av ./bin/openvpn_server/ \
-      ./bin/openvpn_client/
+cp -av ${OPENVPN_SERVER_BIN} \
+       ${OPENVPN_CLIENT_BIN}
 
 # configs
 echo
 echo copy configs
-cp -v ./bin/dapp_openvpn/dappvpn.client.config.json \
-      ./bin/openvpn_client/config/dappvpn.config.json
+cp -v ${DAPP_OPENVPN_BIN}/${DAPP_VPN_CLIENT_CONFIG} \
+      ${OPENVPN_CLIENT_BIN}/config/${DAPP_VPN_CONFIG}
 
-cp -v ./bin/dapp_openvpn/dappvpn.agent.config.json \
-      ./bin/openvpn_server/config/dappvpn.config.json
+cp -v ${DAPP_OPENVPN_BIN}/${DAPP_VPN_AGENT_CONFIG} \
+      ${OPENVPN_SERVER_BIN}/config/${DAPP_VPN_CONFIG}
 
-cp -v ./openvpn_server/installer.agent.config.json \
-      ./bin/openvpn_server/installer.config.json
+cp -v ${OPENVPN_INST_DIR}/${INSTALLER_AGENT_CONFIG} \
+      ${OPENVPN_SERVER_BIN}/${INSTALLER_CONFIG}
 
-cp -v ./openvpn_server/installer.client.config.json \
-      ./bin/openvpn_client/installer.config.json
+cp -v ${OPENVPN_INST_DIR}/${INSTALLER_CLIENT_CONFIG} \
+      ${OPENVPN_CLIENT_BIN}/${INSTALLER_CONFIG}

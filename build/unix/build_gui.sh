@@ -17,13 +17,18 @@ npm run build
 # binaries
 cd ${root_dir}
 
+# clear
+rm -rf ${DAPP_GUI_BIN}
+mkdir -p ${DAPP_GUI_BIN}
+
+# copy
 echo
 echo copy binaries
-rsync -avzh ${DAPP_GUI_DIR}/build/ \
-         ./bin/dapp_gui/
+rsync -avzh ${DAPP_GUI_DIR}/build/. \
+            ${DAPP_GUI_BIN}/build
 
-rsync -avzh ${DAPP_GUI_DIR}/node_modules/ \
-         ./bin/dapp_gui/
+rsync -avzh ${DAPP_GUI_DIR}/node_modules/. \
+            ${DAPP_GUI_BIN}/node_modules
 
 cp -v ${DAPP_GUI_DIR}/package.json \
-      ./bin/dapp_gui/package.json
+      ${DAPP_GUI_BIN}/package.json

@@ -4,18 +4,18 @@ cd `dirname $0`
 . ./build.local.config
 
 # run dappctrl
-echo run dappctrl
-./bin/dappctrl -config="./bin/dappctrl.client.config.json" &
+echo run ${DAPPCTRL_BIN}/${DAPPCTRL}
+${DAPPCTRL_BIN}/${DAPPCTRL} -config="${DAPPCTRL_BIN}/${DAPPCTRL_CLIENT_CONFIG}" &
 
 sleep 3
 
 # run dapp-openvpn
-echo run dapp-openvpn
-./bin/openvpn_client/bin/dappvpn -config=./bin/openvpn_client/config/dappvpn.config.json &
+echo run ${OPENVPN_CLIENT_BIN}/bin/${DAPP_OPENVPN}
+${OPENVPN_CLIENT_BIN}/bin/${DAPP_OPENVPN} -config=${OPENVPN_CLIENT_BIN}/config/${DAPP_VPN_CONFIG} &
 
 # run gui
-echo run dapp-gui
-cd ./bin/dapp_gui
+echo run ${DAPP_GUI_BIN}
+cd ${DAPP_GUI_BIN}
 npm start &
 
 # print jobs

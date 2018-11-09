@@ -1,28 +1,30 @@
 #!/usr/bin/env bash
 
-cd `dirname $0`
+root_dir=$(cd `dirname $0` && pwd)
+cd ${root_dir}
 . ./build.local.config
 
 echo
 echo remove openvpn_client
-cd ./bin/openvpn_client/bin/
-sudo ./openvpn-inst remove -workdir=..
+cd ${OPENVPN_CLIENT_BIN}/bin/
+sudo ./${OPENVPN_INST} remove -workdir=..
 
-
+cd ${root_dir}
 echo
 echo stop openvpn_server
-cd ../../openvpn_server/bin
-sudo ./openvpn-inst stop -workdir=..
+cd ${OPENVPN_SERVER_BIN}/bin/
+sudo ./${OPENVPN_INST} stop -workdir=..
 
 echo
 echo remove openvpn_server
-sudo ./openvpn-inst remove -workdir=..
+sudo ./${OPENVPN_INST} remove -workdir=..
 
 sleep 5
 
 echo
 echo privatix daemons:
 sudo launchctl list | grep privatix
+sudo systemctl | grep privatix
 
 echo
 echo utun interfaces:

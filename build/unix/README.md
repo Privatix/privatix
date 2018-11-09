@@ -11,11 +11,8 @@ Install prerequisite software if it's not installed.
 
 * [PostgreSQL](https://www.postgresql.org/download/)
 by default, the Application will try to connect to a postgress
-via ```{"dbname": "dappctrl",
-                   "user": "postgres",
-                   "host": "localhost",
-                   "port": "5432"
-               }```
+via ```{"dbname": "dappctrl", "user": "postgres", "host": "localhost",
+"port": "5432"}```
 
 * [gcc](https://gcc.gnu.org/install/)
 
@@ -110,24 +107,20 @@ That provides more transparency and simplicity to the debugging process.
 Please execute step by step the following commands:
 
 ```bash
-# Clear the bin directory and
-# create a folder structure
-./clear.sh
-
 # Checkout repositories at ${GIT_BRANCH} branch
 ./git/checkout.sh
 
 # Build the `dappctrl` by using
 # "${DAPPCTRL_DIR}"/scripts/build.sh
-./build_dappctrl.sh
+./build_ctrl.sh
 
 # Build the dapp-openvpn by using
 # "${DAPP_OPENVPN_DIR}"/scripts/build.sh
-./build_dappopenvpn.sh
+./build_openvpn.sh
 
 # Build the dapp-gui by using
 # nmp i && npm run build
-./build_dappgui.sh
+./build_gui.sh
 
 # Create the database by using
 # "${DAPPCTRL_DIR}"/scripts/create_database.sh
@@ -193,11 +186,16 @@ Don't forget to kill all child processes after application work:
 ## Changing the Role
 
 If you want to change the application role (Agent|Client), we recommend to
-perform the building process from the beginning:
+perform the building process from the create database step:
 
 ```bash
-./clear.sh
-#...
+./stop_openvpn.sh
+
+./create_database.sh
+./create_products.sh
+./start_openvpn.sh
+
+./run_client.sh # or ./run_agent.sh
 ```
 
 instead of:
