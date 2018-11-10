@@ -13,6 +13,7 @@ cd "${DAPP_CTRL_DIR}"
 # build
 echo
 echo build start
+rm "${GOPATH}"/bin/${DAPPCTRL}
 "${DAPPCTRL_DIR}"/scripts/build.sh
 
 # clear

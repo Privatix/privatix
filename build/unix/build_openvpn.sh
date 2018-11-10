@@ -13,6 +13,10 @@ cd "${DAPP_OPENVPN_DIR}"
 # build
 echo
 echo build start
+rm "${GOPATH}"/bin/${DAPP_OPENVPN_INST}
+rm "${GOPATH}"/bin/${DAPP_OPENVPN}
+rm "${GOPATH}"/bin/${OPENVPN_INST}
+
 "${DAPP_OPENVPN_DIR}"/scripts/build.sh
 
 # binaries

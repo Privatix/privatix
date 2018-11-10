@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 
 cd `dirname $0`
-./each_repo.sh "git pull --all"
+./each_repo.sh "git status"

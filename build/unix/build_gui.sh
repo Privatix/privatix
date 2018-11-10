@@ -11,6 +11,7 @@ cd "${DAPP_GUI_DIR}"
 # build
 echo
 echo build start
+rm -rf ${DAPP_GUI_DIR}/build/
 npm install
 npm run build
 
