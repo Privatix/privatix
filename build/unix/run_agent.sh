@@ -5,7 +5,7 @@ cd `dirname $0`
 
 # run dappctrl
 echo run ${DAPPCTRL_BIN}/${DAPPCTRL}
-${DAPPCTRL_BIN}/${DAPPCTRL} -config="${DAPPCTRL_BIN}/${DAPPCTRL_AGENT_CONFIG}"
+${DAPPCTRL_BIN}/${DAPPCTRL} -config="${DAPPCTRL_BIN}/${DAPPCTRL_AGENT_CONFIG}" &
 
 sleep 3
 
