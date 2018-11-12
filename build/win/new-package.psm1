@@ -163,7 +163,7 @@ function new-package {
     #endregion
 
     #region adapter config
-    Copy-Item -Path "$adapterconfig" -Destination "$prodInstancePath\config\dappvpn.config.json"
+    #Copy-Item -Path "$adapterconfig" -Destination "$prodInstancePath\config\dappvpn.config.json"
     #endregion
 
     #region installer config
@@ -181,16 +181,31 @@ function new-package {
     #endregion
 
     #region dapp-openvpn install shorcut
-    Write-Verbose "Parse dappctrl config DB section"
+    $scriptContent = @'
+    param(
+        [Parameter(Mandatory=$true, ParameterSetName = "agent", HelpMessage = "install as agent")]
+        [switch]$agent,
+        [Parameter(Mandatory=$true, ParameterSetName = "client", HelpMessage = "install as client")]
+        [switch]$client
+    )
+    # Install product into dappctrl database and update adapter config file with authentication credentials
+    $rootAppPath = (get-item $PSScriptRoot).Parent.Parent.Parent.FullName
+    $prodInstancePath = (get-item $PSScriptRoot).Parent.FullName
+    Write-Host "Parse dappctrl config DB section"
     $dappctrlconf = "$rootAppPath\dappctrl\dappctrl.config.json"
-    $DBconf = (Get-Content $dappctrlconf | ConvertFrom-Json).DB.conn
+    Write-Host "Parsing config file: $dappctrlconf"
+    $DBconf = (Get-Content $dappctrlconf -ErrorAction Stop| ConvertFrom-Json).DB.conn
     $connstr = "host=$($DBconf.host) dbname=$($DBconf.dbname) user=$($DBconf.user) port=$($DBconf.port)"
     if ($($DBconf.password)) {$connstr += " password=$($DBconf.password)"}
     $connstr += " sslmode=disable"
-    
-    $lnkcmd = '/c start "" /b .\installer.exe --connstr ' + $connstr + ' --rootdir="..\template" -setauth'
-    $lnkInstalled = New-Shortcut -Path "$prodInstancePath\bin\install_product.lnk" -TargetPath "%ComSpec%" -Arguments $lnkcmd -WorkDir "%~dp0" -Description "Privatix product install"
-    if (-not $lnkInstalled) {Write-Error "Product install shortcut creation failed"}
+    Write-Host "Connection string is: $connstr"
+    $expression = ".\installer.exe --connstr  `"" + $connstr + '" --rootdir="..\template" -setauth'
+    Write-Host "Executing command: $expression"
+    #Invoke-Expression $expression -ErrorAction SilentlyContinue
+    if ($agent) {Copy-Item -Path "$prodInstancePath\template\dappvpn.agent.config.json" -Destination "$prodInstancePath\config\dappvpn.config.json" -Force }
+    if ($client) {Copy-Item -Path "$prodInstancePath\template\dappvpn.client.config.json" -Destination "$prodInstancePath\config\dappvpn.config.json" -Force}
+'@
+    $scriptContent | Out-File -FilePath "$prodInstancePath\bin\install-product.ps1"
     #endregion
 
     #region dapp-openvpn inst shortcut
