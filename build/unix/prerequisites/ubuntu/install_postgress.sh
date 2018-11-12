@@ -16,8 +16,8 @@ IFS='-'; pgver=($pgpkg); unset IFS;
 if [[ ${pgver[1]} =~ ^[0-9]{1,2}\.[0-9]$ ]]
 then
     pgnew="/etc/postgresql/${pgver[1]}/main/pg_hba.conf"
-    service postgresql stop &&
-    sed -i.bu_postgres 's/local.*all.*postgres.*peer/local all postgres trust/' $pgnew
-    sed -i.bu_host's/host.*all.*all.*127.0.0.1\/32.*md5/host all postgres 127.0.0.1\/32 trust/' $pgnew
+    service postgresql stop
+    sed -i.bup 's/local.*all.*postgres.*peer/local all postgres trust/g' $pgnew
+    sed -i.buh 's/host.*all.*all.*127.0.0.1\/32.*md5/host all postgres 127.0.0.1\/32 trust/g' $pgnew
 fi
 service postgresql start
