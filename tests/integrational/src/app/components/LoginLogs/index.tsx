@@ -2,13 +2,14 @@ import React, { Component } from 'react';
 
 export namespace LoginLogs {
   export interface Props {
+    inProgress: boolean;
     authToken?: string;
     statsData?: object;
   }
 }
 
 export class LoginLogs extends Component<LoginLogs.Props> {
-  constructor(props: StartStopButton.Props, context?: any) {
+  constructor(props: LoginLogs.Props, context?: any) {
     super(props, context);
   }
 
@@ -16,8 +17,10 @@ export class LoginLogs extends Component<LoginLogs.Props> {
     return (
       <div>
         <ul>
-          <li>Authenticating... {this.props.authToken && 'done'}</li>
-          <li>Getting Stats... {this.props.statsData && 'done'}</li>
+          { this.props.inProgress &&
+            <li>Authenticating... {this.props.authToken && 'done'}</li> }
+          { this.props.authToken &&
+            <li>Getting Stats... {this.props.statsData && 'done'}</li> }
         </ul>
       </div>
     )

@@ -5,7 +5,7 @@ import { ofType } from 'redux-observable';
 import { TestActions } from 'app/actions/index';
 
 // TODO: add types
-export const autoStopEpic = (actions$) => {
+export const autoStopEpic = (actions$: any) => {
   return actions$.pipe(
     ofType(TestActions.Type.START_TEST),
     delay(3000),

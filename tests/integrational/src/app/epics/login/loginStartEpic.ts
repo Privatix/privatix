@@ -5,7 +5,7 @@ import { ofType } from 'redux-observable';
 import { TestActions, LoginActions } from 'app/actions';
 
 // TODO: add types
-export const loginStartEpic = (actions$) => {
+export const loginStartEpic = (actions$: any) => {
   return actions$.pipe(
     ofType(TestActions.Type.START_TEST),
     mergeMap(() => of({

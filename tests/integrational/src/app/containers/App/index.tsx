@@ -14,13 +14,13 @@ export namespace App {
   export interface Props extends RouteComponentProps<void> {
     login: RootState.LoginState;
     testActions: TestActions;
-    loginAction: LoginActions;
+    loginActions: LoginActions;
     workingOnTest: boolean;
   }
 }
 
 const mapStateToProps = (state: RootState) => ({
-  workingOnTest: state.login.status == Status.IN_PROGRESS, // state.test.inProgress,
+  workingOnTest: state.login.status === Status.IN_PROGRESS, // state.test.inProgress,
   login: state.login
 });
 
@@ -49,9 +49,9 @@ export class App extends React.Component<App.Props> {
                 stopTest={testActions.stopTest}
                 workingOnTest={workingOnTest} />
         <LoginLogs
+          inProgress={login.status !== Status.NOT_STARTED}
           authToken={login.authToken}
-          statsData={login.statsData}
-        />
+          statsData={login.statsData} />
       </div>
     )
   }

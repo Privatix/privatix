@@ -20,7 +20,8 @@ export const loginReducer = handleActions<RootState.LoginState, LoginModel>(
       return {
         ...state,
         // status: Status.DONE,
-        token: action.payload
+        ...action.payload
+        // authToken: action.payload.authToken
       }
     },
     [LoginActions.Type.STATS_REQUEST]: (state, action) => {
@@ -33,14 +34,15 @@ export const loginReducer = handleActions<RootState.LoginState, LoginModel>(
       return {
         ...state,
         status: Status.DONE,
-        data: action.payload
+        ...action.payload
+        // statsData: action.payload.statsData
       }
     },
     [LoginActions.Type.LOGIN_FAILED]: (state, action) => {
       return {
         ...state,
         status: Status.FAILED,
-        error: action.payload
+        ...action.payload
       }
     }
   },

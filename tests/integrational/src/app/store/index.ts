@@ -3,7 +3,7 @@ import { createEpicMiddleware } from 'redux-observable';
 import { composeWithDevTools } from 'redux-devtools-extension';
 
 import rootEpic from 'app/epics';
-import { RootState, rootReducer } from 'app/reducers';
+import { rootReducer } from 'app/reducers';
 
 export function configureStore() {
   const mode = process.env.NODE_ENV;
