@@ -3,18 +3,18 @@
 Ordinary release starts with executing the following scripts:
 
 ```bash
-start_release.sh <path_to_config>
-update_versions.sh <path_to_config>
-push_release.sh <path_to_config>
+start_release.sh
+update_versions.sh
+push_release.sh
 ```
 
 ##  Example of usage
 
 
 ```bash
-./start_release.sh release.config
-./update_versions.sh release.config
-./push_release.sh release.config
+./start_release.sh 
+./update_versions.sh 
+./push_release.sh 
 ```
 
 ## release.config
@@ -39,6 +39,15 @@ REPOSITORIES=(
 )
 
 ```
+
+Make a copy of `relese.config`:
+
+```bash
+cp relese.config relese.local.config
+```
+
+Modify `relese.local.config` if you need non-default configuration.
+
 
 ## start_release.sh
 

@@ -9,3 +9,5 @@ build/unix/openvpn_server/config/
 build/unix/openvpn_server/log/*.log
 
 build/unix/build\.local\.config
+
+release/release\.local\.config
