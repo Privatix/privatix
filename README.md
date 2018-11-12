@@ -13,9 +13,8 @@ First Internet Broadband Marketplace powered by P2P VPN Network on Blockchain.
 
 ## Building
 
-* [linux](doc/build/linux/README.md)
-* [mac](doc/build/mac/README.md)
-* [win](doc/build/win/README.md)
+* [unix](build/unix/README.md)
+* [win](build/win/README.md)
 
 ## Contributing
 
