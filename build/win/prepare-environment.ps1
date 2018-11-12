@@ -13,3 +13,15 @@ choco install nodejs -y
 choco install git -y
 # uncomment below for OS version < 10 to get last powershell version
 # choco install powershell -y 
+
+New-Item -Path "$HOME\code" -ItemType Directory | Out-Null
+Set-Location "$HOME\code"
+git clone "https://github.com/Privatix/privatix.git"
+Set-Location "$HOME\code\privatix"
+git checkout develop
+Set-Location "$HOME\code\privatix\build\win"
+Write-Host "Use publish-dapp to build and package application" -ForegroundColor Green
+Write-Host "Use new-package module (import it first using import-module) to package application" -ForegroundColor Green
+Write-Host "Use other scripts to build particular repository" -ForegroundColor Green
+Write-Host "run `"get-help publish-dapp -full`" to learn how to use it" -ForegroundColor Green
+
