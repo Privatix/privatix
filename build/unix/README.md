@@ -108,7 +108,7 @@ Please execute step by step the following commands:
 
 ```bash
 # Checkout repositories at ${GIT_BRANCH} branch
-./git/checkout.sh
+./git/pull.sh
 
 # Build the `dappctrl` by using
 # "${DAPPCTRL_DIR}"/scripts/build.sh

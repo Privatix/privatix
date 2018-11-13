@@ -2,7 +2,7 @@
 
 cd `dirname $0`
 
-./git/checkout.sh
+./git/pull.sh
 
 ./build_ctrl.sh
 ./build_openvpn.sh
