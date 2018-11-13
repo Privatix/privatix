@@ -2,7 +2,7 @@
 
 cd `dirname $0`
 
-./git/checkout.sh
+./git/update.sh
 
 ./build_ctrl.sh
 ./build_openvpn.sh
@@ -11,4 +11,5 @@ cd `dirname $0`
 ./create_database.sh 
 ./create_products.sh 
 
-./start_openvpn.sh
+# in case of agent build
+#./run_openvpn.sh

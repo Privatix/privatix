@@ -5,7 +5,7 @@ cd `dirname $0`
 
 # run dappctrl
 echo run ${DAPPCTRL_BIN}/${DAPPCTRL}
-${DAPPCTRL_BIN}/${DAPPCTRL} -config="${DAPPCTRL_BIN}/${DAPPCTRL_AGENT_CONFIG}"
+${DAPPCTRL_BIN}/${DAPPCTRL} -config="${DAPPCTRL_BIN}/${DAPPCTRL_AGENT_CONFIG}" &
 
 sleep 3
 
@@ -15,7 +15,7 @@ ${OPENVPN_SERVER_BIN}/bin/${DAPP_OPENVPN} -config=${OPENVPN_SERVER_BIN}/config/$
 
 # run gui
 echo run ${DAPP_GUI_BIN}
-cd ${DAPP_GUI_BIN}
+cd ${DAPP_GUI_DIR}
 npm start &
 
 # print jobs

@@ -14,22 +14,3 @@ echo build start
 rm -rf ${DAPP_GUI_DIR}/build/
 npm install
 npm run build
-
-# binaries
-cd ${root_dir}
-
-# clear
-rm -rf ${DAPP_GUI_BIN}
-mkdir -p ${DAPP_GUI_BIN}
-
-# copy
-echo
-echo copy binaries
-rsync -avzh ${DAPP_GUI_DIR}/build/. \
-            ${DAPP_GUI_BIN}/build
-
-rsync -avzh ${DAPP_GUI_DIR}/node_modules/. \
-            ${DAPP_GUI_BIN}/node_modules
-
-cp -v ${DAPP_GUI_DIR}/package.json \
-      ${DAPP_GUI_BIN}/package.json
