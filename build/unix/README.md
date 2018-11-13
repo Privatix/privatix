@@ -26,17 +26,10 @@ via ```{"dbname": "dappctrl", "user": "postgres", "host": "localhost",
 ### mac
 
 ```bash
-brew install git
-brew install go
+brew update
 
-brew install postgresql
-brew services start postgresql
-
-brew install gcc
-brew install node
-
-brew install openvpn
-brew install openssl
+brew install  \
+    git go postgresql gcc node openvpn openssl
 ```
 
 ### ubuntu
@@ -44,12 +37,8 @@ brew install openssl
 ```bash
 sudo apt update
 
-sudo apt install git
-sudo apt install gcc
-sudo apt install curl
-sudo apt install openvpn easy-rsa
-sudo apt install openssl
-
+sudo apt install \
+    git gcc curl openvpn easy-rsa openssl
 
 cd ./prerequisites/ubuntu/
 ./install_go.sh
