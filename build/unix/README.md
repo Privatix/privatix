@@ -86,7 +86,7 @@ To clone all required repositories, execute the following script:
 To update all required repositories, execute the following script:
 
 ```bash
-./git/pull.sh
+./git/update.sh
 ```
 
 ## One-command build
@@ -107,8 +107,8 @@ That provides more transparency and simplicity to the debugging process.
 Please execute step by step the following commands:
 
 ```bash
-# Checkout repositories at ${GIT_BRANCH} branch
-./git/pull.sh
+# Pull and checkout repositories at ${GIT_BRANCH} branch
+./git/update.sh
 
 # Build the `dappctrl` by using
 # "${DAPPCTRL_DIR}"/scripts/build.sh

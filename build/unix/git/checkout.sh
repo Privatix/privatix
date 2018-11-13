@@ -5,6 +5,7 @@ cd `dirname $0`
 
 for repository in ${REPOSITORIES[@]}
 do
+    echo -----------------------------------------------------------------------
     echo "${repository}"
     cd "${repository}"
     if [ "$(git branch --list "${GIT_BRANCH}")" ]
@@ -14,4 +15,6 @@ do
         git checkout develop
     fi
     echo
+    echo
+    git log  -1 --stat | tail
 done
