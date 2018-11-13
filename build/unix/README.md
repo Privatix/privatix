@@ -132,13 +132,9 @@ Please execute step by step the following commands:
 # the ./bin/openvpn_client and the ./bin/openvpn_server
 ./create_products.sh
 
-# Prepare ./bin/openvpn_client and ./bin/openvpn_server
-# create all necessary configs.
-# Register ./bin/openvpn_server/bin/openvpn as daemon
-# starts ./bin/openvpn_server/bin/openvpn as daemon
-./start_openvpn.sh
-# to stop and unregister openvpn use:
-# ./stop_openvpn.sh
+# Create all necessary configs and run openvpn 
+# (only in Agent mode)
+# ./run_openvpn.sh
 ```
 
 ## Run
@@ -180,7 +176,6 @@ Don't forget to kill all child processes after application work:
 
 ```bash
 ./kill_app.sh
-./stop_openvpn.sh
 ```
 
 ## Changing the Role
@@ -189,11 +184,8 @@ If you want to change the application role (Agent|Client), we recommend to
 perform the building process from the create database step:
 
 ```bash
-./stop_openvpn.sh
-
 ./create_database.sh
 ./create_products.sh
-./start_openvpn.sh
 
 ./run_client.sh # or ./run_agent.sh
 ```

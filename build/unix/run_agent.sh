@@ -15,7 +15,7 @@ ${OPENVPN_SERVER_BIN}/bin/${DAPP_OPENVPN} -config=${OPENVPN_SERVER_BIN}/config/$
 
 # run gui
 echo run ${DAPP_GUI_BIN}
-cd ${DAPP_GUI_BIN}
+cd ${DAPP_GUI_DIR}
 npm start &
 
 # print jobs
