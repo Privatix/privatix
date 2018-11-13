@@ -202,8 +202,8 @@ function new-package {
     $expression = ".\installer.exe --connstr  `"" + $connstr + '" --rootdir="..\template" -setauth'
     Write-Host "Executing command: $expression"
     #Invoke-Expression $expression -ErrorAction SilentlyContinue
-    if ($agent) {Copy-Item -Path "$prodInstancePath\template\dappvpn.agent.config.json" -Destination "$prodInstancePath\config\dappvpn.config.json" -Force }
-    if ($client) {Copy-Item -Path "$prodInstancePath\template\dappvpn.client.config.json" -Destination "$prodInstancePath\config\dappvpn.config.json" -Force}
+    if ($agent.IsPresent) {Copy-Item -Path "$prodInstancePath\template\dappvpn.agent.config.json" -Destination "$prodInstancePath\config\dappvpn.config.json" -Force }
+    if ($client.IsPresent) {Copy-Item -Path "$prodInstancePath\template\dappvpn.client.config.json" -Destination "$prodInstancePath\config\dappvpn.config.json" -Force}
 '@
     $scriptContent | Out-File -FilePath "$prodInstancePath\bin\install-product.ps1"
     #endregion
