@@ -11,28 +11,25 @@ Install prerequisite software if it's not installed.
 
 * [PostgreSQL](https://www.postgresql.org/download/)
 by default, the Application will try to connect to a postgress
-via ```{"dbname": "dappctrl",
-                   "user": "postgres",
-                   "host": "localhost",
-                   "port": "5432"
-               }```
+via ```{"dbname": "dappctrl", "user": "postgres", "host": "localhost",
+"port": "5432"}```
 
 * [gcc](https://gcc.gnu.org/install/)
 
 * [node.js](https://nodejs.org/en/) 9.3+
 
+* [OpenVPN](https://openvpn.net/)
+
+* [OpenSSL](https://www.openssl.org/)
+
 
 ### mac
 
 ```bash
-brew install git
-brew install go
+brew update
 
-brew install postgresql
-brew services start postgresql
-
-brew install gcc
-brew install node
+brew install  \
+    git go postgresql gcc node openvpn openssl
 ```
 
 ### ubuntu
@@ -40,9 +37,8 @@ brew install node
 ```bash
 sudo apt update
 
-sudo apt install git
-sudo apt install gcc
-sudo apt install curl
+sudo apt install \
+    git gcc curl openvpn easy-rsa openssl
 
 cd ./prerequisites/ubuntu/
 ./install_go.sh
@@ -79,7 +75,7 @@ To clone all required repositories, execute the following script:
 To update all required repositories, execute the following script:
 
 ```bash
-./git/pull.sh
+./git/update.sh
 ```
 
 ## One-command build
@@ -100,24 +96,20 @@ That provides more transparency and simplicity to the debugging process.
 Please execute step by step the following commands:
 
 ```bash
-# Clear the bin directory and
-# create a folder structure
-./clear.sh
-
-# Checkout repositories at ${GIT_BRANCH} branch
-./git/checkout.sh
+# Pull and checkout repositories at ${GIT_BRANCH} branch
+./git/update.sh
 
 # Build the `dappctrl` by using
 # "${DAPPCTRL_DIR}"/scripts/build.sh
-./build_dappctrl.sh
+./build_ctrl.sh
 
 # Build the dapp-openvpn by using
 # "${DAPP_OPENVPN_DIR}"/scripts/build.sh
-./build_dappopenvpn.sh
+./build_openvpn.sh
 
 # Build the dapp-gui by using
 # nmp i && npm run build
-./build_dappgui.sh
+./build_gui.sh
 
 # Create the database by using
 # "${DAPPCTRL_DIR}"/scripts/create_database.sh
@@ -129,13 +121,9 @@ Please execute step by step the following commands:
 # the ./bin/openvpn_client and the ./bin/openvpn_server
 ./create_products.sh
 
-# Prepare ./bin/openvpn_client and ./bin/openvpn_server
-# create all necessary configs.
-# Register ./bin/openvpn_server/bin/openvpn as daemon
-# starts ./bin/openvpn_server/bin/openvpn as daemon
-./start_openvpn.sh
-# to stop and unregister openvpn use:
-# ./stop_openvpn.sh
+# Create all necessary configs and run openvpn 
+# (only in Agent mode)
+# ./run_openvpn.sh
 ```
 
 ## Run
@@ -177,17 +165,18 @@ Don't forget to kill all child processes after application work:
 
 ```bash
 ./kill_app.sh
-./stop_openvpn.sh
 ```
 
 ## Changing the Role
 
 If you want to change the application role (Agent|Client), we recommend to
-perform the building process from the beginning:
+perform the building process from the create database step:
 
 ```bash
-./clear.sh
-#...
+./create_database.sh
+./create_products.sh
+
+./run_client.sh # or ./run_agent.sh
 ```
 
 instead of:

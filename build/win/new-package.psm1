@@ -37,6 +37,7 @@ function new-package {
         $global:VerbosePreference = [System.Management.Automation.ActionPreference]::Continue
     }
 
+    Write-Host "Working on packaging whole app..." -ForegroundColor Green
     # import helpers
     import-module (join-path $PSScriptRoot "build-helpers.psm1" -resolve) -DisableNameChecking
 
@@ -162,7 +163,7 @@ function new-package {
     #endregion
 
     #region adapter config
-    Copy-Item -Path "$adapterconfig" -Destination "$prodInstancePath\config\dappvpn.config.json"
+    #Copy-Item -Path "$adapterconfig" -Destination "$prodInstancePath\config\dappvpn.config.json"
     #endregion
 
     #region installer config
@@ -179,7 +180,46 @@ function new-package {
     Copy-Item -Path $dappopenvpninstallerconfig -Destination "$deployAppPath\dapp-installer.config.json"
     #endregion
 
+    #region dapp-openvpn install shorcut
+    $scriptContent = @'
+    param(
+        [Parameter(Mandatory=$true, ParameterSetName = "agent", HelpMessage = "install as agent")]
+        [switch]$agent,
+        [Parameter(Mandatory=$true, ParameterSetName = "client", HelpMessage = "install as client")]
+        [switch]$client
+    )
+    # Install product into dappctrl database and update adapter config file with authentication credentials
+    $rootAppPath = (get-item $PSScriptRoot).Parent.Parent.Parent.FullName
+    $prodInstancePath = (get-item $PSScriptRoot).Parent.FullName
+    Write-Host "Parse dappctrl config DB section"
+    $dappctrlconf = "$rootAppPath\dappctrl\dappctrl.config.json"
+    Write-Host "Parsing config file: $dappctrlconf"
+    $DBconf = (Get-Content $dappctrlconf -ErrorAction Stop| ConvertFrom-Json).DB.conn
+    $connstr = "host=$($DBconf.host) dbname=$($DBconf.dbname) user=$($DBconf.user) port=$($DBconf.port)"
+    if ($($DBconf.password)) {$connstr += " password=$($DBconf.password)"}
+    $connstr += " sslmode=disable"
+    Write-Host "Connection string is: $connstr"
+    $expression = ".\installer.exe --connstr  `"" + $connstr + '" --rootdir="..\template" -setauth'
+    Write-Host "Executing command: $expression"
+    #Invoke-Expression $expression -ErrorAction SilentlyContinue
+    if ($agent.IsPresent) {Copy-Item -Path "$prodInstancePath\template\dappvpn.agent.config.json" -Destination "$prodInstancePath\config\dappvpn.config.json" -Force }
+    if ($client.IsPresent) {Copy-Item -Path "$prodInstancePath\template\dappvpn.client.config.json" -Destination "$prodInstancePath\config\dappvpn.config.json" -Force}
+'@
+    $scriptContent | Out-File -FilePath "$prodInstancePath\bin\install-product.ps1"
+    #endregion
+
+    #region dapp-openvpn inst shortcut
+    $lnkcmd = '/c start "" /b .\inst.exe install --config "..\config\installer.config.json"'
+    $lnkInstalled = New-Shortcut -Path "$prodInstancePath\bin\install_adapter.lnk" -TargetPath "%ComSpec%" -Arguments $lnkcmd -WorkDir "%~dp0" -Description "Privatix adapter install"
+    if (-not $lnkInstalled) {Write-Error "Adapter install shortcut creation failed"}
+
+    $lnkcmd = '/c start "" /b .\inst.exe remove"'
+    $lnkInstalled = New-Shortcut -Path "$prodInstancePath\bin\remove_adapter.lnk" -TargetPath "%ComSpec%" -Arguments $lnkcmd -WorkDir "%~dp0" -Description "Privatix adapter remove"
+    if (-not $lnkInstalled) {Write-Error "Adapter install shortcut creation failed"}
+    #endregion
+    
     #region archive app
+    Write-Verbose "Making archive for deploy..."
     add-type -AssemblyName System.IO.Compression.FileSystem
     [System.IO.Compression.ZipFile]::CreateFromDirectory($rootAppPath, "$deployAppPath\app.zip", 'NoCompression', $false)
     #endregion

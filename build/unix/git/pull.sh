@@ -3,9 +3,5 @@
 cd `dirname $0`
 . ../build.local.config
 
-for repository in ${REPOSITORIES[@]}
-do
-    echo "${repository}"
-    cd "${repository}"
-    git pull --all
-done
+./each_repo.sh "git checkout ${GIT_BRANCH}"
+./each_repo.sh "git pull --all"

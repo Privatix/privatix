@@ -16,6 +16,20 @@ is added to  system path `$PATH`
 
 * [node.js](https://nodejs.org/en/) 9.3+
 
+### Powershell
+
+Install prerequisite software via `powershell`
+
+```powershell
+Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope CurrentUser
+Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+choco install golang -y
+choco install mingw -y 
+choco install nodejs -y
+# choco install git -y
+# choco install powershell -y
+```
+
 ## Build
 
 First of all, please, set the execution policy: 

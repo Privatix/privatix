@@ -33,8 +33,10 @@ collect_modified_repositories(){
     done
 }
 
+root_dir=$(cd `dirname $0` && pwd)
+cd ${root_dir}
+. ./release.local.config
 
-. ${1}
 collect_modified_repositories ${REPOSITORIES[@]}
 printf '\n\n\nModified repositories:\n'
 printf '%s\n' ${modified_repositories[@]}

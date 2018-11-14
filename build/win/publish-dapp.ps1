@@ -63,15 +63,40 @@ param(
 if ($PSBoundParameters.ContainsKey('Verbose')) {
     $global:VerbosePreference = [System.Management.Automation.ActionPreference]::Continue
 }
+
+
 $builddapp = (Join-Path $PSScriptRoot build-dapp.ps1 -Resolve -ErrorAction Stop)
 Import-Module (Join-Path $PSScriptRoot "new-package.psm1" -Resolve) -ErrorAction Stop -DisableNameChecking
 
-. $builddapp -dappctrl -branch $dappctrlbranch -gitpull:$gitpull -godep:$godep
-. $builddapp -dappopenvpn -branch $dappopenvpnbranch -gitpull:$gitpull -godep:$godep
-. $builddapp -dappinstaller -branch $dappinstbranch -gitpull:$gitpull -godep:$godep
+$TotalTime = 0
+
+$OpTime = (Measure-Command {. $builddapp -dappctrl -branch $dappctrlbranch -gitpull:$gitpull -godep:$godep}).Seconds
+$TotalTime += $OpTime
+Write-Host "It took $OpTime seconds to complete" -ForegroundColor Green
+
+
+$OpTime = (Measure-Command {. $builddapp -dappopenvpn -branch $dappopenvpnbranch -gitpull:$gitpull -godep:$godep}).Seconds
+$TotalTime += $OpTime
+Write-Host "It took $OpTime seconds to complete" -ForegroundColor Green
+
+$OpTime = (Measure-Command {. $builddapp -dappinstaller -branch $dappinstbranch -gitpull:$gitpull -godep:$godep}).Seconds
+$TotalTime += $OpTime
+Write-Host "It took $OpTime seconds to complete" -ForegroundColor Green
+
 if ($pack) {
-    . $builddapp -dappgui -branch $dappguibranch -gitpull:$gitpull -wd $wkdir -package
-    new-package -wrkdir $wkdir -staticArtefactsDir $staticArtefactsDir
+    $OpTime = (Measure-Command {. $builddapp -dappgui -branch $dappguibranch -gitpull:$gitpull -wd $wkdir -package}).Seconds
+    $TotalTime += $OpTime
+    Write-Host "It took $OpTime seconds to complete" -ForegroundColor Green
+
+    $OpTime = (Measure-Command {new-package -wrkdir $wkdir -staticArtefactsDir $staticArtefactsDir}).Seconds
+    $TotalTime += $OpTime
+    Write-Host "It took $OpTime seconds to complete" -ForegroundColor Green
 }
-else {. $builddapp -dappgui -branch $dappguibranch -gitpull:$gitpull -wd $wkdir -shortcut}
+else {
+    $OpTime = (Measure-Command {. $builddapp -dappgui -branch $dappguibranch -gitpull:$gitpull -wd $wkdir -shortcut}).Seconds
+    $TotalTime += $OpTime
+    Write-Host "It took $OpTime seconds to complete" -ForegroundColor Green
+}
 Remove-Module new-package
+
+Write-Host "Total execution time: $TotalTime seconds" -ForegroundColor Green
