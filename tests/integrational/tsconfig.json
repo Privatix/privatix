@@ -1,23 +1,25 @@
 {
   "compilerOptions": {
-    "allowSyntheticDefaultImports": true,
-    "sourceMap": true,
-    "target": "es5",
-    "jsx": "react",
-    "module": "es6",
+    "target": "es6",
+    "module": "commonjs",
     "moduleResolution": "node",
-    "experimentalDecorators": true,
-    "declaration": false,
-    "removeComments": true,
+    "allowSyntheticDefaultImports": true,
+    "allowJs": true,
+    "importHelpers": true,
+    "jsx": "react",
+    "alwaysStrict": true,
+    "sourceMap": true,
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
     "noImplicitReturns": true,
     "noUnusedLocals": true,
-    "strict": true,
-    "outDir": "build",
-    "lib": ["es6", "es7", "dom"],
-    "baseUrl": "src",
-    "paths": {
-      "app/*": ["./app/*"]
-    }
+    "noUnusedParameters": true,
+    "noImplicitAny": false,
+    "noImplicitThis": false,
+    "strictNullChecks": false
   },
-  "exclude": ["build", "node_modules"]
+  "include": [
+    "src/**/*",
+    "__tests__/**/*"
+  ]
 }
