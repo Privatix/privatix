@@ -103,7 +103,8 @@ function new-package {
 
     # artefacts
     # core installer
-    $adpaterinstallerconfig = (Get-Item "$gopath\src\github.com\privatix\dapp-openvpn\inst\installer.config.json").FullName
+    $agentAdpaterInstallerConfig = (Get-Item "$gopath\src\github.com\privatix\dapp-openvpn\inst\agent.installer.config.json").FullName
+    $clientAdpaterInstallerConfig = (Get-Item "$gopath\src\github.com\privatix\dapp-openvpn\inst\client.installer.config.json").FullName
     $dappinstallerbin = (Get-Item "$gopath\bin\dapp-installer.exe").FullName
     # common
     $dappctrlbin = (Get-Item "$gopath\bin\dappctrl.exe").FullName
@@ -167,7 +168,9 @@ function new-package {
     #endregion
 
     #region installer config
-    Copy-Item -Path "$adpaterinstallerconfig" -Destination "$prodInstancePath\config\installer.config.json"
+    Copy-Item -Path "$agentAdpaterInstallerConfig" -Destination "$prodInstancePath\config\agent.installer.config.json"
+    Copy-Item -Path "$clientAdpaterInstallerConfig" -Destination "$prodInstancePath\config\client.installer.config.json"
+    
     #endregion
 
     #endregion
@@ -201,7 +204,7 @@ function new-package {
     Write-Host "Connection string is: $connstr"
     $expression = ".\installer.exe --connstr  `"" + $connstr + '" --rootdir="..\template" -setauth'
     Write-Host "Executing command: $expression"
-    #Invoke-Expression $expression -ErrorAction SilentlyContinue
+    Invoke-Expression $expression -ErrorAction SilentlyContinue
     if ($agent.IsPresent) {Copy-Item -Path "$prodInstancePath\template\dappvpn.agent.config.json" -Destination "$prodInstancePath\config\dappvpn.config.json" -Force }
     if ($client.IsPresent) {Copy-Item -Path "$prodInstancePath\template\dappvpn.client.config.json" -Destination "$prodInstancePath\config\dappvpn.config.json" -Force}
 '@
