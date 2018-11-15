@@ -14,6 +14,9 @@ choco install git -y
 # uncomment below for OS version < 10 to get last powershell version
 # choco install powershell -y 
 
+#update PATH environment variable in this PS session
+$env:Path = [System.Environment]::GetEnvironmentVariable("Path", "Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path", "User") 
+
 New-Item -Path "$HOME\code" -ItemType Directory | Out-Null
 Set-Location "$HOME\code"
 git clone "https://github.com/Privatix/privatix.git"
