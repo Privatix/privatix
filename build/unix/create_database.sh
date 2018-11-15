@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+cd `dirname $0`
+. ./build.local.config
+
+export POSTGRES_PORT
+
+echo create database
+
+"${DAPPCTRL_DIR}"/scripts/create_database.sh
+
