@@ -70,32 +70,37 @@ Import-Module (Join-Path $PSScriptRoot "new-package.psm1" -Resolve) -ErrorAction
 
 $TotalTime = 0
 
-$OpTime = (Measure-Command {. $builddapp -dappctrl -branch $dappctrlbranch -gitpull:$gitpull -godep:$godep}).Seconds
-$TotalTime += $OpTime
-Write-Host "It took $OpTime seconds to complete" -ForegroundColor Green
+$sw = [Diagnostics.Stopwatch]::StartNew()
+. $builddapp -dappctrl -branch $dappctrlbranch -gitpull:$gitpull -godep:$godep
+$TotalTime += $sw.Elapsed.Seconds
+Write-Host "It took $($sw.Elapsed.Seconds) seconds to complete" -ForegroundColor Green
 
+$sw.Restart()
+. $builddapp -dappopenvpn -branch $dappopenvpnbranch -gitpull:$gitpull -godep:$godep
+$TotalTime += $sw.Elapsed.Seconds
+Write-Host "It took $($sw.Elapsed.Seconds) seconds to complete" -ForegroundColor Green
 
-$OpTime = (Measure-Command {. $builddapp -dappopenvpn -branch $dappopenvpnbranch -gitpull:$gitpull -godep:$godep}).Seconds
-$TotalTime += $OpTime
-Write-Host "It took $OpTime seconds to complete" -ForegroundColor Green
-
-$OpTime = (Measure-Command {. $builddapp -dappinstaller -branch $dappinstbranch -gitpull:$gitpull -godep:$godep}).Seconds
-$TotalTime += $OpTime
-Write-Host "It took $OpTime seconds to complete" -ForegroundColor Green
+$sw.Restart()
+. $builddapp -dappinstaller -branch $dappinstbranch -gitpull:$gitpull -godep:$godep
+$TotalTime += $sw.Elapsed.Seconds
+Write-Host "It took $($sw.Elapsed.Seconds) seconds to complete" -ForegroundColor Green
 
 if ($pack) {
-    $OpTime = (Measure-Command {. $builddapp -dappgui -branch $dappguibranch -gitpull:$gitpull -wd $wkdir -package}).Seconds
-    $TotalTime += $OpTime
-    Write-Host "It took $OpTime seconds to complete" -ForegroundColor Green
+    $sw.Restart()
+    . $builddapp -dappgui -branch $dappguibranch -gitpull:$gitpull -wd $wkdir -package
+    $TotalTime += $sw.Elapsed.Seconds
+    Write-Host "It took $($sw.Elapsed.Seconds) seconds to complete" -ForegroundColor Green
 
-    $OpTime = (Measure-Command {new-package -wrkdir $wkdir -staticArtefactsDir $staticArtefactsDir}).Seconds
-    $TotalTime += $OpTime
-    Write-Host "It took $OpTime seconds to complete" -ForegroundColor Green
+    $sw.Restart()
+    new-package -wrkdir $wkdir -staticArtefactsDir $staticArtefactsDir
+    $TotalTime += $sw.Elapsed.Seconds
+    Write-Host "It took $($sw.Elapsed.Seconds) seconds to complete" -ForegroundColor Green
 }
 else {
-    $OpTime = (Measure-Command {. $builddapp -dappgui -branch $dappguibranch -gitpull:$gitpull -wd $wkdir -shortcut}).Seconds
-    $TotalTime += $OpTime
-    Write-Host "It took $OpTime seconds to complete" -ForegroundColor Green
+    $sw.Restart()
+    . $builddapp -dappgui -branch $dappguibranch -gitpull:$gitpull -wd $wkdir -shortcut
+    $TotalTime += $sw.Elapsed.Seconds
+    Write-Host "It took $($sw.Elapsed.Seconds) seconds to complete" -ForegroundColor Green
 }
 Remove-Module new-package
 

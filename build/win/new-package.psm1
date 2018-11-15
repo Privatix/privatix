@@ -183,32 +183,57 @@ function new-package {
     Copy-Item -Path $dappopenvpninstallerconfig -Destination "$deployAppPath\dapp-installer.config.json"
     #endregion
 
-    #region dapp-openvpn install shorcut
+    #region dapp-openvpn install script
     $scriptContent = @'
     param(
         [Parameter(Mandatory=$true, ParameterSetName = "agent", HelpMessage = "install as agent")]
         [switch]$agent,
         [Parameter(Mandatory=$true, ParameterSetName = "client", HelpMessage = "install as client")]
-        [switch]$client
+        [switch]$client,
+        [Parameter(Mandatory=$false, HelpMessage = "do not import product to database")]
+        [switch]$skipProductImport
     )
+    #Requires -RunAsAdministrator
+
     # Install product into dappctrl database and update adapter config file with authentication credentials
-    $rootAppPath = (get-item $PSScriptRoot).Parent.Parent.Parent.FullName
+    # Install OpenVPN and OpenVPN-adapter
     $prodInstancePath = (get-item $PSScriptRoot).Parent.FullName
-    Write-Host "Parse dappctrl config DB section"
-    $dappctrlconf = "$rootAppPath\dappctrl\dappctrl.config.json"
-    Write-Host "Parsing config file: $dappctrlconf"
-    $DBconf = (Get-Content $dappctrlconf -ErrorAction Stop| ConvertFrom-Json).DB.conn
-    $connstr = "host=$($DBconf.host) dbname=$($DBconf.dbname) user=$($DBconf.user) port=$($DBconf.port)"
-    if ($($DBconf.password)) {$connstr += " password=$($DBconf.password)"}
-    $connstr += " sslmode=disable"
-    Write-Host "Connection string is: $connstr"
-    $expression = ".\installer.exe --connstr  `"" + $connstr + '" --rootdir="..\template" -setauth'
-    Write-Host "Executing command: $expression"
-    Invoke-Expression $expression -ErrorAction SilentlyContinue
-    if ($agent.IsPresent) {Copy-Item -Path "$prodInstancePath\template\dappvpn.agent.config.json" -Destination "$prodInstancePath\config\dappvpn.config.json" -Force }
-    if ($client.IsPresent) {Copy-Item -Path "$prodInstancePath\template\dappvpn.client.config.json" -Destination "$prodInstancePath\config\dappvpn.config.json" -Force}
+    if (-not $skipProductImport.IsPresent) {
+        Write-Host "Importing product data to controller..."
+        $rootAppPath = (get-item $PSScriptRoot).Parent.Parent.Parent.FullName
+        Write-Host "Parse dappctrl config DB section"
+        $dappctrlconf = "$rootAppPath\dappctrl\dappctrl.config.json"
+        Write-Host "Parsing config file: $dappctrlconf"
+        $DBconf = (Get-Content $dappctrlconf -ErrorAction Stop| ConvertFrom-Json).DB.conn
+        $connstr = "host=$($DBconf.host) dbname=$($DBconf.dbname) user=$($DBconf.user) port=$($DBconf.port)"
+        if ($($DBconf.password)) {$connstr += " password=$($DBconf.password)"}
+        $connstr += " sslmode=disable"
+        Write-Host "Connection string is: $connstr"
+        $expression = ".\installer.exe --connstr  `"" + $connstr + '" --rootdir="..\template" -setauth'
+        Write-Host "Executing command: $expression"
+        Invoke-Expression $expression -ErrorAction Stop
+    } else {Write-Warning "Skipping import of product data to controller"}
+    if ($agent.IsPresent) {
+        Copy-Item -Path "$prodInstancePath\template\dappvpn.agent.config.json" -Destination "$prodInstancePath\config\dappvpn.config.json" -Force 
+        $expression = 'inst.exe install --config "..\config\agent.installer.config.json"'
+        Invoke-Expression $expression -ErrorAction Stop
+    }
+    if ($client.IsPresent) {
+        Copy-Item -Path "$prodInstancePath\template\dappvpn.client.config.json" -Destination "$prodInstancePath\config\dappvpn.config.json" -Force
+        $expression = 'inst.exe install --config "..\config\client.installer.config.json"'
+        Invoke-Expression $expression -ErrorAction Stop
+    }
 '@
     $scriptContent | Out-File -FilePath "$prodInstancePath\bin\install-product.ps1"
+    #endregion
+
+    #region dapp-openvpn remove script
+    #TODO: implement removal of product from DB
+    $scriptContent = @'
+    #Requires -RunAsAdministrator
+    Invoke-Expression 'inst.exe remove' -ErrorAction Stop
+'@
+    $scriptContent | Out-File -FilePath "$prodInstancePath\bin\remove-product.ps1"
     #endregion
 
     #region dapp-openvpn inst shortcut
