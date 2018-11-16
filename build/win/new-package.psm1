@@ -53,7 +53,7 @@ function new-package {
     #region create working dir 
     New-Folder $wrkdir | Out-Null
     New-Folder $deployAppPath | Out-Null
-    #end region
+    #endregion
 
     #region create core app folder structure
     ##################
@@ -95,12 +95,14 @@ function new-package {
     New-Folder $prodInstancePath "log" | Out-Null
     Get-Date | Out-File -FilePath "$prodInstancePath\log\date.txt"
     New-Folder $prodInstancePath "template" | Out-Null
+    #endregion
 
     # Check GOPATH is defined
     $gopath = $env:GOPATH
     if (!($gopath)) {$gopath = Invoke-Expression "go.exe env GOPATH"}
     if (!($gopath)) {throw "GOPATH is not defined"}
 
+    #region define artefacts
     # artefacts
     # core installer
     $agentAdpaterInstallerConfig = (Get-Item "$gopath\src\github.com\privatix\dapp-openvpn\inst\agent.installer.config.json").FullName
@@ -122,7 +124,7 @@ function new-package {
     $adapterconfig = (Get-Item "$gopath\src\github.com\privatix\dapp-openvpn\statik\package\config\adapter.config.json").FullName
     
     $openvpnFolder = (Get-Item "$staticArtefactsDir\openvpn").FullName
-    
+    #endregion
 
     #region core app
 
@@ -149,8 +151,7 @@ function new-package {
 
     #endregion
 
-
-    #region adapter
+    #region product
 
     #region binary
     Copy-Item -Path $dappopenvpnbin -Destination "$prodInstancePath\bin\dappvpn.exe"
@@ -163,26 +164,13 @@ function new-package {
     Copy-Item -Path "$templatesFolder\*" -Destination "$prodInstancePath\template" -Recurse -Force
     #endregion
 
-    #region adapter config
-    #Copy-Item -Path "$adapterconfig" -Destination "$prodInstancePath\config\dappvpn.config.json"
-    #endregion
-
     #region installer config
     Copy-Item -Path "$agentAdpaterInstallerConfig" -Destination "$prodInstancePath\config\agent.installer.config.json"
     Copy-Item -Path "$clientAdpaterInstallerConfig" -Destination "$prodInstancePath\config\client.installer.config.json"
     
     #endregion
 
-    #endregion
-
-    #region create deploy app
-
-    #endregion
-    #region dapp-installer artefact
-    Copy-Item -Path $dappinstallerbin -Destination "$deployAppPath\dapp-installer.exe"
-    Copy-Item -Path $dappopenvpninstallerconfig -Destination "$deployAppPath\dapp-installer.config.json"
-    #endregion
-
+    #region dev product installation scripts
     #region dapp-openvpn install script
     $scriptContent = @'
     param(
@@ -235,14 +223,21 @@ function new-package {
 '@
     $scriptContent | Out-File -FilePath "$prodInstancePath\bin\remove-product.ps1"
     #endregion
-    
+    #endregion
+    #endregion
+
     #region archive app
     Write-Verbose "Making archive for deploy..."
     add-type -AssemblyName System.IO.Compression.FileSystem
     [System.IO.Compression.ZipFile]::CreateFromDirectory($rootAppPath, "$deployAppPath\app.zip", 'NoCompression', $false)
     #endregion
 
-    #region shortcut
+    #region dapp-installer artefact
+    Copy-Item -Path $dappinstallerbin -Destination "$deployAppPath\dapp-installer.exe"
+    #Copy-Item -Path $dappopenvpninstallerconfig -Destination "$deployAppPath\dapp-installer.config.json"
+    #endregion
+
+    #region dev app installation scripts
     #region install shorcut
     $lnkcmd = '/c start "" /b .\dapp-installer.exe install --role agent --workdir .\agent --source .\app.zip'
     $lnkInstalled = New-Shortcut -Path "$deployAppPath\install_agent.lnk" -TargetPath "%ComSpec%" -Arguments $lnkcmd -WorkDir "%~dp0" -Description "Privatix Core install agent"
@@ -262,7 +257,6 @@ function new-package {
     $lnkInstalled = New-Shortcut -Path "$deployAppPath\remove_client.lnk" -TargetPath "%ComSpec%" -Arguments $lnkcmd -WorkDir "%~dp0" -Description "Privatix Core remove client"
     if (-not $lnkInstalled) {Write-Error "Client remover shortcut creation failed"}
     
-    #endregion
     #endregion
     #endregion
 }
