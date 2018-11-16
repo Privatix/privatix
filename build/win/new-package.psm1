@@ -235,16 +235,6 @@ function new-package {
 '@
     $scriptContent | Out-File -FilePath "$prodInstancePath\bin\remove-product.ps1"
     #endregion
-
-    #region dapp-openvpn inst shortcut
-    $lnkcmd = '/c start "" /b .\inst.exe install --config "..\config\installer.config.json"'
-    $lnkInstalled = New-Shortcut -Path "$prodInstancePath\bin\install_adapter.lnk" -TargetPath "%ComSpec%" -Arguments $lnkcmd -WorkDir "%~dp0" -Description "Privatix adapter install"
-    if (-not $lnkInstalled) {Write-Error "Adapter install shortcut creation failed"}
-
-    $lnkcmd = '/c start "" /b .\inst.exe remove"'
-    $lnkInstalled = New-Shortcut -Path "$prodInstancePath\bin\remove_adapter.lnk" -TargetPath "%ComSpec%" -Arguments $lnkcmd -WorkDir "%~dp0" -Description "Privatix adapter remove"
-    if (-not $lnkInstalled) {Write-Error "Adapter install shortcut creation failed"}
-    #endregion
     
     #region archive app
     Write-Verbose "Making archive for deploy..."
