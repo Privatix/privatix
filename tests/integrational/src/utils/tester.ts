@@ -9,11 +9,11 @@ export class Tester {
     })
   }
 
-  public async runTests() {
+  public async runTests(WS, settings) {
     for ({name, isAsync, test} of this.tests) {
       console.log(`Starting ${name} test...`);
       try {
-        const res = await test();
+        const res = await test(WS, settings);
         console.log(`${name} test done: ${res}`);
       } catch(err) {
         console.log(`${name} test failed with error: ${err}`);
