@@ -10,6 +10,7 @@
     "lint": "tslint -t stylish --project \"tsconfig.json\""
   },
   "author": "Eugene Korobov <eugene@privatix.io>",
+  "license": "GPL-3.0-only",
   "engineStrict": true,
   "engines": {
     "node": ">= 10.13 <11"
