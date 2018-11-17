@@ -50,7 +50,6 @@ export class WS {
         });
 
         socket.on('message',  function(event: any) {
-            console.log(event);
             const msg = JSON.parse(event);
             if('id' in msg && 'string' === typeof msg.id){
                 if(msg.id in WS.handlers){

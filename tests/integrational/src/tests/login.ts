@@ -16,7 +16,7 @@ describe('first login', () => {
   });
 
   it('should set agent password', async () => {
-    const res = await agent.setPassword('hardcodedPasswd');
+    await agent.setPassword('hardcodedPasswd');
   });
 
   it('should be zero accounts before test', async () => {
