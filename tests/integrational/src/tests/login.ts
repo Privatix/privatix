@@ -1,7 +1,6 @@
 import { expect } from 'chai';
 import 'mocha';
 
-import { client } from 'websocket';
 import { WS } from './../utils/ws';
 
 const configs = require('../configs/config.json');
@@ -24,7 +23,7 @@ describe('first login', () => {
       agent = new WS(configs['agentWsEndpoint'], client);
 
       // wait for ws ready
-      await agent.whenReady();
+      return agent.whenReady();
     });
 
     it('should set agent password', async () => {

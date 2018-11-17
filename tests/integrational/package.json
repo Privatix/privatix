@@ -33,6 +33,6 @@
   "dependencies": {
     "tslib": "~1.9.3",
     "uuid": "^3.3.2",
-    "websocket": "^1.0.28"
+    "ws": "^6.1.1"
   }
 }
