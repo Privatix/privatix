@@ -3,6 +3,7 @@ import 'mocha';
 
 import { WS } from './../utils/ws';
 
+import { Account } from './../typings/accounts';
 const configs = require('../configs/config.json');
 
 describe('first login', () => {
@@ -20,7 +21,7 @@ describe('first login', () => {
     let agent: WS;
 
     before('initialize websocket connection', async () => {
-      agent = new WS(configs['agentWsEndpoint'], client);
+      agent = new WS(configs['agentWsEndpoint']);
 
       // wait for ws ready
       return agent.whenReady();
@@ -30,8 +31,10 @@ describe('first login', () => {
       await agent.setPassword('hardcodedPasswd');
     });
 
+    // TODO: it should fail to login with another password
+
     describe('generating agent account', () => {
-      let accountId: string, accountRes: string;
+      let accountId: string;
 
       it('should be zero accounts before generating', async () => {
         const accounts = await agent.getAccounts();
@@ -39,20 +42,18 @@ describe('first login', () => {
       });
 
       it('should generate new agent account', async () => {
-        const res = await agent.generateAccount({
+        accountId = await agent.generateAccount({
           isDefault: true,
           inUse: true,
           name: 'main'
-        });
-
-        accountId = res.id;
-        accountRes = res.result;
+        }) as string;
       });
 
       it('should contain already generated account', async () => {
-        const accounts = await agent.getAccounts();
+        const accounts: Account[] = await agent.getAccounts();
 
         expect(accounts.length).to.equal(1);
+        expect(accounts[0].id).to.equal(accountId);
       })
     });
   });
