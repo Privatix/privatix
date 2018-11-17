@@ -30,7 +30,7 @@ export class WS {
     constructor(endpoint: string, WebSocket) {
 
         const socket = new WebSocket(endpoint);
-        this.ready = new Promise((resolve: Function, reject: Function) => {
+        this.ready = new Promise((resolve: Function) => {
             // this.reject = reject;
             this.resolve = resolve;
         });
@@ -70,7 +70,7 @@ export class WS {
           // console.log('Data received: ' + event.data);
         };
 
-        socket.onerror = function(error: any) {
+        socket.onerror = function() {
           // console.log('Error ' + error.message);
         };
 
@@ -172,7 +172,7 @@ export class WS {
                         reject(res.error);
                     }else{
                         this.getProducts()
-                            .then(products => {
+                            .then(() => {
                                 resolve(true);
                             })
                             .catch(err => {
@@ -198,6 +198,7 @@ export class WS {
         return this.send('ui_getAccounts') as Promise<Account[]>;
     }
 
+    /*
     generateAccount(payload: any, handler: Function){
         const uuid = uuidv4();
         WS.handlers[uuid] = handler;
@@ -210,6 +211,11 @@ export class WS {
         };
 
         this.socket.send(JSON.stringify(req));
+    }
+    */
+
+    generateAccount(payload: any){
+      return this.send('ui_generateAccount', [payload]);
     }
 
     importAccountFromHex(payload: any, handler: Function){
