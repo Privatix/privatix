@@ -13,6 +13,8 @@ type OfferingResponse = PaginatedResponse<Offering[]>;
 type ChannelResponse  = PaginatedResponse<Channel[]>;
 type TransactionResponse = PaginatedResponse<Transaction[]>;
 
+const WebSocket = require('ws');
+
 export class WS {
 
     static listeners = {}; // uuid -> listener
@@ -27,29 +29,29 @@ export class WS {
 //    private reject: Function = null;
     private resolve: Function = null;
 
-    constructor(endpoint: string, WebSocket) {
-
-        const socket = new WebSocket(endpoint);
+    constructor(endpoint: string) {
+        const socket = new WebSocket(endpoint, {perMessageDeflate: false});
         this.ready = new Promise((resolve: Function) => {
             // this.reject = reject;
             this.resolve = resolve;
         });
-        socket.onopen = () => {
+        socket.on('open', () => {
           console.log('Connection established.');
           this.resolve(true);
-        };
+        });
 
-        socket.onclose = function(event: any) {
+        socket.on('close', function(event: any) {
             if (event.wasClean) {
                 console.log('Connection closed.');
             } else {
                 console.log('Connection interrupted.');
             }
             console.log('Code: ' + event.code + ' reason: ' + event.reason);
-        };
+        });
 
-        socket.onmessage = function(event: any) {
-            const msg = JSON.parse(event.data);
+        socket.on('message',  function(event: any) {
+            console.log(event);
+            const msg = JSON.parse(event);
             if('id' in msg && 'string' === typeof msg.id){
                 if(msg.id in WS.handlers){
                     WS.handlers[msg.id](msg);
@@ -68,11 +70,11 @@ export class WS {
                // ignore
            }
           // console.log('Data received: ' + event.data);
-        };
+        });
 
-        socket.onerror = function() {
+        socket.on('error', function() {
           // console.log('Error ' + error.message);
-        };
+        });
 
         this.socket = socket;
     }
