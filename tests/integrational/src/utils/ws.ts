@@ -14,7 +14,7 @@ type ChannelResponse  = PaginatedResponse<Channel[]>;
 type TransactionResponse = PaginatedResponse<Transaction[]>;
 
 export class WS {
-    
+
     static listeners = {}; // uuid -> listener
     static handlers = {}; // uuid -> handler
 
@@ -27,7 +27,7 @@ export class WS {
 //    private reject: Function = null;
     private resolve: Function = null;
 
-    constructor(endpoint: string) {
+    constructor(endpoint: string, WebSocket) {
 
         const socket = new WebSocket(endpoint);
         this.ready = new Promise((resolve: Function, reject: Function) => {

@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "description": "Intergrational tests.",
   "scripts": {
+    "test": "mocha -r ts-node/register src/tests/*.ts",
     "clean": "rimraf coverage build tmp",
     "build": "tsc -p tsconfig.release.json",
     "build:watch": "tsc -w -p tsconfig.release.json",
@@ -14,9 +15,15 @@
     "node": ">= 10.13 <11"
   },
   "devDependencies": {
+    "@types/chai": "^4.1.7",
+    "@types/mocha": "^5.2.5",
     "@types/node": "~10",
+    "@types/websocket": "0.0.40",
+    "chai": "^4.2.0",
+    "mocha": "^5.2.0",
     "prettier": "1.14.3",
     "rimraf": "~2.6.2",
+    "ts-node": "^7.0.1",
     "tslint": "~5.11.0",
     "tslint-config-prettier": "1.15.0",
     "tslint-microsoft-contrib": "~5.2.1",
@@ -24,9 +31,8 @@
     "typescript": "~3.1.0"
   },
   "dependencies": {
-    "electron": "^3.0.9",
-    "electron-fetch": "^1.2.1",
     "tslib": "~1.9.3",
-    "uuid": "^3.3.2"
+    "uuid": "^3.3.2",
+    "websocket": "^1.0.28"
   }
 }
