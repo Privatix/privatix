@@ -18,7 +18,12 @@ describe('first login', () => {
   });
 
   describe('websocket communication', () => {
+    let agentPwd: string;
     let agent: WS;
+
+    before('generate agent password', () => {
+      agentPwd = Math.random().toString(36).substring(5);
+    });
 
     before('initialize websocket connection', async () => {
       agent = new WS(configs['agentWsEndpoint']);
@@ -28,10 +33,14 @@ describe('first login', () => {
     });
 
     it('should set agent password', async () => {
-      await agent.setPassword('hardcodedPasswd');
+      return await agent.setPassword(agentPwd);
     });
 
-    // TODO: it should fail to login with another password
+    it('should fail with wrong password', async () => {
+      const wrongPwd = agent.setPassword('wrongPasswd');
+
+      return expect(wrongPwd).to.be.rejectedWith();
+    });
 
     describe('generating agent account', () => {
       let accountId: string;
