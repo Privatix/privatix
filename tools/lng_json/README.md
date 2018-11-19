@@ -19,7 +19,7 @@ Example:
     python lng_json.py ./en.lng ./en.json ./en_sorted.lng utf-8
 ```
 
-If `<sorted_dest>` argument is specified, the script sorts data from the source 
+If `<sorted_dest>` argument is specified, then the script sorts data from the source 
 alphabetically, and write sorted data to `<sorted_dest>`.
 
 #### lng file example
