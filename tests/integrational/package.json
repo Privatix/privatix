@@ -1,0 +1,41 @@
+{
+  "name": "integrational-tests",
+  "version": "0.0.0",
+  "description": "Intergrational tests.",
+  "scripts": {
+    "test": "mocha -r ts-node/register src/tests/*.ts",
+    "clean": "rimraf coverage build tmp",
+    "build": "tsc -p tsconfig.release.json",
+    "build:watch": "tsc -w -p tsconfig.release.json",
+    "lint": "tslint -t stylish --project \"tsconfig.json\""
+  },
+  "author": "Eugene Korobov <eugene@privatix.io>",
+  "license": "GPL-3.0-only",
+  "engineStrict": true,
+  "engines": {
+    "node": ">= 10.13 <11"
+  },
+  "devDependencies": {
+    "@types/chai": "^4.1.7",
+    "@types/chai-as-promised": "^7.1.0",
+    "@types/mocha": "^5.2.5",
+    "@types/node": "~10",
+    "@types/websocket": "0.0.40",
+    "chai": "^4.2.0",
+    "chai-as-promised": "^7.1.1",
+    "mocha": "^5.2.0",
+    "prettier": "1.14.3",
+    "rimraf": "~2.6.2",
+    "ts-node": "^7.0.1",
+    "tslint": "~5.11.0",
+    "tslint-config-prettier": "1.15.0",
+    "tslint-microsoft-contrib": "~5.2.1",
+    "tsutils": "~3.0.0",
+    "typescript": "~3.1.0"
+  },
+  "dependencies": {
+    "tslib": "~1.9.3",
+    "uuid": "^3.3.2",
+    "ws": "^6.1.1"
+  }
+}
