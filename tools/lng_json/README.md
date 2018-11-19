@@ -1,11 +1,5 @@
 # .lng—.json converter
 
-## Installation
-
-```bash
-pip install -r requirements.txt
-```
-
 ## Scripts
 
 ### lng_json.py

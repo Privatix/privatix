@@ -3,9 +3,6 @@ import json
 import re
 import sys
 
-from sortedcontainers import SortedDict
-
-# pip install -r requirements.txt
 _pattern = '^([\w\.]+)=(.*)$'
 
 if len(sys.argv) < 3:
@@ -19,8 +16,8 @@ def get_or_default(array, index, default):
     return array[index] if index < len(array) else default
 
 
-def read_to_sorted_dic(source, encoding):
-    sorted_dic = SortedDict()
+def read_to_dic(source, encoding):
+    dic = {}
 
     with io.open(source, 'r', encoding=encoding) as file:
         for line in file.readlines():
@@ -31,12 +28,12 @@ def read_to_sorted_dic(source, encoding):
             key = search_result.group(1)
             value = search_result.group(2)
 
-            if key in sorted_dic:
-                print("A duplicate has been found:\n\t{0} = {2} -> {1}".format(key, value, sorted_dic[key]))
+            if key in dic:
+                print("A duplicate has been found:\n\t{0} = {2} -> {1}".format(key, value, dic[key]))
 
-            sorted_dic[key] = value
+            dic[key] = value
 
-    return sorted_dic
+    return dic
 
 
 def write_to_json(dic, dest, encoding):
@@ -46,13 +43,13 @@ def write_to_json(dic, dest, encoding):
 
 def write_to_lng(dic, dest, encoding):
     with io.open(dest, 'w', encoding=encoding) as file:
-        for key in dic:
+        for key in sorted(dic.keys()):
             file.write("{0}={1}\n".format(key, dic[key]))
 
 
 _encoding = get_or_default(sys.argv, 4, 'utf-8')
 
-_dic = read_to_sorted_dic(sys.argv[1], _encoding)
+_dic = read_to_dic(sys.argv[1], _encoding)
 write_to_json(_dic, sys.argv[2], _encoding)
 
 _sorted_dest = get_or_default(sys.argv, 3, None)
