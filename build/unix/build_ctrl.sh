@@ -59,6 +59,11 @@ echo client
 cp -v   ${DAPPCTRL_BIN}/${DAPPCTRL_AGENT_CONFIG} \
         ${DAPPCTRL_BIN}/${DAPPCTRL_CLIENT_CONFIG}
 
+echo
+echo dapp-inst
+cp -v   ${DAPPCTRL_BIN}/${DAPPCTRL_AGENT_CONFIG} \
+        ${DAPPCTRL_BIN}/dappctrl.config.json
+
 # change role to `client`
 sed -i.bu \
     's/"Role":  *"agent"/"Role": "client"/g' \

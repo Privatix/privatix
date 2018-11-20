@@ -6,7 +6,7 @@ cd ${root_dir}
 
 cd ${OPENVPN_SERVER_BIN}/bin/
 
-if [ -f "${OPENVPN_SERVER_BIN}"/config/server.conf ]; then
+if [ ! -f "${OPENVPN_SERVER_BIN}"/config/server.conf ]; then
     echo
     echo install openvpn_server
     sudo ./${OPENVPN_INST} install -config=../${INSTALLER_CONFIG}
