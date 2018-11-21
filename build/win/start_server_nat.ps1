@@ -15,7 +15,7 @@ $Interfaces = Get-NetIPInterface -InterfaceIndex $adapterIndex
 $Interfaces | Where-Object { $_.forwarding -eq "disabled" } | Set-NetIPInterface -Forwarding Enabled
 
 #enable IP forwarding on TAP adapter
-get-NetAdapter | Where-Object { $_.PnPDeviceID -eq 'ROOT\NET\0000' } | Get-NetIPInterface | Where-Object { $_.forwarding -eq "disabled" } | Set-NetIPInterface -Forwarding Enabled
+get-NetAdapter | Where-Object { $_.PnPDeviceID -eq $TAPdeviceAddress } | Get-NetIPInterface | Where-Object { $_.forwarding -eq "disabled" } | Set-NetIPInterface -Forwarding Enabled
 
 #start windows services
 Get-Service -Name "SharedAccess" |  Set-Service -StartupType Automatic |  Start-Service
