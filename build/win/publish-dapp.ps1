@@ -34,18 +34,27 @@
     Make git pull before build.
 
 .EXAMPLE
-    build-dappctrl
+    .\publish-dapp.ps1 -wkdir "C:\build" -staticArtefactsDir "C:\static_art"
 
     Description
     -----------
-    Build dappctrl.
+    Build application from develop branches.
 
 .EXAMPLE
-    build-dappctrl -branch "develop" -godep -gitpull
+    .\publish-dapp.ps1 -wkdir "C:\build" -staticArtefactsDir "C:\static_art" -pack -godep -gitpull -Verbose
 
     Description
     -----------
-    Checkout branch "develop". Pull from git. Run go dependecy. Build dappctrl.
+    Build application. Package it, so it can be installed, using installer.
+    Checkout "develop" branch for each component. Pull latest commints from git. Run go dependecy.
+
+.EXAMPLE
+    .\publish-dapp.ps1 -wkdir "C:\build2" -staticArtefactsDir "C:\privatix\art" -pack -godep -gitpull -dappguibranch "master" -dappctrlbranch "master" -dappinstbranch "master" -dappopenvpnbranch "master"
+
+    Description
+    -----------
+    Same as above, but "master" branch is used for all components.
+    
 #>
 [CmdletBinding()]
 param(
