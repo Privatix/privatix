@@ -36,7 +36,7 @@ export class WS {
             this.resolve = resolve;
         });
         socket.on('open', () => {
-          console.log('Connection established.');
+          // console.log('Connection established.');
           this.resolve(true);
         });
 

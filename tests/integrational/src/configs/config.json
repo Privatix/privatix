@@ -1,3 +1,21 @@
 {
-  "agentWsEndpoint": "ws://localhost:8888/ws"
+  "agentWsEndpoint": "ws://localhost:8888/ws",
+  "getPrixEndpoint": {
+      "protocol": "http:",
+      "host": "89.38.96.53",
+      "port": 3000,
+      "path": "/getprix",
+      "method": "POST"
+  },
+  "timeouts": {
+      "blocktime": 20000,
+      "getEther": {
+          "skipBlocks": 5,
+          "botTimeoutMs": 45000
+      }
+  },
+  "getEth": {
+      "ethBonus": 5e16,
+      "prixBonus": 1e9
+  }
 }

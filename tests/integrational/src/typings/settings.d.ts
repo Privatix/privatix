@@ -1,24 +1,25 @@
-export interface GasConsumption {
-    acceptOffering: number;
-    createOffering: number;
-    transfer: number;
-    increaseDeposit: number;
+export interface BotEndpoint {
+    protocol: string;
+    host: string;
+    port: number;
+    path: string;
+    method: string;
 }
 
 export interface LocalSettings {
-    firstStart: boolean;
-    accountCreated: boolean;
-    apiEndpoint: string;
-    wsEndpoint: string;
-    gas: GasConsumption;
-    network: string;
-    bugsnagKey: string;
-    bugsnagEnable: boolean;
-    release: string;
-    commit: string;
-    logsCountPerPage: number;
-    elementsPerPage: number;
-    lang: string;
+    agentWsEndpoint: string;
+    getPrixEndpoint: BotEndpoint;
+    timeouts: {
+        blocktime: number;
+        getEther: {
+            skipBlocks: number;
+            botTimeoutMs: number
+        }
+    };
+    getEth: {
+        ethBonus: number;
+        prixBonus: number;
+    }
 }
 
 export interface DbSetting {
