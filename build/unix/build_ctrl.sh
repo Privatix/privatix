@@ -38,9 +38,22 @@ echo agent
 cp -v "${DAPPCTRL_DIR}"/${DAPPCTRL_CONFIG} \
        ${DAPPCTRL_BIN}/${DAPPCTRL_AGENT_CONFIG}
 
+cp -v "${DAPPCTRL_DIR}"/${DAPPCTRL_CONFIG} \
+       ${DAPPCTRL_BIN}/${DAPPCTRL_AGENT_CONFIG}_backup
+
 # change port to `${POSTGRES_PORT}`
 sed -i.bu \
     's/"port":  *"[[:digit:]]*"/"port": "'${POSTGRES_PORT}'"/g' \
+    ${DAPPCTRL_BIN}/${DAPPCTRL_AGENT_CONFIG}
+
+# change user to `${POSTGRES_USER}`
+sed -i.bu \
+    's/"user":  *".*"/"user": "'${POSTGRES_USER}'"/g' \
+    ${DAPPCTRL_BIN}/${DAPPCTRL_AGENT_CONFIG}
+
+# change password to `${POSTGRES_PASSWORD}`
+sed -i.bu \
+    's/"password":  *".*"/"password": "'${POSTGRES_PASSWORD}'"/g' \
     ${DAPPCTRL_BIN}/${DAPPCTRL_AGENT_CONFIG}
 
 # change log location to ${DAPPCTRL_LOG}
@@ -51,7 +64,7 @@ sed -i.bu \
 
 echo
 echo ${DAPPCTRL_AGENT_CONFIG}
-diff ${DAPPCTRL_BIN}/${DAPPCTRL_AGENT_CONFIG}.bu \
+diff ${DAPPCTRL_BIN}/${DAPPCTRL_AGENT_CONFIG}_backup \
      ${DAPPCTRL_BIN}/${DAPPCTRL_AGENT_CONFIG}
 
 echo
