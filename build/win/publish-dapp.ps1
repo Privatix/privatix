@@ -72,35 +72,35 @@ $TotalTime = 0
 
 $sw = [Diagnostics.Stopwatch]::StartNew()
 . $builddapp -dappctrl -branch $dappctrlbranch -gitpull:$gitpull -godep:$godep
-$TotalTime += $sw.Elapsed.Seconds
-Write-Host "It took $($sw.Elapsed.Seconds) seconds to complete" -ForegroundColor Green
+$TotalTime += $sw.Elapsed.TotalSeconds
+Write-Host "It took $($sw.Elapsed.TotalSeconds) seconds to complete" -ForegroundColor Green
 
 $sw.Restart()
 . $builddapp -dappopenvpn -branch $dappopenvpnbranch -gitpull:$gitpull -godep:$godep
-$TotalTime += $sw.Elapsed.Seconds
-Write-Host "It took $($sw.Elapsed.Seconds) seconds to complete" -ForegroundColor Green
+$TotalTime += $sw.Elapsed.TotalSeconds
+Write-Host "It took $($sw.Elapsed.TotalSeconds) seconds to complete" -ForegroundColor Green
 
 $sw.Restart()
 . $builddapp -dappinstaller -branch $dappinstbranch -gitpull:$gitpull -godep:$godep
-$TotalTime += $sw.Elapsed.Seconds
-Write-Host "It took $($sw.Elapsed.Seconds) seconds to complete" -ForegroundColor Green
+$TotalTime += $sw.Elapsed.TotalSeconds
+Write-Host "It took $($sw.Elapsed.TotalSeconds) seconds to complete" -ForegroundColor Green
 
 if ($pack) {
     $sw.Restart()
     . $builddapp -dappgui -branch $dappguibranch -gitpull:$gitpull -wd $wkdir -package
-    $TotalTime += $sw.Elapsed.Seconds
-    Write-Host "It took $($sw.Elapsed.Seconds) seconds to complete" -ForegroundColor Green
+    $TotalTime += $sw.Elapsed.TotalSeconds
+    Write-Host "It took $($sw.Elapsed.TotalSeconds) seconds to complete" -ForegroundColor Green
 
     $sw.Restart()
     new-package -wrkdir $wkdir -staticArtefactsDir $staticArtefactsDir
-    $TotalTime += $sw.Elapsed.Seconds
-    Write-Host "It took $($sw.Elapsed.Seconds) seconds to complete" -ForegroundColor Green
+    $TotalTime += $sw.Elapsed.TotalSeconds
+    Write-Host "It took $($sw.Elapsed.TotalSeconds) seconds to complete" -ForegroundColor Green
 }
 else {
     $sw.Restart()
     . $builddapp -dappgui -branch $dappguibranch -gitpull:$gitpull -wd $wkdir -shortcut
-    $TotalTime += $sw.Elapsed.Seconds
-    Write-Host "It took $($sw.Elapsed.Seconds) seconds to complete" -ForegroundColor Green
+    $TotalTime += $sw.Elapsed.TotalSeconds
+    Write-Host "It took $($sw.Elapsed.TotalSeconds) seconds to complete" -ForegroundColor Green
 }
 Remove-Module new-package
 

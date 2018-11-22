@@ -49,7 +49,7 @@ Function build-dappopenvpn {
     $gopath = $env:GOPATH
     if (!($gopath)) {$gopath = Invoke-Expression "go.exe env GOPATH"}
     if (!($gopath)) {throw "GOPATH is not defined"}    
-    if (!(Test-Path $gopath)) {throw "GOPATH $gopath do not exists"}
+    if (!(Test-Path $gopath)) {New-Folder -rootFolder $gopath}
     $PROJECT_PATH = "$gopath\src\$PROJECT"
 
     Invoke-GoCommonOperations -gopath $gopath -project $PROJECT -godep $godep -branch $branch -gitpull $gitpull -giturl $gitUrl
