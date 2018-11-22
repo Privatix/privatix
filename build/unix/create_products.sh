@@ -8,10 +8,19 @@ cd ${root_dir}
 echo
 echo install products
 
+connection_string="dbname=dappctrl host=localhost user=${POSTGRES_USER} port=${POSTGRES_PORT}\
+  sslmode=disable"
+
+if [ ! -z "${POSTGRES_PASSWORD}" ]
+then
+    connection_string="${connection_string} password=${POSTGRES_PASSWORD}"
+fi
+
+echo Connection string: ${connection_string}
+
 ${DAPP_OPENVPN_BIN}/${DAPP_OPENVPN_INST} \
  -rootdir=${DAPP_OPENVPN_BIN}/ \
- -connstr="dbname=dappctrl host=localhost user=postgres \
-  sslmode=disable port=${POSTGRES_PORT}" -setauth
+ -connstr="$connection_string" -setauth
 
 # binaries
 echo
