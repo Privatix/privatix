@@ -94,7 +94,7 @@ describe('first login', () => {
       const address = accounts[0].ethAddr;
 
       await getEth(configs.getPrixEndpoint, TELEGRAM_BOT_USER, TELEGRAM_BOT_PASSWORD, address);
-      await skipBlocks(5, agent, getEthTimeout, getEthTick);
+      await skipBlocks(configs.timeouts.getEther.skipBlocks, agent, getEthTimeout, getEthTick);
       const accountsAfterTopup = await agent.getAccounts();
 
       expect(accountsAfterTopup[0].ethBalance - accounts[0].ethBalance).to.equal(configs.getEth.ethBonus);
