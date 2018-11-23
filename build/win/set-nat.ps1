@@ -27,7 +27,7 @@
 param (
     [Parameter(Mandatory)]
     [ValidateNotNullOrEmpty()]
-    $TAPdeviceAddress,
+    [string]$TAPdeviceAddress,
     [Parameter(Mandatory)]
     [bool]$Enabled
 )
@@ -62,27 +62,27 @@ param (
     -----------
     Disables internet sharing on "Ethernet" adpater, disallowing "Privatix VPN Server" adpater to use its internet connection.
 #>
-function Set-InternetConnectionSharing{
+function Set-InternetConnectionSharing {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory)]
         [ValidateScript(
-            {if ((Get-NetAdapter -Name $_ -ErrorAction SilentlyContinue -OutVariable inetAdapter) -and (($inetAdapter).Status -notin @('Disabled','Not Present') ))
-            {$true} 
-            else {
-                throw "$_ adpater not exists or disabled"
+            {if ((Get-NetAdapter -Name $_ -ErrorAction SilentlyContinue -OutVariable inetAdapter) -and (($inetAdapter).Status -notin @('Disabled', 'Not Present') ))
+                {$true} 
+                else {
+                    throw "$_ adpater not exists or disabled"
+                }
             }
-        }
         )]
         $InetAdapterName,
         [Parameter(Mandatory)]
         [ValidateScript(
-            {if ((Get-NetAdapter -Name $_ -ErrorAction SilentlyContinue -OutVariable inetAdapter) -and (($inetAdapter).Status -notin @('Disabled','Not Present') ))
-            {$true} 
-            else {
-                throw "$_ adpater not exists or disabled"
+            {if ((Get-NetAdapter -Name $_ -ErrorAction SilentlyContinue -OutVariable inetAdapter) -and (($inetAdapter).Status -notin @('Disabled', 'Not Present') ))
+                {$true} 
+                else {
+                    throw "$_ adpater not exists or disabled"
+                }
             }
-        }
         )]
         $VPNAdapterName,
         [Parameter(Mandatory)]
@@ -92,13 +92,11 @@ function Set-InternetConnectionSharing{
     begin {
         $ns = $null
 
-        try
-        {
+        try {
             # Create a NetSharingManager object
             $ns = New-Object -ComObject HNetCfg.HNetShare
         }
-        catch
-        {
+        catch {
             # Register the HNetCfg library (once)
             regsvr32 /s hnetcfg.dll
 
@@ -140,7 +138,7 @@ function Set-InternetConnectionSharing{
     }
 
     end {
-    [System.Runtime.Interopservices.Marshal]::ReleaseComObject($ns) | Out-Null
+        [System.Runtime.Interopservices.Marshal]::ReleaseComObject($ns) | Out-Null
     }
 }
 
@@ -161,6 +159,7 @@ if ($Enabled) {
     Get-Service -Name "RemoteAccess" |  Set-Service -StartupType Automatic |  Start-Service
 
     Set-InternetConnectionSharing -InetAdapterName $InetAdapterName -VPNAdapterName $VPNAdapterName -Enabled $true
-} else {
+}
+else {
     Set-InternetConnectionSharing -InetAdapterName $InetAdapterName -VPNAdapterName $VPNAdapterName -Enabled $false
 }
