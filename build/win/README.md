@@ -5,6 +5,8 @@
 
 Install prerequisite software if it's not installed.
 
+### Manually
+
 * [git](https://git-scm.com/downloads)
 
 * [Golang](https://golang.org/doc/install) 1.11+. Make sure that 
@@ -16,7 +18,7 @@ is added to  system path `$PATH`
 
 * [node.js](https://nodejs.org/en/) 9.3+
 
-### Powershell
+### Using Powershell
 
 Install prerequisite software via `powershell`. 
 
