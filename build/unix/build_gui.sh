@@ -6,11 +6,10 @@ cd ${root_dir}
 
 echo
 echo dapp-gui
-cd "${DAPP_GUI_DIR}"
-
-# build
 echo
-echo build start
+
 rm -rf ${DAPP_GUI_DIR}/build/
+
+cd "${DAPP_GUI_DIR}"
 npm install
 npm run build

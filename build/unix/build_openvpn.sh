@@ -4,92 +4,89 @@ root_dir=$(cd `dirname $0` && pwd)
 cd ${root_dir}
 . ./build.local.config
 
-export DAPP_OPENVPN_DIR
-
 echo
 echo dapp-openvpn
-cd "${DAPP_OPENVPN_DIR}"
-
-# build
 echo
-echo build start
-rm "${GOPATH}"/bin/${DAPP_OPENVPN_INST}
-rm "${GOPATH}"/bin/${DAPP_OPENVPN}
-rm "${GOPATH}"/bin/${OPENVPN_INST}
 
-"${DAPP_OPENVPN_DIR}"/scripts/build.sh
+clean(){
+    rm "${GOPATH}"/bin/${DAPP_OPENVPN_INST}
+    rm "${GOPATH}"/bin/${DAPP_OPENVPN}
+    rm "${GOPATH}"/bin/${OPENVPN_INST}
 
-# binaries
-cd ${root_dir}
+    rm -rf ${DAPP_OPENVPN_BIN}
+    mkdir -p ${DAPP_OPENVPN_BIN}
+    mkdir -p ${DAPP_OPENVPN_LOG}
+}
 
-# clear
-rm -rf ${DAPP_OPENVPN_BIN}
-mkdir -p ${DAPP_OPENVPN_BIN}
-mkdir -p ${DAPP_OPENVPN_LOG}
+build(){
+    export DAPP_OPENVPN_DIR
 
-echo
-echo copy binaries
+    "${DAPP_OPENVPN_DIR}"/scripts/build.sh
 
-cp -v "${GOPATH}"/bin/${DAPP_OPENVPN_INST} \
-      ${DAPP_OPENVPN_BIN}/${DAPP_OPENVPN_INST}
+    cp -v "${GOPATH}"/bin/${DAPP_OPENVPN_INST} \
+          ${DAPP_OPENVPN_BIN}/${DAPP_OPENVPN_INST}
 
-cp -v "${GOPATH}"/bin/${DAPP_OPENVPN} \
-      ${DAPP_OPENVPN_BIN}/${DAPP_OPENVPN}
+    cp -v "${GOPATH}"/bin/${DAPP_OPENVPN} \
+          ${DAPP_OPENVPN_BIN}/${DAPP_OPENVPN}
 
-cp -v "${GOPATH}"/bin/${OPENVPN_INST} \
-      ${DAPP_OPENVPN_BIN}/${OPENVPN_INST}
+    cp -v "${GOPATH}"/bin/${OPENVPN_INST} \
+          ${DAPP_OPENVPN_BIN}/${OPENVPN_INST}
+}
 
-# configs
-echo
-echo copy configs
+copy_templates(){
+    cp -av "${DAPP_OPENVPN_DIR}"/${DAPP_OPENVPN_TEMPLATES_LOCATION}/products \
+           ${DAPP_OPENVPN_BIN}/products
 
-cp -av "${DAPP_OPENVPN_DIR}"/${DAPP_OPENVPN_TEMPLATES_LOCATION}/products \
-       ${DAPP_OPENVPN_BIN}/products
+    cp -av "${DAPP_OPENVPN_DIR}"/${DAPP_OPENVPN_TEMPLATES_LOCATION}/templates \
+           ${DAPP_OPENVPN_BIN}/templates
 
-cp -av "${DAPP_OPENVPN_DIR}"/${DAPP_OPENVPN_TEMPLATES_LOCATION}/templates \
-       ${DAPP_OPENVPN_BIN}/templates
+    cp -v "${DAPP_OPENVPN_DIR}"/${DAPP_OPENVPN_TEMPLATES_LOCATION}/${DAPP_VPN_AGENT_CONFIG} \
+          ${DAPP_OPENVPN_BIN}/${DAPP_VPN_AGENT_CONFIG}
 
-cp -v "${DAPP_OPENVPN_DIR}"/${DAPP_OPENVPN_TEMPLATES_LOCATION}/${DAPP_VPN_AGENT_CONFIG} \
-      ${DAPP_OPENVPN_BIN}/${DAPP_VPN_AGENT_CONFIG}
+    cp -v "${DAPP_OPENVPN_DIR}"/${DAPP_OPENVPN_TEMPLATES_LOCATION}/${DAPP_VPN_CLIENT_CONFIG} \
+          ${DAPP_OPENVPN_BIN}/${DAPP_VPN_CLIENT_CONFIG}
+}
 
-cp -v "${DAPP_OPENVPN_DIR}"/${DAPP_OPENVPN_TEMPLATES_LOCATION}/${DAPP_VPN_CLIENT_CONFIG} \
-      ${DAPP_OPENVPN_BIN}/${DAPP_VPN_CLIENT_CONFIG}
+prepare_configs(){
+    cp -v ${DAPP_OPENVPN_BIN}/${DAPP_VPN_AGENT_CONFIG} \
+          ${DAPP_OPENVPN_BIN}/${DAPP_VPN_AGENT_CONFIG}_source
+    cp -v ${DAPP_OPENVPN_BIN}/${DAPP_VPN_CLIENT_CONFIG} \
+          ${DAPP_OPENVPN_BIN}/${DAPP_VPN_CLIENT_CONFIG}_source
 
+    # change log location to ${DAPP_OPENVPN_LOG}
+    location=${DAPP_OPENVPN_LOG//\//\\/}
+    sed_string="s/\/var\/log/${location}/g"
+    sed -i.b \
+        ${sed_string} \
+        ${DAPP_OPENVPN_BIN}/${DAPP_VPN_AGENT_CONFIG}
 
-# patch
-echo
-echo patch configs
-# change log location to ${DAPP_OPENVPN_LOG}
-location=${DAPP_OPENVPN_LOG//\//\\/}
-sed_string="s/\/var\/log/${location}/g"
-sed -i.bu \
-    ${sed_string} \
-    ${DAPP_OPENVPN_BIN}/${DAPP_VPN_AGENT_CONFIG}
+    # change log location to ${DAPP_OPENVPN_LOG}
+    sed -i.b \
+        ${sed_string} \
+        ${DAPP_OPENVPN_BIN}/${DAPP_VPN_CLIENT_CONFIG}
 
-# change log location to ${DAPP_OPENVPN_LOG}
-sed -i.bu \
-    ${sed_string} \
-    ${DAPP_OPENVPN_BIN}/${DAPP_VPN_CLIENT_CONFIG}
+    # change open_vpn location to ${OPENVPN_SERVER_BIN}
+    location=${OPENVPN_SERVER_BIN//\//\\/}
+    sed -i.b \
+        "s/\/etc\/openvpn/${location}/g" \
+        ${DAPP_OPENVPN_BIN}/${DAPP_VPN_AGENT_CONFIG}
+}
 
+print_diff(){
+    echo
+    echo ${DAPP_VPN_CLIENT_CONFIG}
+    diff ${DAPP_OPENVPN_BIN}/${DAPP_VPN_CLIENT_CONFIG}_source \
+         ${DAPP_OPENVPN_BIN}/${DAPP_VPN_CLIENT_CONFIG}
 
-# change open_vpn location to ${OPENVPN_SERVER_BIN}
-location=${OPENVPN_SERVER_BIN//\//\\/}
-sed -i.bu \
-    "s/\/etc\/openvpn/${location}/g" \
-    ${DAPP_OPENVPN_BIN}/${DAPP_VPN_AGENT_CONFIG}
+    echo
+    echo ${DAPP_VPN_AGENT_CONFIG}
+    diff ${DAPP_OPENVPN_BIN}/${DAPP_VPN_AGENT_CONFIG}_source \
+         ${DAPP_OPENVPN_BIN}/${DAPP_VPN_AGENT_CONFIG}
 
-# change open_vpn location to ${OPENVPN_CLIENT_BIN}
-location=${OPENVPN_CLIENT_BIN//\//\\/}
-sed -i.bu \
-    "s/\/etc\/openvpn/${location}/g" \
-    ${DAPP_OPENVPN_BIN}/${DAPP_VPN_CLIENT_CONFIG}
+}
 
-echo
-echo ${DAPP_VPN_CLIENT_CONFIG}
-diff ${DAPP_OPENVPN_BIN}/${DAPP_VPN_CLIENT_CONFIG}.bu \
-     ${DAPP_OPENVPN_BIN}/${DAPP_VPN_CLIENT_CONFIG}
-
-echo
-echo ${DAPP_VPN_AGENT_CONFIG}
-diff ${DAPP_OPENVPN_BIN}/${DAPP_VPN_AGENT_CONFIG}.bu \
-     ${DAPP_OPENVPN_BIN}/${DAPP_VPN_AGENT_CONFIG}
+clean
+build
+copy_templates
+prepare_configs
+print_diff
