@@ -5,10 +5,12 @@ cd `dirname $0`
 
 echo before:
 ps
+sudo ps
 
-pkill -9 ${DAPP_OPENVPN}
+sudo pkill -9 ${DAPP_OPENVPN}
 pkill -9 ${DAPPCTRL}
 
 echo
 echo after:
 ps
+sudo ps

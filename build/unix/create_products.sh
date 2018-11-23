@@ -13,11 +13,15 @@ openvpn=${OPENVPN_SERVER_BIN}/bin/openvpn
 
 clean(){
     rm -rf ${OPENVPN_SERVER_BIN}
+    rm -rf ${OPENVPN_CLIENT_BIN}
 
     mkdir -p ${OPENVPN_SERVER_BIN}/bin
     mkdir -p ${OPENVPN_SERVER_BIN}/config
     mkdir -p ${OPENVPN_SERVER_BIN}/log
     mkdir -p ${openvpn}
+
+    mkdir -p ${OPENVPN_CLIENT_BIN}/config
+    mkdir -p ${OPENVPN_CLIENT_BIN}/log
 }
 
 install(){
@@ -51,7 +55,6 @@ copy_binaries(){
 
     cp -v ${DAPP_OPENVPN_BIN}/${DAPP_OPENVPN} \
           ${OPENVPN_SERVER_BIN}/bin/${DAPP_OPENVPN}
-
 }
 
 copy_configs(){
@@ -61,8 +64,14 @@ copy_configs(){
     cp -v ${DAPP_OPENVPN_BIN}/${DAPP_VPN_AGENT_CONFIG} \
           ${OPENVPN_SERVER_BIN}/config/${DAPP_VPN_CONFIG}
 
+    cp -v ${DAPP_OPENVPN_BIN}/${DAPP_VPN_CLIENT_CONFIG} \
+          ${OPENVPN_CLIENT_BIN}/config/${DAPP_VPN_CONFIG}
+
     cp -v ${OPENVPN_INST_DIR}/${INSTALLER_AGENT_CONFIG} \
           ${OPENVPN_SERVER_BIN}/${INSTALLER_CONFIG}
+
+    cp -v ${OPENVPN_INST_DIR}/${INSTALLER_CLIENT_CONFIG} \
+          ${OPENVPN_CLIENT_BIN}/${INSTALLER_CONFIG}
 }
 
 clean

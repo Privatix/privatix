@@ -70,6 +70,11 @@ prepare_configs(){
     sed -i.b \
         "s/\/etc\/openvpn/${location}/g" \
         ${DAPP_OPENVPN_BIN}/${DAPP_VPN_AGENT_CONFIG}
+
+    location=${OPENVPN_CLIENT_BIN//\//\\/}
+    sed -i.b \
+        "s/\/etc\/openvpn/${location}/g" \
+        ${DAPP_OPENVPN_BIN}/${DAPP_VPN_CLIENT_CONFIG}
 }
 
 print_diff(){
