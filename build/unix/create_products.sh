@@ -8,13 +8,10 @@ cd ${root_dir}
 echo
 echo install products
 
-connection_string="dbname=dappctrl host=localhost user=${POSTGRES_USER} port=${POSTGRES_PORT}\
-  sslmode=disable"
-
-if [ ! -z "${POSTGRES_PASSWORD}" ]
-then
-    connection_string="${connection_string} password=${POSTGRES_PASSWORD}"
-fi
+connection_string="dbname=dappctrl host=localhost sslmode=disable \
+user=${POSTGRES_USER} \
+port=${POSTGRES_PORT} \
+${POSTGRES_PASSWORD:+ password=${POSTGRES_PASSWORD}}"
 
 echo Connection string: ${connection_string}
 
