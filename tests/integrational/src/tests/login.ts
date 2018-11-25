@@ -17,7 +17,7 @@ import { PaginatedResponse} from '../typings/paginatedResponse';
 const configs = require('../configs/config.json') as LocalSettings;
 
 describe('first login', () => {
-  describe('configs file', () => {
+  describe('configuration check', () => {
     it('should be read', () => {
       expect(configs).to.not.be.undefined;
     });
@@ -52,7 +52,7 @@ describe('first login', () => {
       return client.whenReady();
     });
 
-    describe('setting password', () => {
+    describe('setting passwords', () => {
       let agentPwd: string;
       let clientPwd: string;
 
