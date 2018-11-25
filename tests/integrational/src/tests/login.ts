@@ -11,16 +11,6 @@ import { skipBlocks, getEth } from '../utils/etc';
 const configs = require('../configs/config.json') as LocalSettings;
 
 describe('first login', () => {
-  describe('configs file', () => {
-    it('should be read', () => {
-      expect(configs).to.not.be.undefined;
-    });
-
-    it('should contain websocket endpoint property', () => {
-      expect(configs).to.have.property('agentWsEndpoint');
-    });
-  });
-
   describe('websocket communication', () => {
     let agentPwd: string;
     let agent: WS;
