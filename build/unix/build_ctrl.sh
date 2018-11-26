@@ -60,6 +60,9 @@ prepare_client_config(){
     cp -v   ${DAPPCTRL_BIN}/${DAPPCTRL_AGENT_CONFIG} \
             ${DAPPCTRL_BIN}/${DAPPCTRL_CLIENT_CONFIG}
 
+    cp -v   ${DAPPCTRL_BIN}/${DAPPCTRL_AGENT_CONFIG} \
+            ${DAPPCTRL_BIN}/${DAPPCTRL_CLIENT_CONFIG}_source
+
      # change role to `client`
     sed -i.b \
         's/"Role":  *"agent"/"Role": "client"/g' \
@@ -79,8 +82,12 @@ print_diff(){
 
     echo
     echo ${DAPPCTRL_CLIENT_CONFIG}
-    diff ${DAPPCTRL_BIN}/${DAPPCTRL_CLIENT_CONFIG}.b \
+    diff ${DAPPCTRL_BIN}/${DAPPCTRL_CLIENT_CONFIG}_source \
          ${DAPPCTRL_BIN}/${DAPPCTRL_CLIENT_CONFIG}
+}
+
+remove_b(){
+    find ${DAPPCTRL_BIN} -name '*.b' -delete
 }
 
 clean
@@ -88,6 +95,7 @@ build
 prepare_agent_config
 prepare_client_config
 copy_inst_config
+remove_b
 print_diff
 
 
