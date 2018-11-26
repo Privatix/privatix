@@ -1,5 +1,7 @@
 import { WS } from './../utils/ws';
-import { BotEndpoint } from '../typings/settings';
+import {BotEndpoint, LocalSettings} from '../typings/settings';
+
+const configs = require('../configs/config.json') as LocalSettings;
 
 export const getEth = async function(endpoint: BotEndpoint, user: string, pwd: string, address: string){
     return new Promise(function(resolve, reject){
@@ -33,7 +35,7 @@ export const getEth = async function(endpoint: BotEndpoint, user: string, pwd: s
 }
 
 export const skipBlocks = async function(blocksNumber: number, instance: WS, timeout: number, tick: number){
-    
+
     return new Promise(async function(resolve, reject){
         let initialBlock = 0;
         const initialStamp = Date.now();
@@ -58,4 +60,16 @@ export const skipBlocks = async function(blocksNumber: number, instance: WS, tim
         };
         checker();
     });
+}
+
+export const getBlockchainTimeouts = function () {
+    const testTimeout = configs.timeouts.blocktime*(configs.timeouts.getEther.skipBlocks+1) + configs.timeouts.getEther.botTimeoutMs;
+    const getEthTimeout = configs.timeouts.blocktime*(configs.timeouts.getEther.skipBlocks);
+    const getEthTick = configs.timeouts.blocktime / 3;
+
+    return {
+        'testTimeout': testTimeout,
+        'getEthTimeout': getEthTimeout,
+        'getEthTick': getEthTick
+    }
 }

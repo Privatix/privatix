@@ -6,7 +6,7 @@ import { WS } from './../utils/ws';
 import { Account } from './../typings/accounts';
 import { LocalSettings } from './../typings/settings';
 
-import { skipBlocks, getEth } from '../utils/etc';
+import { skipBlocks, getEth, getBlockchainTimeouts } from '../utils/etc';
 
 const configs = require('../configs/config.json') as LocalSettings;
 
@@ -70,38 +70,54 @@ describe('first login', () => {
       })
     });
 
-  describe('get test ETH and PRIX', () => {
+    describe('get test ETH and PRIX', () => {
 
-    it('should be read', () => {
-      expect(configs).to.not.be.undefined;
-    });
-
-    it('should be proper enviroment', () => {
-      expect(configs).to.have.property('getPrixEndpoint');
-      expect(process.env).to.have.property('TELEGRAM_BOT_USER');
-      expect(process.env).to.have.property('TELEGRAM_BOT_PASSWORD');
-    });
-
-    it('should get Prixes on the wallet', async function (/* done */){
-      const testTimeout = configs.timeouts.blocktime*(configs.timeouts.getEther.skipBlocks+1) + configs.timeouts.getEther.botTimeoutMs;
-      const getEthTimeout = configs.timeouts.blocktime*(configs.timeouts.getEther.skipBlocks);
-      const getEthTick = configs.timeouts.blocktime/3;
-
-      this.timeout(testTimeout);
-
-      const {TELEGRAM_BOT_USER, TELEGRAM_BOT_PASSWORD} = process.env;
-      const accounts = await agent.getAccounts();
-      const address = accounts[0].ethAddr;
-
-      await getEth(configs.getPrixEndpoint, TELEGRAM_BOT_USER, TELEGRAM_BOT_PASSWORD, address);
-      await skipBlocks(configs.timeouts.getEther.skipBlocks, agent, getEthTimeout, getEthTick);
-      const accountsAfterTopup = await agent.getAccounts();
-
-      expect(accountsAfterTopup[0].ethBalance - accounts[0].ethBalance).to.equal(configs.getEth.ethBonus);
-      expect(accountsAfterTopup[0].ptcBalance - accounts[0].ptcBalance).to.equal(configs.getEth.prixBonus);
+      it('should be read', () => {
+        expect(configs).to.not.be.undefined;
       });
 
-  });
+      it('should be proper enviroment', () => {
+        expect(configs).to.have.property('getPrixEndpoint');
+        expect(process.env).to.have.property('TELEGRAM_BOT_USER');
+        expect(process.env).to.have.property('TELEGRAM_BOT_PASSWORD');
+      });
+
+      it('should get Prixes on the wallet', async function (){
+        const bcTimeouts = getBlockchainTimeouts();
+
+        this.timeout(bcTimeouts.testTimeout);
+
+        const {TELEGRAM_BOT_USER, TELEGRAM_BOT_PASSWORD} = process.env;
+        const accounts = await agent.getAccounts();
+        const address = accounts[0].ethAddr;
+
+        await getEth(configs.getPrixEndpoint, TELEGRAM_BOT_USER, TELEGRAM_BOT_PASSWORD, address);
+        await skipBlocks(configs.timeouts.getEther.skipBlocks, agent, bcTimeouts.getEthTimeout, bcTimeouts.getEthTick);
+        const accountsAfterTopup = await agent.getAccounts();
+
+        expect(accountsAfterTopup[0].ethBalance - accounts[0].ethBalance).to.equal(configs.getEth.ethBonus);
+        expect(accountsAfterTopup[0].ptcBalance - accounts[0].ptcBalance).to.equal(configs.getEth.prixBonus);
+        });
+
+    });
+
+    describe('transfer tokens: exchange balance → service balance', () => {
+      it('should send Prixes on Service balance', async function() {
+        const accounts = await agent.getAccounts();
+        const account = accounts[0];
+
+        await agent.transferTokens(account.id, 'psc', configs.transferPrix.prixToPsc, configs.transferPrix.gasPrice);
+
+        const bcTimeouts = getBlockchainTimeouts();
+        this.timeout(bcTimeouts.testTimeout);
+        await skipBlocks(configs.timeouts.getEther.skipBlocks, agent, bcTimeouts.getEthTimeout, bcTimeouts.getEthTick);
+
+        const accountsTransferTokens = await agent.getAccounts();
+
+        expect(configs.transferPrix.prixToPsc).to.equal(accountsTransferTokens[0].pscBalance);
+        expect(account.ptcBalance - configs.transferPrix.prixToPsc).to.equal(accountsTransferTokens[0].ptcBalance);
+      })
+    });
 
   });
 

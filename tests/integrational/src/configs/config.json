@@ -17,5 +17,10 @@
   "getEth": {
       "ethBonus": 5e16,
       "prixBonus": 1e9
+  },
+  "transferPrix": {
+    "prixToPsc": 5e8,
+    "prixToPtc": 2e8,
+    "gasPrice": 2e10
   }
 }

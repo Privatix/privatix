@@ -264,6 +264,10 @@ export class WS {
     updateBalance(accountId: string){
         return this.send('ui_updateBalance', [accountId]);
     }
+
+    transferTokens(accountId: string, destination: 'ptc'|'psc', tokenAmount: number, gasPrice: number){
+        return this.send('ui_transferTokens', [accountId, destination, tokenAmount, gasPrice]);
+    }
 // templates
 
     getTemplates(templateType?: TemplateType){
