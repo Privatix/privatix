@@ -119,6 +119,24 @@ describe('first login', () => {
       })
     });
 
+    describe('transfer tokens: service balance → exchange balance', () => {
+      it('should send Prixes on Exchange balance', async function() {
+          const accounts = await agent.getAccounts();
+          const account = accounts[0];
+
+          await agent.transferTokens(account.id, 'ptc', configs.transferPrix.prixToPtc, configs.transferPrix.gasPrice);
+
+          const bcTimeouts = getBlockchainTimeouts();
+          this.timeout(bcTimeouts.testTimeout);
+          await skipBlocks(configs.timeouts.getEther.skipBlocks, agent, bcTimeouts.getEthTimeout, bcTimeouts.getEthTick);
+
+          const accountsTransferTokens = await agent.getAccounts();
+
+          expect(account.ptcBalance + configs.transferPrix.prixToPtc).to.equal(accountsTransferTokens[0].ptcBalance);
+          expect(account.pscBalance - configs.transferPrix.prixToPtc).to.equal(accountsTransferTokens[0].pscBalance);
+      })
+    });
+
   });
 
 });
