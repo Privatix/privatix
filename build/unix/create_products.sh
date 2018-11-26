@@ -18,6 +18,7 @@ clean(){
     mkdir -p ${OPENVPN_AGENT_BIN}/bin
     mkdir -p ${OPENVPN_AGENT_BIN}/config
     mkdir -p ${OPENVPN_AGENT_BIN}/log
+    mkdir -p ${OPENVPN_AGENT_BIN}/data
     mkdir -p ${OPENVPN_AGENT_BIN}/${PRODUCT_TEMPLATE}/${DAPP_OPENVPN_TEMPLATES}
     mkdir -p ${OPENVPN_AGENT_BIN}/${PRODUCT_TEMPLATE}/${DAPP_OPENVPN_PRODUCTS}
     mkdir -p ${openvpn}
