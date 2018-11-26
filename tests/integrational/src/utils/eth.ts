@@ -33,7 +33,7 @@ export const getEth = async function(endpoint: BotEndpoint, user: string, pwd: s
 }
 
 export const skipBlocks = async function(blocksNumber: number, instance: WS, timeout: number, tick: number){
-    
+
     return new Promise(async function(resolve, reject){
         let initialBlock = 0;
         const initialStamp = Date.now();
