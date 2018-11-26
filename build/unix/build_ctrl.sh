@@ -31,9 +31,6 @@ prepare_agent_config(){
     cp -v "${DAPPCTRL_DIR}"/${DAPPCTRL_CONFIG} \
            ${DAPPCTRL_BIN}/${DAPPCTRL_AGENT_CONFIG}
 
-    cp -v "${DAPPCTRL_DIR}"/${DAPPCTRL_CONFIG} \
-           ${DAPPCTRL_BIN}/${DAPPCTRL_AGENT_CONFIG}_source
-
     # change port to `${POSTGRES_PORT}`
     sed -i.b \
         's/"port":  *"[[:digit:]]*"/"port": "'${POSTGRES_PORT}'"/g' \
@@ -60,9 +57,6 @@ prepare_client_config(){
     cp -v   ${DAPPCTRL_BIN}/${DAPPCTRL_AGENT_CONFIG} \
             ${DAPPCTRL_BIN}/${DAPPCTRL_CLIENT_CONFIG}
 
-    cp -v   ${DAPPCTRL_BIN}/${DAPPCTRL_AGENT_CONFIG} \
-            ${DAPPCTRL_BIN}/${DAPPCTRL_CLIENT_CONFIG}_source
-
      # change role to `client`
     sed -i.b \
         's/"Role":  *"agent"/"Role": "client"/g' \
@@ -77,12 +71,12 @@ copy_inst_config(){
 print_diff(){
     echo
     echo ${DAPPCTRL_AGENT_CONFIG}
-    diff ${DAPPCTRL_BIN}/${DAPPCTRL_AGENT_CONFIG}_source \
+    diff ${DAPPCTRL_DIR}/${DAPPCTRL_CONFIG}  \
          ${DAPPCTRL_BIN}/${DAPPCTRL_AGENT_CONFIG}
 
     echo
     echo ${DAPPCTRL_CLIENT_CONFIG}
-    diff ${DAPPCTRL_BIN}/${DAPPCTRL_CLIENT_CONFIG}_source \
+    diff ${DAPPCTRL_DIR}/${DAPPCTRL_CONFIG} \
          ${DAPPCTRL_BIN}/${DAPPCTRL_CLIENT_CONFIG}
 }
 

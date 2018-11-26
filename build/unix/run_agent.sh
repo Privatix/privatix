@@ -10,14 +10,12 @@ ${DAPPCTRL_BIN}/${DAPPCTRL} -config="${DAPPCTRL_BIN}/${DAPPCTRL_AGENT_CONFIG}" &
 sleep 3
 
 # run dapp-openvpn
-echo run ${OPENVPN_SERVER_BIN}/bin/${DAPP_OPENVPN}
-${OPENVPN_SERVER_BIN}/bin/${DAPP_OPENVPN} -config=${OPENVPN_SERVER_BIN}/config/${DAPP_VPN_CONFIG} &
+echo run ${OPENVPN_AGENT_BIN}/bin/${DAPP_OPENVPN}
+sudo ${OPENVPN_AGENT_BIN}/bin/${DAPP_OPENVPN} -config=${OPENVPN_AGENT_BIN}/config/${DAPP_VPN_CONFIG} &
+
+sleep 5
 
 # run gui
 echo run ${DAPP_GUI_BIN}
 cd ${DAPP_GUI_DIR}
 npm start &
-
-# print jobs
-sleep 3
-jobs -l
