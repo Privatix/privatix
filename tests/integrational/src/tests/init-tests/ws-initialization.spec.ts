@@ -7,7 +7,7 @@ import { TestInputSettings } from '../../typings/test-models';
 export function wsInitializationTest(settings: TestInputSettings) {
   const { configs } = settings;
 
-  describe('websockets init-tests', () => {
+  describe('set up websockets', () => {
     it('initialize agent websocket connection', async () => {
       this.agentWs = new WS(configs['agentWsEndpoint']);
 

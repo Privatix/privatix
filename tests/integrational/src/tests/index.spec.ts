@@ -4,7 +4,7 @@ import { LocalSettings } from './../typings/settings';
 import { TestInputSettings } from '../typings/test-models';
 
 import { getAllowedScope } from '../utils/misc';
-import { createSmokeTestFactory } from '../utils/tests-creator';
+import { createSmokeTestFactory } from '../utils/test-utils';
 
 import { configurationCheckTest } from './init-tests/configuration.spec';
 import { wsInitializationTest } from './init-tests/ws-initialization.spec';
