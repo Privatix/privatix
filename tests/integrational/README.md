@@ -2,16 +2,50 @@
 Privatix integrational tests.
 
 ## Tests
-There are six test blocks for now.
+All test blocks are combined by the main `integrational tests` block.
 
-* Configuration Check
-_used to check env.vars required by some tests and config. file data_ 
-* Websocket Communication
-_connection initialization tests and all other tests blocks that require open websocket connections_
-  * Setting Passwords
-  * Generating Agent Account
-  * Get Test ETH and PRIX
-  * Offering Popup
+There are two general categories:
+1) initialization test blocks
+2) smoke auto-tests
+
+The structure of all tests and test blocks can be represented in the following tree:
+* integrational tests
+_used to combine all other tests_ 
+  * configuration checks
+  _check config file and env.vars for validity_
+  * setting up websockets
+  _set up agent&client websocket connections_
+    * connect to agent ws endpoint
+    * connect to client ws endpoint
+    * generate and set agent&client passwords
+  * smoke auto-tests
+  _contains all smoke tests_
+    * first login
+    * get test ETH and PRIX
+    * popup an offering
+
+***
+
+## Utils
+Contains reusable blocks of code.
+
+#### eth.ts
+_`getEth` and `skipBlocks` functions_
+#### ws.ts
+_class to communicate with websockets_
+### offerings.ts
+_`generateOffering` and `generateSomeOfferings` functions_
+### test-utils.ts
+_`createSmokeTestFactory` and `getItFunc` functions_
+### misc.ts
+> You can pass optional argument to `npm test`, like:
+> `npm test --scope agent`
+> it will skip all tests, that require client connection
+
+_`getAllowedScope` function_
+
+***
+>>>>>>> feature/ek-splitting-tests-into-modules
 
 
 ## Helpers

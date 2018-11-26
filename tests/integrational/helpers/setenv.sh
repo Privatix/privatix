@@ -1,4 +1,4 @@
 #!/bin/bash
 
-export TELEGRAM_BOT_USER=user
-export TELEGRAM_BOT_PASSWORD=hFfVEdU2CokF
+export TELEGRAM_BOT_USER=login
+export TELEGRAM_BOT_PASSWORD=password
