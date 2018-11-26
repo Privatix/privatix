@@ -1,66 +1,37 @@
-import { expect } from 'chai';
 import 'mocha';
 
-import { WS } from './../utils/ws';
 import { LocalSettings } from './../typings/settings';
-// import { TestInputSettings } from '../typings/test-types';
+import { TestInputSettings } from '../typings/test-models';
 
-import { configurationCheckTest } from './configuration.spec';
-import { firstLoginTest } from './first-login.spec';
+import { getAllowedScope } from '../utils/misc';
+import { createSmokeTestFactory } from '../utils/tests-creator';
+
+import { configurationCheckTest } from './init-tests/configuration.spec';
+import { wsInitializationTest } from './init-tests/ws-initialization.spec';
+
+import { smokeAutoTests } from './smoke-tests';
 
 describe('integrational tests', () => {
-  const configs = require('../configs/config.json') as LocalSettings;
+  let testSettings: TestInputSettings = {
+    configs: require('../configs/config.json') as LocalSettings
+  };
 
-  let agentWs: WS;
-  let clientWs: WS;
+  // check config file and environment
+  configurationCheckTest(testSettings);
 
-  configurationCheckTest({ configs });
+  // initialize websocket connections
+  // TODO: don't know how to separate ws init-tests better =\
+  wsInitializationTest.call(testSettings, testSettings);
 
-  describe('websockets initialization', () => {
-    it('initialize agent websocket connection', async () => {
-      agentWs = new WS(configs['agentWsEndpoint']);
-
-      // wait for ws ready
-      await agentWs.whenReady();
-    });
-
-    it('initialize client websocket connection', async () => {
-      clientWs = new WS(configs['clientWsEndpoint']);
-
-      // wait for ws ready
-      await clientWs.whenReady();
-    });
-
-    describe('setting passwords', () => {
-      let agentPwd: string;
-      let clientPwd: string;
-
-      it('should generate agent and client passwords', () => {
-        agentPwd = Math.random().toString(36).substring(5);
-        clientPwd = Math.random().toString(36).substring(5);
-
-        expect(agentPwd.length).to.be.greaterThan(6);
-        expect(clientPwd.length).to.be.greaterThan(6);
-        expect(agentPwd).to.not.equal(clientPwd);
-      });
-
-      it('should set agent password', async () => {
-        await agentWs.setPassword(agentPwd);
-      });
-
-      it.skip('should set client password', async () => {
-        await clientWs.setPassword(clientPwd);
-      });
-
-      it.skip('should fail with wrong agent password', async () => {
-        const wrongPwd = agentWs.setPassword('wrongPasswd');
-
-        expect(wrongPwd).to.be.rejectedWith();
-      });
-    });
-  });
-
+  // start smoke auto-tests
   describe('smoke auto-tests', () => {
-    it('first login', () => firstLoginTest({ agentWs }));
+    const allowedScope = getAllowedScope();
+    smokeAutoTests.forEach(createSmokeTestFactory(testSettings, allowedScope));
+
+    // smokeAutoTests.forEach((tm: TestModel) => {
+    //   const it = getItFunc(tm, allowedScope);
+    //
+    //   it(tm.name, () => tm.testFn(testSettings));
+    // });
   });
 });

@@ -1,7 +1,7 @@
-import {expect} from "chai";
+import { expect } from "chai";
 import 'mocha';
 
-import { TestInputSettings } from '../typings/test-types';
+import { TestInputSettings } from '../../typings/test-models';
 
 export const configurationCheckTest = (settings: TestInputSettings) => {
   const { configs } = settings;
