@@ -1,0 +1,16 @@
+# about codeowners:
+# https://help.github.com/articles/about-codeowners/
+
+# notify ts-team about changes in ts files
+*.ts            @gonzazoid @Vitold55 @EKorobov
+
+# notify drew2a about changes in scripts and settings
+/.github/       @drew2a
+/scripts/       @drew2a
+/build/         @drew2a
+/release/       @drew2a
+/doc/           @drew2a
+*.md            @drew2a
+
+# notify devops team about changes in *config.json
+# *config.json   @kelewind
