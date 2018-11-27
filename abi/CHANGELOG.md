@@ -1,5 +1,12 @@
 # Change log
 
+## 21.11.2018
+
+- `event LogOfferingCreated(... uint8 _source_type, string _source);`
+- `event LogOfferingPopedUp(... uint8 _source_type, string _source);`
+- `function registerServiceOffering (... uint8 _source_type, string _source) external`
+- `function popupServiceOffering (... uint8 _source_type, string _source) external`
+
 ## 11.10.2018
 
 - `bytes32 _authentication_hash` removed from `createChannel` signature

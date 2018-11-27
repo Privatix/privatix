@@ -1,0 +1,73 @@
+# https://docs.codeclimate.com/docs/advanced-configuration
+version: "2"         # required to adjust maintainability checks
+
+checks:
+  argument-count:
+    enabled: false
+    config:
+      threshold: 4
+
+  complex-logic:
+    enabled: true
+    config:
+      threshold: 4
+
+  file-lines:
+    enabled: true
+    config:
+      threshold: 250
+
+  method-complexity:
+    enabled: true
+    config:
+      threshold: 5
+
+  method-count:
+    enabled: true
+    config:
+      threshold: 20
+
+  method-lines:
+    enabled: true
+    config:
+      threshold: 40
+
+  nested-control-flow:
+    enabled: true
+    config:
+      threshold: 4
+
+  return-statements:
+    enabled: false
+    config:
+      threshold: 4
+
+plugins:
+  # develop
+  eslint:
+      enabled: true
+
+  csslint:
+      enabled: true
+
+  fixme:
+    enabled: true
+
+  nodesecurity:
+    enabled: true
+
+  TSLint:
+    enabled: true
+
+  # markdown
+  markdownlint:
+    line_length: 120
+    enabled: true
+
+  # shell
+  shellcheck:
+    enabled: true
+
+  # legal
+  git-legal:
+    enabled: true

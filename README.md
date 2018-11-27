@@ -7,6 +7,12 @@ First Internet Broadband Marketplace powered by P2P VPN Network on Blockchain.
 * [Understanding Privatix Network](https://medium.com/privatix/understanding-privatix-network-76026eeae870)
 * [Confluence documentation](https://privatix.atlassian.net/wiki/spaces/BVP/)
 
+## Installation
+
+* [How to download it and give it a try](https://privatix.atlassian.net/wiki/spaces/BVP/pages/270860384/How+to+download+it+and+give+it+a+try)
+
+Cross platform installer is provided by [http://bitrock.com/](http://bitrock.com/)
+
 ## Releases
 
 [Releases](https://github.com/Privatix/privatix/releases)

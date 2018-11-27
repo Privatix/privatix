@@ -29,6 +29,7 @@ function new-package {
         [string]$wrkdir = "c:\privatix",
         [ValidateScript( {Test-Path $_ })]
         [string]$staticArtefactsDir
+
     )
  
     $ErrorActionPreference = "Stop"
@@ -53,7 +54,7 @@ function new-package {
     #region create working dir 
     New-Folder $wrkdir | Out-Null
     New-Folder $deployAppPath | Out-Null
-    #end region
+    #endregion
 
     #region create core app folder structure
     ##################
@@ -71,7 +72,6 @@ function new-package {
     New-Folder $rootAppPath "dappctrl" | Out-Null
     New-Folder $rootAppPath "dappgui" | Out-Null
     New-Folder $rootAppPath "pgsql" | Out-Null
-    #New-Folder $pgsqlPath "data" | Out-Null
     New-Folder $rootAppPath "util" | Out-Null
     New-Folder $rootAppPath "log" | Out-Null
     New-Folder $rootAppPath "tor" | Out-Null
@@ -95,19 +95,21 @@ function new-package {
     New-Folder $prodInstancePath "log" | Out-Null
     Get-Date | Out-File -FilePath "$prodInstancePath\log\date.txt"
     New-Folder $prodInstancePath "template" | Out-Null
+    #endregion
 
     # Check GOPATH is defined
     $gopath = $env:GOPATH
     if (!($gopath)) {$gopath = Invoke-Expression "go.exe env GOPATH"}
     if (!($gopath)) {throw "GOPATH is not defined"}
 
+    #region define artefacts
     # artefacts
     # core installer
-    $adpaterinstallerconfig = (Get-Item "$gopath\src\github.com\privatix\dapp-openvpn\inst\installer.config.json").FullName
     $dappinstallerbin = (Get-Item "$gopath\bin\dapp-installer.exe").FullName
     # common
     $dappctrlbin = (Get-Item "$gopath\bin\dappctrl.exe").FullName
     $dappctrlconfig = (Get-Item "$gopath\src\github.com\privatix\dappctrl\dappctrl-dev.config.json").FullName
+    $dappctrlFWruleScript = (Get-Item "$gopath\src\github.com\privatix\dappctrl\scripts\win\set-ctrlfirewall.ps1").FullName
     $dappguiFolder = (Get-Item "$artefactDir\dappctrlgui-win32-x64").FullName
     $pgFolder = (Get-Item "$staticArtefactsDir\pgsql").FullName
     $utilFolder = (Get-Item "$staticArtefactsDir\util").FullName
@@ -115,19 +117,23 @@ function new-package {
     # openvpn product
     $dappopenvpnbin = (Get-Item "$gopath\bin\dappvpn.exe").FullName
     $dappopenvpninst = (Get-Item "$gopath\bin\inst.exe").FullName
-    $dappopenvpninstaller = (Get-Item "$gopath\bin\installer.exe").FullName
-    $dappopenvpninstallerconfig = (Get-Item "$gopath\src\github.com\privatix\dapp-installer\dapp-installer.config.json").FullName
     $templatesFolder = (Get-Item "$gopath\src\github.com\privatix\dapp-openvpn\files\example").FullName
-    $adapterconfig = (Get-Item "$gopath\src\github.com\privatix\dapp-openvpn\statik\package\config\adapter.config.json").FullName
-    
+    $dappopenvpninstagentconfig = (Get-Item "$gopath\src\github.com\privatix\dapp-openvpn\inst\install.agent.config.json").FullName
+    $dappopenvpninstclientconfig = (Get-Item "$gopath\src\github.com\privatix\dapp-openvpn\inst\install.client.config.json").FullName
+    $agentAdapterInstallerConfig = (Get-Item "$gopath\src\github.com\privatix\dapp-openvpn\inst\installer.agent.config.json").FullName
+    $clientAdpaterInstallerConfig = (Get-Item "$gopath\src\github.com\privatix\dapp-openvpn\inst\installer.client.config.json").FullName 
+    $dappopenvpnFWruleScript = (Get-Item "$gopath\src\github.com\privatix\dapp-openvpn\scripts\win\set-vpnfirewall.ps1").FullName
+    $dappopenvpnSetNAT = (Get-Item "$gopath\src\github.com\privatix\dapp-openvpn\scripts\win\set-nat.ps1").FullName
+      
     $openvpnFolder = (Get-Item "$staticArtefactsDir\openvpn").FullName
-    
+    #endregion
 
     #region core app
 
     #region dappctrl
     Copy-Item -Path $dappctrlbin -Destination "$rootAppPath\dappctrl\dappctrl.exe"
     Copy-Item -Path $dappctrlconfig -Destination "$rootAppPath\dappctrl\dappctrl.config.json"
+    Copy-Item -Path $dappctrlFWruleScript -Destination "$rootAppPath\dappctrl\set-ctrlfirewall.ps1"
     #endregion
 
     #region dappgui
@@ -145,91 +151,64 @@ function new-package {
     #region tor
     Copy-Item -Path "$torFolder\*" -Destination "$rootAppPath\tor" -Recurse -Force
     #endregion
-
     #endregion
 
-
-    #region adapter
+    #region product
 
     #region binary
     Copy-Item -Path $dappopenvpnbin -Destination "$prodInstancePath\bin\dappvpn.exe"
     Copy-Item -Path $dappopenvpninst -Destination "$prodInstancePath\bin\inst.exe"
-    Copy-Item -Path $dappopenvpninstaller -Destination "$prodInstancePath\bin\installer.exe"
+    Copy-Item -Path $dappopenvpnFWruleScript -Destination "$prodInstancePath\bin\set-vpnfirewall.ps1"
+    Copy-Item -Path $dappopenvpnSetNAT -Destination "$prodInstancePath\bin\set-nat.ps1"
     Copy-Item -Path "$openvpnFolder" -Destination "$prodInstancePath\bin\openvpn" -Recurse -Force
     #endregion
 
     #region templates
     Copy-Item -Path "$templatesFolder\*" -Destination "$prodInstancePath\template" -Recurse -Force
+    Rename-Item -Path "$prodInstancePath\template\dappvpn.agent.config.json" -NewName "$prodInstancePath\template\adapter.agent.config.json"
+    Rename-Item -Path "$prodInstancePath\template\dappvpn.client.config.json" -NewName "$prodInstancePath\template\adapter.client.config.json"
     #endregion
 
-    #region adapter config
-    Copy-Item -Path "$adapterconfig" -Destination "$prodInstancePath\config\dappvpn.config.json"
-    #endregion
-
-    #region installer config
-    Copy-Item -Path "$adpaterinstallerconfig" -Destination "$prodInstancePath\config\installer.config.json"
-    #endregion
-
-    #endregion
-
-    #region create deploy app
-
-    #endregion
-    #region dapp-installer artefact
-    Copy-Item -Path $dappinstallerbin -Destination "$deployAppPath\dapp-installer.exe"
-    Copy-Item -Path $dappopenvpninstallerconfig -Destination "$deployAppPath\dapp-installer.config.json"
-    #endregion
-
-    #region dapp-openvpn install shorcut
-    Write-Verbose "Parse dappctrl config DB section"
-    $dappctrlconf = "$rootAppPath\dappctrl\dappctrl.config.json"
-    $DBconf = (Get-Content $dappctrlconf | ConvertFrom-Json).DB.conn
-    $connstr = "host=$($DBconf.host) dbname=$($DBconf.dbname) user=$($DBconf.user) port=$($DBconf.port)"
-    if ($($DBconf.password)) {$connstr += " password=$($DBconf.password)"}
-    $connstr += " sslmode=disable"
+    #region configs
     
-    $lnkcmd = '/c start "" /b .\installer.exe --connstr ' + $connstr + ' --rootdir="..\template" -setauth'
-    $lnkInstalled = New-Shortcut -Path "$prodInstancePath\bin\install_product.lnk" -TargetPath "%ComSpec%" -Arguments $lnkcmd -WorkDir "%~dp0" -Description "Privatix product install"
-    if (-not $lnkInstalled) {Write-Error "Product install shortcut creation failed"}
+    #Copy-Item -Path "$adapterconfig" -Destination "$prodInstancePath\config\adapter.config.json"
+    Copy-Item -Path "$dappopenvpninstagentconfig" -Destination "$prodInstancePath\config\install.agent.config.json"
+    Copy-Item -Path "$dappopenvpninstclientconfig" -Destination "$prodInstancePath\config\install.client.config.json"
+    Copy-Item -Path "$agentAdapterInstallerConfig" -Destination "$prodInstancePath\config\installer.agent.config.json"
+    Copy-Item -Path "$clientAdpaterInstallerConfig" -Destination "$prodInstancePath\config\installer.client.config.json"
+    #endregion
     #endregion
 
-    #region dapp-openvpn inst shortcut
-    $lnkcmd = '/c start "" /b .\inst.exe install --config "..\config\installer.config.json"'
-    $lnkInstalled = New-Shortcut -Path "$prodInstancePath\bin\install_adapter.lnk" -TargetPath "%ComSpec%" -Arguments $lnkcmd -WorkDir "%~dp0" -Description "Privatix adapter install"
-    if (-not $lnkInstalled) {Write-Error "Adapter install shortcut creation failed"}
-
-    $lnkcmd = '/c start "" /b .\inst.exe remove"'
-    $lnkInstalled = New-Shortcut -Path "$prodInstancePath\bin\remove_adapter.lnk" -TargetPath "%ComSpec%" -Arguments $lnkcmd -WorkDir "%~dp0" -Description "Privatix adapter remove"
-    if (-not $lnkInstalled) {Write-Error "Adapter install shortcut creation failed"}
-    #endregion
-    
     #region archive app
     Write-Verbose "Making archive for deploy..."
     add-type -AssemblyName System.IO.Compression.FileSystem
     [System.IO.Compression.ZipFile]::CreateFromDirectory($rootAppPath, "$deployAppPath\app.zip", 'NoCompression', $false)
     #endregion
 
-    #region shortcut
+    #region dapp-installer artefact
+    Copy-Item -Path $dappinstallerbin -Destination "$deployAppPath\dapp-installer.exe"
+    #endregion
+
+    #region dev app installation scripts
     #region install shorcut
-    $lnkcmd = '/c start "" /b .\dapp-installer.exe install --role agent --workdir .\agent --source .\app.zip'
+    $lnkcmd = '/c start "" /b .\dapp-installer.exe install --role agent --workdir .\agent --source .\app.zip --verbose'
     $lnkInstalled = New-Shortcut -Path "$deployAppPath\install_agent.lnk" -TargetPath "%ComSpec%" -Arguments $lnkcmd -WorkDir "%~dp0" -Description "Privatix Core install agent"
     if (-not $lnkInstalled) {Write-Error "Agent installer shortcut creation failed"}
     
-    $lnkcmd = '/c start "" /b .\dapp-installer.exe install --role client --workdir .\client --source .\app.zip'
+    $lnkcmd = '/c start "" /b .\dapp-installer.exe install --role client --workdir .\client --source .\app.zip --verbose'
     $lnkInstalled = New-Shortcut -Path "$deployAppPath\install_client.lnk" -TargetPath "%ComSpec%" -Arguments $lnkcmd -WorkDir "%~dp0" -Description "Privatix Core install client"
     if (-not $lnkInstalled) {Write-Error "Client installer shortcut creation failed"}
     #endregion
 
     #region remove shortcut
-    $lnkcmd = '/c start "" /b .\dapp-installer.exe remove --workdir .\agent'
+    $lnkcmd = '/c start "" /b .\dapp-installer.exe remove --workdir .\agent --verbose'
     $lnkInstalled = New-Shortcut -Path "$deployAppPath\remove_agent.lnk" -TargetPath "%ComSpec%" -Arguments $lnkcmd -WorkDir "%~dp0" -Description "Privatix Core remove agent"
     if (-not $lnkInstalled) {Write-Error "Agent remover shortcut creation failed"}
     
-    $lnkcmd = '/c start "" /b .\dapp-installer.exe remove --workdir .\client'
+    $lnkcmd = '/c start "" /b .\dapp-installer.exe remove --workdir .\client --verbose'
     $lnkInstalled = New-Shortcut -Path "$deployAppPath\remove_client.lnk" -TargetPath "%ComSpec%" -Arguments $lnkcmd -WorkDir "%~dp0" -Description "Privatix Core remove client"
     if (-not $lnkInstalled) {Write-Error "Client remover shortcut creation failed"}
     
-    #endregion
     #endregion
     #endregion
 }

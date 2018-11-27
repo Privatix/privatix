@@ -1,9 +1,11 @@
 #!/usr/bin/env bash
 
 cd `dirname $0`
-. ./build.local.config
+. ./build.sealed.config
 
 export POSTGRES_PORT
+export POSTGRES_USER
+export POSTGRES_PASSWORD
 
 echo create database
 

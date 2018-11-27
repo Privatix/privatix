@@ -5,6 +5,8 @@
 
 Install prerequisite software if it's not installed.
 
+### Manually
+
 * [git](https://git-scm.com/downloads)
 
 * [Golang](https://golang.org/doc/install) 1.11+. Make sure that 
@@ -16,19 +18,13 @@ is added to  system path `$PATH`
 
 * [node.js](https://nodejs.org/en/) 9.3+
 
-### Powershell
+### Using Powershell
 
-Install prerequisite software via `powershell`
+Install prerequisite software via `powershell`. 
 
-```powershell
-Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope CurrentUser
-Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
-choco install golang -y
-choco install mingw -y 
-choco install nodejs -y
-# choco install git -y
-# choco install powershell -y
-```
+1. Run `powershell as administrator`
+2. Run PS command: `Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope LocalMachine`
+3. Run [prepare-environment.ps1 script](../win/prepare-environment.ps1)
 
 ## Build
 
@@ -50,7 +46,7 @@ publish-dapp.ps1 [[-wkdir] <string>] [[-staticArtefactsDir] <string>]
 All modules have help. List here, but it is retrievable using `get-help` cmdlet
 
 ```bash
-et-help .\publish-dapp.ps1
+get-help .\publish-dapp.ps1 -full
 
 NAME
     publish-dapp.ps1
@@ -60,15 +56,15 @@ SYNOPSIS
 
 
 SYNTAX
-    C:\Users\it\OneDrive\Documents\Work\Privatix\Other\Scripts\Windows\build\publish-dapp.ps1 [[-wkdir] <String>]
-    [[-staticArtefactsDir] <String>] [-pack] [[-dappguibranch] <String>] [[-dappctrlbranch] <String>]
-    [[-dappinstbranch] <String>] [[-dappopenvpnbranch] <String>] [-godep] [-gitpull] [<CommonParameters>]
+    .\publish-dapp.ps1 [[-wkdir] <String>] [[-staticArtefactsDir] <String>] [-pack] 
+    [[-dappguibranch] <String>] [[-dappctrlbranch] <String>] [[-dappinstbranch] <String>] 
+    [[-dappopenvpnbranch] <String>] [-godep] [-gitpull] [<CommonParameters>]
 
 
 DESCRIPTION
     Build Privatix artefacts.
     Copy them to single location.
-    Create deploy folder with installer and app.zip.
+    Create deploy folder with installer and app.zip. (optional)
 
 
 PARAMETERS
@@ -145,7 +141,7 @@ PARAMETERS
         Accept wildcard characters?  false
 
     -gitpull [<SwitchParameter>]
-        Make git pull before build.
+        Make git pull before build or dep ensure.
 
         Required?                    false
         Position?                    named
@@ -165,21 +161,35 @@ OUTPUTS
 
     -------------------------- EXAMPLE 1 --------------------------
 
-    PS C:\>build-dappctrl
+    PS C:\>.\publish-dapp.ps1 -wkdir "C:\build" -staticArtefactsDir "C:\static_art"
 
     Description
     -----------
-    Build dappctrl.
+    Build application from develop branches.
 
 
 
 
     -------------------------- EXAMPLE 2 --------------------------
 
-    PS C:\>build-dappctrl -branch "develop" -godep -gitpull
+    PS C:\>.\publish-dapp.ps1 -wkdir "C:\build" -staticArtefactsDir "C:\static_art" -pack -godep -gitpull -Verbose
 
     Description
     -----------
-    Checkout branch "develop". Pull from git. Run go dependecy. Build dappctrl.
+    Build application. Package it, so it can be installed, using installer.
+    Checkout "develop" branch for each component. Pull latest commints from git. Run go dependecy.
+
+
+
+
+    -------------------------- EXAMPLE 3 --------------------------
+
+    PS C:\>.\publish-dapp.ps1 -wkdir "C:\build2" -staticArtefactsDir "C:\privatix\art" -pack -godep -gitpull ` 
+    -dappguibranch "master" -dappctrlbranch "master" -dappinstbranch "master" -dappopenvpnbranch "master"
+
+    Description
+    -----------
+    Same as above, but "master" branch is used for all components. 
+    You can choose different branches for each component.
 
 ```

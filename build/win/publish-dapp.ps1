@@ -34,18 +34,27 @@
     Make git pull before build.
 
 .EXAMPLE
-    build-dappctrl
+    .\publish-dapp.ps1 -wkdir "C:\build" -staticArtefactsDir "C:\static_art"
 
     Description
     -----------
-    Build dappctrl.
+    Build application from develop branches.
 
 .EXAMPLE
-    build-dappctrl -branch "develop" -godep -gitpull
+    .\publish-dapp.ps1 -wkdir "C:\build" -staticArtefactsDir "C:\static_art" -pack -godep -gitpull -Verbose
 
     Description
     -----------
-    Checkout branch "develop". Pull from git. Run go dependecy. Build dappctrl.
+    Build application. Package it, so it can be installed, using installer.
+    Checkout "develop" branch for each component. Pull latest commints from git. Run go dependecy.
+
+.EXAMPLE
+    .\publish-dapp.ps1 -wkdir "C:\build2" -staticArtefactsDir "C:\privatix\art" -pack -godep -gitpull -dappguibranch "master" -dappctrlbranch "master" -dappinstbranch "master" -dappopenvpnbranch "master"
+
+    Description
+    -----------
+    Same as above, but "master" branch is used for all components.
+    
 #>
 [CmdletBinding()]
 param(
@@ -70,32 +79,37 @@ Import-Module (Join-Path $PSScriptRoot "new-package.psm1" -Resolve) -ErrorAction
 
 $TotalTime = 0
 
-$OpTime = (Measure-Command {. $builddapp -dappctrl -branch $dappctrlbranch -gitpull:$gitpull -godep:$godep}).Seconds
-$TotalTime += $OpTime
-Write-Host "It took $OpTime seconds to complete" -ForegroundColor Green
+$sw = [Diagnostics.Stopwatch]::StartNew()
+. $builddapp -dappctrl -branch $dappctrlbranch -gitpull:$gitpull -godep:$godep
+$TotalTime += $sw.Elapsed.TotalSeconds
+Write-Host "It took $($sw.Elapsed.TotalSeconds) seconds to complete" -ForegroundColor Green
 
+$sw.Restart()
+. $builddapp -dappopenvpn -branch $dappopenvpnbranch -gitpull:$gitpull -godep:$godep
+$TotalTime += $sw.Elapsed.TotalSeconds
+Write-Host "It took $($sw.Elapsed.TotalSeconds) seconds to complete" -ForegroundColor Green
 
-$OpTime = (Measure-Command {. $builddapp -dappopenvpn -branch $dappopenvpnbranch -gitpull:$gitpull -godep:$godep}).Seconds
-$TotalTime += $OpTime
-Write-Host "It took $OpTime seconds to complete" -ForegroundColor Green
-
-$OpTime = (Measure-Command {. $builddapp -dappinstaller -branch $dappinstbranch -gitpull:$gitpull -godep:$godep}).Seconds
-$TotalTime += $OpTime
-Write-Host "It took $OpTime seconds to complete" -ForegroundColor Green
+$sw.Restart()
+. $builddapp -dappinstaller -branch $dappinstbranch -gitpull:$gitpull -godep:$godep
+$TotalTime += $sw.Elapsed.TotalSeconds
+Write-Host "It took $($sw.Elapsed.TotalSeconds) seconds to complete" -ForegroundColor Green
 
 if ($pack) {
-    $OpTime = (Measure-Command {. $builddapp -dappgui -branch $dappguibranch -gitpull:$gitpull -wd $wkdir -package}).Seconds
-    $TotalTime += $OpTime
-    Write-Host "It took $OpTime seconds to complete" -ForegroundColor Green
+    $sw.Restart()
+    . $builddapp -dappgui -branch $dappguibranch -gitpull:$gitpull -wd $wkdir -package
+    $TotalTime += $sw.Elapsed.TotalSeconds
+    Write-Host "It took $($sw.Elapsed.TotalSeconds) seconds to complete" -ForegroundColor Green
 
-    $OpTime = (Measure-Command {new-package -wrkdir $wkdir -staticArtefactsDir $staticArtefactsDir}).Seconds
-    $TotalTime += $OpTime
-    Write-Host "It took $OpTime seconds to complete" -ForegroundColor Green
+    $sw.Restart()
+    new-package -wrkdir $wkdir -staticArtefactsDir $staticArtefactsDir
+    $TotalTime += $sw.Elapsed.TotalSeconds
+    Write-Host "It took $($sw.Elapsed.TotalSeconds) seconds to complete" -ForegroundColor Green
 }
 else {
-    $OpTime = (Measure-Command {. $builddapp -dappgui -branch $dappguibranch -gitpull:$gitpull -wd $wkdir -shortcut}).Seconds
-    $TotalTime += $OpTime
-    Write-Host "It took $OpTime seconds to complete" -ForegroundColor Green
+    $sw.Restart()
+    . $builddapp -dappgui -branch $dappguibranch -gitpull:$gitpull -wd $wkdir -shortcut
+    $TotalTime += $sw.Elapsed.TotalSeconds
+    Write-Host "It took $($sw.Elapsed.TotalSeconds) seconds to complete" -ForegroundColor Green
 }
 Remove-Module new-package
 

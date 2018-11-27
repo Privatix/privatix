@@ -1,14 +1,16 @@
 #!/usr/bin/env bash
 
 cd `dirname $0`
-. ./build.local.config
+. ./build.sealed.config
 
 echo before:
 ps
+sudo ps
 
-pkill -9 ${DAPP_OPENVPN}
+sudo pkill -9 ${DAPP_OPENVPN}
 pkill -9 ${DAPPCTRL}
 
 echo
 echo after:
 ps
+sudo ps
