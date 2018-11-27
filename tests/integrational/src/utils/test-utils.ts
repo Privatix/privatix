@@ -13,7 +13,7 @@ export const createSmokeTestFactory =
 
       let itFunc: Function;
       if (scope !== TestScope.NONE && scope !== allowedScope) {
-        itFunc = it.skip;
+        itFunc = it;
       } else {
         itFunc = it;
       }
