@@ -27,6 +27,7 @@ export function wsInitializationTest(settings: TestInputSettings) {
       let clientPwd: string;
 
       it('should generate agent and client passwords', () => {
+
         agentPwd = Math.random().toString(36).substring(5);
         clientPwd = Math.random().toString(36).substring(5);
 
@@ -36,11 +37,23 @@ export function wsInitializationTest(settings: TestInputSettings) {
       });
 
       it('should set agent password', async () => {
+
+        if('AGENT_PWD' in process.env){
+          agentPwd = process.env.AGENT_PWD;
+        }
+
         await this.agentWs.setPassword(agentPwd);
+
       });
 
       it.skip('should set client password', async () => {
+
+        if('AGENT_PWD' in process.env){
+          clientPwd = process.env.CLIENT_PWD;
+        }
+
         await this.clientWs.setPassword(clientPwd);
+
       });
 
       it.skip('should fail with wrong agent password', async () => {
