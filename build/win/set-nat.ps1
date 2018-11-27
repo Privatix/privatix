@@ -11,14 +11,14 @@
     Unique identifier of TAP device. It is identified by "PnPDeviceID" (Get-NetAdapter) and same as "Device instance path" in device manager.
 
 .EXAMPLE
-    .\start_server_nat.ps1 -TAPdeviceAddress 'ROOT\NET\0002' -Enabled $true
+    .\start_server_nat.ps1 -TAPdeviceAddress 'ROOT\NET\0002' -Enabled
 
     Description
     -----------
     Enables IP routing. Configures IP forwarding on internet adapter and TAP adapter. Starts "SharedAccess" and "RemoteAccess" services.
 
 .EXAMPLE
-    .\start_server_nat.ps1 -TAPdeviceAddress 'ROOT\NET\0002' -Enabled $false
+    .\start_server_nat.ps1 -TAPdeviceAddress 'ROOT\NET\0002'
 
     Description
     -----------
