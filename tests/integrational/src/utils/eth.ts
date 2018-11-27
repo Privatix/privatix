@@ -63,8 +63,8 @@ export const skipBlocks = async function(blocksNumber: number, instance: WS, tim
 }
 
 export const getBlockchainTimeouts = function () {
-    const testTimeout = configs.timeouts.blocktime*(configs.timeouts.getEther.skipBlocks+1) + configs.timeouts.getEther.botTimeoutMs;
-    const getEthTimeout = configs.timeouts.blocktime*(configs.timeouts.getEther.skipBlocks);
+    const testTimeout = configs.timeouts.blocktime * (configs.timeouts.getEther.skipBlocks + 1) + configs.timeouts.getEther.botTimeoutMs;
+    const getEthTimeout = configs.timeouts.blocktime * (configs.timeouts.getEther.skipBlocks);
     const getEthTick = configs.timeouts.blocktime / 3;
 
     return {
