@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 cd `dirname $0`
-. ./build.local.config
+. ./build.sealed.config
 
 # run dappctrl
 echo run ${DAPPCTRL_BIN}/${DAPPCTRL}
@@ -11,7 +11,7 @@ sleep 3
 
 # run dapp-openvpn
 echo ${DAPP_OPENVPN_BIN}/${DAPP_OPENVPN}
-sudo ${DAPP_OPENVPN_BIN}/${DAPP_OPENVPN} -config=${OPENVPN_CLIENT_BIN}/config/${DAPP_VPN_CONFIG} &
+sudo  ${OPENVPN_CLIENT_BIN}/bin/${DAPP_OPENVPN} -config=${OPENVPN_CLIENT_BIN}/config/${DAPP_VPN_CONFIG} &
 
 sleep 5
 
