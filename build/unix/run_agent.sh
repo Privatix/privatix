@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 cd `dirname $0`
-. ./build.local.config
+. ./build.sealed.config
 
 # run dappctrl
 echo run ${DAPPCTRL_BIN}/${DAPPCTRL}

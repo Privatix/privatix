@@ -2,7 +2,7 @@
 
 root_dir=$(cd `dirname $0` && pwd)
 cd ${root_dir}
-. ./build.local.config
+. ./build.sealed.config
 
 cd ${OPENVPN_AGENT_BIN}/bin/
 
