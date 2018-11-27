@@ -29,6 +29,7 @@ function new-package {
         [string]$wrkdir = "c:\privatix",
         [ValidateScript( {Test-Path $_ })]
         [string]$staticArtefactsDir
+
     )
  
     $ErrorActionPreference = "Stop"
@@ -71,7 +72,6 @@ function new-package {
     New-Folder $rootAppPath "dappctrl" | Out-Null
     New-Folder $rootAppPath "dappgui" | Out-Null
     New-Folder $rootAppPath "pgsql" | Out-Null
-    #New-Folder $pgsqlPath "data" | Out-Null
     New-Folder $rootAppPath "util" | Out-Null
     New-Folder $rootAppPath "log" | Out-Null
     New-Folder $rootAppPath "tor" | Out-Null
@@ -105,8 +105,6 @@ function new-package {
     #region define artefacts
     # artefacts
     # core installer
-    $agentAdpaterInstallerConfig = (Get-Item "$gopath\src\github.com\privatix\dapp-openvpn\inst\agent.installer.config.json").FullName
-    $clientAdpaterInstallerConfig = (Get-Item "$gopath\src\github.com\privatix\dapp-openvpn\inst\client.installer.config.json").FullName
     $dappinstallerbin = (Get-Item "$gopath\bin\dapp-installer.exe").FullName
     # common
     $dappctrlbin = (Get-Item "$gopath\bin\dappctrl.exe").FullName
@@ -118,10 +116,11 @@ function new-package {
     # openvpn product
     $dappopenvpnbin = (Get-Item "$gopath\bin\dappvpn.exe").FullName
     $dappopenvpninst = (Get-Item "$gopath\bin\inst.exe").FullName
-    $dappopenvpninstaller = (Get-Item "$gopath\bin\installer.exe").FullName
-    $dappopenvpninstallerconfig = (Get-Item "$gopath\src\github.com\privatix\dapp-installer\dapp-installer.config.json").FullName
     $templatesFolder = (Get-Item "$gopath\src\github.com\privatix\dapp-openvpn\files\example").FullName
-    $adapterconfig = (Get-Item "$gopath\src\github.com\privatix\dapp-openvpn\statik\package\config\adapter.config.json").FullName
+    $dappopenvpninstagentconfig = (Get-Item "$gopath\src\github.com\privatix\dapp-openvpn\inst\install.agent.config.json").FullName
+    $dappopenvpninstclientconfig = (Get-Item "$gopath\src\github.com\privatix\dapp-openvpn\inst\install.client.config.json").FullName
+    $agentAdapterInstallerConfig = (Get-Item "$gopath\src\github.com\privatix\dapp-openvpn\inst\installer.agent.config.json").FullName
+    $clientAdpaterInstallerConfig = (Get-Item "$gopath\src\github.com\privatix\dapp-openvpn\inst\installer.client.config.json").FullName 
     
     $openvpnFolder = (Get-Item "$staticArtefactsDir\openvpn").FullName
     #endregion
@@ -148,7 +147,6 @@ function new-package {
     #region tor
     Copy-Item -Path "$torFolder\*" -Destination "$rootAppPath\tor" -Recurse -Force
     #endregion
-
     #endregion
 
     #region product
@@ -156,73 +154,22 @@ function new-package {
     #region binary
     Copy-Item -Path $dappopenvpnbin -Destination "$prodInstancePath\bin\dappvpn.exe"
     Copy-Item -Path $dappopenvpninst -Destination "$prodInstancePath\bin\inst.exe"
-    Copy-Item -Path $dappopenvpninstaller -Destination "$prodInstancePath\bin\installer.exe"
     Copy-Item -Path "$openvpnFolder" -Destination "$prodInstancePath\bin\openvpn" -Recurse -Force
     #endregion
 
     #region templates
     Copy-Item -Path "$templatesFolder\*" -Destination "$prodInstancePath\template" -Recurse -Force
+    Rename-Item -Path "$prodInstancePath\template\dappvpn.agent.config.json" -NewName "$prodInstancePath\template\adapter.agent.config.json"
+    Rename-Item -Path "$prodInstancePath\template\dappvpn.client.config.json" -NewName "$prodInstancePath\template\adapter.client.config.json"
     #endregion
 
-    #region installer config
-    Copy-Item -Path "$agentAdpaterInstallerConfig" -Destination "$prodInstancePath\config\agent.installer.config.json"
-    Copy-Item -Path "$clientAdpaterInstallerConfig" -Destination "$prodInstancePath\config\client.installer.config.json"
+    #region configs
     
-    #endregion
-
-    #region dev product installation scripts
-    #region dapp-openvpn install script
-    $scriptContent = @'
-    param(
-        [Parameter(Mandatory=$true, ParameterSetName = "agent", HelpMessage = "install as agent")]
-        [switch]$agent,
-        [Parameter(Mandatory=$true, ParameterSetName = "client", HelpMessage = "install as client")]
-        [switch]$client,
-        [Parameter(Mandatory=$false, HelpMessage = "do not import product to database")]
-        [switch]$skipProductImport
-    )
-    #Requires -RunAsAdministrator
-
-    # Install product into dappctrl database and update adapter config file with authentication credentials
-    # Install OpenVPN and OpenVPN-adapter
-    $prodInstancePath = (get-item $PSScriptRoot).Parent.FullName
-    if (-not $skipProductImport.IsPresent) {
-        Write-Host "Importing product data to controller..."
-        $rootAppPath = (get-item $PSScriptRoot).Parent.Parent.Parent.FullName
-        Write-Host "Parse dappctrl config DB section"
-        $dappctrlconf = "$rootAppPath\dappctrl\dappctrl.config.json"
-        Write-Host "Parsing config file: $dappctrlconf"
-        $DBconf = (Get-Content $dappctrlconf -ErrorAction Stop| ConvertFrom-Json).DB.conn
-        $connstr = "host=$($DBconf.host) dbname=$($DBconf.dbname) user=$($DBconf.user) port=$($DBconf.port)"
-        if ($($DBconf.password)) {$connstr += " password=$($DBconf.password)"}
-        $connstr += " sslmode=disable"
-        Write-Host "Connection string is: $connstr"
-        $expression = ".\installer.exe --connstr  `"" + $connstr + '" --rootdir="..\template" -setauth'
-        Write-Host "Executing command: $expression"
-        Invoke-Expression $expression -ErrorAction Stop
-    } else {Write-Warning "Skipping import of product data to controller"}
-    if ($agent.IsPresent) {
-        Copy-Item -Path "$prodInstancePath\template\dappvpn.agent.config.json" -Destination "$prodInstancePath\config\dappvpn.config.json" -Force 
-        $expression = 'inst.exe install --config "..\config\agent.installer.config.json"'
-        Invoke-Expression $expression -ErrorAction Stop
-    }
-    if ($client.IsPresent) {
-        Copy-Item -Path "$prodInstancePath\template\dappvpn.client.config.json" -Destination "$prodInstancePath\config\dappvpn.config.json" -Force
-        $expression = 'inst.exe install --config "..\config\client.installer.config.json"'
-        Invoke-Expression $expression -ErrorAction Stop
-    }
-'@
-    $scriptContent | Out-File -FilePath "$prodInstancePath\bin\install-product.ps1"
-    #endregion
-
-    #region dapp-openvpn remove script
-    #TODO: implement removal of product from DB
-    $scriptContent = @'
-    #Requires -RunAsAdministrator
-    Invoke-Expression 'inst.exe remove' -ErrorAction Stop
-'@
-    $scriptContent | Out-File -FilePath "$prodInstancePath\bin\remove-product.ps1"
-    #endregion
+    #Copy-Item -Path "$adapterconfig" -Destination "$prodInstancePath\config\adapter.config.json"
+    Copy-Item -Path "$dappopenvpninstagentconfig" -Destination "$prodInstancePath\config\install.agent.config.json"
+    Copy-Item -Path "$dappopenvpninstclientconfig" -Destination "$prodInstancePath\config\install.client.config.json"
+    Copy-Item -Path "$agentAdapterInstallerConfig" -Destination "$prodInstancePath\config\installer.agent.config.json"
+    Copy-Item -Path "$clientAdpaterInstallerConfig" -Destination "$prodInstancePath\config\installer.client.config.json"
     #endregion
     #endregion
 
@@ -234,26 +181,25 @@ function new-package {
 
     #region dapp-installer artefact
     Copy-Item -Path $dappinstallerbin -Destination "$deployAppPath\dapp-installer.exe"
-    #Copy-Item -Path $dappopenvpninstallerconfig -Destination "$deployAppPath\dapp-installer.config.json"
     #endregion
 
     #region dev app installation scripts
     #region install shorcut
-    $lnkcmd = '/c start "" /b .\dapp-installer.exe install --role agent --workdir .\agent --source .\app.zip'
+    $lnkcmd = '/c start "" /b .\dapp-installer.exe install --role agent --workdir .\agent --source .\app.zip --verbose'
     $lnkInstalled = New-Shortcut -Path "$deployAppPath\install_agent.lnk" -TargetPath "%ComSpec%" -Arguments $lnkcmd -WorkDir "%~dp0" -Description "Privatix Core install agent"
     if (-not $lnkInstalled) {Write-Error "Agent installer shortcut creation failed"}
     
-    $lnkcmd = '/c start "" /b .\dapp-installer.exe install --role client --workdir .\client --source .\app.zip'
+    $lnkcmd = '/c start "" /b .\dapp-installer.exe install --role client --workdir .\client --source .\app.zip --verbose'
     $lnkInstalled = New-Shortcut -Path "$deployAppPath\install_client.lnk" -TargetPath "%ComSpec%" -Arguments $lnkcmd -WorkDir "%~dp0" -Description "Privatix Core install client"
     if (-not $lnkInstalled) {Write-Error "Client installer shortcut creation failed"}
     #endregion
 
     #region remove shortcut
-    $lnkcmd = '/c start "" /b .\dapp-installer.exe remove --workdir .\agent'
+    $lnkcmd = '/c start "" /b .\dapp-installer.exe remove --workdir .\agent --verbose'
     $lnkInstalled = New-Shortcut -Path "$deployAppPath\remove_agent.lnk" -TargetPath "%ComSpec%" -Arguments $lnkcmd -WorkDir "%~dp0" -Description "Privatix Core remove agent"
     if (-not $lnkInstalled) {Write-Error "Agent remover shortcut creation failed"}
     
-    $lnkcmd = '/c start "" /b .\dapp-installer.exe remove --workdir .\client'
+    $lnkcmd = '/c start "" /b .\dapp-installer.exe remove --workdir .\client --verbose'
     $lnkInstalled = New-Shortcut -Path "$deployAppPath\remove_client.lnk" -TargetPath "%ComSpec%" -Arguments $lnkcmd -WorkDir "%~dp0" -Description "Privatix Core remove client"
     if (-not $lnkInstalled) {Write-Error "Client remover shortcut creation failed"}
     
