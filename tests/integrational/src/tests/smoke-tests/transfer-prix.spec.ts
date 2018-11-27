@@ -26,8 +26,8 @@ export const transferPrix: TestModel = {
 
         const accountsTransferTokens = await agentWs.getAccounts();
 
-        expect(configs.transferPrix.prixToPsc).to.equal(accountsTransferTokens[0].pscBalance);
-        expect(account.ptcBalance - configs.transferPrix.prixToPsc).to.equal(accountsTransferTokens[0].ptcBalance);
+        expect(accountsTransferTokens[0].pscBalance).to.equal(configs.transferPrix.prixToPsc);
+        expect(accountsTransferTokens[0].ptcBalance).to.equal(account.ptcBalance - configs.transferPrix.prixToPsc);
       });
     });
 
@@ -44,8 +44,8 @@ export const transferPrix: TestModel = {
 
         const accountsTransferTokens = await agentWs.getAccounts();
 
-        expect(account.ptcBalance + configs.transferPrix.prixToPtc).to.equal(accountsTransferTokens[0].ptcBalance);
-        expect(account.pscBalance - configs.transferPrix.prixToPtc).to.equal(accountsTransferTokens[0].pscBalance);
+        expect(accountsTransferTokens[0].ptcBalance).to.equal(account.ptcBalance + configs.transferPrix.prixToPtc);
+        expect(accountsTransferTokens[0].pscBalance).to.equal(account.pscBalance - configs.transferPrix.prixToPtc);
       })
     });
 
