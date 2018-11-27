@@ -135,10 +135,15 @@ print_diff(){
          ${OPENVPN_AGENT_BIN}/config/${DAPP_VPN_CONFIG}
 }
 
+remove_b(){
+    find ${PRODUCT_BIN} -name '*.b' -delete
+}
+
 clean
 prepare_install
 install
 copy_client
 copy_configs
 prepare_configs
+remove_b
 print_diff
