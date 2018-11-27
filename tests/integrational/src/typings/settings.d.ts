@@ -20,6 +20,11 @@ export interface LocalSettings {
     getEth: {
         ethBonus: number;
         prixBonus: number;
+    },
+    "transferPrix": {
+        "prixToPsc": number,
+        "prixToPtc": number,
+        "gasPrice": number
     }
 }
 

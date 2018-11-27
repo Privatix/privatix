@@ -22,6 +22,8 @@ _used to combine all other tests_
   _contains all smoke tests_
     * first login
     * get test ETH and PRIX
+    * transfer PRIX: exchange balance → service balance
+    * transfer PRIX: service balance → exchange balance
     * popup an offering
 
 ***
@@ -30,7 +32,7 @@ _used to combine all other tests_
 Contains reusable blocks of code.
 
 #### eth.ts
-_`getEth` and `skipBlocks` functions_
+_`getEth`, `skipBlocks` and `getBlockchainTimeouts` functions_
 #### ws.ts
 _class to communicate with websockets_
 ### offerings.ts
