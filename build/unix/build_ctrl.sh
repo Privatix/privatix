@@ -2,7 +2,7 @@
 
 root_dir=$(cd `dirname $0` && pwd)
 cd ${root_dir}
-. ./build.local.config
+. ./build.sealed.config
 
 echo
 echo dappctrl
@@ -30,9 +30,6 @@ prepare_agent_config(){
 
     cp -v "${DAPPCTRL_DIR}"/${DAPPCTRL_CONFIG} \
            ${DAPPCTRL_BIN}/${DAPPCTRL_AGENT_CONFIG}
-
-    cp -v "${DAPPCTRL_DIR}"/${DAPPCTRL_CONFIG} \
-           ${DAPPCTRL_BIN}/${DAPPCTRL_AGENT_CONFIG}_source
 
     # change port to `${POSTGRES_PORT}`
     sed -i.b \
@@ -74,13 +71,17 @@ copy_inst_config(){
 print_diff(){
     echo
     echo ${DAPPCTRL_AGENT_CONFIG}
-    diff ${DAPPCTRL_BIN}/${DAPPCTRL_AGENT_CONFIG}_source \
+    diff ${DAPPCTRL_DIR}/${DAPPCTRL_CONFIG}  \
          ${DAPPCTRL_BIN}/${DAPPCTRL_AGENT_CONFIG}
 
     echo
     echo ${DAPPCTRL_CLIENT_CONFIG}
-    diff ${DAPPCTRL_BIN}/${DAPPCTRL_CLIENT_CONFIG}.b \
+    diff ${DAPPCTRL_DIR}/${DAPPCTRL_CONFIG} \
          ${DAPPCTRL_BIN}/${DAPPCTRL_CLIENT_CONFIG}
+}
+
+remove_b(){
+    find ${DAPPCTRL_BIN} -name '*.b' -delete
 }
 
 clean
@@ -88,6 +89,7 @@ build
 prepare_agent_config
 prepare_client_config
 copy_inst_config
+remove_b
 print_diff
 
 
