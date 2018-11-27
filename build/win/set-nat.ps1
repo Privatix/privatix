@@ -28,8 +28,7 @@ param (
     [Parameter(Mandatory)]
     [ValidateNotNullOrEmpty()]
     [string]$TAPdeviceAddress,
-    [Parameter(Mandatory)]
-    [bool]$Enabled
+    [switch]$Enabled
 )
 
 <#
@@ -45,18 +44,18 @@ param (
     Name of TAP adapter, that should get connection to internet
 
 .PARAMETER Enabled
-    If true - enable internet connection sharing. 
-    if false - disable internet connection sharing. 
+    If passed - enable internet connection sharing. 
+    If not presented - disable internet connection sharing. 
 
 .EXAMPLE
-    Set-InternetConnectionSharing -InetAdapterName 'Ethernet' -VPNAdapterName 'Privatix VPN Server' -Enabled $true
+    Set-InternetConnectionSharing -InetAdapterName 'Ethernet' -VPNAdapterName 'Privatix VPN Server' -Enabled
 
     Description
     -----------
     Enables internet sharing on "Ethernet" adpater, giving "Privatix VPN Server" adpater to use its internet connection.
 
 .EXAMPLE
-    Set-InternetConnectionSharing -InetAdapterName 'Ethernet' -VPNAdapterName 'Privatix VPN Server' -Enabled $false
+    Set-InternetConnectionSharing -InetAdapterName 'Ethernet' -VPNAdapterName 'Privatix VPN Server'
 
     Description
     -----------
@@ -149,7 +148,7 @@ $InetAdapterName = (Get-NetAdapter -Physical | Where-Object { $_.ifIndex -in $if
 # Find VPN server adpater by TAPdeviceAddress
 $VPNAdapterName = (Get-NetAdapter | Where-Object { $_.PnPDeviceID -eq $TAPdeviceAddress }).Name
 
-if ($Enabled) {
+if ($PSBoundParameters.ContainsKey('Enabled')) {
     # enable routing in registry
     $registryPath = "HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters"
     Get-ItemProperty -Path $registryPath -Name "IPEnableRouter" | Set-ItemProperty -Name "IPEnableRouter" -Value 1
