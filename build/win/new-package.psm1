@@ -109,6 +109,7 @@ function new-package {
     # common
     $dappctrlbin = (Get-Item "$gopath\bin\dappctrl.exe").FullName
     $dappctrlconfig = (Get-Item "$gopath\src\github.com\privatix\dappctrl\dappctrl-dev.config.json").FullName
+    $dappctrlFWruleScript = (Get-Item "$gopath\src\github.com\privatix\dappctrl\scripts\win\set-ctrlfirewall.ps1").FullName
     $dappguiFolder = (Get-Item "$artefactDir\dappctrlgui-win32-x64").FullName
     $pgFolder = (Get-Item "$staticArtefactsDir\pgsql").FullName
     $utilFolder = (Get-Item "$staticArtefactsDir\util").FullName
@@ -121,7 +122,9 @@ function new-package {
     $dappopenvpninstclientconfig = (Get-Item "$gopath\src\github.com\privatix\dapp-openvpn\inst\install.client.config.json").FullName
     $agentAdapterInstallerConfig = (Get-Item "$gopath\src\github.com\privatix\dapp-openvpn\inst\installer.agent.config.json").FullName
     $clientAdpaterInstallerConfig = (Get-Item "$gopath\src\github.com\privatix\dapp-openvpn\inst\installer.client.config.json").FullName 
-    
+    $dappopenvpnFWruleScript = (Get-Item "$gopath\src\github.com\privatix\dapp-openvpn\scripts\win\set-vpnfirewall.ps1").FullName
+    $dappopenvpnSetNAT = (Get-Item "$gopath\src\github.com\privatix\dapp-openvpn\scripts\win\set-nat.ps1").FullName
+      
     $openvpnFolder = (Get-Item "$staticArtefactsDir\openvpn").FullName
     #endregion
 
@@ -130,6 +133,7 @@ function new-package {
     #region dappctrl
     Copy-Item -Path $dappctrlbin -Destination "$rootAppPath\dappctrl\dappctrl.exe"
     Copy-Item -Path $dappctrlconfig -Destination "$rootAppPath\dappctrl\dappctrl.config.json"
+    Copy-Item -Path $dappctrlFWruleScript -Destination "$rootAppPath\dappctrl\set-ctrlfirewall.ps1"
     #endregion
 
     #region dappgui
@@ -154,6 +158,8 @@ function new-package {
     #region binary
     Copy-Item -Path $dappopenvpnbin -Destination "$prodInstancePath\bin\dappvpn.exe"
     Copy-Item -Path $dappopenvpninst -Destination "$prodInstancePath\bin\inst.exe"
+    Copy-Item -Path $dappopenvpnFWruleScript -Destination "$prodInstancePath\bin\set-vpnfirewall.ps1"
+    Copy-Item -Path $dappopenvpnSetNAT -Destination "$prodInstancePath\bin\set-nat.ps1"
     Copy-Item -Path "$openvpnFolder" -Destination "$prodInstancePath\bin\openvpn" -Recurse -Force
     #endregion
 
