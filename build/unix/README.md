@@ -9,6 +9,8 @@ Install prerequisite software if it's not installed.
 * [Golang](https://golang.org/doc/install) 1.11+. Make sure that 
 `$GOPATH/bin` is added to system path `$PATH`.
 
+* [Dep](https://github.com/golang/dep)
+
 * [PostgreSQL](https://www.postgresql.org/download/)
 by default, the Application will try to connect to a postgress
 via ```{"dbname": "dappctrl", "user": "postgres", "host": "localhost",
@@ -29,7 +31,7 @@ via ```{"dbname": "dappctrl", "user": "postgres", "host": "localhost",
 brew update
 
 brew install  \
-    git go postgresql gcc node openvpn openssl
+    git go dep postgresql gcc node openvpn openssl
 ```
 
 ### ubuntu
