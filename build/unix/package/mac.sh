@@ -9,6 +9,7 @@ app_dir=${PACKAGE_BIN}/${APP}
 
 clear(){
     rm -rf ${PACKAGE_BIN}
+    rm -rf ${ARTEFACTS_BIN}
 
     mkdir -p ${PACKAGE_BIN}
 
@@ -19,8 +20,6 @@ clear(){
     mkdir -p ${app_dir}/${PRODUCT}/${PRODUCT_ID}/${PRODUCT_DATA}
     mkdir -p ${app_dir}/${PRODUCT}/${PRODUCT_ID}/${LOG}
     mkdir -p ${app_dir}/${PRODUCT}/${PRODUCT_ID}/${PRODUCT_TEMPLATE}
-    mkdir -p ${app_dir}/${PGSQL}
-    mkdir -p ${app_dir}/${TOR}
     mkdir -p ${app_dir}/${DAPP_INSTALLER_GUI_DIR}/${DAPP_INSTALLER_GUI_BINARY_NAME}
 }
 
@@ -82,8 +81,23 @@ copy_product(){
 
     mv ${app_dir}/${PRODUCT}/${PRODUCT_ID}/${PRODUCT_TEMPLATE}/${DAPP_VPN_CLIENT_CONFIG}\
        ${app_dir}/${PRODUCT}/${PRODUCT_ID}/${PRODUCT_TEMPLATE}/${ADAPTER_CONFIG_CLIENT}
-
 }
+
+copy_artefacts()
+{
+    unzip ${ARTEFACTS_ZIP_URL} \
+          -d ${ARTEFACTS_BIN}
+
+    mv ${ARTEFACTS_BIN}/${OPEN_VPN} \
+       ${app_dir}/${PRODUCT}/${PRODUCT_ID}/${BIN}/${OPEN_VPN}
+
+    mv ${ARTEFACTS_BIN}/${PGSQL} \
+       ${app_dir}/${PGSQL}
+
+    mv ${ARTEFACTS_BIN}/${TOR} \
+       ${app_dir}/${TOR}
+}
+
 
 copy_installer(){
     cp -v ${DAPPINSTALLER_BIN}/${DAPP_INSTALLER} \
@@ -93,18 +107,18 @@ copy_installer(){
           ${PACKAGE_BIN}/${DAPP_INSTALLER_CONFIG}
 }
 
-#./git/update.sh
-#
-#./build_installer.shs
-#./build_ctrl.sh
-#./build_openvpn.sh
-#./build_gui.sh
+./git/update.sh
+
+./build_installer.sh
+./build_ctrl.sh
+./build_openvpn.sh
+./build_gui.sh
 
 clear
-#copy_ctrl
-#create_gui_package
+copy_ctrl
+create_gui_package
 copy_product
-
-#zip_package
-#remove_app
-#copy_installer
+copy_artefacts
+zip_package
+remove_app
+copy_installer
