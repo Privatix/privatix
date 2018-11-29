@@ -2,6 +2,11 @@
 
 cd `dirname $0`
 
+
+if [[ ! -d "${GOPATH}/bin/" ]]; then
+    mkdir "${GOPATH}"/bin/
+fi
+
 ./git/update.sh
 
 ./build_ctrl.sh
