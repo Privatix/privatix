@@ -69,7 +69,7 @@ prepare_client_config(){
 
 copy_inst_config(){
     cp -v   ${DAPPCTRL_BIN}/${DAPPCTRL_AGENT_CONFIG} \
-            ${DAPPCTRL_BIN}/dappctrl.config.json
+            ${DAPPCTRL_BIN}/${DAPPCTRL_CONFIG}
 }
 
 print_diff(){
