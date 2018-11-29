@@ -15,6 +15,10 @@ clean(){
 }
 
 build(){
+    if [[ ! -d "${GOPATH}/bin/" ]]; then
+        mkdir "${GOPATH}"/bin/
+    fi
+
     export DAPPINST_DIR
 
     "${DAPPINST_DIR}"/scripts/build.sh
