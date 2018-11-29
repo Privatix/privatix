@@ -5,25 +5,38 @@ cd ${root_dir}
 
 . ./build.sealed.config
 
-tmp_dir=${PACKAGE_BIN}/tmp
+app_dir=${PACKAGE_BIN}/${APP}
 
 clear(){
     rm -rf ${PACKAGE_BIN}
 
     mkdir -p ${PACKAGE_BIN}
-    mkdir -p ${tmp_dir}/${DAPPCTRL}
-    mkdir -p ${tmp_dir}/${DAPP_INSTALLER_GUI_DIR}/${DAPP_INSTALLER_GUI_BINARY_NAME}
+
+    mkdir -p ${app_dir}/${DAPPCTRL}
+    mkdir -p ${app_dir}/${LOG}
+    mkdir -p ${app_dir}/${PRODUCT}
+    mkdir -p ${app_dir}/${PGSQL}
+    mkdir -p ${app_dir}/${TOR}
+    mkdir -p ${app_dir}/${DAPP_INSTALLER_GUI_DIR}/${DAPP_INSTALLER_GUI_BINARY_NAME}
+}
+
+remove_app(){
+    rm -rf ${app_dir}
 }
 
 zip_package(){
-    zip -r "${PACKAGE_BIN}/${APP_ZIP}" ${APPLICATION_BIN}
+    cd ${PACKAGE_BIN}
+    zip -r ${APP_ZIP} \
+           ${APP}
+
+    cd ${root_dir}
 }
 
 copy_ctrl(){
     cp -v   ${DAPPCTRL_BIN}/${DAPPCTRL} \
-            ${tmp_dir}/${DAPPCTRL}/${DAPPCTRL}
+            ${app_dir}/${DAPPCTRL}/${DAPPCTRL}
     cp -v   ${DAPPCTRL_BIN}/${DAPPCTRL_CONFIG} \
-            ${tmp_dir}/${DAPPCTRL}/${DAPPCTRL_CONFIG}
+            ${app_dir}/${DAPPCTRL}/${DAPPCTRL_CONFIG}
 }
 
 create_gui_package(){
@@ -37,7 +50,7 @@ create_gui_package(){
     cd ${root_dir}
     pwd
     rsync -azhP ${DAPP_GUI_DIR}/${DAPP_GUI_PACKAGE_MAC}/${DAPP_GUI_PACKAGE_MAC_BINARY_NAME}/. \
-                ${tmp_dir}/${DAPP_INSTALLER_GUI_DIR}/${DAPP_INSTALLER_GUI_BINARY_NAME}
+                ${app_dir}/${DAPP_INSTALLER_GUI_DIR}/${DAPP_INSTALLER_GUI_BINARY_NAME}
 
 }
 
@@ -49,16 +62,17 @@ copy_installer(){
           ${PACKAGE_BIN}/${DAPP_INSTALLER_CONFIG}
 }
 
-./git/update.sh
-
-./build_installer.shs
-./build_ctrl.sh
-./build_openvpn.sh
-./build_gui.sh
+#./git/update.sh
+#
+#./build_installer.shs
+#./build_ctrl.sh
+#./build_openvpn.sh
+#./build_gui.sh
 
 clear
-copy_ctrl
-create_gui_package
+#copy_ctrl
+#create_gui_package
 
 zip_package
+#remove_app
 copy_installer
