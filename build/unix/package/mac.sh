@@ -14,7 +14,11 @@ clear(){
 
     mkdir -p ${app_dir}/${DAPPCTRL}
     mkdir -p ${app_dir}/${LOG}
-    mkdir -p ${app_dir}/${PRODUCT}
+    mkdir -p ${app_dir}/${PRODUCT}/${PRODUCT_ID}/${BIN}
+    mkdir -p ${app_dir}/${PRODUCT}/${PRODUCT_ID}/${PRODUCT_CONFIG}
+    mkdir -p ${app_dir}/${PRODUCT}/${PRODUCT_ID}/${PRODUCT_DATA}
+    mkdir -p ${app_dir}/${PRODUCT}/${PRODUCT_ID}/${LOG}
+    mkdir -p ${app_dir}/${PRODUCT}/${PRODUCT_ID}/${PRODUCT_TEMPLATE}
     mkdir -p ${app_dir}/${PGSQL}
     mkdir -p ${app_dir}/${TOR}
     mkdir -p ${app_dir}/${DAPP_INSTALLER_GUI_DIR}/${DAPP_INSTALLER_GUI_BINARY_NAME}
@@ -54,6 +58,33 @@ create_gui_package(){
 
 }
 
+copy_product(){
+    # binaries
+    cp -v "${GOPATH}"/bin/${DAPP_OPENVPN} \
+          ${app_dir}/${PRODUCT}/${PRODUCT_ID}/${BIN}/${DAPP_OPENVPN}
+
+    cp -v "${GOPATH}"/bin/${OPENVPN_INST} \
+          ${app_dir}/${PRODUCT}/${PRODUCT_ID}/${BIN}/${DAPP_INST}
+
+    #configs
+    for config in ${CONFIGS_TO_COPY[@]}
+    do
+          cp -v "${DAPP_OPENVPN_DIR}"/${DAPP_OPENVPN_INST_PROJECT}/${config} \
+                ${app_dir}/${PRODUCT}/${PRODUCT_ID}/${PRODUCT_CONFIG}/${config}
+    done
+
+    # templates
+    cp -va "${DAPP_OPENVPN_DIR}"/${DAPP_OPENVPN_TEMPLATES_LOCATION}/ \
+           ${app_dir}/${PRODUCT}/${PRODUCT_ID}/${PRODUCT_TEMPLATE}
+
+    mv ${app_dir}/${PRODUCT}/${PRODUCT_ID}/${PRODUCT_TEMPLATE}/${DAPP_VPN_AGENT_CONFIG}\
+       ${app_dir}/${PRODUCT}/${PRODUCT_ID}/${PRODUCT_TEMPLATE}/${ADAPTER_CONFIG_AGENT}
+
+    mv ${app_dir}/${PRODUCT}/${PRODUCT_ID}/${PRODUCT_TEMPLATE}/${DAPP_VPN_CLIENT_CONFIG}\
+       ${app_dir}/${PRODUCT}/${PRODUCT_ID}/${PRODUCT_TEMPLATE}/${ADAPTER_CONFIG_CLIENT}
+
+}
+
 copy_installer(){
     cp -v ${DAPPINSTALLER_BIN}/${DAPP_INSTALLER} \
           ${PACKAGE_BIN}/${DAPP_INSTALLER}
@@ -72,7 +103,8 @@ copy_installer(){
 clear
 #copy_ctrl
 #create_gui_package
+copy_product
 
-zip_package
+#zip_package
 #remove_app
-copy_installer
+#copy_installer
