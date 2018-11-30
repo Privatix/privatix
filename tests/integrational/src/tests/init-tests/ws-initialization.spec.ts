@@ -36,10 +36,19 @@ export function wsInitializationTest(settings: TestInputSettings) {
       });
 
       it('should set agent password', async () => {
+
+        if('AGENT_PWD' in process.env){
+          agentPwd = process.env.AGENT_PWD;
+        }
+
         await this.agentWs.setPassword(agentPwd);
       });
 
       it.skip('should set client password', async () => {
+        if('CLIENT_PWD' in process.env){
+          clientPwd = process.env.CLIENT_PWD;
+        }
+
         await this.clientWs.setPassword(clientPwd);
       });
 

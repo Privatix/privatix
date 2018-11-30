@@ -247,18 +247,8 @@ export class WS {
         this.socket.send(JSON.stringify(req));
     }
 
-    exportAccount(accountId: string, handler: Function){
-        const uuid = uuidv4();
-        WS.handlers[uuid] = handler;
-
-        const req = {
-            jsonrpc: '2.0',
-            id: uuid,
-            method: 'ui_exportPrivateKey',
-            params: [this.pwd, accountId]
-        };
-
-        this.socket.send(JSON.stringify(req));
+    exportAccount(accountId: string){
+        return this.send('ui_exportPrivateKey', [accountId]);
     }
 
     updateBalance(accountId: string){
