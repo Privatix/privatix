@@ -38,25 +38,13 @@ via ```{"dbname": "dappctrl", "user": "postgres", "host": "localhost",
 ### mac
 
 ```bash
-brew update
-
-brew install  \
-    git go postgresql gcc node openvpn openssl
+./prerequisites/mac/all.sh
 ```
 
 ### ubuntu
 
 ```bash
-sudo apt update
-
-sudo apt install \
-    git gcc curl openvpn easy-rsa openssl
-
-cd ./prerequisites/ubuntu/
-./install_go.sh
-./install_node.sh
-
-sudo ./install_postgress.sh
+./prerequisites/ubuntu/all.sh
 ```
 
 ## Prepare Build Config
