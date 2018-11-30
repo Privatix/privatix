@@ -14,5 +14,5 @@ do
     cd "${REPOSITORIES[i]}"
 
     echo Command: $1
-    "$1"
+    $1
 done
