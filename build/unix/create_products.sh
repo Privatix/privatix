@@ -76,13 +76,12 @@ copy_client(){
 copy_configs(){
     # dapp-openvpn configs
 
-
     # installer configs
-    cp -v ${OPENVPN_INST_DIR}/${INSTALLER_AGENT_CONFIG} \
-          ${OPENVPN_AGENT_BIN}/config/${INSTALLER_CONFIG}
+    cp -v "${DAPP_OPENVPN_DIR}"/${DAPP_OPENVPN_INST_PROJECT}/${INSTALLER_AGENT_CONFIG} \
+            ${OPENVPN_AGENT_BIN}/config/${INSTALLER_CONFIG}
 
-    cp -v ${OPENVPN_INST_DIR}/${INSTALLER_CLIENT_CONFIG} \
-          ${OPENVPN_CLIENT_BIN}/config/${INSTALLER_CONFIG}
+    cp -v "${DAPP_OPENVPN_DIR}"/${DAPP_OPENVPN_INST_PROJECT}/${INSTALLER_CLIENT_CONFIG} \
+            ${OPENVPN_CLIENT_BIN}/config/${INSTALLER_CONFIG}
 }
 
 prepare_configs(){

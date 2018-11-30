@@ -1,5 +1,17 @@
 # How to build privatix application on UNIX-like operating systems
 
+There is a two options:
+
+1. To create a package to install the application via Installer
+    ```bash
+    ./package/mac.sh
+    ```
+1. To build the application to run via `.sh` scripts (for dev
+purposes)
+    ```bash
+    ./build.sh
+    ```
+
 ## Install Prerequisites
 
 Install prerequisite software if it's not installed.
@@ -26,25 +38,13 @@ via ```{"dbname": "dappctrl", "user": "postgres", "host": "localhost",
 ### mac
 
 ```bash
-brew update
-
-brew install  \
-    git go postgresql gcc node openvpn openssl
+./prerequisites/mac/all.sh
 ```
 
 ### ubuntu
 
 ```bash
-sudo apt update
-
-sudo apt install \
-    git gcc curl openvpn easy-rsa openssl
-
-cd ./prerequisites/ubuntu/
-./install_go.sh
-./install_node.sh
-
-sudo ./install_postgress.sh
+./prerequisites/ubuntu/all.sh
 ```
 
 ## Prepare Build Config
@@ -77,6 +77,21 @@ To update all required repositories, execute the following script:
 ```bash
 ./git/update.sh
 ```
+
+## One-command create package
+
+### Mac
+
+Ensure, that you have artifacts (openvpn, pgsql, tor), located at `$ARTEFACTS_ZIP_URL`
+(`~/artefacts.zip` by default)
+
+To create a package, execute the following script:
+
+```bash
+./package/mac.sh
+```
+
+The package will be created at `./bin/package` folder.
 
 ## One-command build
 
