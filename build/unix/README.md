@@ -82,9 +82,16 @@ To update all required repositories, execute the following script:
 
 ### Mac
 
+Ensure, that you have artifacts (openvpn, pgsql, tor), located at `$ARTEFACTS_ZIP_URL`
+(`~/artefacts.zip` by default)
+
+To create a package, execute the following script:
+
 ```bash
 ./package/mac.sh
 ```
+
+The package will be created at `./bin/package` folder.
 
 ## One-command build
 
