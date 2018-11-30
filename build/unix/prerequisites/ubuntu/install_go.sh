@@ -15,3 +15,6 @@ source ~/.bashrc
 echo "GOPATH is: $GOPATH"
 echo "PATH is: $PATH"
 echo "GO version installed: $(go version)"
+
+echo "Installing golang Dep..."
+curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
