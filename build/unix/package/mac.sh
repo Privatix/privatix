@@ -12,6 +12,7 @@ clear(){
     rm -rf "${ARTEFACTS_BIN}"
 
     mkdir -p "${PACKAGE_BIN}"
+    mkdir -p "${PACKAGE_INSTALL_BUILDER_BIN}/${INSTALL_BUILDER_PROJECT}"
 
     mkdir -p "${app_dir}/${DAPPCTRL}"
     mkdir -p "${app_dir}/${LOG}"
@@ -107,6 +108,18 @@ copy_installer(){
           "${PACKAGE_BIN}/${DAPP_INSTALLER_CONFIG}"
 }
 
+build_installer(){
+    cp -va "${DAPPINST_DIR}/${INSTALL_BUILDER}/${INSTALL_BUILDER_PROJECT}" \
+           "${PACKAGE_INSTALL_BUILDER_BIN}"
+    cd "${PACKAGE_INSTALL_BUILDER_BIN}/${INSTALL_BUILDER_PROJECT}"
+    "${BITROCK_INSTALLER_BIN}/builder" build "${INSTALL_BUILDER_PROJECT_XML}" osx
+
+    cd "${root_dir}"
+
+    mv -v "${PACKAGE_INSTALL_BUILDER_BIN}/${INSTALL_BUILDER_PROJECT}/out" \
+          "${PACKAGE_INSTALL_BUILDER_BIN}"
+}
+
 ./git/update.sh
 
 ./build_installer.sh
@@ -120,5 +133,6 @@ create_gui_package
 copy_product
 copy_artefacts
 zip_package
-remove_app
+#remove_app
 copy_installer
+build_installer

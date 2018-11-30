@@ -80,6 +80,8 @@ To update all required repositories, execute the following script:
 
 ## One-command create package
 
+* Install [Bitrock InstallBuilder](https://installbuilder.bitrock.com/)
+
 ### Mac
 
 Ensure, that you have artifacts (openvpn, pgsql, tor), located at `$ARTEFACTS_ZIP_URL`
