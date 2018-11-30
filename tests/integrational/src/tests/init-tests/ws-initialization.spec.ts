@@ -27,6 +27,7 @@ export function wsInitializationTest(settings: TestInputSettings) {
       let clientPwd: string;
 
       it('should generate agent and client passwords', () => {
+
         agentPwd = Math.random().toString(36).substring(5);
         clientPwd = Math.random().toString(36).substring(5);
 
@@ -42,6 +43,7 @@ export function wsInitializationTest(settings: TestInputSettings) {
         }
 
         await this.agentWs.setPassword(agentPwd);
+
       });
 
       it.skip('should set client password', async () => {
@@ -50,6 +52,7 @@ export function wsInitializationTest(settings: TestInputSettings) {
         }
 
         await this.clientWs.setPassword(clientPwd);
+
       });
 
       it.skip('should fail with wrong agent password', async () => {
