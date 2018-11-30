@@ -1,5 +1,17 @@
 # How to build privatix application on UNIX-like operating systems
 
+There is a two options:
+
+1. To create a package to install the application via Installer
+    ```bash
+    ./package/mac.sh
+    ```
+1. To build the application to run via `.sh` scripts (for dev
+purposes)
+    ```bash
+    ./build.sh
+    ```
+
 ## Install Prerequisites
 
 Install prerequisite software if it's not installed.
@@ -76,6 +88,14 @@ To update all required repositories, execute the following script:
 
 ```bash
 ./git/update.sh
+```
+
+## One-command create package
+
+### Mac
+
+```bash
+./package/mac.sh
 ```
 
 ## One-command build
