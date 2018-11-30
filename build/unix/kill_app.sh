@@ -8,6 +8,7 @@ ps
 sudo ps
 
 sudo pkill -9 ${DAPP_OPENVPN}
+sudo pkill -9 ${OPEN_VPN}
 pkill -9 ${DAPPCTRL}
 
 echo
