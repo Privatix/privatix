@@ -16,6 +16,10 @@ clean(){
 }
 
 build(){
+    if [[ ! -d "${GOPATH}/bin/" ]]; then
+        mkdir "${GOPATH}"/bin/
+    fi
+
     export DAPPCTRL_DIR
 
     "${DAPPCTRL_DIR}"/scripts/build.sh
@@ -65,7 +69,7 @@ prepare_client_config(){
 
 copy_inst_config(){
     cp -v   ${DAPPCTRL_BIN}/${DAPPCTRL_AGENT_CONFIG} \
-            ${DAPPCTRL_BIN}/dappctrl.config.json
+            ${DAPPCTRL_BIN}/${DAPPCTRL_CONFIG}
 }
 
 print_diff(){
