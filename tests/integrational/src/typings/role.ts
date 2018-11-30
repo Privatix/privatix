@@ -1,3 +1,3 @@
-export enum Mode{
+export enum Role{
     CLIENT = 'client', AGENT = 'agent'
 }
