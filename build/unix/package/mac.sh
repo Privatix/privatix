@@ -8,7 +8,7 @@ cd "${root_dir}"
 app_dir="${PACKAGE_BIN}/${APP}"
 
 clear(){
-    rm -rf "${PACKAGE_BIN}"
+    rm -rf "${PACKAGE_INSTALL_BUILDER_BIN}"
     rm -rf "${ARTEFACTS_BIN}"
 
     mkdir -p "${PACKAGE_BIN}"
@@ -86,7 +86,12 @@ copy_product(){
 
 copy_artefacts()
 {
-    unzip "${ARTEFACTS_ZIP_URL}" \
+    if ! [ -f "${ARTEFACTS_LOCATION}" ]; then
+        echo Downloading: "${ARTEFACTS_ZIP_URL}"
+        curl -o "${ARTEFACTS_LOCATION}" "${ARTEFACTS_ZIP_URL}"
+    fi
+
+    unzip "${ARTEFACTS_LOCATION}" \
           -d "${ARTEFACTS_BIN}"
 
     mv "${ARTEFACTS_BIN}/${OPEN_VPN}" \
@@ -120,16 +125,16 @@ build_installer(){
           "${PACKAGE_INSTALL_BUILDER_BIN}"
 }
 
+clear
+
 ./git/update.sh
 
 ./build_installer.sh
 ./build_ctrl.sh
 ./build_openvpn.sh
-./build_gui.sh
-
-clear
-copy_ctrl
 create_gui_package
+
+copy_ctrl
 copy_product
 copy_artefacts
 zip_package
