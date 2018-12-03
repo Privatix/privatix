@@ -58,7 +58,7 @@
 #>
 [CmdletBinding()]
 param(
-    [string]$wkdir = "c:\prix_workdir\",
+    [string]$wkdir,
     [ValidateScript( {Test-Path $_ })]
     [string]$staticArtefactsDir = "c:\privatix\art",
     [switch]$pack,
@@ -67,11 +67,38 @@ param(
     [string]$dappinstbranch = "develop",
     [string]$dappopenvpnbranch = "develop",
     [switch]$godep,
-    [switch]$gitpull
+    [switch]$gitpull,
+    [ValidateSet('nothing', 'binaries', 'all')]
+    [string]$clean = 'nothing'
 )
+if (-not $PSBoundParameters.ContainsKey('wkdir')) {
+    $wkdir = $($ENV:SystemDrive) + "\build\" + (Get-Date -Format "MMdd_HHmm")
+}
+
 if ($PSBoundParameters.ContainsKey('Verbose')) {
     $global:VerbosePreference = [System.Management.Automation.ActionPreference]::Continue
 }
+
+if (($clean -eq 'binaries') -or ($clean -eq 'all')) {
+    try {
+        Write-Verbose "Removing binaries..."
+        .\remove-binaries.ps1
+    } 
+    catch {Write-Warning "Some error occured during binaries cleanup. Original error: $($error[0].Exception)"}
+}
+
+if ($clean -eq 'all') {
+    try {
+        $gopath = $ENV:GOPATH
+        $privatixDir = "$gopath\src\github.com\privatix"
+        if (Test-Path $privatixDir) {
+            Write-Verbose "Removing $privatixDir folder ..."
+            Remove-Item -Path $privatixDir -Recurse -Force -Confirm:$false
+        }   
+    } 
+    catch {Write-Warning "Some error occured during folder cleanup. Original error: $($error[0].Exception)"}
+}
+
 
 
 $builddapp = (Join-Path $PSScriptRoot build-dapp.ps1 -Resolve -ErrorAction Stop)
