@@ -93,7 +93,7 @@ To create a package, execute the following script:
 ./package/mac.sh
 ```
 
-The package will be created at `./bin/package` folder.
+The package will be created at `.bin/installbuilder/out` folder.
 
 ## One-command build
 
@@ -163,12 +163,14 @@ in Client mode, execute the following script:
 ./run_client.sh
 ```
 
-### Agent
+### Agent (not supported at this moment)
+
 To run:
 
 * dappctrl
 * dapp-openvpn
 * dapp-gui
+* openvpn
 
 in Agent mode, execute the following script:
 
