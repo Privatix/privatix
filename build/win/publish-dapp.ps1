@@ -72,7 +72,7 @@ param(
     [string]$clean = 'nothing'
 )
 if (-not $PSBoundParameters.ContainsKey('wkdir')) {
-    $wkdir = $($ENV:SystemDrive) + "\build\" + (Get-Date -Format "MMdd_HHmm")
+    $wkdir = $($ENV:SystemDrive) + "\build\" + (Get-Date -Format "MMdd_hhmm")
 }
 
 if ($PSBoundParameters.ContainsKey('Verbose')) {
