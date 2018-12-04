@@ -135,7 +135,7 @@ clear
 ./git/update.sh || exit 1
 
 ./build_installer.sh || exit 1
-./build_ctrl.sh || exit 1
+./build_ctrl.sh 
 ./build_openvpn.sh || exit 1
 create_gui_package
 
