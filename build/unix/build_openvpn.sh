@@ -4,9 +4,9 @@ root_dir=$(cd `dirname $0` && pwd)
 cd ${root_dir}
 . ./build.sealed.config
 
-echo
+echo -----------------------------------------------------------------------
 echo dapp-openvpn
-echo
+echo -----------------------------------------------------------------------
 
 clean(){
     rm "${GOPATH}"/bin/${DAPP_OPENVPN_INST}

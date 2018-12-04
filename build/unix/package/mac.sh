@@ -44,9 +44,9 @@ copy_ctrl(){
 }
 
 create_gui_package(){
-    echo
+    echo -----------------------------------------------------------------------
     echo create gui package
-    echo
+    echo -----------------------------------------------------------------------
 
     cd "${DAPP_GUI_DIR}"
     npm i || exit 1
@@ -57,7 +57,6 @@ create_gui_package(){
     echo
 
     cd ${root_dir}
-    pwd
     rsync -azhP "${DAPP_GUI_DIR}/${DAPP_GUI_PACKAGE_MAC}/${DAPP_GUI_PACKAGE_MAC_BINARY_NAME}/." \
                 "${app_dir}/${DAPP_INSTALLER_GUI_DIR}/${DAPP_INSTALLER_GUI_BINARY_NAME}" || exit 1
 
@@ -119,6 +118,10 @@ copy_installer(){
 }
 
 build_installer(){
+    echo -----------------------------------------------------------------------
+    echo build installer gui
+    echo -----------------------------------------------------------------------
+
     cp -va "${DAPPINST_DIR}/${INSTALL_BUILDER}/${INSTALL_BUILDER_PROJECT}" \
            "${PACKAGE_INSTALL_BUILDER_BIN}" || exit 1
     cd "${PACKAGE_INSTALL_BUILDER_BIN}/${INSTALL_BUILDER_PROJECT}" || exit 1
@@ -128,6 +131,9 @@ build_installer(){
 
     mv -v "${PACKAGE_INSTALL_BUILDER_BIN}/${INSTALL_BUILDER_PROJECT}/out" \
           "${PACKAGE_INSTALL_BUILDER_BIN}" || exit 1
+
+    echo
+    echo done
 }
 
 clear
@@ -135,7 +141,7 @@ clear
 ./git/update.sh || exit 1
 
 ./build_installer.sh || exit 1
-./build_ctrl.sh 
+./build_ctrl.sh || exit 1
 ./build_openvpn.sh || exit 1
 create_gui_package
 

@@ -4,9 +4,10 @@ root_dir=$(cd `dirname $0` && pwd)
 cd ${root_dir}
 . ./build.sealed.config
 
-echo
+echo -----------------------------------------------------------------------
 echo dappinstaller
-echo
+echo -----------------------------------------------------------------------
+
 
 clean(){
     rm "${GOPATH}"/bin/${DAPP_INSTALLER}

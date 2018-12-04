@@ -4,9 +4,9 @@ root_dir=$(cd `dirname $0` && pwd)
 cd ${root_dir}
 . ./build.sealed.config
 
-echo
+echo -----------------------------------------------------------------------
 echo dappctrl
-echo
+echo -----------------------------------------------------------------------
 
 clean(){
     rm "${GOPATH}"/bin/${DAPPCTRL}
@@ -82,6 +82,7 @@ print_diff(){
     echo ${DAPPCTRL_CLIENT_CONFIG}
     diff ${DAPPCTRL_DIR}/${DAPPCTRL_CONFIG} \
          ${DAPPCTRL_BIN}/${DAPPCTRL_CLIENT_CONFIG}
+    echo
 }
 
 remove_b(){
