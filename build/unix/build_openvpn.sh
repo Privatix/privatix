@@ -21,7 +21,7 @@ build(){
 
     export DAPP_OPENVPN_DIR
 
-    "${DAPP_OPENVPN_DIR}"/scripts/build.sh
+    "${DAPP_OPENVPN_DIR}"/scripts/build.sh || exit 1
 }
 
 clean

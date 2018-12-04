@@ -21,7 +21,7 @@ build(){
 
     export DAPPINST_DIR
 
-    "${DAPPINST_DIR}"/scripts/build.sh
+    "${DAPPINST_DIR}"/scripts/build.sh || exit 1
 
     cp -v   "${GOPATH}"/bin/${DAPP_INSTALLER} \
             ${DAPPINSTALLER_BIN}/${DAPP_INSTALLER} || exit 1
