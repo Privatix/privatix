@@ -22,7 +22,7 @@ build(){
 
     export DAPPCTRL_DIR
 
-    "${DAPPCTRL_DIR}"/scripts/build.sh
+    "${DAPPCTRL_DIR}"/scripts/build.sh || exit 1
 
     cp -v   "${GOPATH}"/bin/${DAPPCTRL} \
             ${DAPPCTRL_BIN}/${DAPPCTRL} || exit 1
