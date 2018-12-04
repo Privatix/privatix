@@ -16,7 +16,7 @@ clean(){
 
 build(){
     if [[ ! -d "${GOPATH}/bin/" ]]; then
-        mkdir "${GOPATH}"/bin/
+        mkdir "${GOPATH}"/bin/ || exit 1
     fi
 
     export DAPP_OPENVPN_DIR

@@ -11,12 +11,12 @@ echo
 clean(){
     rm "${GOPATH}"/bin/${DAPP_INSTALLER}
     rm -rf ${DAPPINSTALLER_BIN}
-    mkdir -p ${DAPPINSTALLER_BIN}
+    mkdir -p ${DAPPINSTALLER_BIN} || exit 1
 }
 
 build(){
     if [[ ! -d "${GOPATH}/bin/" ]]; then
-        mkdir "${GOPATH}"/bin/
+        mkdir "${GOPATH}"/bin/ || exit 1
     fi
 
     export DAPPINST_DIR
@@ -24,12 +24,12 @@ build(){
     "${DAPPINST_DIR}"/scripts/build.sh
 
     cp -v   "${GOPATH}"/bin/${DAPP_INSTALLER} \
-            ${DAPPINSTALLER_BIN}/${DAPP_INSTALLER}
+            ${DAPPINSTALLER_BIN}/${DAPP_INSTALLER} || exit 1
 }
 
 copy_config(){
      cp -v   ${DAPPINST_DIR}/${DAPP_INSTALLER_CONFIG} \
-             ${DAPPINSTALLER_BIN}/${DAPP_INSTALLER_CONFIG}
+             ${DAPPINSTALLER_BIN}/${DAPP_INSTALLER_CONFIG} || exit 1
 }
 
 
