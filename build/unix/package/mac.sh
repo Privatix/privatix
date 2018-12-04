@@ -29,9 +29,8 @@ remove_app(){
 }
 
 zip_package(){
-    cd "${PACKAGE_BIN}"
-    zip -r "${APP_ZIP}" \
-           "${APP}" || exit 1
+    cd "${PACKAGE_BIN}/${APP}"
+    zip -r "../${APP_ZIP}" * || exit 1
 
     cd "${root_dir}"
 }
