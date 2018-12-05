@@ -9,7 +9,7 @@ app_dir="${PACKAGE_BIN}/${APP}"
 
 clear(){
     rm -rf "${PACKAGE_INSTALL_BUILDER_BIN}"
-    rm -rf "${ARTEFACTS_BIN}"
+#    rm -rf "${ARTEFACTS_BIN}"
 
     mkdir -p "${PACKAGE_BIN}" || exit 1
     mkdir -p "${PACKAGE_INSTALL_BUILDER_BIN}/${INSTALL_BUILDER_PROJECT}" || exit 1
@@ -49,6 +49,7 @@ create_gui_package(){
 
     cd "${DAPP_GUI_DIR}"
     npm i || exit 1
+    npm run build || exit 1
     npm run package-mac || exit 1
 
     echo
@@ -94,16 +95,23 @@ copy_artefacts()
         curl -o "${ARTEFACTS_LOCATION}" "${ARTEFACTS_ZIP_URL}" || exit 1
     fi
 
-    unzip "${ARTEFACTS_LOCATION}" \
-          -d "${ARTEFACTS_BIN}" || exit 1
+    if [[ ! -d "${ARTEFACTS_BIN}" ]]; then
+        echo unzip "${ARTEFACTS_LOCATION}"
+        unzip "${ARTEFACTS_LOCATION}" \
+                -d "${ARTEFACTS_BIN}" || exit 1
+    fi
 
-    mv "${ARTEFACTS_BIN}/${OPEN_VPN}" \
+    echo
+    echo copy artefacts
+    echo
+
+    cp -r "${ARTEFACTS_BIN}/${OPEN_VPN}/." \
        "${app_dir}/${PRODUCT}/${PRODUCT_ID}/${BIN}/${OPEN_VPN}" || exit 1
 
-    mv "${ARTEFACTS_BIN}/${PGSQL}" \
+    cp -r "${ARTEFACTS_BIN}/${PGSQL}/." \
        "${app_dir}/${PGSQL}" || exit 1
 
-    mv "${ARTEFACTS_BIN}/${TOR}" \
+    cp -r "${ARTEFACTS_BIN}/${TOR}/." \
        "${app_dir}/${TOR}" || exit 1
 }
 

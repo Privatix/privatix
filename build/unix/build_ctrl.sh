@@ -9,7 +9,6 @@ echo dappctrl
 echo -----------------------------------------------------------------------
 
 clean(){
-    rm "${GOPATH}"/bin/${DAPPCTRL}
     rm -rf ${DAPPCTRL_BIN}
     mkdir -p ${DAPPCTRL_BIN} || exit 1
     mkdir -p ${DAPPCTRL_LOG} || exit 1

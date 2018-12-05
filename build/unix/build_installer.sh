@@ -10,7 +10,6 @@ echo -----------------------------------------------------------------------
 
 
 clean(){
-    rm "${GOPATH}"/bin/${DAPP_INSTALLER}
     rm -rf ${DAPPINSTALLER_BIN}
     mkdir -p ${DAPPINSTALLER_BIN} || exit 1
 }

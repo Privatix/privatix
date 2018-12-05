@@ -9,9 +9,7 @@ echo dapp-openvpn
 echo -----------------------------------------------------------------------
 
 clean(){
-    rm "${GOPATH}"/bin/${DAPP_OPENVPN_INST}
-    rm "${GOPATH}"/bin/${DAPP_OPENVPN}
-    rm "${GOPATH}"/bin/${OPENVPN_INST}
+    echo
 }
 
 build(){
