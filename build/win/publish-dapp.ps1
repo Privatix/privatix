@@ -93,7 +93,7 @@ param(
     
 )
 if (-not $PSBoundParameters.ContainsKey('wkdir')) {
-    $wkdir = $($ENV:SystemDrive) + "\build\" + (Get-Date -Format "MMdd_hhmm")
+    $wkdir = $($ENV:SystemDrive) + "\build\" + (Get-Date -Format "MMdd_HHmm")
 }
 
 if ($PSBoundParameters.ContainsKey('installer')) {
