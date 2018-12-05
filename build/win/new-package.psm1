@@ -13,6 +13,9 @@
 .PARAMETER staticArtefactsDir
     Folder, where static artifacts exists, such as postgresql, tor, visual studio redistributable.
 
+.PARAMETER installer
+    Prepare artefacts for BitRock installer
+
 .EXAMPLE
     new-package -wrkdir "c:\workdir" -staticArtefactsDir "c:\privatix\static_artifacts"
 
@@ -20,15 +23,23 @@
     -----------
     Package Privatix application.
 
+.EXAMPLE
+    new-package -wrkdir "c:\workdir" -staticArtefactsDir "c:\privatix\static_artifacts" -installer
+
+    Description
+    -----------
+    Package Privatix application. Prepare for BitRock Installer build.
+
 #>
 function new-package {
     [cmdletbinding()]
     param(
         [ValidateNotNullorEmpty()]
         [ValidateScript( {Test-Path $_ -IsValid -PathType "Container"})]
-        [string]$wrkdir = "c:\privatix",
+        [string]$wrkdir,
         [ValidateScript( {Test-Path $_ })]
-        [string]$staticArtefactsDir
+        [string]$staticArtefactsDir,
+        [switch]$installer
 
     )
  
@@ -44,8 +55,9 @@ function new-package {
 
 
     $rootAppPath = Join-Path $wrkdir "app"
-    $deployAppPath = Join-Path $wrkdir "deploy"
+    $deployAppPath = Join-Path $wrkdir "win-dapp-installer"
     $artefactDir = Join-Path $wrkdir "art"
+    $bitrockProjectDir = Join-Path $wrkdir "project"
 
     
     # Product ID supposed to be unchangable for single product (e.g. VPN)
@@ -106,6 +118,7 @@ function new-package {
     # artefacts
     # core installer
     $dappinstallerbin = (Get-Item "$gopath\bin\dapp-installer.exe").FullName
+    $dappinstallerconf = (Get-Item "$gopath\src\github.com\privatix\dapp-installer\dapp-installer.config.json").FullName
     # common
     $dappctrlbin = (Get-Item "$gopath\bin\dappctrl.exe").FullName
     $dappctrlconfig = (Get-Item "$gopath\src\github.com\privatix\dappctrl\dappctrl-dev.config.json").FullName
@@ -126,6 +139,8 @@ function new-package {
     $dappopenvpnSetNAT = (Get-Item "$gopath\src\github.com\privatix\dapp-openvpn\scripts\win\set-nat.ps1").FullName
       
     $openvpnFolder = (Get-Item "$staticArtefactsDir\openvpn").FullName
+    # bitrock installer
+    $bitrockProjectDirSource = (Get-Item "$gopath\src\github.com\privatix\dapp-installer\installbuilder\project").FullName
     #endregion
 
     #region core app
@@ -179,14 +194,19 @@ function new-package {
     #endregion
     #endregion
 
+    #region bitrock project
+    Copy-Item -Path "$bitrockProjectDirSource" -Destination $bitrockProjectDir -Recurse -Force
+    #endregion
+
     #region archive app
     Write-Verbose "Making archive for deploy..."
     add-type -AssemblyName System.IO.Compression.FileSystem
-    [System.IO.Compression.ZipFile]::CreateFromDirectory($rootAppPath, "$deployAppPath\app.zip", 'NoCompression', $false)
+    [System.IO.Compression.ZipFile]::CreateFromDirectory($rootAppPath, "$deployAppPath\app.zip", 'Optimal', $false)
     #endregion
 
     #region dapp-installer artefact
     Copy-Item -Path $dappinstallerbin -Destination "$deployAppPath\dapp-installer.exe"
+    Copy-Item -Path $dappinstallerconf -Destination "$deployAppPath\dapp-installer.config.json"
     #endregion
 
     #region dev app installation scripts
