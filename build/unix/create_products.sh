@@ -35,7 +35,7 @@ prepare_install(){
     cp -v "${GOPATH}"/bin/${OPENVPN_INST} \
           ${OPENVPN_AGENT_BIN}/bin/${OPENVPN_INST}
 
-    cp -av "${DAPP_OPENVPN_DIR}"/${DAPP_OPENVPN_TEMPLATES_LOCATION}/ \
+    cp -av "${DAPP_OPENVPN_DIR}"/${DAPP_OPENVPN_TEMPLATES_LOCATION}/. \
            ${OPENVPN_AGENT_BIN}/${PRODUCT_TEMPLATE}
 
     cp -v ${OPENVPN_INST_DIR}/openvpn-down-root.so \
