@@ -40,7 +40,7 @@ prepare_agent_config(){
         ${DAPPCTRL_BIN}/${DAPPCTRL_AGENT_CONFIG}
 
     user_pass="\"user\": \"${POSTGRES_USER}\"\
-${POSTGRES_PASSWORD:+, \"password\"=\"${POSTGRES_PASSWORD}\"}"
+${POSTGRES_PASSWORD:+, \"password\": \"${POSTGRES_PASSWORD}\"}"
 
     # change user to `${POSTGRES_USER}`
     sed -i.b \
