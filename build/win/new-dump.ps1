@@ -1,8 +1,8 @@
 <#
 .SYNOPSIS
-    Gather logs, config nad DB dump on Windows
+    Gather logs, config and DB dump on Windows
 .DESCRIPTION
-    Gather logs, config nad DB dump on Windows. 
+    Gather logs, config and DB dump on Windows. 
     Makes folder "dump" and places all logs, configs and DB dump in it. 
     Creates zip archive.
 
@@ -14,7 +14,7 @@
 
     Description
     -----------
-    Gather logs, configs and DB dump. Create folder "dump" inside installation directory and place zipped files in archive. 
+    Gathers logs, configs and DB dump. Creates folder "dump" inside installation directory and places zipped files in single archive. 
 #>
 [cmdletbinding()]
 param(
@@ -30,11 +30,9 @@ $dappguiPackageJson = Join-Path -Path $installDir -ChildPath "dappgui\resources\
 $ProdConf = Join-Path -Path $installDir -ChildPath "product\73e17130-2a1d-4f7d-97a8-93a9aaa6f10d\config" -Resolve
 $DBconf = (Get-Content $dappctrlconf | ConvertFrom-Json).DB.conn 
 if ($DBconf.password) {$env:PGPASSWORD = $DBconf.password}
-$connstr = "host=$($DBconf.host) dbname=$($DBconf.dbname) user=$($DBconf.user) port=$($DBconf.port)"
-$connstr += " sslmode=disable"
 $OutFolder = (New-Item -Path "$installDir\dump\$(get-date -Format "MMdd_HHmm")" -ItemType Directory).FullName
 New-Item -Path $OutFolder -Name "coreconfig" -ItemType Directory -Force | Out-Null
-Invoke-Expression "$PGdump -C --column-inserts -d dappctrl -h 127.0.0.1 -p 5433 -U postgres -f `"$OutFolder\dbdump$(get-date -Format "MMdd_HHmm").sql`""
+Invoke-Expression "$PGdump -C --column-inserts -d $($DBconf.dbname) -h $($DBconf.host) -p $($DBconf.port) -U $($DBconf.user) -f `"$OutFolder\dbdump$(get-date -Format "MMdd_HHmm").sql`""
 Copy-Item -Path $CoreLog -Destination "$OutFolder\corelog" -Recurse -Force
 Copy-Item -Path $ProdLog -Destination "$OutFolder\prodlog" -Recurse -Force
 Copy-Item -Path $dappctrlconf -Destination "$OutFolder\coreconfig\dappctrl.config.json"  -Force
