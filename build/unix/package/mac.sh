@@ -48,6 +48,8 @@ create_gui_package(){
     echo -----------------------------------------------------------------------
 
     cd "${DAPP_GUI_DIR}"
+    rm -rf ./build/
+
     npm i || exit 1
     npm run build || exit 1
     npm run package-mac || exit 1
