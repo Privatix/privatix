@@ -5,29 +5,23 @@ import {TestInputSettings, TestModel, TestScope} from "../typings/test-models";
 
 export const createSmokeTestFactory =
   (
-    testSettings: TestInputSettings,
-    allowedScope: TestScope = TestScope.NONE
+    testSettings: TestInputSettings
   ) => {
     return (testModel: TestModel) => {
-      const { name, scope, testFn } = testModel;
+      const { name, testFn } = testModel;
+      const { allowedScope } = testSettings;
 
-      let itFunc: Function;
-      if (scope !== TestScope.NONE && scope !== allowedScope) {
-        itFunc = it;
-      } else {
-        itFunc = it;
-      }
-
+      const itFunc = getItFunc(testModel, allowedScope);
       return itFunc(name, () => testFn(testSettings));
     }
   };
 
 export const getItFunc =
-  (testModel: TestModel, allowedScope: TestScope) => {
+  (testModel: {scope: TestScope}, allowedScope: TestScope) => {
     const { scope } = testModel;
 
     let itFunc: Function;
-    if (scope !== TestScope.NONE && scope !== allowedScope) {
+    if (allowedScope !== TestScope.BOTH && scope !== allowedScope) {
       itFunc = it.skip;
     } else {
       itFunc = it;

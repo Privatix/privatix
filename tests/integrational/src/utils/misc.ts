@@ -5,3 +5,16 @@ export const getAllowedScope = (): TestScope => {
 
   return TestScope[scope.toUpperCase()];
 };
+
+export const getMyIP = async () =>  {
+  return new Promise((resolve, reject) => {
+    const http = require('http');
+
+    http.get('http://ident.me/', res => {
+      let data = '';
+
+      res.on('data', chumk => data += chumk);
+      res.on('end', () => resolve(data))
+    }, err => reject(err));
+  });
+};
