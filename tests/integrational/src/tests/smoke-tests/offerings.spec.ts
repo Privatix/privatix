@@ -1,6 +1,8 @@
 import { expect } from 'chai';
 import 'mocha';
 
+import { Until } from '../../utils/until';
+
 import { skipBlocks } from '../../utils/eth';
 import {
   generateOffering,
@@ -63,6 +65,7 @@ export const offerings: TestModel = {
         });
 
         agentIt('should create some additional offerings', async function() {
+          const productId = (await agentWs.getProducts())[0].id;
           const gasPrice = parseInt((await agentWs.getSettings())['eth.default.gasprice'].value, 10);
           const accounts = await agentWs.getAccounts();
           const agentWsId = accounts[0].id;
@@ -86,6 +89,7 @@ export const offerings: TestModel = {
         });
 
         agentIt('should contain already created offerings for agentWs', async () => {
+          const productId = (await agentWs.getProducts())[0].id;
           const offerings = await agentWs.getAgentOfferings(
             productId,
             OfferStatus.empty,
