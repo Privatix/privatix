@@ -1,5 +1,5 @@
 {
-  "agentWsEndpoint": "ws://89.38.96.162:8889/ws",
+  "agentWsEndpoint": "ws://89.38.96.162:8888/ws",
   "clientWsEndpoint": "ws://localhost:8888/ws",
   "getPrixEndpoint": {
       "protocol": "http:",

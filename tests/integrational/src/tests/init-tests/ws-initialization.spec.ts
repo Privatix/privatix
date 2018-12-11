@@ -46,7 +46,7 @@ export function wsInitializationTest(settings: TestInputSettings) {
 
       });
 
-      it.skip('should set client password', async () => {
+      it('should set client password', async () => {
         if('CLIENT_PWD' in process.env){
           clientPwd = process.env.CLIENT_PWD;
         }

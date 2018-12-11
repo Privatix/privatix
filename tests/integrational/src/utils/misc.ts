@@ -6,7 +6,7 @@ export const getAllowedScope = (): TestScope => {
   return TestScope[scope.toUpperCase()];
 };
 
-export const getMyIP = async () =>  {
+export const getClientIP = async () =>  {
   return new Promise((resolve, reject) => {
     const http = require('http');
 
