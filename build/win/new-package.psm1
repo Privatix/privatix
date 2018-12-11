@@ -137,6 +137,8 @@ function new-package {
     $clientAdpaterInstallerConfig = (Get-Item "$gopath\src\github.com\privatix\dapp-openvpn\inst\installer.client.config.json").FullName 
     $dappopenvpnFWruleScript = (Get-Item "$gopath\src\github.com\privatix\dapp-openvpn\scripts\win\set-vpnfirewall.ps1").FullName
     $dappopenvpnSetNAT = (Get-Item "$gopath\src\github.com\privatix\dapp-openvpn\scripts\win\set-nat.ps1").FullName
+    $dappopenvpnScheduleTaskScript = (Get-Item "$gopath\src\github.com\privatix\dapp-openvpn\scripts\win\new-startupTask.ps1").FullName
+    $dappopenvpnReenableNat = (Get-Item "$gopath\src\github.com\privatix\dapp-openvpn\scripts\win\reenable-nat.ps1").FullName
       
     $openvpnFolder = (Get-Item "$staticArtefactsDir\openvpn").FullName
     # bitrock installer
@@ -175,6 +177,8 @@ function new-package {
     Copy-Item -Path $dappopenvpninst -Destination "$prodInstancePath\bin\inst.exe"
     Copy-Item -Path $dappopenvpnFWruleScript -Destination "$prodInstancePath\bin\set-vpnfirewall.ps1"
     Copy-Item -Path $dappopenvpnSetNAT -Destination "$prodInstancePath\bin\set-nat.ps1"
+    Copy-Item -Path $dappopenvpnScheduleTaskScript -Destination "$prodInstancePath\bin\new-startupTask.ps1"
+    Copy-Item -Path $dappopenvpnReenableNat -Destination "$prodInstancePath\bin\reenable-nat.ps1"
     Copy-Item -Path "$openvpnFolder" -Destination "$prodInstancePath\bin\openvpn" -Recurse -Force
     #endregion
 
