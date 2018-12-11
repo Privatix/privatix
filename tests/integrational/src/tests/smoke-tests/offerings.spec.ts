@@ -27,6 +27,8 @@ export const offerings: TestModel = {
       allowedScope, configs
     } = settings;
 
+    const until = Until(agentWs);
+
     const agentIt = getItFunc({scope: TestScope.AGENT}, allowedScope);
     const clientIt = getItFunc({scope: TestScope.CLIENT}, allowedScope);
 
