@@ -5,13 +5,17 @@ import {Account} from '../typings/accounts';
 import {Transaction} from '../typings/transactions';
 import {Product} from '../typings/products';
 import {Session} from '../typings/session';
-import {Channel} from '../typings/channels';
-import {Template} from '../typings/templates';
+import {Channel, ClientChannel} from '../typings/channels';
+// import {Template} from '../typings/templates';
+import { Log } from '../typings/logs';
+import { Role } from '../typings/role';
 import { PaginatedResponse} from '../typings/paginatedResponse';
 
 type OfferingResponse = PaginatedResponse<Offering[]>;
 type ChannelResponse  = PaginatedResponse<Channel[]>;
+type ClientChannelResponse  = PaginatedResponse<ClientChannel[]>;
 type TransactionResponse = PaginatedResponse<Transaction[]>;
+type LogResponse = PaginatedResponse<Log[]>;
 
 const WebSocket = require('ws');
 
@@ -22,6 +26,7 @@ export class WS {
 
     static byUUID = {}; // uuid -> subscribeID
     static bySubscription = {}; // subscribeId -> uuid
+    static subscriptions = {};
 
     private socket: WebSocket;
     private pwd: string;
@@ -30,6 +35,7 @@ export class WS {
     private resolve: Function = null;
 
     constructor(endpoint: string) {
+
         const socket = new WebSocket(endpoint, {perMessageDeflate: false});
         this.ready = new Promise((resolve: Function) => {
             // this.reject = reject;
@@ -53,12 +59,15 @@ export class WS {
             const msg = JSON.parse(event);
             if('id' in msg && 'string' === typeof msg.id){
                 if(msg.id in WS.handlers){
-                    WS.handlers[msg.id](msg);
+                    const handler = WS.handlers[msg.id];
                     delete WS.handlers[msg.id];
+                    handler(msg);
                 }else {
                     if('result' in msg && 'string' === typeof msg.result){
                         WS.byUUID[msg.id] = msg.result;
                         WS.bySubscription[msg.result] = msg.id;
+                        WS.subscriptions[msg.id](msg.result);
+                        delete WS.subscriptions[msg.id];
                     }
                 }
             }else if('method' in msg && msg.method === 'ui_subscription'){
@@ -82,17 +91,21 @@ export class WS {
         return this.ready;
     }
 
-    subscribe(entityType:string, ids: string[], handler: Function) {
-        const uuid = uuidv4();
-        const req = {
-            jsonrpc: '2.0',
-            id: uuid,
-            method: 'ui_subscribe',
-            params: ['objectChange', this.pwd, entityType, ids]
-        };
-        WS.listeners[uuid] = handler;
-        this.socket.send(JSON.stringify(req));
-        return uuid;
+    subscribe(entityType:string, ids: string[], handler: Function): Promise<string>{
+        return new Promise((resolve: Function, reject: Function) => {
+            const uuid = uuidv4();
+            const req = {
+                jsonrpc: '2.0',
+                id: uuid,
+                method: 'ui_subscribe',
+                params: ['objectChange', this.pwd, entityType, ids]
+            };
+            WS.subscriptions[uuid] = () => {
+                WS.listeners[uuid] = handler;
+                resolve(uuid);
+            };
+            this.socket.send(JSON.stringify(req));
+        }) as Promise<string>;
     }
 
     unsubscribe(id: string){
@@ -106,10 +119,24 @@ export class WS {
 	            method: 'ui_unsubscribe',
 	            params: [ WS.byUUID[id] ]
             };
-            this.socket.send(JSON.stringify(req));
-            delete WS.listeners[id];
-            delete WS.bySubscription[WS.byUUID[id]];
-            delete WS.byUUID[id];
+
+            return new Promise((resolve: Function, reject: Function) => {
+                const handler = function(res: any){
+                    if('error' in res){
+                        reject(res.error);
+                    }else{
+                        resolve(res.result);
+                    }
+                };
+
+                WS.handlers[uuid] = handler;
+                this.socket.send(JSON.stringify(req));
+                delete WS.listeners[id];
+                delete WS.bySubscription[WS.byUUID[id]];
+                delete WS.byUUID[id];
+            });
+        } else {
+            throw Error('not existed subscribe');
         }
     }
 
@@ -139,17 +166,7 @@ export class WS {
     }
 
     topUp(channelId: string, gasPrice: number, handler: Function){
-        const uuid = uuidv4();
-        WS.handlers[uuid] = handler;
-
-        const req = {
-            jsonrpc: '2.0',
-            id: uuid,
-            method: 'ui_topUpChannel',
-            params: [this.pwd, channelId, gasPrice]
-        };
-
-        this.socket.send(JSON.stringify(req));
+        return this.send('ui_topUpChannel', [channelId, gasPrice]) as Promise<any>;
     }
 
 // auth
@@ -199,22 +216,6 @@ export class WS {
         return this.send('ui_getAccounts') as Promise<Account[]>;
     }
 
-    /*
-    generateAccount(payload: any, handler: Function){
-        const uuid = uuidv4();
-        WS.handlers[uuid] = handler;
-
-        const req = {
-            jsonrpc: '2.0',
-            id: uuid,
-            method: 'ui_generateAccount',
-            params: [this.pwd, payload]
-        };
-
-        this.socket.send(JSON.stringify(req));
-    }
-    */
-
     generateAccount(payload: any){
       return this.send('ui_generateAccount', [payload]);
     }
@@ -247,18 +248,8 @@ export class WS {
         this.socket.send(JSON.stringify(req));
     }
 
-    exportAccount(accountId: string, handler: Function){
-        const uuid = uuidv4();
-        WS.handlers[uuid] = handler;
-
-        const req = {
-            jsonrpc: '2.0',
-            id: uuid,
-            method: 'ui_exportPrivateKey',
-            params: [this.pwd, accountId]
-        };
-
-        this.socket.send(JSON.stringify(req));
+    exportAccount(accountId: string){
+        return this.send('ui_exportPrivateKey', [accountId]);
     }
 
     updateBalance(accountId: string){
@@ -268,6 +259,7 @@ export class WS {
     transferTokens(accountId: string, destination: 'ptc'|'psc', tokenAmount: number, gasPrice: number){
         return this.send('ui_transferTokens', [accountId, destination, tokenAmount, gasPrice]);
     }
+
 // templates
 
     getTemplates(templateType?: TemplateType){
@@ -287,6 +279,10 @@ export class WS {
     }
 
 // products
+
+    getProduct(id: string): Promise<Product> {
+        return this.getObject('product', id) as Promise<Product>;
+    }
 
     getProducts(): Promise<Product[]> {
         return this.send('ui_getProducts')  as Promise<Product[]>;
@@ -316,12 +312,20 @@ export class WS {
         return this.getObject('offering', id) as Promise<Offering>;
     }
 
-    createOffering(payload: any){
-        return this.send('ui_createOffering', [payload]);
+    createOffering(payload: any): Promise<string>{
+        return this.send('ui_createOffering', [payload]) as Promise<string>;
     }
 
     changeOfferingStatus(offeringId: string, action: string, gasPrice: number){
         return this.send('ui_changeOfferingStatus', [offeringId, action, gasPrice]);
+    }
+
+    acceptOffering(ethAddress: string, offeringId: string, deposit: number, gasPrice: number) {
+        return this.send('ui_acceptOffering', [ethAddress, offeringId, deposit, gasPrice]);
+    }
+
+    getClientOfferingsFilterParams() {
+        return this.send('ui_getClientOfferingsFilterParams');
     }
 
 // sessions
@@ -332,22 +336,32 @@ export class WS {
 
 // channels
 
-    getClientChannels(channelStatus: string, serviceStatus: string, offset: number, limit: number): Promise<ChannelResponse>{
-        return this.send('ui_getClientChannels', [channelStatus, serviceStatus, offset, limit]) as Promise<ChannelResponse>;
+    getClientChannels(channelStatus: string[], serviceStatus: string[], offset: number, limit: number): Promise<ClientChannelResponse>{
+        return this.send('ui_getClientChannels', [channelStatus, serviceStatus, offset, limit]) as Promise<ClientChannelResponse>;
     }
 
-    getAgentChannels(channelStatus: string, serviceStatus: string, offset: number, limit: number): Promise<ChannelResponse>{
+    async getNotTerminatedClientChannels(): Promise<ClientChannel[]>{
+
+        const statuses = ['pending', 'activating', 'active', 'suspending', 'suspended', 'terminating'];
+
+        const channels = await this.getClientChannels([], statuses, 0, 10);
+        return channels.items;
+    }
+
+    getAgentChannels(channelStatus: Array<string>, serviceStatus: Array<string>, offset: number, limit: number): Promise<ChannelResponse>{
         return this.send('ui_getAgentChannels', [channelStatus, serviceStatus, offset, limit]) as Promise<ChannelResponse>;
     }
+
 
     getChannelUsage(channelId: string): Promise<number>{
         return this.send('ui_getChannelUsage', [channelId]) as Promise<number>;
     }
 
+    changeChannelStatus(channelId: string, channelStatus: string){
+        return this.send('ui_changeChannelStatus', [channelId, channelStatus]) as Promise<any>; // null actually
+    }
 // common
-    getObject(type: 'channel', id: string): Promise<Channel>;
-    getObject(type: 'template', id: string): Promise<Template>;
-    getObject(type: 'offering', id: string): Promise<Offering>;
+
     getObject(type: string, id: string){
         return this.send('ui_getObject', [type, id]);
     }
@@ -356,55 +370,21 @@ export class WS {
         return this.send('ui_getEthTransactions', [type, id, offset, limit]) as Promise<TransactionResponse>;
     }
 
-    getSettings() {
-        return this.send('ui_getSettings');
+    getTotalIncome(): Promise<number> {
+        return this.send('ui_getTotalIncome', []) as Promise<number>;
     }
-
-    getTotalIncome() {
-        const uuid = uuidv4();
-
-        const req = {
-            jsonrpc: '2.0',
-            id: uuid,
-            method: 'ui_getTotalIncome',
-            params: [this.pwd]
-        };
-
-        return new Promise((resolve: Function, reject: Function) => {
-            WS.handlers[uuid] = function (res: any) {
-                if ('err' in res) {
-                    reject(res.err);
-                } else {
-                    resolve(res.result);
-                }
-            };
-
-            this.socket.send(JSON.stringify(req));
-        });
+    getUserRole(): Promise<Role>{
+        return this.send('ui_getUserRole', []) as Promise<Role>;
     }
 
 // logs
-    getLogs(levels: Array<string>, searchText: string, dateFrom: string, dateTo: string, offset:number, limit: number) {
-        const uuid = uuidv4();
+    getLogs(levels: Array<string>, searchText: string, dateFrom: string, dateTo: string, offset:number, limit: number): Promise<LogResponse> {
+        return this.send('ui_getLogs', [levels, searchText, dateFrom, dateTo, offset, limit]) as Promise<LogResponse>;
+    }
 
-        const req = {
-            jsonrpc: '2.0',
-            id: uuid,
-            method: 'ui_getLogs',
-            params: [this.pwd, levels, searchText, dateFrom, dateTo, offset, limit]
-        };
 
-        return new Promise((resolve: Function, reject: Function) => {
-            WS.handlers[uuid] = function (res: any) {
-                if ('err' in res) {
-                    reject(res.err);
-                } else {
-                    resolve(res.result);
-                }
-            };
-
-            this.socket.send(JSON.stringify(req));
-        });
+    getSettings() {
+        return this.send('ui_getSettings');
     }
 
 }

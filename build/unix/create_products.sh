@@ -35,7 +35,7 @@ prepare_install(){
     cp -v "${GOPATH}"/bin/${OPENVPN_INST} \
           ${OPENVPN_AGENT_BIN}/bin/${OPENVPN_INST}
 
-    cp -av "${DAPP_OPENVPN_DIR}"/${DAPP_OPENVPN_TEMPLATES_LOCATION}/ \
+    cp -av "${DAPP_OPENVPN_DIR}"/${DAPP_OPENVPN_TEMPLATES_LOCATION}/. \
            ${OPENVPN_AGENT_BIN}/${PRODUCT_TEMPLATE}
 
     cp -v ${OPENVPN_INST_DIR}/openvpn-down-root.so \
@@ -76,13 +76,12 @@ copy_client(){
 copy_configs(){
     # dapp-openvpn configs
 
-
     # installer configs
-    cp -v ${OPENVPN_INST_DIR}/${INSTALLER_AGENT_CONFIG} \
-          ${OPENVPN_AGENT_BIN}/config/${INSTALLER_CONFIG}
+    cp -v "${DAPP_OPENVPN_DIR}"/${DAPP_OPENVPN_INST_PROJECT}/${INSTALLER_AGENT_CONFIG} \
+            ${OPENVPN_AGENT_BIN}/config/${INSTALLER_CONFIG}
 
-    cp -v ${OPENVPN_INST_DIR}/${INSTALLER_CLIENT_CONFIG} \
-          ${OPENVPN_CLIENT_BIN}/config/${INSTALLER_CONFIG}
+    cp -v "${DAPP_OPENVPN_DIR}"/${DAPP_OPENVPN_INST_PROJECT}/${INSTALLER_CLIENT_CONFIG} \
+            ${OPENVPN_CLIENT_BIN}/config/${INSTALLER_CONFIG}
 }
 
 prepare_configs(){

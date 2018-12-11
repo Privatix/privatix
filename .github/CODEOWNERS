@@ -13,4 +13,4 @@
 *.md            @drew2a
 
 # notify devops team about changes in *config.json
-# *config.json   @kelewind
+# *config.json   @kelewind @drew2a
