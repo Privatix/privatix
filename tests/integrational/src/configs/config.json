@@ -1,6 +1,7 @@
 {
-  "agentWsEndpoint": "ws://89.38.96.162:8888/ws",
+  "agentWsEndpoint": "ws://;pca;hpst:8889/ws",
   "clientWsEndpoint": "ws://localhost:8888/ws",
+  "externalClientIpEndpoint": "http://localhost:6060/",
   "getPrixEndpoint": {
       "protocol": "http:",
       "host": "89.38.96.53",

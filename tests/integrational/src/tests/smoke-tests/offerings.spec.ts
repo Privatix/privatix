@@ -128,6 +128,8 @@ export const offerings: TestModel = {
 
           this.timeout(testTimeout * 10);
 
+          const blockNumberCreated = (await agentWs.getOffering(offeringId) as Offering).blockNumberUpdated;
+
           await agentWs.changeOfferingStatus(
             offeringId,
             'popup',
@@ -136,9 +138,9 @@ export const offerings: TestModel = {
 
           await skipBlocks(3, agentWs, getEthTimeout, getEthTick);
 
-          const offering = await agentWs.getOffering(offeringId) as Offering;
+          const blockNumberUpdated = await agentWs.getOffering(offeringId) as Offering;
 
-          expect(offering.blockNumberUpdated).to.not.equal(1);
+          expect(blockNumberUpdated).to.not.equal(blockNumberCreated);
         });
 
         clientIt('after popup the offering should be on top', async () => {

@@ -1,6 +1,8 @@
 import { expect } from 'chai';
 import 'mocha';
 
+import { ClientChannelUsage } from './../../typings/channels';
+
 import {
   TestInputSettings,
   TestModel, TestScope
@@ -30,7 +32,7 @@ export const startVpn: TestModel = {
         let clientLocalIP: string;
 
         clientIt('should get local client IP', async () => {
-          clientLocalIP = await getClientIP();
+          clientLocalIP = await getClientIP(configs['externalClientIpEndpoint']);
 
           expect(clientLocalIP).to.not.be.undefined;
         });
@@ -79,13 +81,20 @@ export const startVpn: TestModel = {
 
           expect(clientLocalIP).to.not.equals(newClientIP);
         });
+
+        clientIt('should return non-empty usage', async () => {
+          const usage = await clientWs.getChannelUsage(channelId) as ClientChannelUsage;
+
+          // TODO: should i check usage here?
+          expect(usage.current).to.be.greaterThan(0);
+        });
       });
 
       describe('stop using VPN', () => {
         let clientRemoteIP: string;
 
         clientIt('should get client VPN IP', async () => {
-          clientRemoteIP = await getClientIp();
+          clientRemoteIP = await getClientIp(configs['externalClientIpEndpoint']);
 
           expect(clientRemoteIP).to.not.be.undefined;
         });

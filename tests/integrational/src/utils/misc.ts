@@ -6,11 +6,11 @@ export const getAllowedScope = (): TestScope => {
   return TestScope[scope.toUpperCase()];
 };
 
-export const getClientIP = async () =>  {
+export const getClientIP = async (endpoint) =>  {
   return new Promise((resolve, reject) => {
     const http = require('http');
 
-    http.get('http://ident.me/', res => {
+    http.get(endpoint, res => {
       let data = '';
 
       res.on('data', chumk => data += chumk);
