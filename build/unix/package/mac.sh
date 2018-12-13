@@ -38,8 +38,8 @@ zip_package(){
 copy_ctrl(){
     cp -v   "${DAPPCTRL_BIN}/${DAPPCTRL}" \
             "${app_dir}/${DAPPCTRL}/${DAPPCTRL}" || exit 1
-    cp -v   "${DAPPCTRL_BIN}/${DAPPCTRL_CONFIG}" \
-            "${app_dir}/${DAPPCTRL}/${DAPPCTRL_CONFIG}" || exit 1
+    cp -v   "${DAPPCTRL_BIN}/${DAPPCTRL_FOR_INSTALLER_CONFIG}" \
+            "${app_dir}/${DAPPCTRL}/${DAPPCTRL_FOR_INSTALLER_CONFIG}" || exit 1
 }
 
 create_gui_package(){
