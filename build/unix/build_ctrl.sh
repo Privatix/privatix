@@ -68,7 +68,7 @@ prepare_client_config(){
 
 copy_inst_config(){
     cp -v   ${DAPPCTRL_BIN}/${DAPPCTRL_AGENT_CONFIG} \
-            ${DAPPCTRL_BIN}/${DAPPCTRL_CONFIG} || exit 1
+            ${DAPPCTRL_BIN}/${DAPPCTRL_FOR_INSTALLER_CONFIG} || exit 1
 }
 
 print_diff(){
