@@ -12,6 +12,7 @@ export interface TestInputSettings {
   agentWs?: WS; // agent websocket connection
   clientWs?: WS; // client websocket connection
   configs?: LocalSettings; // configs from file
+  allowedScope?: TestScope; // scope to run
 }
 
 export interface TestModel {
