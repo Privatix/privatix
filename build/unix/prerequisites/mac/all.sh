@@ -3,4 +3,4 @@
 brew update
 
 brew install  \
-    git dep go postgresql gcc node openvpn openssl
+    git dep go postgresql gcc node openvpn openssl tor
