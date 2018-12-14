@@ -2,7 +2,7 @@
 
 There is a two options:
 
-1. To create a package to install the application via Installer
+1. To create a package to install the application via Installer (only mac)
     ```bash
     ./package/mac.sh
     ```
