@@ -8,8 +8,9 @@ cd "${root_dir}"
 app_dir="${PACKAGE_BIN}/${APP}"
 
 clear(){
-    rm -rf "${PACKAGE_INSTALL_BUILDER_BIN}"
+     rm -rf "${PACKAGE_INSTALL_BUILDER_BIN}"
 #    rm -rf "${ARTEFACTS_BIN}"
+
 
     mkdir -p "${PACKAGE_BIN}" || exit 1
     mkdir -p "${PACKAGE_INSTALL_BUILDER_BIN}/${INSTALL_BUILDER_PROJECT}" || exit 1
@@ -49,11 +50,11 @@ create_gui_package(){
 
     cd "${DAPP_GUI_DIR}"
     rm -rf ./build/
+    rm -rf ./release-builds/
 
     npm i || exit 1
     npm run build || exit 1
     npm run package-mac || exit 1
-
     echo
     echo copy ${DAPP_GUI_DIR}/${DAPP_GUI_PACKAGE_MAC}/${DAPP_GUI_PACKAGE_MAC_BINARY_NAME}
     echo
