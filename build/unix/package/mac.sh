@@ -73,6 +73,9 @@ copy_product(){
     cp -v "${GOPATH}/bin/${OPENVPN_INST}" \
           "${app_dir}/${PRODUCT}/${PRODUCT_ID}/${BIN}/${DAPP_INST}" || exit 1
 
+    cp -va "${DAPP_OPENVPN_DIR}/${DAPP_OPENVPN_SCRIPTS_LOCATION}/" \
+           "${app_dir}/${PRODUCT}/${PRODUCT_ID}/${BIN}" || exit 1
+
     #configs
     for config in ${CONFIGS_TO_COPY[@]}
     do
