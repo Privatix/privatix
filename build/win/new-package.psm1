@@ -123,7 +123,7 @@ function new-package {
     $dappctrlbin = (Get-Item "$gopath\bin\dappctrl.exe").FullName
     $dappctrlconfig = (Get-Item "$gopath\src\github.com\privatix\dappctrl\dappctrl-dev.config.json").FullName
     $dappctrlFWruleScript = (Get-Item "$gopath\src\github.com\privatix\dappctrl\scripts\win\set-ctrlfirewall.ps1").FullName
-    $dappguiFolder = (Get-Item "$artefactDir\dappctrlgui-win32-x64").FullName
+    $dappguiFolder = (Get-Item "$wrkdir\dapp-gui\release-builds\dapp-gui-win32-x64").FullName
     $pgFolder = (Get-Item "$staticArtefactsDir\pgsql").FullName
     $utilFolder = (Get-Item "$staticArtefactsDir\util").FullName
     $torFolder = (Get-Item "$staticArtefactsDir\tor").FullName
