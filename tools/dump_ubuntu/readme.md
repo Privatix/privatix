@@ -1,6 +1,6 @@
 # Tools
 
-## collect_info.py
+## dump_ubuntu.py
 The script collects information about dapp environment.
 
 It is include:
@@ -15,13 +15,13 @@ It is include:
 ## Usage
 
 ```
-collect_info_ubuntu.py
+dump_ubuntu.py
 ```
 
 ### Example of usage:
 
 ```
-sudo python collect_info_ubuntu.py
+sudo python dump_ubuntu.py
 ```
 
 ### Result
