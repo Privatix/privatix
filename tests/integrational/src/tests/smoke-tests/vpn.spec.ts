@@ -73,7 +73,9 @@ export const startVpn: TestModel = {
         });
 
         clientIt('client should activate channel', async () => {
-          // TODO: implement
+          await clientWs.changeChannelStatus(
+            channelId, 'resume'
+          );
         });
 
         clientIt('client IP should change', async () => {
