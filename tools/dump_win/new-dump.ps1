@@ -57,12 +57,6 @@ Copy-Item -Path $dappguiSettingsJson -Destination "$OutFolder\coreconfig\setting
 Copy-Item -Path $dappguiPackageJson -Destination "$OutFolder\coreconfig\package.json" -Force
 Copy-Item -Path $ProdConf -Destination "$OutFolder\prodconfig" -Recurse -Force
 
-# Create archive
-add-type -AssemblyName System.IO.Compression.FileSystem
-$zipDestinationFolder = (Get-Item $OutFolder).Parent.FullName
-$zipDestinationFile = Join-Path -Path $zipDestinationFolder -ChildPath ((Get-Item $OutFolder).Name + "dump.zip")
-[System.IO.Compression.ZipFile]::CreateFromDirectory($OutFolder, $zipDestinationFile, 'Optimal', $false)
-
 # Gather additional computer info
 if ($PSBoundParameters.ContainsKey('computerLogs')) {
     $NetFolder = (New-Item -Path "$OutFolder" -Name "computerLogs" -ItemType Directory -Force).FullName
@@ -83,3 +77,9 @@ if ($PSBoundParameters.ContainsKey('computerLogs')) {
     # General OS info
     Get-ComputerInfo | Export-Csv -Path "$NetFolder\computerinfo.csv" -NoTypeInformation
 }
+
+# Create archive
+add-type -AssemblyName System.IO.Compression.FileSystem
+$zipDestinationFolder = (Get-Item $OutFolder).Parent.FullName
+$zipDestinationFile = Join-Path -Path $zipDestinationFolder -ChildPath ((Get-Item $OutFolder).Name + "dump.zip")
+[System.IO.Compression.ZipFile]::CreateFromDirectory($OutFolder, $zipDestinationFile, 'Optimal', $false)
