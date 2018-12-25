@@ -17,7 +17,7 @@ describe('integrational tests', () => {
 
   // check config file and environment
   configurationCheckTest(testSettings);
-  
+
   // initialize websocket connections
   // TODO: don't know how to separate ws init-tests better =\
   wsInitializationTest.call(testSettings, testSettings);
