@@ -2,16 +2,23 @@
 
 ### Prerequisites
 
-* [ ] Put an X between the brackets on this line if you have done all of the following:
-    * Reproduced the problem in Agent Mode
-    * Reproduced the problem in Client Mode
-    * Reproduced the problem in Ubuntu
-    * Reproduced the problem in Windows
-    * Reproduced the problem in Mac
-    * Reproduced the problem in the application, installed from binaries, provided by Privatix: https://github.com/Privatix/privatix/releases
-    * Reproduced the problem in the application, built by yourself.
-    * Followed all steps in from the guide: https://privatix.atlassian.net/wiki/spaces/BVP/pages/270860384/How+to+download+it+and+give+it+a+try
-    * Checked that your issue isn't already created: https://github.com/Privatix/privatix/issues
+Put an X between the brackets in corresponding line:
+
+[ ] Reproduced the problem in Agent Mode
+
+[ ] Reproduced the problem in Client Mode
+
+[ ] Reproduced the problem on Ubuntu
+
+[ ] Reproduced the problem on Windows
+
+[ ] Reproduced the problem on Mac
+
+[ ] Reproduced the problem in the application, installed from binaries, provided by Privatix: https://github.com/Privatix/privatix/releases
+
+[ ] Followed all steps from the guide: https://privatix.atlassian.net/wiki/spaces/BVP/pages/270860384/How+to+download+it+and+give+it+a+try
+
+[ ] Checked that issue isn't already created: https://github.com/Privatix/privatix/issues
 
 ### Description
 
@@ -27,11 +34,15 @@
 
 **Actual behavior:** [What actually happens]
 
-**Reproduces how often:** [What percentage of the time does it reproduce?]
+**How often reproduced:** [What percentage of the time does it reproduce?]
 
 ### Versions
 
-You can get this information from the settings page of the GUI application.
+Version: [version goes here]
+
+You can get this information from:
+- the settings page of the GUI application
+- `dappctrl -version` command via CLI
 
 ### Environment
 
