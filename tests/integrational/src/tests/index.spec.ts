@@ -1,10 +1,9 @@
 import 'mocha';
 
 import { LocalSettings } from './../typings/settings';
-import { TestInputSettings } from '../typings/test-models';
+import { TestInputSettings, TestModel } from '../typings/test-models';
 
 import { getAllowedScope } from '../utils/misc';
-import { createSmokeTestFactory } from '../utils/test-utils';
 
 import { configurationCheckTest } from './init-tests/configuration.spec';
 import { wsInitializationTest } from './init-tests/ws-initialization.spec';
@@ -26,12 +25,13 @@ describe('integrational tests', () => {
   // start smoke auto-tests
   describe('smoke auto-tests', () => {
     const allowedScope = getAllowedScope();
-    smokeAutoTests.forEach(createSmokeTestFactory(testSettings, allowedScope));
+    // smokeAutoTests.forEach(createSmokeTestFactory(testSettings, allowedScope));
 
-    // smokeAutoTests.forEach((tm: TestModel) => {
-    //   const it = getItFunc(tm, allowedScope);
-    //
-    //   it(tm.name, () => tm.testFn(testSettings));
-    // });
+    smokeAutoTests.forEach((tm: TestModel) => {
+      it(tm.name, () => tm.testFn({
+        allowedScope,
+        ...testSettings
+      }));
+    });
   });
 });

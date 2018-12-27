@@ -26,7 +26,7 @@ collect_modified_repositories(){
     do
         printf '\n%s\n' ${repository}
         get_diff_count ${repository}
-        if [ $? != "0" ]
+        if [[ $? != "0" ]]
         then
             modified_repositories+=(${repository})
         fi
@@ -42,6 +42,7 @@ printf '\n\n\nModified repositories:\n'
 printf '%s\n' ${modified_repositories[@]}
 printf '\n\nNext operation:\n\ngit flow release start %s\n\nPress enter to continue...' ${RELEASE_VERSION}
 read
+echo
 
 for repository in ${modified_repositories[@]}
 do

@@ -6,7 +6,7 @@ cd ${root_dir}
 sudo apt update
 
 sudo apt install \
-    git gcc curl openvpn easy-rsa openssl
+    git gcc curl openvpn easy-rsa openssl tor
 
 ./install_go.sh
 ./install_node.sh

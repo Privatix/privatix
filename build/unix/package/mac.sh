@@ -8,8 +8,9 @@ cd "${root_dir}"
 app_dir="${PACKAGE_BIN}/${APP}"
 
 clear(){
-    rm -rf "${PACKAGE_INSTALL_BUILDER_BIN}"
+     rm -rf "${PACKAGE_INSTALL_BUILDER_BIN}"
 #    rm -rf "${ARTEFACTS_BIN}"
+
 
     mkdir -p "${PACKAGE_BIN}" || exit 1
     mkdir -p "${PACKAGE_INSTALL_BUILDER_BIN}/${INSTALL_BUILDER_PROJECT}" || exit 1
@@ -38,8 +39,8 @@ zip_package(){
 copy_ctrl(){
     cp -v   "${DAPPCTRL_BIN}/${DAPPCTRL}" \
             "${app_dir}/${DAPPCTRL}/${DAPPCTRL}" || exit 1
-    cp -v   "${DAPPCTRL_BIN}/${DAPPCTRL_CONFIG}" \
-            "${app_dir}/${DAPPCTRL}/${DAPPCTRL_CONFIG}" || exit 1
+    cp -v   "${DAPPCTRL_BIN}/${DAPPCTRL_FOR_INSTALLER_CONFIG}" \
+            "${app_dir}/${DAPPCTRL}/${DAPPCTRL_FOR_INSTALLER_CONFIG}" || exit 1
 }
 
 create_gui_package(){
@@ -49,11 +50,11 @@ create_gui_package(){
 
     cd "${DAPP_GUI_DIR}"
     rm -rf ./build/
+    rm -rf ./release-builds/
 
     npm i || exit 1
     npm run build || exit 1
     npm run package-mac || exit 1
-
     echo
     echo copy ${DAPP_GUI_DIR}/${DAPP_GUI_PACKAGE_MAC}/${DAPP_GUI_PACKAGE_MAC_BINARY_NAME}
     echo
@@ -71,6 +72,9 @@ copy_product(){
 
     cp -v "${GOPATH}/bin/${OPENVPN_INST}" \
           "${app_dir}/${PRODUCT}/${PRODUCT_ID}/${BIN}/${DAPP_INST}" || exit 1
+
+    cp -va "${DAPP_OPENVPN_DIR}/${DAPP_OPENVPN_SCRIPTS_LOCATION}/" \
+           "${app_dir}/${PRODUCT}/${PRODUCT_ID}/${BIN}" || exit 1
 
     #configs
     for config in ${CONFIGS_TO_COPY[@]}

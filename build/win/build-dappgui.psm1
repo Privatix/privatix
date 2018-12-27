@@ -116,8 +116,7 @@ function build-dappgui {
 
     # npm install && build
     try {
-        Invoke-Scriptblock -ScriptBlock "npm i --production" -StderrPrefix "" -ThrowOnError
-        Invoke-Scriptblock -ScriptBlock "npm i ajv@^6.0.0" -StderrPrefix "" -ThrowOnError
+        Invoke-Scriptblock -ScriptBlock "npm i" -StderrPrefix "" -ThrowOnError
         Invoke-Scriptblock -ScriptBlock "npm run build" -StderrPrefix "" -ThrowOnError
     }
     catch {Write-Error "Some failures accured during build"}
@@ -135,8 +134,10 @@ function build-dappgui {
 
     # npm package
     if ($package) {
+        $lastLocation = (Get-Location).Path
+        Set-Location $sourceCodePath
         try {
-            Invoke-Scriptblock -ScriptBlock "electron-packager $sourceCodePath --arch=x64 --executableName `"dapp-gui`" --out $artefactPath --overwrite=true" -StderrPrefix "" -ThrowOnError
+            Invoke-Scriptblock -ScriptBlock "npm run package-win" -StderrPrefix "" -ThrowOnError
         }
         catch {Write-Error "Some failures accured during packaging"}
         finally {Set-Location $lastLocation}
