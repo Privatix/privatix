@@ -1,6 +1,6 @@
 # Agent billing
 
-Agent billing runs periodically SQL query for live `channels` and create `jobs` to `suspend`, `unsuspend` or `terminate` services.
+[Agent billing](https://github.com/Privatix/dappctrl/tree/master/agent/bill) runs periodically SQL query for live `channels` and create `jobs` to `suspend`, `unsuspend` or `terminate` services.
 
 Billing responsible for:
 

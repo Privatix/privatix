@@ -1,6 +1,6 @@
 # Client billing
 
-Client billing runs periodically SQL query for live `channels`, send payments and creates `jobs`.
+[Client billing](https://github.com/Privatix/dappctrl/tree/master/client/bill) runs periodically SQL query for live `channels`, send payments and creates `jobs`.
 
 Billing responsible for:
 

@@ -1,6 +1,6 @@
 # Ethereum monitor
 
-Ethereum monitor get ethereum events (aka logs) and creates jobs. from two smart contracts:
+[Ethereum monitor](https://github.com/Privatix/dappctrl/tree/master/monitor) get ethereum events (aka logs) and creates jobs. from two smart contracts:
 
 - Privatix token contract (PTC)
 - Privatix service contract (PSC)

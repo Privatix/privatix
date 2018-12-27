@@ -1,6 +1,6 @@
 # Jobs
 
-Jobs plays important role in application workflows. They are created by:
+[Jobs](https://github.com/Privatix/dappctrl/tree/master/job) plays important role in application workflows. They are created by:
 
 | Creator          | Description                                                      |
 | ---------------- | ---------------------------------------------------------------- |

@@ -9,4 +9,4 @@
 
 To make offering template be imported by `dapp-installer` folder and file naming should comply with `service plug-in naming conventions`.
 
-# SService plug-in naming conventions
+# Service plug-in naming conventions

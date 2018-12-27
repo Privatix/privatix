@@ -2,7 +2,7 @@
 
 Client creates channel and places deposit on it.
 
-After Client starts using service, `Client billing` would identify that current usage lags after payment and will send cheque to Agent.
+After Client starts using service, `Client billing` would identify that current usage lags after [payment](https://github.com/Privatix/dappctrl/tree/master/pay) and will send cheque to Agent.
 
 ## Cheque
 
