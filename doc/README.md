@@ -1,6 +1,6 @@
 # Documentation
 
-This page contains overview of documentation
+This page contains overview of documentation. It is intended for developers and tech savvy people, that want to understand how Privatix Network works under the hood.
 
 # Documentation reference
 
@@ -14,7 +14,7 @@ This page contains overview of documentation
 
 - [Channels](/doc/channel.md) - state channels and related workflow
 
-- [Payments](/doc/channel.md) - how payments are done
+- [Payments](/doc/channel.md) - how payments work
 
   - [Agent billing](/doc/agent_billing.md) - billing by Agent (seller)
   - [Client billing](/doc/client_billing.md) - payments by Client (buyer)
