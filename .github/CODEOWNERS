@@ -2,7 +2,7 @@
 # https://help.github.com/articles/about-codeowners/
 
 # notify ts-team about changes in ts files
-*.ts            @gonzazoid @Vitold55 @EKorobov
+*.ts            @gonzazoid @Vitold55
 
 # notify drew2a about changes in scripts and settings
 /.github/       @drew2a
