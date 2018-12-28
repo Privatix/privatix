@@ -4,7 +4,7 @@ This document describes how Privatix Network works.
 
 # General
 
-Privatix Network is build as a platform for buying and selling various services. Any service that can be measured on seller's and buyer's side, using single parameter, might be bought and sold via Privatix Network without 3rd party. There is no escrow party, that can decide, if service was provided or consumed. Instead service is sold and payed in such small portion, that risk for misbehavior considered neglectable.
+Privatix Network a platform for buying and selling various services. Any service that can be measured on seller's and buyer's side, using single parameter, might be bought and sold via Privatix Network without 3rd party. There is no escrow party, that can decide, if service was provided or consumed. Instead service is sold and payed in such small portion, that risk for misbehavior considered neglectable.
 
 # Concept in short
 
