@@ -1,5 +1,5 @@
 {
-  "agentWsEndpoint": "ws://185.2.81.71:8888/ws",
+  "agentWsEndpoint": "ws://localhost:8888/ws",
   "clientWsEndpoint": "ws://localhost:8888/ws",
   "externalClientIpEndpoint": "http://localhost:6060/",
   "getPrixEndpoint": {
