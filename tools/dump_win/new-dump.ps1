@@ -3,13 +3,13 @@
     Gather logs, config and DB dump on Windows
 .DESCRIPTION
     Gather logs, config and DB dump on Windows. 
-    Makes folder "dump" and places all logs, configs and DB dump in it. 
+    Makes folder "dump" in installation directory and places all logs, configs and DB dump in it. 
     Creates zip archive.
 
 .PARAMETER installDir
     Root application folder. E.g. "C:\Program Files\Privatix\Agent"
 
-.PARAMETER networkLogs
+.PARAMETER computerLogs
     Gather additional info about computer and network
 
 .EXAMPLE
