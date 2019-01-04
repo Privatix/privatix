@@ -1,8 +1,6 @@
 import { expect } from 'chai';
 import 'mocha';
 
-import { ClientChannelUsage } from './../../typings/channels';
-
 import {
   TestInputSettings,
   TestModel, TestScope
@@ -21,7 +19,6 @@ export const startVpn: TestModel = {
       allowedScope, configs
     } = settings;
 
-    const agentIt = getItFunc({scope: TestScope.AGENT}, allowedScope);
     const clientIt = getItFunc({scope: TestScope.CLIENT}, allowedScope);
 
     describe('VPN', () => {
@@ -32,7 +29,7 @@ export const startVpn: TestModel = {
         let clientLocalIP: string;
 
         clientIt('should get local client IP', async () => {
-          clientLocalIP = await getClientIP(configs['externalClientIpEndpoint']);
+          clientLocalIP = await getClientIP(configs['externalClientIpEndpoint']) as string;
 
           expect(clientLocalIP).to.not.be.undefined;
         });
@@ -63,30 +60,25 @@ export const startVpn: TestModel = {
           const accounts = await agentWs.getAccounts();
           const agentEthAddr = accounts[0].ethAddr;
 
-          channelId = await ws.acceptOffering(
+          channelId = await clientWs.acceptOffering(
             agentEthAddr,
             offering.id,
             1000, 15000
-          );
+          ) as string;
 
           expect(channelId).to.not.be.undefined;
         });
 
         clientIt('client should activate channel', async () => {
-          // TODO: implement
+          await clientWs.changeChannelStatus(
+            channelId, 'resume'
+          );
         });
 
         clientIt('client IP should change', async () => {
-          const newClientIP = await getClientIP();
+          const newClientIP = await getClientIP(configs['externalClientIpEndpoint']) as string;
 
           expect(clientLocalIP).to.not.equals(newClientIP);
-        });
-
-        clientIt('should return non-empty usage', async () => {
-          const usage = await clientWs.getChannelUsage(channelId) as ClientChannelUsage;
-
-          // TODO: should i check usage here?
-          expect(usage.current).to.be.greaterThan(0);
         });
       });
 
@@ -94,7 +86,7 @@ export const startVpn: TestModel = {
         let clientRemoteIP: string;
 
         clientIt('should get client VPN IP', async () => {
-          clientRemoteIP = await getClientIp(configs['externalClientIpEndpoint']);
+          clientRemoteIP = await getClientIP(configs['externalClientIpEndpoint']) as string;
 
           expect(clientRemoteIP).to.not.be.undefined;
         });
@@ -107,7 +99,7 @@ export const startVpn: TestModel = {
         });
 
         clientIt('client IP should change to local', async () => {
-          const newClientIP = await getClientIP();
+          const newClientIP = await getClientIP(configs['externalClientIpEndpoint']) as string;
 
           expect(newClientIP).to.not.equals(clientRemoteIP);
         })
