@@ -1,36 +1,38 @@
 # Gather logs on Windows
-Gather logs, config and DB dump on Windows
+Gather logs, config, DB dump and other info that should assist in troubleshouting on Windows
 ## DESCRIPTION
 * Gather logs, config and DB dump on Windows. 
-* Cretaes folder "dump" inside installation dicretory and places all logs, configs and DB dump in it. 
+* Creates folder "dump" inside installation dicretory and places all logs, configs and DB dump in it. 
 * Creates zip archive.
 
 
 ## Usage
     
-    .\new-dump.ps1 -installDir "C:\build\1205_1836\client\" -computerLogs
+    .\new-dump.ps1
+
+for default installation directory "C:\Program Files\Privatix"
 
 ### installDir
 
-Root application folder. E.g. "C:\Program Files\Privatix\Agent"
+Root application folder. E.g. "C:\Program Files\Privatix"
 
-### computerLogs
+### noComputerLogs
 
-Gather additional info about computer and network
+Do not gather additional info about system and network
 
 
-### Without OS info
+### With OS info
     
-    .\new-dump.ps1 -installDir "C:\build\1205_1836\Client\"
+    .\new-dump.ps1 -installDir "C:\Program Files\Privatix"
 
 #### Description
     
 Gathers logs, configs and DB dump. Creates folder "dump" inside installation directory and places zipped files in single archive.
 
-### With OS info
-    .\new-dump.ps1 -installDir "C:\build\1205_1836\client\" -computerLogs
+### Without OS info
+    .\new-dump.ps1 -installDir "C:\Program Files\Privatix" -noComputerLogs
 
 #### Description
 
-Same as above, but also creates folder "computerLogs" and gather ip, route, adapter, processes, service and OS info.
+Same as above, but do not creates folder "computerLogs" and gather ip, route, adapter, processes, service and OS info. Only application info.
 
