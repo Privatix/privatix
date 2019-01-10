@@ -12,9 +12,11 @@ This page contains overview of documentation. It is intended for developers and 
 
 - [Offerings](/doc/offering.md) - offering proposal, discovery and processing
 
+- [Access](/doc/access.md) - access to service issuing and granting
+
 - [Channels](/doc/channel.md) - state channels and related workflow
 
-- [Payments](/doc/channel.md) - how payments work
+- [Payments](/doc/payments.md) - how payments work
 
   - [Agent billing](/doc/agent_billing.md) - billing by Agent (seller)
   - [Client billing](/doc/client_billing.md) - payments by Client (buyer)
