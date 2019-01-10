@@ -1,7 +1,0 @@
-{
-    "Script": "new-dump.ps1",
-    "Args":[
-        "-installDir",
-        "C:\\Program Files\\Privatix"
-    ]
-}
