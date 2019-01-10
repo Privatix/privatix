@@ -1,0 +1,30 @@
+# Tools
+
+## dump_mac.py
+
+The script collects information about dapp environment.
+
+It is include:
+* logs
+* configs
+* database dump
+* versions of binaries (dappctrl and dappvpn)
+
+## Usage
+
+```
+dump_mac.sh
+```
+
+### Example of usage:
+
+```
+./dump_mac.sh
+```
+
+### Result
+
+1. Folder with collected information
+1. Archive of given folder
+
+Default dump location: `/Applications/Privatix/dump`
