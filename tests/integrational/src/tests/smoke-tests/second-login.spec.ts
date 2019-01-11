@@ -20,10 +20,10 @@ export const secondLogin: TestModel = {
           expect(accounts.length).to.equal(1);
         });
 
-        it('should be two products', async () => {
+        it('should be one Agent product (is_server = true)', async () => {
           const products = await agentWs.getProducts();
 
-          expect(products.length).to.equal(2);
+          expect(products.length).to.equal(1);
         });
 
     });
