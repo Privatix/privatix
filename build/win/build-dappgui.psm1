@@ -94,7 +94,7 @@ function build-dappgui {
         Invoke-Scriptblock -ScriptBlock "git.exe --git-dir=$sourceCodePath\.git --work-tree=$sourceCodePath checkout $branch"
         $currentBranch = Invoke-Expression "git.exe --git-dir=$sourceCodePath\.git --work-tree=$sourceCodePath rev-parse --abbrev-ref HEAD"
         if ($branch -ne $currentBranch) {
-            $currentBranch = Invoke-Expression "git.exe --git-dir=$PROJECT_PATH\.git --work-tree=$PROJECT_PATH rev-parse HEAD"    
+            $currentBranch = Invoke-Expression "git.exe --git-dir=$sourceCodePath\.git --work-tree=$sourceCodePath rev-parse HEAD"    
             if ($branch -ne $currentBranch) {throw "failed to chekout $branch"}
         }
     }

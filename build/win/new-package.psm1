@@ -16,6 +16,12 @@
 .PARAMETER installer
     Prepare artefacts for BitRock installer
 
+.PARAMETER privatixbranch
+    Git branch to checkout for privatix repo. If not specified "develop" branch will be used.
+
+.PARAMETER gitpull
+    Make git pull before checkout for privatix repo.
+
 .EXAMPLE
     new-package -wrkdir "c:\workdir" -staticArtefactsDir "c:\privatix\static_artifacts"
 
@@ -39,7 +45,9 @@ function new-package {
         [string]$wrkdir,
         [ValidateScript( {Test-Path $_ })]
         [string]$staticArtefactsDir,
-        [switch]$installer
+        [switch]$installer,
+        [string]$privatixbranch = "develop",
+        [switch]$gitpull
 
     )
  
@@ -58,7 +66,28 @@ function new-package {
     $deployAppPath = Join-Path $wrkdir "win-dapp-installer"
     $artefactDir = Join-Path $wrkdir "art"
     $bitrockProjectDir = Join-Path $wrkdir "project"
+    $privatixSourceCodePath = Join-Path $artefactDir "privatix"
 
+    #region privatix repo
+    $gitUrl = "https://github.com/Privatix/privatix.git"
+    Copy-Gitrepo -path $privatixSourceCodePath -gitUrl $gitUrl -ErrorAction Stop
+        
+    Invoke-Scriptblock -ScriptBlock "git.exe --git-dir=$privatixSourceCodePath\.git --work-tree=$privatixSourceCodePath status"
+        
+    #region Git checkout branch
+    Invoke-Scriptblock -ScriptBlock "git.exe --git-dir=$privatixSourceCodePath\.git --work-tree=$privatixSourceCodePath fetch --all"
+    if ($PSBoundParameters.ContainsKey('privatixbranch')) {
+        Invoke-Scriptblock -ScriptBlock "git.exe --git-dir=$privatixSourceCodePath\.git --work-tree=$privatixSourceCodePath checkout $privatixbranch"
+        $currentBranch = Invoke-Expression "git.exe --git-dir=$privatixSourceCodePath\.git --work-tree=$privatixSourceCodePath rev-parse --abbrev-ref HEAD"
+        if ($privatixbranch -ne $currentBranch) {
+            $currentBranch = Invoke-Expression "git.exe --git-dir=$privatixSourceCodePath\.git --work-tree=$privatixSourceCodePath rev-parse HEAD"    
+            if ($privatixbranch -ne $currentBranch) {throw "failed to chekout $privatixbranch"}
+        }
+    }
+    if ($PSBoundParameters.ContainsKey('gitpull')) {
+        Invoke-Scriptblock -ScriptBlock "git.exe --git-dir=$privatixSourceCodePath\.git --work-tree=$privatixSourceCodePath pull"
+    }
+    #endregion
     
     # Product ID supposed to be unchangable for single product (e.g. VPN)
     $productID = '73e17130-2a1d-4f7d-97a8-93a9aaa6f10d'
@@ -127,6 +156,8 @@ function new-package {
     $pgFolder = (Get-Item "$staticArtefactsDir\pgsql").FullName
     $utilFolder = (Get-Item "$staticArtefactsDir\util").FullName
     $torFolder = (Get-Item "$staticArtefactsDir\tor").FullName
+    $dumpScript = (Get-Item "$privatixSourceCodePath\tools\dump_win\new-dump.ps1").FullName
+    $psRunnerBinary = (Get-Item "$privatixSourceCodePath\tools\dump_win\ps-runner.exe").FullName
     # openvpn product
     $dappopenvpnbin = (Get-Item "$gopath\bin\dappvpn.exe").FullName
     $dappopenvpninst = (Get-Item "$gopath\bin\inst.exe").FullName
@@ -163,6 +194,8 @@ function new-package {
 
     #region util
     Copy-Item -Path "$utilFolder\*" -Destination "$rootAppPath\util" -Recurse -Force
+    Copy-Item -Path $dumpScript -Destination "$rootAppPath\util\new-dump.ps1"
+    Copy-Item -Path $psRunnerBinary -Destination "$rootAppPath\util\ps-runner.exe"
     #endregion
     
     #region tor
