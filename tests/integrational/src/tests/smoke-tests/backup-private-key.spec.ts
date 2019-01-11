@@ -23,8 +23,12 @@ export const backupPrivateKey: TestModel = {
 
         it('should export account', async () => {
           const accounts = await agentWs.getAccounts();
-          const account = JSON.parse(atob(await agentWs.exportAccount(accounts[0].id) as string));
-          expect(account.address).to.equal(accounts[0].ethAddr);
+          await agentWs.exportAccount(accounts[0].id, (res: any) => {
+              const account = JSON.parse(atob(res.result));
+
+              expect(account.address).to.equal(accounts[0].ethAddr);
+          });
+
         });
 
     });
