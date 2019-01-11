@@ -20,14 +20,12 @@ export const getEth = async function(endpoint: BotEndpoint, user: string, pwd: s
                 console.log(chunk);
             });
             res.on('end', () => {
-              // console.log('No more data in response.');
               resolve(true);
             });
           });
 
         client.on('error', (e) => {
             reject(e);
-            // console.error(`problem with request: ${e.message}`);
         });
         client.write(postData);
         client.end();
