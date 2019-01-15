@@ -17,6 +17,7 @@ clear(){
 
     mkdir -p "${app_dir}/${DAPPCTRL}" || exit 1
     mkdir -p "${app_dir}/${LOG}" || exit 1
+    mkdir -p "${app_dir}/${UTIL}" || exit 1
     mkdir -p "${app_dir}/${PRODUCT}/${PRODUCT_ID}/${BIN}" || exit 1
     mkdir -p "${app_dir}/${PRODUCT}/${PRODUCT_ID}/${PRODUCT_CONFIG}" || exit 1
     mkdir -p "${app_dir}/${PRODUCT}/${PRODUCT_ID}/${PRODUCT_DATA}" || exit 1
@@ -124,6 +125,15 @@ copy_artefacts()
        "${app_dir}/${TOR}" || exit 1
 }
 
+copy_utils()
+{
+    echo
+    echo copy utils
+    echo
+
+    cp -r  "${DUMP_MAC}/." \
+       "${app_dir}/${UTIL}/${DUMP}" || exit 1
+}
 
 copy_installer(){
     cp -v "${DAPPINSTALLER_BIN}/${DAPP_INSTALLER}" \
@@ -166,6 +176,7 @@ create_gui_package
 copy_ctrl
 copy_product
 copy_artefacts
+copy_utils
 zip_package
 #remove_app
 copy_installer
