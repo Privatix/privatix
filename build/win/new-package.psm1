@@ -194,8 +194,9 @@ function new-package {
 
     #region util
     Copy-Item -Path "$utilFolder\*" -Destination "$rootAppPath\util" -Recurse -Force
-    Copy-Item -Path $dumpScript -Destination "$rootAppPath\util\new-dump.ps1"
-    Copy-Item -Path $psRunnerBinary -Destination "$rootAppPath\util\ps-runner.exe"
+    New-Folder "$rootAppPath\util" "dump" | Out-Null
+    Copy-Item -Path $dumpScript -Destination "$rootAppPath\util\dump\new-dump.ps1"
+    Copy-Item -Path $psRunnerBinary -Destination "$rootAppPath\util\dump\ps-runner.exe"
     #endregion
     
     #region tor
