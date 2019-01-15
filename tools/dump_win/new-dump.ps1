@@ -116,6 +116,7 @@ function create-dump {
         Get-NetRoute | Export-Csv -Path "$NetFolder\route.csv" -NoTypeInformation
         Get-NetAdapter -IncludeHidden | Export-Csv -Path "$NetFolder\adapter.csv" -NoTypeInformation
         Get-NetIPConfiguration -All -Detailed | Out-File -FilePath "$NetFolder\netconfig.txt"
+        Get-DnsClientServerAddress | Out-File -FilePath "$NetFolder\dns.txt"
         # Service
         Get-Service -Name "*privatix*", "*postgres*" | Export-Csv -Path "$NetFolder\serviceShort.csv" -NoTypeInformation
         Get-Service | Export-Csv -Path "$NetFolder\service.csv" -NoTypeInformation
