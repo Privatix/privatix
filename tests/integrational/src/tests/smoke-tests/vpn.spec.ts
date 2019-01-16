@@ -5,10 +5,12 @@ import {
   TestInputSettings,
   TestModel, TestScope
 } from '../../typings/test-models';
-import { Offering } from '../../typings/offerings';
+import {Offering} from '../../typings/offerings';
+import {Channel} from '../../typings/channels';
 
 import { getItFunc } from '../../utils/test-utils';
 import { getClientIP } from '../../utils/misc';
+import {Until} from '../../utils/until';
 
 export const startVpn: TestModel = {
   name: 'start vpn',
@@ -20,6 +22,7 @@ export const startVpn: TestModel = {
     } = settings;
 
     const clientIt = getItFunc({scope: TestScope.CLIENT}, allowedScope);
+    const until = Until(clientWs);
 
     describe('VPN', () => {
       let channelId: string;
@@ -27,6 +30,7 @@ export const startVpn: TestModel = {
       describe('start using VPN', () => {
         let offering: Offering;
         let clientLocalIP: string;
+        let agentEthAddr: string;
 
         clientIt('should get local client IP', async () => {
           clientLocalIP = await getClientIP(configs['externalClientIpEndpoint']) as string;
@@ -36,43 +40,63 @@ export const startVpn: TestModel = {
 
         clientIt('client should get top offering', async () => {
           const accounts = await agentWs.getAccounts();
-          const agentEthAddr = accounts[0].ethAddr;
+          agentEthAddr = accounts[0].ethAddr;
 
           const offerings = await clientWs.getClientOfferings(
             agentEthAddr,
-            100,
-            200,
-            ['KG']
+              100000,
+              200000,
+              ['KG']
           );
 
           offering = offerings.items[0];
 
-          expect(offerings.totalItems).to.equal(4);
-          expect(offering.blockNumberUpdated).should.not.equal(1);
+          expect(offerings.totalItems > 0).to.be.true;
+          expect(offering.blockNumberUpdated).to.not.equal(1);
         });
 
         clientIt('client should accept an offering', async function() {
-          // TODO: not sure about mining
+          const clientAccounts = await clientWs.getAccounts();
+          const clientAccount = clientAccounts[0];
+          const address = clientAccount.ethAddr;
+
+          const gasPrice = parseInt((await clientWs.getSettings())['eth.default.gasprice'].value, 10);
+          const deposit = offering.unitPrice * offering.minUnits;
 
           const timeouts = settings.configs.timeouts;
-          this.timeout(timeouts.blocktime*4);
-
-          const accounts = await agentWs.getAccounts();
-          const agentEthAddr = accounts[0].ethAddr;
+          this.timeout(timeouts.blocktime * 10);
 
           channelId = await clientWs.acceptOffering(
-            agentEthAddr,
+            address,
             offering.id,
-            1000, 15000
+            deposit,
+            gasPrice
           ) as string;
 
-          expect(channelId).to.not.be.undefined;
+          await until
+            .object('channel')
+            .withId(channelId)
+            .prop('serviceStatus')
+            .becomes('suspended');
+
+          expect(channelId.length).to.equal(36);
         });
 
-        clientIt('client should activate channel', async () => {
-          await clientWs.changeChannelStatus(
-            channelId, 'resume'
-          );
+        clientIt('client should activate channel', async function() {
+          const timeouts = settings.configs.timeouts;
+          this.timeout(timeouts.blocktime * 10);
+
+          await clientWs.changeChannelStatus(channelId, 'resume');
+
+          await until
+            .object('channel')
+            .withId(channelId)
+            .prop('serviceStatus')
+            .becomes('active');
+
+          const channelStatus = (await clientWs.getObject('channel', channelId) as Channel).serviceStatus;
+
+          expect(channelStatus).to.equal('active');
         });
 
         clientIt('client IP should change', async () => {
@@ -91,11 +115,17 @@ export const startVpn: TestModel = {
           expect(clientRemoteIP).to.not.be.undefined;
         });
 
-        clientIt('client should terminate active channel', async () => {
-          // TODO: mb should be 'close' instead of 'terminate'
-          await clientWs.changeChannelStatus(
-            channelId, 'terminate'
-          );
+        clientIt('client should terminate active channel', async function() {
+          await clientWs.changeChannelStatus(channelId, 'terminate');
+
+          const timeouts = settings.configs.timeouts;
+          this.timeout(timeouts.blocktime * 10);
+
+          await until
+            .object('channel')
+            .withId(channelId)
+            .prop('serviceStatus')
+            .becomes('terminated');
         });
 
         clientIt('client IP should change to local', async () => {
