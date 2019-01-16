@@ -3,7 +3,6 @@ import 'mocha';
 
 import { Until } from '../../utils/until';
 
-import { skipBlocks } from '../../utils/eth';
 import {
   generateOffering,
   generateSomeOfferings
@@ -24,16 +23,18 @@ export const offerings: TestModel = {
   testFn: (settings: TestInputSettings) => {
     const {
       agentWs, clientWs,
-      allowedScope, configs
+      allowedScope
     } = settings;
 
     const until = Until(agentWs);
+    const clientUntil = Until(clientWs);
 
     const agentIt = getItFunc({scope: TestScope.AGENT}, allowedScope);
     const clientIt = getItFunc({scope: TestScope.CLIENT}, allowedScope);
 
     describe('offerings', () => {
       let offeringId: string;
+      let offeringHash: string;
       let offeringToDeleteId: string;
 
       describe('create offering', () => {
@@ -60,10 +61,12 @@ export const offerings: TestModel = {
             .object('offering')
             .withId(offeringId)
             .prop('status')
-            .becomes('bchain_published');
+            .becomes(OfferStatus.registered);
 
           const offering = await agentWs.getOffering(offeringId);
-          expect(offering.status).to.equal('bchain_published')
+          offeringHash = offering.hash;
+
+          expect(offering.status).to.equal(OfferStatus.registered)
         });
 
         agentIt('should create some additional offerings', async function() {
@@ -86,7 +89,7 @@ export const offerings: TestModel = {
               .object('offering')
               .withId(tmpOfferingId)
               .prop('status')
-              .becomes('bchain_published');
+              .becomes(OfferStatus.registered);
           }
         });
 
@@ -94,12 +97,14 @@ export const offerings: TestModel = {
           const productId = (await agentWs.getProducts())[0].id;
           const offerings = await agentWs.getAgentOfferings(
             productId,
-            OfferStatus.empty,
+            OfferStatus.registered,
             0, 10
           ) as PaginatedResponse<Array<Offering>>;
 
+          const offeringForCheck = (offerings.items.filter(offering => offering.id === offeringId))[0];
+
           expect(offerings.totalItems).to.equal(4);
-          expect(offerings.items[0].id).to.equal(offeringId);
+          expect(offeringForCheck).to.have.deep.property('id', offeringId);
 
           offeringToDeleteId = offerings.items[1].id;
         });
@@ -112,59 +117,69 @@ export const offerings: TestModel = {
 
           const offerings = await clientWs.getClientOfferings(
             agentEthAddr,
-            100,
-            200,
+            100000,
+            200000,
             ['KG']
           );
 
-          expect(offerings.totalItems).to.equal(4);
-          expect(offerings.items[3].id).to.equal(offeringId);
+          expect((offerings.items[offerings.totalItems - 1]).hash).to.equal(offeringHash);
         });
 
         agentIt('should popup an offering', async function() {
-          const testTimeout = configs.timeouts.blocktime*(configs.timeouts.getEther.skipBlocks+1) + configs.timeouts.getEther.botTimeoutMs;
-          const getEthTimeout = configs.timeouts.blocktime * (configs.timeouts.getEther.skipBlocks);
-          const getEthTick = configs.timeouts.blocktime / 3;
-
-          this.timeout(testTimeout * 10);
+          const timeouts = settings.configs.timeouts;
+          this.timeout(timeouts.blocktime * 12);
 
           const blockNumberCreated = (await agentWs.getOffering(offeringId) as Offering).blockNumberUpdated;
 
+          const gasPrice = parseInt((await agentWs.getSettings())['eth.default.gasprice'].value, 10);
           await agentWs.changeOfferingStatus(
             offeringId,
             'popup',
-            10000
+            gasPrice
           );
 
-          await skipBlocks(3, agentWs, getEthTimeout, getEthTick);
+          await until
+            .object('offering')
+            .withId(offeringId)
+            .prop('status')
+            .becomes(OfferStatus.popped_up);
 
-          const blockNumberUpdated = await agentWs.getOffering(offeringId) as Offering;
+          const blockNumberUpdated = (await agentWs.getOffering(offeringId) as Offering).blockNumberUpdated;
 
-          expect(blockNumberUpdated).to.not.equal(blockNumberCreated);
+          expect(blockNumberUpdated > blockNumberCreated).to.be.true;
         });
 
-        clientIt('after popup the offering should be on top', async () => {
+        clientIt('after popup the offering should be on top', async function () {
           const accounts = await agentWs.getAccounts();
           const agentEthAddr = accounts[0].ethAddr;
 
+          const timeouts = settings.configs.timeouts;
+          this.timeout(timeouts.blocktime * 10);
+
+          const clientOfferingId = (await clientWs.getObjectByHash('offering', offeringHash) as Offering).id;
+
+          await clientUntil
+            .object('offering')
+            .withId(clientOfferingId)
+            .prop('status')
+            .becomes(OfferStatus.popped_up);
+
           const offerings = await clientWs.getClientOfferings(
-            agentEthAddr,
-            100,
-            200,
-            ['KG']
+              agentEthAddr,
+              100000,
+              200000,
+              ['KG']
           );
 
           expect(offerings.totalItems).to.equal(4);
-          expect(offerings.items[0].id).to.equal(offeringId);
+          expect(offerings.items[0].hash).to.equal(offeringHash);
         });
       });
 
       describe('delete offering', () => {
         agentIt('should delete an offering', async function(){
           const timeouts = settings.configs.timeouts;
-          this.timeout(timeouts.blocktime*260);
-
-          await skipBlocks(250, agentWs, timeouts.blocktime*250, 10000);
+          this.timeout(timeouts.blocktime * 10);
 
           const gasPrice = parseInt((await agentWs.getSettings())['eth.default.gasprice'].value, 10);
           await agentWs.changeOfferingStatus(
@@ -173,13 +188,13 @@ export const offerings: TestModel = {
 
           await until
             .object('offering')
-            .withId(offeringId)
-            .prop('offerStatus')
-            .becomes('removed');
+            .withId(offeringToDeleteId)
+            .prop('status')
+            .becomes(OfferStatus.removed);
 
           const offering = await agentWs.getOffering(offeringToDeleteId);
-          expect(offering.offerStatus).to.equal('removed')
 
+          expect(offering.status).to.equal(OfferStatus.removed)
         });
       });
     });
