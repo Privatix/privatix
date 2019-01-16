@@ -100,7 +100,7 @@ export class WS {
                 jsonrpc: '2.0',
                 id: uuid,
                 method: 'ui_subscribe',
-                params: ['objectChange', this.pwd, entityType, ids]
+                params: ['objectChange', this.token, entityType, ids]
             };
             WS.subscriptions[uuid] = () => {
                 WS.listeners[uuid] = handler;
@@ -392,6 +392,10 @@ export class WS {
 
     getObject(type: string, id: string){
         return this.send('ui_getObject', [type, id]);
+    }
+
+    getObjectByHash(type: 'offering', hash: string) {
+        return this.send('ui_getObjectByHash', [type, hash]);
     }
 
     getTransactions(type: string, id: string, offset: number, limit: number) : Promise<TransactionResponse> {
