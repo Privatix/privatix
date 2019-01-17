@@ -10,16 +10,16 @@ import { wsInitializationTest } from './init-tests/ws-initialization.spec';
 
 import { smokeAutoTests } from './smoke-tests';
 
-describe('integrational tests', () => {
-  let testSettings: TestInputSettings = {
+let testSettings: TestInputSettings = {
     configs: require('../configs/config.json') as LocalSettings
-  };
+};
+
+describe('integrational tests', () => {
 
   // check config file and environment
   configurationCheckTest(testSettings);
 
   // initialize websocket connections
-  // TODO: don't know how to separate ws init-tests better =\
   wsInitializationTest.call(testSettings, testSettings);
 
   // start smoke auto-tests
@@ -34,4 +34,15 @@ describe('integrational tests', () => {
       }));
     });
   });
+
+});
+
+after(function (done) {
+    const {
+        agentWs, clientWs
+    } = testSettings;
+
+    agentWs.closeWsConnection();
+    clientWs.closeWsConnection();
+    done();
 });
