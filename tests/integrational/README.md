@@ -2,6 +2,22 @@
 Privatix integrational tests.
 
 ## Tests
+
+### Running the tests
+Tests are run using the following command:
+```
+TELEGRAM_BOT_USER=user TELEGRAM_BOT_PASSWORD=password npm run test
+```
+
+### Tests report
+The result of passing the tests in the file: `xunit.xml`
+
+### Dependencies
+1) Agent node with opened port 8888
+2) Client node with opened port 8888
+3) Check IP tool on port 6060 ([ExternalIP](https://github.com/Privatix/dapp-exchange/tree/master/tools/externalip))
+
+### Description
 All test blocks are combined by the main `integrational tests` block.
 
 There are two general categories:
@@ -47,7 +63,6 @@ _`createSmokeTestFactory` and `getItFunc` functions_
 _`getAllowedScope` function_
 
 ***
->>>>>>> feature/ek-splitting-tests-into-modules
 
 
 ## Helpers
