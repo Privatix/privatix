@@ -3,14 +3,14 @@ export enum BillType {
 }
 
 export enum OfferStatus {
-    empty = 'empty', register = 'register', remove = 'remove'
-}
-
-export enum MsgStatus {
-    unpublished = 'unpublished'
-   ,bchainPublishing = 'bchain_publishing'
-   ,bchainPublished = 'bchain_published'
-   ,msg_channelPublished = 'msg_channel_published'
+    undef='',
+    empty = 'empty',
+    registering = 'registering',
+    registered = 'registered',
+    popping_up = 'popping_up',
+    popped_up = 'popped_up',
+    removing = 'removing',
+    removed = 'removed'
 }
 
 export enum UnitType {
@@ -34,12 +34,11 @@ export interface ClientOffering {
     maxSuspendTime: number;
     maxUnit: number;
     minUnits: number;
-    offerStatus: OfferStatus;
+    status: OfferStatus;
     product: string;
     rawMsg: string;
     serviceName: string;
     setupPrice: number;
-    status: MsgStatus
     supply: number;
     currentSupply: number;
     template: string;

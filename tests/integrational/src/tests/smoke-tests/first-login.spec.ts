@@ -6,7 +6,6 @@ import {
   TestInputSettings,
   TestModel, TestScope
 } from '../../typings/test-models';
-import {getItFunc} from "../../utils/test-utils";
 
 export const firstLoginTestFn = (scopeName, wsConn) => {
   describe(`generating ${scopeName} account`, () => {
@@ -41,16 +40,13 @@ export const firstLogin: TestModel = {
   testFn: (settings: TestInputSettings) => {
     describe('first login', () => {
       const {
-        agentWs, clientWs, allowedScope
+        agentWs, clientWs
       } = settings;
 
-      const agentIt = getItFunc({scope: TestScope.AGENT}, allowedScope);
-      agentIt('first agent login', () =>
-        firstLoginTestFn('agent', agentWs));
+      firstLoginTestFn('agent', agentWs);
 
-      const clientIt = getItFunc({scope: TestScope.CLIENT}, allowedScope);
-      clientIt('first client login', () =>
-        firstLoginTestFn('client', clientWs));
+      firstLoginTestFn('client', clientWs);
+
     });
   }
 };

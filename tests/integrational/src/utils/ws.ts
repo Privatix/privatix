@@ -30,7 +30,9 @@ export class WS {
 
     private socket: WebSocket;
     private pwd: string;
+    private token: string;
     private ready: Promise<boolean>;
+    authorized: boolean = false;
 //    private reject: Function = null;
     private resolve: Function = null;
 
@@ -98,7 +100,7 @@ export class WS {
                 jsonrpc: '2.0',
                 id: uuid,
                 method: 'ui_subscribe',
-                params: ['objectChange', this.pwd, entityType, ids]
+                params: ['objectChange', this.token, entityType, ids]
             };
             WS.subscriptions[uuid] = () => {
                 WS.listeners[uuid] = handler;
@@ -143,7 +145,7 @@ export class WS {
     send(method: string, params: any[] = []){
 
         const uuid = uuidv4();
-        params.unshift(this.pwd);
+        params.unshift(this.token);
         const req = {
             jsonrpc: '2.0',
             id: uuid,
@@ -165,11 +167,35 @@ export class WS {
         });
     }
 
-    topUp(channelId: string, gasPrice: number, handler: Function){
-        return this.send('ui_topUpChannel', [channelId, gasPrice]) as Promise<any>;
+    topUp(channelId: string, deposit: number, gasPrice: number, handler: Function){
+        return this.send('ui_topUpChannel', [channelId, deposit, gasPrice]) as Promise<any>;
     }
 
 // auth
+
+    getToken(){
+        const uuid = uuidv4();
+
+        const req = {
+            jsonrpc: '2.0',
+            id: uuid,
+            method: 'ui_getToken',
+            params: [this.pwd]
+        };
+
+        return new Promise((resolve: Function, reject: Function) => {
+            const handler = function(res: any){
+                if('error' in res){
+                    reject(res.error);
+                }else{
+                    resolve(res.result);
+                }
+            };
+
+            WS.handlers[uuid] = handler;
+            this.socket.send(JSON.stringify(req));
+        });
+    }
 
     setPassword(pwd: string){
         const uuid = uuidv4();
@@ -184,30 +210,32 @@ export class WS {
         this.pwd = pwd;
 
         return new Promise((resolve: Function, reject: Function) => {
+            const updateToken = () => {
+                this.getToken()
+                    .then(token => {
+                        if(token){
+                            this.token = token as any;
+                            this.authorized = true;
+                            resolve(true);
+                        }else{
+                            reject(false);
+                        }
+                    })
+                    .catch(err => {
+                        reject(err);
+                    });
+            };
+
             const handler = (res: any) => {
-                if('error' in res){
-                    if(res.error.message.indexOf('password exists') === -1){
-                        reject(res.error);
-                    }else{
-                        this.getProducts()
-                            .then(() => {
-                                resolve(true);
-                            })
-                            .catch(err => {
-                                reject(err);
-                            });
-                    }
+                if('error' in res && res.error.message.indexOf('password exists') === -1){
+                    reject(res.error);
                 }else{
-                    resolve(res.result);
+                    updateToken();
                 }
             };
             WS.handlers[uuid] = handler;
             this.socket.send(JSON.stringify(req));
         });
-    }
-
-    updatePassword(pwd: string){
-        return this.send('ui_setPassword', [pwd]);
     }
 
 // accounts
@@ -217,21 +245,12 @@ export class WS {
     }
 
     generateAccount(payload: any){
-      return this.send('ui_generateAccount', [payload]);
+        return this.send('ui_generateAccount', [payload]);
     }
 
-    importAccountFromHex(payload: any, handler: Function){
-        const uuid = uuidv4();
-        WS.handlers[uuid] = handler;
 
-        const req = {
-            jsonrpc: '2.0',
-            id: uuid,
-            method: 'ui_importAccountFromHex',
-            params: [this.pwd, payload]
-        };
-
-        this.socket.send(JSON.stringify(req));
+    importAccountFromHex(payload: any): Promise<any>{
+        return this.send('ui_importAccountFromHex', [payload]) as Promise<any>;
     }
 
     importAccountFromJSON(payload: any, key: Object, pwd: string, handler: Function){
@@ -242,14 +261,24 @@ export class WS {
             jsonrpc: '2.0',
             id: uuid,
             method: 'ui_importAccountFromJSON',
-            params: [this.pwd, payload, key, pwd]
+            params: [this.token, payload, key, pwd]
         };
 
         this.socket.send(JSON.stringify(req));
     }
 
-    exportAccount(accountId: string){
-        return this.send('ui_exportPrivateKey', [accountId]);
+    exportAccount(accountId: string, handler: Function){
+        const uuid = uuidv4();
+        WS.handlers[uuid] = handler;
+
+        const req = {
+            jsonrpc: '2.0',
+            id: uuid,
+            method: 'ui_exportPrivateKey',
+            params: [this.token, accountId]
+        };
+
+        this.socket.send(JSON.stringify(req));
     }
 
     updateBalance(accountId: string){
@@ -304,7 +333,6 @@ export class WS {
                       ,countries: string[] = []
                       ,offset: number = 0
                       ,limit: number = 0) : Promise<OfferingResponse> {
-        console.log('getClientOfferings', [agent, minUnitPrice, maxUnitPrice, countries]);
         return this.send('ui_getClientOfferings', [agent, minUnitPrice, maxUnitPrice, countries, offset, limit]) as Promise<OfferingResponse>;
     }
 
@@ -364,6 +392,10 @@ export class WS {
 
     getObject(type: string, id: string){
         return this.send('ui_getObject', [type, id]);
+    }
+
+    getObjectByHash(type: 'offering', hash: string) {
+        return this.send('ui_getObjectByHash', [type, hash]);
     }
 
     getTransactions(type: string, id: string, offset: number, limit: number) : Promise<TransactionResponse> {

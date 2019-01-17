@@ -11,10 +11,10 @@ export const transferPrix: TestModel = {
   name: 'transfer PRIX: exchange balance → service balance',
   scope: TestScope.AGENT,
   testFn: (settings: TestInputSettings) => {
-    const { agentWs, configs } = settings;
+    const { agentWs, clientWs, configs } = settings;
 
     describe('transfer PRIX: exchange balance → service balance', () => {
-      it('should send PRIX on Service balance', async function() {
+      it('should send PRIX on Agent Service balance', async function() {
         const accounts = await agentWs.getAccounts();
         const account = accounts[0];
 
@@ -28,6 +28,22 @@ export const transferPrix: TestModel = {
 
         expect(accountsTransferTokens[0].pscBalance).to.equal(configs.transferPrix.prixToPsc);
         expect(accountsTransferTokens[0].ptcBalance).to.equal(account.ptcBalance - configs.transferPrix.prixToPsc);
+      });
+
+      it('should send PRIX on Client Service balance', async function() {
+          const accounts = await clientWs.getAccounts();
+          const account = accounts[0];
+
+          await clientWs.transferTokens(account.id, 'psc', configs.transferPrix.prixToPsc, configs.transferPrix.gasPrice);
+
+          const bcTimeouts = getBlockchainTimeouts();
+          this.timeout(bcTimeouts.testTimeout);
+          await skipBlocks(configs.timeouts.getEther.skipBlocks, clientWs, bcTimeouts.getEthTimeout, bcTimeouts.getEthTick);
+
+          const accountsTransferTokens = await clientWs.getAccounts();
+
+          expect(accountsTransferTokens[0].pscBalance).to.equal(configs.transferPrix.prixToPsc);
+          expect(accountsTransferTokens[0].ptcBalance).to.equal(account.ptcBalance - configs.transferPrix.prixToPsc);
       });
     });
 

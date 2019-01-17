@@ -33,7 +33,7 @@ export function wsInitializationTest(settings: TestInputSettings) {
 
         expect(agentPwd.length).to.be.greaterThan(6);
         expect(clientPwd.length).to.be.greaterThan(6);
-        expect(agentPwd).to.not.equal(clientPwd);
+        // expect(agentPwd).to.not.equal(clientPwd);
       });
 
       it('should set agent password', async () => {
@@ -42,7 +42,9 @@ export function wsInitializationTest(settings: TestInputSettings) {
           agentPwd = process.env.AGENT_PWD;
         }
 
-        await this.agentWs.setPassword(agentPwd);
+        const res = await this.agentWs.setPassword(agentPwd);
+
+        expect(res).to.be.true;
 
       });
 
@@ -51,14 +53,20 @@ export function wsInitializationTest(settings: TestInputSettings) {
           clientPwd = process.env.CLIENT_PWD;
         }
 
-        await this.clientWs.setPassword(clientPwd);
+        const res = await this.clientWs.setPassword(clientPwd);
+
+        expect(res).to.be.true;
 
       });
 
-      it.skip('should fail with wrong agent password', async () => {
-        const wrongPwd = this.agentWs.setPassword('wrongPasswd');
+      it('should fail with wrong agent password', async () => {
+        await this.agentWs.setPassword('wrongPasswd')
+            .catch(e => {
+                expect(e.code).to.equal(-32000);
+            });
 
-        return expect(wrongPwd).to.be.rejectedWith();
+        // Set right password
+        await this.agentWs.setPassword(agentPwd);
       });
     });
   });
