@@ -30,3 +30,6 @@ build/
 .DS_Store
 *.swp
 *.swo
+
+# Tests report
+xunit.xml
