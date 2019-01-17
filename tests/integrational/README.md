@@ -13,9 +13,17 @@ TELEGRAM_BOT_USER=user TELEGRAM_BOT_PASSWORD=password npm run test
 The result of passing the tests in the file: `xunit.xml`
 
 ### Dependencies
-1) Agent node with opened port 8888
-2) Client node with opened port 8888
-3) Check IP tool on port 6060 ([ExternalIP](https://github.com/Privatix/dapp-exchange/tree/master/tools/externalip))
+1) Agent node
+2) Client node
+3) Check IP tool on Client ([ExternalIP](https://github.com/Privatix/dapp-exchange/tree/master/tools/externalip))
+4) Config file `src/configs/config.json` with right params:
+```
+{
+  "agentWsEndpoint": "ws://localhost:8888/ws",
+  "clientWsEndpoint": "ws://localhost:8888/ws",
+  "externalClientIpEndpoint": "http://localhost:6060/"
+}
+```
 
 ### Description
 All test blocks are combined by the main `integrational tests` block.
