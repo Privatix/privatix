@@ -33,13 +33,12 @@ param(
     [switch]$noComputerLogs
 )
 
-function Flatten($arr)
-{
-    ,@($arr | ForEach-Object {$_})
+function Flatten($arr) {
+    , @($arr | ForEach-Object {$_})
 }
 
-function create-dump{
-<#
+function create-dump {
+    <#
 .SYNOPSIS
     Gather logs, config and DB dump on Windows
 .DESCRIPTION
@@ -67,12 +66,12 @@ function create-dump{
     -----------
     ame as above, but also creates folder "computerLogs" and gather ip, route, adapter, processes, service and OS info.
 #>
-[cmdletbinding()]
-param(
-    [ValidateScript( {Test-Path $_ })]
-    [string]$installDir,
-    [switch]$computerLogs
-)
+    [cmdletbinding()]
+    param(
+        [ValidateScript( {Test-Path $_ })]
+        [string]$installDir,
+        [switch]$computerLogs
+    )
     # Root install artefacts
     $rootDir = Split-Path -Path $installDir -Parent 
     $version = Join-Path -Path $rootDir -ChildPath "version" -Resolve
@@ -117,6 +116,7 @@ param(
         Get-NetRoute | Export-Csv -Path "$NetFolder\route.csv" -NoTypeInformation
         Get-NetAdapter -IncludeHidden | Export-Csv -Path "$NetFolder\adapter.csv" -NoTypeInformation
         Get-NetIPConfiguration -All -Detailed | Out-File -FilePath "$NetFolder\netconfig.txt"
+        Get-DnsClientServerAddress | Out-File -FilePath "$NetFolder\dns.txt"
         # Service
         Get-Service -Name "*privatix*", "*postgres*" | Export-Csv -Path "$NetFolder\serviceShort.csv" -NoTypeInformation
         Get-Service | Export-Csv -Path "$NetFolder\service.csv" -NoTypeInformation
@@ -137,6 +137,11 @@ param(
     $zipDestinationFile = Join-Path -Path $zipDestinationFolder -ChildPath ((Get-Item $OutFolder).Name + "dump.zip")
     [System.IO.Compression.ZipFile]::CreateFromDirectory($OutFolder, $zipDestinationFile, 'Optimal', $false)
     Write-Host "Dump is located here: $zipDestinationFile" -ForegroundColor Green
+
+    # Remove source folder
+    if (Test-Path $OutFolder) {
+        Remove-Item $OutFolder -Recurse -Force
+    }
 }
 
 
@@ -144,12 +149,13 @@ param(
 $clientDir = Join-Path -Path $installDir -ChildPath "client" -Resolve -ErrorAction SilentlyContinue
 $agentDir = Join-Path -Path $installDir -ChildPath "agent" -Resolve -ErrorAction SilentlyContinue
 
-$installationDirs = @($clientDir,$agentDir) | Where-Object {$_}
+$installationDirs = @($clientDir, $agentDir) | Where-Object {$_}
 
-foreach ($installDir in $installationDirs){
+foreach ($installDir in $installationDirs) {
     if ($noComputerLogs.IsPresent) {
         create-dump -installDir $installDir
-    } else {
+    }
+    else {
         create-dump -installDir $installDir -computerLogs
     }
 }
