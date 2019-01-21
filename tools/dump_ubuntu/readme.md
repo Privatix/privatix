@@ -15,13 +15,14 @@ It is include:
 ## Usage
 
 ```
-dump_ubuntu.py
+dump_ubuntu.py [relative_path_to_zip_file]
 ```
 
 ### Example of usage:
 
 ```
 sudo python dump_ubuntu.py
+sudo python dump_ubuntu.py some/dump.zip
 ```
 
 ### Result
