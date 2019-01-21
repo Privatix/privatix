@@ -30,3 +30,5 @@ This page contains overview of documentation. It is intended for developers and 
 [Service plug-in](/doc/service_plug-in.md) - Privatix service plug-in explained
 
 - [Standards](/doc/service_plug-in_standards.md) - standards for service plugin development
+
+- [Update](/doc/update.md)
