@@ -31,4 +31,4 @@ This page contains overview of documentation. It is intended for developers and 
 
 - [Standards](/doc/service_plug-in_standards.md) - standards for service plugin development
 
-- [Update](/doc/update.md)
+- [Update](/doc/update.md) - software update mechanism
