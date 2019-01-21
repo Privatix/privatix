@@ -84,7 +84,7 @@ copy_product(){
                 "${app_dir}/${PRODUCT}/${PRODUCT_ID}/${PRODUCT_CONFIG}/${config}" || exit 1
     done
 
-    cp -v "${OPENVPN_INST_DIR}/${DH_PEM}" \
+    cp -v "${DAPP_OPENVPN_DIR}/${DAPP_OPENVPN_PEM_LOCATION}" \
           "${app_dir}/${PRODUCT}/${PRODUCT_ID}/${PRODUCT_CONFIG}" || exit 1
 
     # templates
