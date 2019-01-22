@@ -76,6 +76,14 @@
     Description
     -----------
     Same as above, but "master" branch is used for all components.
+
+.EXAMPLE
+    .\publish-dapp.ps1 -staticArtefactsDir "C:\privatix\art" -installer -godep -gitpull -dappguibranch "master" -dappctrlbranch "master" -dappinstbranch "master" -dappopenvpnbranch "master" -privatixbranch "master"
+
+    Description
+    -----------
+    Same as above, but Bitrock installer is triggered to create executable installer.
+    Note: Bitrock installer should be installed (https://installbuilder.bitrock.com/download-step-2.html) and "builder-cli.exe" added to %PATH%
     
 #>
 [CmdletBinding()]
