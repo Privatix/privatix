@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
 
+if (( "$#" > 1 ));
+then
+    echo usage: dump_mac.sh [privatix_app_folder_path]
+    exit 1
+fi
+
 PRIVATIX_APP_FOLDER=${1:-/Applications/Privatix}
 
 DESTINATION_FOLDER="${PRIVATIX_APP_FOLDER}/dump"
