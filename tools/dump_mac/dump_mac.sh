@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-PRIVATIX_APP_FOLDER=/Applications/Privatix
+PRIVATIX_APP_FOLDER=${1:-/Applications/Privatix}
 
 DESTINATION_FOLDER="${PRIVATIX_APP_FOLDER}/dump"
 
