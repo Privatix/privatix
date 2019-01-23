@@ -51,13 +51,8 @@ Function build-dappinstaller {
     if (!($gopath)) {throw "GOPATH is not defined"}
     if (!(Test-Path $gopath)) {New-Folder -rootFolder $gopath}
     $PROJECT_PATH = "$gopath\src\$PROJECT"
-
-    #region Generate Gopkg.toml
-    . $PROJECT_PATH\scripts\win\toml.ps1 -templateFileName "Gopkg.toml.template" -PROJECT_PATH $PROJECT_PATH
-    Copy-Item -Path "$PROJECT_PATH\Gopkg.toml.template" -Destination "$PROJECT_PATH\Gopkg.toml" -ErrorAction Stop
-    #endregion
     
-    Invoke-GoCommonOperations -gopath $gopath -project $PROJECT -godep $godep -branch $branch -gitpull $gitpull -giturl $gitUrl
+    Invoke-GoCommonOperations -gopath $gopath -project $PROJECT -godep $godep -branch $branch -gitpull $gitpull -giturl $gitUrl -tomlTemplateFileName "Gopkg.toml.template"
     
     
     #region build
