@@ -354,7 +354,7 @@ function Invoke-GoCommonOperations {
     #region Generate Gopkg.toml
     if ($tomlTemplateFileName) {
         . $PROJECT_PATH\scripts\win\toml.ps1 -templateFileName $tomlTemplateFileName -PROJECT_PATH $PROJECT_PATH
-        Copy-Item -Path "$PROJECT_PATH\$tomlTemplateFileName" -Destination "$PROJECT_PATH\Gopkg.toml" -ErrorAction Stop
+        Write-Verbose -Message "Gopkg.toml updated by toml.ps1 script" 
     }
     #endregion
     
