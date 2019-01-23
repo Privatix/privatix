@@ -116,7 +116,9 @@ def zip_folder(folder_name):
 abs_zip_path = os.path.abspath(_zip_path)
 root_folder = os.path.splitext(abs_zip_path)[0]
 
-os.makedirs(root_folder)
+if not os.path.exists(root_folder):
+    os.makedirs(root_folder)
+
 collect_configs(root_folder)
 collect_logs(root_folder)
 collect_database(root_folder)
