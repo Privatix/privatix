@@ -10,7 +10,7 @@ import subprocess
 #
 # How to install PostgreSQL 10 on Ubuntu:
 # https://gist.github.com/alistairewj/8aaea0261fe4015333ddf8bed5fe91f8
-
+import sys
 
 _config_files_path_list = [
     '/var/lib/container/common/opt/privatix/config/dappctrl.config.local.json',
@@ -35,6 +35,7 @@ _binaries_that_supports_versions = [
 ]
 
 _log_pattern = '(dappvpn|dappctrl|server)'
+_zip_path = sys.argv[1] if len(sys.argv) > 1 else datetime.datetime.now().strftime('%y-%m-%d %H-%M-%S.zip')
 
 
 def create_folder(root, name):
@@ -112,9 +113,16 @@ def zip_folder(folder_name):
     shutil.make_archive(folder_name, 'zip', folder_name)
 
 
-_root = create_folder('', datetime.datetime.now().strftime("%y-%m-%d %H-%M-%S"))
-collect_configs(_root)
-collect_logs(_root)
-collect_database(_root)
-collect_versions(_root)
-zip_folder(_root)
+abs_zip_path = os.path.abspath(_zip_path)
+root_folder = os.path.splitext(abs_zip_path)[0]
+
+if not os.path.exists(root_folder):
+    os.makedirs(root_folder)
+
+collect_configs(root_folder)
+collect_logs(root_folder)
+collect_database(root_folder)
+collect_versions(root_folder)
+zip_folder(root_folder)
+
+shutil.rmtree(root_folder)

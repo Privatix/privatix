@@ -1,3 +1,31 @@
+<#
+.SYNOPSIS
+    Build single component of Privatix application.
+.DESCRIPTION
+    Build single component of Privatix application. Components:
+    - core (aka controller). dappcrtl repo
+    - openvpn service plug-in. dapp-openvpn repo
+    - installer. dapp-installer repo
+    - GUI. dapp-gui repo
+    - prepare core DB
+
+.PARAMETER branch
+    Checkout existing git branch
+
+.PARAMETER gitpull
+    Pull from git
+
+.PARAMETER godep
+    Use go dependency
+
+.EXAMPLE
+    build-dapp.ps1 [-dappctrl] [-branch <string>] [-gitpull] [-godep] [<CommonParameters>]
+    build-dapp.ps1 [-dappopenvpn] [-branch <string>] [-gitpull] [-godep] [<CommonParameters>]
+    build-dapp.ps1 [-dappinstaller] [-branch <string>] [-gitpull] [-godep] [<CommonParameters>]
+    build-dapp.ps1 [-dappgui] [-branch <string>] [-gitpull] [-wd <string>] [-package] [-shortcut] [<CommonParameters>]
+    build-dapp.ps1 [-dappdb] [-dappctrlconf <string>] [-settingSQL <string>] [-schemaSQL <string>] [-dataSQL <string>] [-psqlpath <string>] [<CommonParameters>]
+
+#>
 [cmdletbinding(DefaultParameterSetName = 'dappctrl')]
 # Build dappctrl
 param(

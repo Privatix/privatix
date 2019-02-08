@@ -1,15 +1,15 @@
 {
   "name": "integrational-tests",
-  "version": "0.0.0",
+  "version": "0.19.0",
   "description": "Intergrational tests.",
   "scripts": {
-    "test": "mocha -r ts-node/register src/tests/index.spec.ts",
+    "test": "mocha -R xunit-file -r ts-node/register src/tests/index.spec.ts",
     "clean": "rimraf coverage build tmp",
     "build": "tsc -p tsconfig.release.json",
     "build:watch": "tsc -w -p tsconfig.release.json",
     "lint": "tslint -t stylish --project \"tsconfig.json\""
   },
-  "author": "Eugene Korobov <eugene@privatix.io>",
+  "author": "Privatix",
   "license": "GPL-3.0-only",
   "engineStrict": true,
   "engines": {
@@ -31,7 +31,8 @@
     "tslint-config-prettier": "1.15.0",
     "tslint-microsoft-contrib": "~5.2.1",
     "tsutils": "~3.0.0",
-    "typescript": "~3.1.0"
+    "typescript": "~3.1.0",
+    "xunit-file": "^1.0.0"
   },
   "dependencies": {
     "atob": "^2.1.2",

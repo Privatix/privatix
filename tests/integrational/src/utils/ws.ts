@@ -49,12 +49,11 @@ export class WS {
         });
 
         socket.on('close', function(event: any) {
-            if (event.wasClean) {
+            if (event === 1000) {
                 console.log('Connection closed.');
             } else {
                 console.log('Connection interrupted.');
             }
-            console.log('Code: ' + event.code + ' reason: ' + event.reason);
         });
 
         socket.on('message',  function(event: any) {
@@ -79,7 +78,6 @@ export class WS {
            } else {
                // ignore
            }
-          // console.log('Data received: ' + event.data);
         });
 
         socket.on('error', function() {
@@ -87,6 +85,10 @@ export class WS {
         });
 
         this.socket = socket;
+    }
+
+    closeWsConnection() {
+        this.socket.close();
     }
 
     whenReady(){

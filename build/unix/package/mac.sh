@@ -64,6 +64,15 @@ create_gui_package(){
     rsync -azhP "${DAPP_GUI_DIR}/${DAPP_GUI_PACKAGE_MAC}/${DAPP_GUI_PACKAGE_MAC_BINARY_NAME}/." \
                 "${app_dir}/${DAPP_INSTALLER_GUI_DIR}/${DAPP_INSTALLER_GUI_BINARY_NAME}" || exit 1
 
+    # patch settings.json
+    python -c 'import json, sys
+with open(sys.argv[1], "r") as f:
+    obj = json.load(f)
+obj["release"]="'${VERSION_TO_SET_IN_BUILDER}'"
+obj["target"]="osx"
+with open(sys.argv[1], "w") as f:
+   json.dump(obj, f)' "${app_dir}/${DAPP_INSTALLER_GUI_DIR}/${DAPP_INSTALLER_GUI_BINARY_NAME}/${DAPP_GUI_SETTINGS_JSON}"
+
 }
 
 copy_product(){
@@ -84,7 +93,7 @@ copy_product(){
                 "${app_dir}/${PRODUCT}/${PRODUCT_ID}/${PRODUCT_CONFIG}/${config}" || exit 1
     done
 
-    cp -v "${OPENVPN_INST_DIR}/${DH_PEM}" \
+    cp -v "${DAPP_OPENVPN_DIR}/${DAPP_OPENVPN_PEM_LOCATION}" \
           "${app_dir}/${PRODUCT}/${PRODUCT_ID}/${PRODUCT_CONFIG}" || exit 1
 
     # templates

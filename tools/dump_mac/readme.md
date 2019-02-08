@@ -13,13 +13,14 @@ It is include:
 ## Usage
 
 ```
-dump_mac.sh
+dump_mac.sh [privatix_app_folder_path]
 ```
 
 ### Example of usage:
 
 ```
 ./dump_mac.sh
+./dump_mac.sh /Applications/Privatix
 ```
 
 ### Result

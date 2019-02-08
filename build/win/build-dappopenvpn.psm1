@@ -52,7 +52,7 @@ Function build-dappopenvpn {
     if (!(Test-Path $gopath)) {New-Folder -rootFolder $gopath}
     $PROJECT_PATH = "$gopath\src\$PROJECT"
 
-    Invoke-GoCommonOperations -gopath $gopath -project $PROJECT -godep $godep -branch $branch -gitpull $gitpull -giturl $gitUrl
+    Invoke-GoCommonOperations -gopath $gopath -project $PROJECT -godep $godep -branch $branch -gitpull $gitpull -giturl $gitUrl -tomlTemplateFileName "Gopkg.toml.template"
 
     #region build
     $GIT_COMMIT = $(git.exe --git-dir=$PROJECT_PATH\.git --work-tree=$PROJECT_PATH rev-list -1 HEAD)

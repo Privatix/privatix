@@ -27,6 +27,9 @@
 .PARAMETER dappopenvpnbranch
     Git branch to checkout for dapp-openvpn build. If not specified "develop" branch will be used.
 
+.PARAMETER privatixbranch
+    Git branch to checkout for privatix build. If not specified "develop" branch will be used.
+
 .PARAMETER godep
     Run "dep ensure" command for each golang branch. It runs for all of them.
 
@@ -68,11 +71,19 @@
     Place result in default location %SystemDrive%\build\<date-time>\
 
 .EXAMPLE
-    .\publish-dapp.ps1 -staticArtefactsDir "C:\privatix\art" -pack -godep -gitpull -dappguibranch "master" -dappctrlbranch "master" -dappinstbranch "master" -dappopenvpnbranch "master"
+    .\publish-dapp.ps1 -staticArtefactsDir "C:\privatix\art" -pack -godep -gitpull -dappguibranch "master" -dappctrlbranch "master" -dappinstbranch "master" -dappopenvpnbranch "master" -privatixbranch "master"
 
     Description
     -----------
     Same as above, but "master" branch is used for all components.
+
+.EXAMPLE
+    .\publish-dapp.ps1 -staticArtefactsDir "C:\privatix\art" -installer -godep -gitpull -dappguibranch "master" -dappctrlbranch "master" -dappinstbranch "master" -dappopenvpnbranch "master" -privatixbranch "master"
+
+    Description
+    -----------
+    Same as above, but Bitrock installer is triggered to create executable installer.
+    Note: Bitrock installer should be installed (https://installbuilder.bitrock.com/download-step-2.html) and "builder-cli.exe" added to %PATH%
     
 #>
 [CmdletBinding()]
@@ -89,7 +100,8 @@ param(
     [string]$dappguibranch = "develop",
     [string]$dappctrlbranch = "develop",
     [string]$dappinstbranch = "develop",
-    [string]$dappopenvpnbranch = "develop"
+    [string]$dappopenvpnbranch = "develop",
+    [string]$privatixbranch = "develop"
     
 )
 if (-not $PSBoundParameters.ContainsKey('wkdir')) {
@@ -159,18 +171,18 @@ if ($pack) {
             Write-Error "builder-cli.exe of BitRock installer not found in %PATH%. Please, resolve"
             exit 1
         }
-        new-package -wrkdir $wkdir -staticArtefactsDir $staticArtefactsDir -installer
+        new-package -wrkdir $wkdir -staticArtefactsDir $staticArtefactsDir -installer -privatixbranch $privatixbranch -gitpull:$gitpull
         Invoke-Expression "builder-cli.exe build $wkdir\project\Privatix.xml windows" 
     }
     else {
-        new-package -wrkdir $wkdir -staticArtefactsDir $staticArtefactsDir
+        new-package -wrkdir $wkdir -staticArtefactsDir $staticArtefactsDir -privatixbranch $privatixbranch -gitpull:$gitpull
     }
     $TotalTime += $sw.Elapsed.TotalSeconds
     Write-Host "It took $($sw.Elapsed.TotalSeconds) seconds to complete" -ForegroundColor Green
 }
 else {
     $sw.Restart()
-    . $builddapp -dappgui -branch $dappguibranch -gitpull:$gitpull -wd $wkdir -shortcut
+    . $builddapp -dappgui -branch $dappguibranch -gitpull:$gitpull -wd $wkdir -shortcut 
     $TotalTime += $sw.Elapsed.TotalSeconds
     Write-Host "It took $($sw.Elapsed.TotalSeconds) seconds to complete" -ForegroundColor Green
 }

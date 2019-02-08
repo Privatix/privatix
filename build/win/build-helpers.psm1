@@ -283,7 +283,8 @@ function Invoke-GoCommonOperations {
         [bool]$godep,
         [string]$branch,
         [bool]$gitpull,
-        [string]$gitUrl
+        [string]$gitUrl,
+        [string]$tomlTemplateFileName
     )
     $gitQuiet = "-q"
     if (($VerbosePreference -ne 'SilentlyContinue') -or ($PSBoundParameters.ContainsKey('Verbose')) ) {
@@ -349,6 +350,14 @@ function Invoke-GoCommonOperations {
     #endregion
 
     #region go dep
+    
+    #region Generate Gopkg.toml
+    if ($tomlTemplateFileName) {
+        . $PROJECT_PATH\scripts\win\toml.ps1 -templateFileName $tomlTemplateFileName -PROJECT_PATH $PROJECT_PATH
+        Write-Verbose -Message "Gopkg.toml updated by toml.ps1 script" 
+    }
+    #endregion
+    
     # Go dep
     If ($godep -and $GoDepInstalled) {
         try {

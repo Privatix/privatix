@@ -11,6 +11,8 @@ for repository in ${REPOSITORIES[@]}
 do
     echo -----------------------------------------------------------------------
     echo "${repository}"
+    echo -----------------------------------------------------------------------
+
     cd "${repository}"
     if [[ "$(git branch --list "${GIT_BRANCH}")" ]]
     then
