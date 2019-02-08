@@ -133,14 +133,15 @@ function build-dappgui {
     #endregion
 
     #region set update fields
+    
     $settingsPath = "$sourceCodePath\build\settings.json"
     $SettingsJSON = Get-Content $settingsPath  | ConvertFrom-Json 
     $SettingsJSON.target = "win"
     $GIT_RELEASE = $(git.exe --git-dir=$sourceCodePath\.git --work-tree=$sourceCodePath tag -l --points-at HEAD)
-    if ($GIT_RELEASE -notmatch "^([0-9]|[1-9][0-9]*)\.([0-9]|[1-9][0-9]*)\.([0-9]|[1-9][0-9]*)(?:-([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?(?:\+[0-9A-Za-z-]+)?$") {
-        Write-Warning "Git release is not valid semver format"
-    } else {$SettingsJSON.release = $GIT_RELEASE}
-    $SettingsJSON | ConvertTo-Json | Out-File $settingsPath
+    if ($null -ne $GIT_RELEASE) {$SettingsJSON.release = $GIT_RELEASE}
+    $JSONstring = $SettingsJSON | ConvertTo-Json  
+    $Utf8NoBomEncoding = New-Object System.Text.UTF8Encoding $False
+    [System.IO.File]::WriteAllLines($settingsPath, $JSONstring, $Utf8NoBomEncoding)
     #endregion
     
     # npm package
