@@ -71,7 +71,8 @@ with open(sys.argv[1], "r") as f:
 obj["release"]="'${VERSION_TO_SET_IN_BUILDER}'"
 obj["target"]="osx"
 with open(sys.argv[1], "w") as f:
-   json.dump(obj, f)' "${app_dir}/${DAPP_INSTALLER_GUI_DIR}/${DAPP_INSTALLER_GUI_BINARY_NAME}/${DAPP_GUI_SETTINGS_JSON}"
+   json.dump(obj, f)' \
+   "${app_dir}/${DAPP_INSTALLER_GUI_DIR}/${DAPP_INSTALLER_GUI_BINARY_NAME}/${DAPP_GUI_SETTINGS_JSON}" || exit 1
 
 }
 
