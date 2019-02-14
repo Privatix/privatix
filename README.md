@@ -1,3 +1,5 @@
+[![pullreminders](https://pullreminders.com/badge.svg)](https://pullreminders.com?ref=badge)
+
 ![](logo.png)
 
 First Internet Broadband Marketplace powered by P2P VPN Network on Blockchain.
