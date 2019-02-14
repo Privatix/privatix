@@ -150,6 +150,12 @@ build_installer(){
     cp -va "${DAPPINST_DIR}/${INSTALL_BUILDER}/${INSTALL_BUILDER_PROJECT}" \
            "${PACKAGE_INSTALL_BUILDER_BIN}" || exit 1
     cd "${PACKAGE_INSTALL_BUILDER_BIN}/${INSTALL_BUILDER_PROJECT}" || exit 1
+
+    # sets RequireInstallationByRootUser
+    sed -i.b \
+        "s/<requireInstallationByRootUser>0/<requireInstallationByRootUser>1/g" \
+        ${INSTALL_BUILDER_PROJECT_XML}
+
     "${BITROCK_INSTALLER_BIN}/builder" build "${INSTALL_BUILDER_PROJECT_XML}" linux-x64 \
                             --setvars project.version=${VERSION_TO_SET_IN_BUILDER} \
                             || exit 1
