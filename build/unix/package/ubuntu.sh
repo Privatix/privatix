@@ -58,7 +58,7 @@ copy_ctrl(){
             "${app_dir}/${DAPPCTRL}/post-stop.sh" || exit 1
     cp -v   "${DAPPINST_DIR}/${DAPP_INSTALLER_SCRIPTS_DIR_LINUX}/pre-start.sh" \
             "${app_dir}/${DAPPCTRL}/pre-start.sh" || exit 1
-    cp -v   "${DAPPINST_DIR}/${DAPP_INSTALLER_SCRIPTS_DIR_LINUX }/container.sh" \
+    cp -v   "${DAPPINST_DIR}/${DAPP_INSTALLER_SCRIPTS_DIR_LINUX}/container.sh" \
             "${PACKAGE_BIN_LINUX}/container.sh" || exit 1
 }
 
