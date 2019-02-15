@@ -5,14 +5,14 @@ cd "${root_dir}"
 
 . ./build.sealed.config
 
-app_dir="${PACKAGE_BIN}/${APP}"
+app_dir="${PACKAGE_BIN_MAC}/${APP}"
 
 clear(){
      rm -rf "${PACKAGE_INSTALL_BUILDER_BIN}"
 #    rm -rf "${ARTEFACTS_BIN}"
 
 
-    mkdir -p "${PACKAGE_BIN}" || exit 1
+    mkdir -p "${PACKAGE_BIN_MAC}" || exit 1
     mkdir -p "${PACKAGE_INSTALL_BUILDER_BIN}/${INSTALL_BUILDER_PROJECT}" || exit 1
 
     mkdir -p "${app_dir}/${DAPPCTRL}" || exit 1
@@ -31,7 +31,7 @@ remove_app(){
 }
 
 zip_package(){
-    cd "${PACKAGE_BIN}/${APP}"
+    cd "${PACKAGE_BIN_MAC}/${APP}"
     zip -r "../${APP_ZIP}" * || exit 1
 
     cd "${root_dir}"
@@ -72,7 +72,7 @@ obj["release"]="'${VERSION_TO_SET_IN_BUILDER}'"
 obj["target"]="osx"
 with open(sys.argv[1], "w") as f:
    json.dump(obj, f)' \
-   "${app_dir}/${DAPP_INSTALLER_GUI_DIR}/${DAPP_INSTALLER_GUI_BINARY_NAME}/${DAPP_GUI_SETTINGS_JSON}" || exit 1
+   "${app_dir}/${DAPP_INSTALLER_GUI_DIR}/${DAPP_INSTALLER_GUI_BINARY_NAME}/${DAPP_GUI_SETTINGS_JSON_MAC}" || exit 1
 
 }
 
@@ -84,7 +84,7 @@ copy_product(){
     cp -v "${GOPATH}/bin/${OPENVPN_INST}" \
           "${app_dir}/${PRODUCT}/${PRODUCT_ID}/${BIN}/${DAPP_INST}" || exit 1
 
-    cp -va "${DAPP_OPENVPN_DIR}/${DAPP_OPENVPN_SCRIPTS_LOCATION}/" \
+    cp -va "${DAPP_OPENVPN_DIR}/${DAPP_OPENVPN_SCRIPTS_LOCATION_MAC}/" \
            "${app_dir}/${PRODUCT}/${PRODUCT_ID}/${BIN}" || exit 1
 
     #configs
@@ -147,10 +147,10 @@ copy_utils()
 
 copy_installer(){
     cp -v "${DAPPINSTALLER_BIN}/${DAPP_INSTALLER}" \
-          "${PACKAGE_BIN}/${DAPP_INSTALLER}" || exit 1
+          "${PACKAGE_BIN_MAC}/${DAPP_INSTALLER}" || exit 1
 
     cp -v "${DAPPINSTALLER_BIN}/${DAPP_INSTALLER_CONFIG}" \
-          "${PACKAGE_BIN}/${DAPP_INSTALLER_CONFIG}" || exit 1
+          "${PACKAGE_BIN_MAC}/${DAPP_INSTALLER_CONFIG}" || exit 1
 }
 
 build_installer(){
@@ -161,7 +161,7 @@ build_installer(){
     cp -va "${DAPPINST_DIR}/${INSTALL_BUILDER}/${INSTALL_BUILDER_PROJECT}" \
            "${PACKAGE_INSTALL_BUILDER_BIN}" || exit 1
     cd "${PACKAGE_INSTALL_BUILDER_BIN}/${INSTALL_BUILDER_PROJECT}" || exit 1
-    "${BITROCK_INSTALLER_BIN}/builder" build "${INSTALL_BUILDER_PROJECT_XML}" osx \
+    "${BITROCK_INSTALLER_BIN_MAC}/builder" build "${INSTALL_BUILDER_PROJECT_XML}" osx \
                             --setvars project.version=${VERSION_TO_SET_IN_BUILDER} \
                             || exit 1
 
@@ -174,20 +174,20 @@ build_installer(){
     echo done
 }
 
-clear
-
-./git/update.sh || exit 1
-
-./build_installer.sh || exit 1
-./build_ctrl.sh || exit 1
-./build_openvpn.sh || exit 1
-create_gui_package
-
-copy_ctrl
-copy_product
-copy_artefacts
-copy_utils
+#clear
+#
+#./git/update.sh || exit 1
+#
+#./build_installer.sh || exit 1
+#./build_ctrl.sh || exit 1
+#./build_openvpn.sh || exit 1
+#create_gui_package
+#
+#copy_ctrl
+#copy_product
+#copy_artefacts
+#copy_utils
 zip_package
-#remove_app
-copy_installer
-build_installer
+##remove_app
+#copy_installer
+#build_installer

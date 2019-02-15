@@ -5,14 +5,7 @@ cd "${root_dir}"
 
 . ./build.sealed.config
 
-BITROCK_INSTALLER_BIN="/opt/installbuilder-19.2.0/bin"
-PACKAGE_BIN=${PACKAGE_INSTALL_BUILDER_BIN}/linux-dapp-installer
-DAPP_OPENVPN_SCRIPTS_LOCATION=scripts/linux
 
-DAPP_GUI_PACKAGE_LINUX="release-builds/dapp-gui-linux-x64"
-DAPP_GUI_SETTINGS_JSON="resources/app/settings.json"
-SCRIPTS_DIR="scripts/linux"
-DAPP_INSTALLER_LINUX_CONFIG="dapp-installer.linux.config.json"
 
 CONFIGS_TO_COPY=(
     install.agent.linux.config.json
@@ -21,12 +14,12 @@ CONFIGS_TO_COPY=(
     installer.client.config.json
 )
 
-app_dir="${PACKAGE_BIN}/${APP}"
+app_dir="${PACKAGE_BIN_LINUX}/${APP}"
 
 clear(){
     sudo rm -rf "${PACKAGE_INSTALL_BUILDER_BIN}"
     
-    mkdir -p "${PACKAGE_BIN}" || exit 1
+    mkdir -p "${PACKAGE_BIN_LINUX}" || exit 1
     mkdir -p "${PACKAGE_INSTALL_BUILDER_BIN}/${INSTALL_BUILDER_PROJECT}" || exit 1
 
     mkdir -p "${app_dir}/${DAPPCTRL}" || exit 1
@@ -43,7 +36,7 @@ remove_app(){
 }
 
 create_container(){
-    cd "${PACKAGE_BIN}"
+    cd "${PACKAGE_BIN_LINUX}"
     "./container.sh" || exit 1
     cd "${root_dir}"
 }
@@ -59,14 +52,14 @@ copy_ctrl(){
             "${app_dir}/${DAPPCTRL}/${DAPPCTRL}" || exit 1
     cp -v   "${DAPPCTRL_BIN}/${DAPPCTRL_FOR_INSTALLER_CONFIG}" \
             "${app_dir}/${DAPPCTRL}/${DAPPCTRL_FOR_INSTALLER_CONFIG}" || exit 1
-    cp -v   "${DAPPINST_DIR}/${SCRIPTS_DIR}/dappctrl.service" \
+    cp -v   "${DAPPINST_DIR}/${DAPP_INSTALLER_SCRIPTS_DIR_LINUX}/dappctrl.service" \
             "${app_dir}/${DAPPCTRL}/dappctrl.service" || exit 1
-    cp -v   "${DAPPINST_DIR}/${SCRIPTS_DIR}/post-stop.sh" \
+    cp -v   "${DAPPINST_DIR}/${DAPP_INSTALLER_SCRIPTS_DIR_LINUX}/post-stop.sh" \
             "${app_dir}/${DAPPCTRL}/post-stop.sh" || exit 1
-    cp -v   "${DAPPINST_DIR}/${SCRIPTS_DIR}/pre-start.sh" \
+    cp -v   "${DAPPINST_DIR}/${DAPP_INSTALLER_SCRIPTS_DIR_LINUX}/pre-start.sh" \
             "${app_dir}/${DAPPCTRL}/pre-start.sh" || exit 1
-    cp -v   "${DAPPINST_DIR}/${SCRIPTS_DIR}/container.sh" \
-            "${PACKAGE_BIN}/container.sh" || exit 1
+    cp -v   "${DAPPINST_DIR}/${DAPP_INSTALLER_SCRIPTS_DIR_LINUX }/container.sh" \
+            "${PACKAGE_BIN_LINUX}/container.sh" || exit 1
 }
 
 create_gui_package(){
@@ -97,7 +90,7 @@ obj["release"]="'${VERSION_TO_SET_IN_BUILDER}'"
 obj["target"]="ubuntu"
 with open(sys.argv[1], "w") as f:
    json.dump(obj, f)' \
-   "${app_dir}/${DAPP_INSTALLER_GUI_DIR}/${DAPP_GUI_SETTINGS_JSON}" || exit 1
+   "${app_dir}/${DAPP_INSTALLER_GUI_DIR}/${DAPP_GUI_SETTINGS_JSON_LINUX}" || exit 1
 
 }
 
@@ -109,7 +102,7 @@ copy_product(){
     cp -v "${GOPATH}/bin/${OPENVPN_INST}" \
           "${app_dir}/${PRODUCT}/${PRODUCT_ID}/${BIN}/${DAPP_INST}" || exit 1
 
-    cp -va "${DAPP_OPENVPN_DIR}/${DAPP_OPENVPN_SCRIPTS_LOCATION}/." \
+    cp -va "${DAPP_OPENVPN_DIR}/${DAPP_OPENVPN_SCRIPTS_LOCATION_LINUX}/." \
            "${app_dir}/${PRODUCT}/${PRODUCT_ID}/${BIN}" || exit 1
 
     #configs
@@ -136,10 +129,10 @@ copy_product(){
 
 copy_installer(){
     cp -v "${DAPPINSTALLER_BIN}/${DAPP_INSTALLER}" \
-          "${PACKAGE_BIN}/${DAPP_INSTALLER}" || exit 1
+          "${PACKAGE_BIN_LINUX}/${DAPP_INSTALLER}" || exit 1
 
     cp -v "${DAPPINST_DIR}/${DAPP_INSTALLER_LINUX_CONFIG}" \
-          "${PACKAGE_BIN}/${DAPP_INSTALLER_CONFIG}" || exit 1
+          "${PACKAGE_BIN_LINUX}/${DAPP_INSTALLER_CONFIG}" || exit 1
 }
 
 build_installer(){
@@ -156,7 +149,7 @@ build_installer(){
         "s/<requireInstallationByRootUser>0/<requireInstallationByRootUser>1/g" \
         ${INSTALL_BUILDER_PROJECT_XML}
 
-    "${BITROCK_INSTALLER_BIN}/builder" build "${INSTALL_BUILDER_PROJECT_XML}" linux-x64 \
+    "${BITROCK_INSTALLER_BIN_LINUX}/builder" build "${INSTALL_BUILDER_PROJECT_XML}" linux-x64 \
                             --setvars project.version=${VERSION_TO_SET_IN_BUILDER} \
                             || exit 1
 
