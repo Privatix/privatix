@@ -10,5 +10,6 @@ sudo apt install \
 
 ./install_go.sh
 ./install_node.sh
+./install_nspawn.sh
 
 sudo ./install_postgress.sh
