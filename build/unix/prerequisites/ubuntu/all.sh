@@ -12,4 +12,4 @@ sudo apt install \
 ./install_node.sh
 ./install_nspawn.sh
 
-sudo ./install_postgress.sh
+# sudo ./install_postgress.sh
