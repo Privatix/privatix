@@ -29,6 +29,7 @@ clear(){
     mkdir -p "${app_dir}/${PRODUCT}/${PRODUCT_ID}/${LOG}" || exit 1
     mkdir -p "${app_dir}/${PRODUCT}/${PRODUCT_ID}/${PRODUCT_TEMPLATE}" || exit 1
     mkdir -p "${app_dir}/${DAPP_INSTALLER_GUI_DIR}" || exit 1
+    mkdir -p "${app_dir}/${UTIL}" || exit 1
 }
 
 remove_app(){
@@ -135,6 +136,16 @@ copy_installer(){
           "${PACKAGE_BIN_LINUX}/${DAPP_INSTALLER_CONFIG}" || exit 1
 }
 
+copy_utils()
+{
+    echo
+    echo copy utils
+    echo
+
+    cp -r  "${DUMP_LINUX}/." \
+       "${app_dir}/${UTIL}/${DUMP}" || exit 1
+}
+
 build_installer(){
     echo -----------------------------------------------------------------------
     echo build installer gui
@@ -174,6 +185,7 @@ create_gui_package
 
 copy_ctrl
 copy_product
+copy_utils
 create_container
 #remove_app
 copy_installer

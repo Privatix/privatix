@@ -2,7 +2,7 @@
 
 if (( "$#" > 1 ));
 then
-    echo usage: dump_mac.sh [privatix_app_folder_path]
+    echo usage: dump_ubuntu.sh [privatix_app_folder_path]
     exit 1
 fi
 
