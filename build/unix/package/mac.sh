@@ -174,20 +174,20 @@ build_installer(){
     echo done
 }
 
-#clear
-#
-#./git/update.sh || exit 1
-#
-#./build_installer.sh || exit 1
-#./build_ctrl.sh || exit 1
-#./build_openvpn.sh || exit 1
-#create_gui_package
-#
-#copy_ctrl
-#copy_product
-#copy_artefacts
-#copy_utils
+clear
+
+./git/update.sh || exit 1
+
+./build_installer.sh || exit 1
+./build_ctrl.sh || exit 1
+./build_openvpn.sh || exit 1
+create_gui_package
+
+copy_ctrl
+copy_product
+copy_artefacts
+copy_utils
 zip_package
-##remove_app
-#copy_installer
-#build_installer
+#remove_app
+copy_installer
+build_installer
