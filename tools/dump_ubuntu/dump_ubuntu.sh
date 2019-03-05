@@ -45,4 +45,4 @@ find  "${PRIVATIX_APP_FOLDER}" -name "pg_dump" -exec \
      \;
 
 echo "archiving files..."
-tar -czf "${DESTINATION_ARCHIVE}" "${DESTINATION_FOLDER}"
+tar -czf "${DESTINATION_ARCHIVE}" -C "${PRIVATIX_APP_FOLDER}" "dump"
