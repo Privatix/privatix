@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-root_dir=$(cd `dirname $0` && pwd)
+root_dir="$(cd `dirname $0` && pwd)/.."
 cd ${root_dir}
 . ./build.sealed.config
 
