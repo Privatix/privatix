@@ -37,7 +37,7 @@
 
    Description
    -----------
-   Checkout develop branch, git pull, build dapp-gui and install. Set version of realease, if no git tag exists.
+   Checkout develop branch, git pull, build dapp-gui and install. Set version of release, if no git tag exists.
 #>
 function build-dappgui {
     [cmdletbinding()]
@@ -50,6 +50,9 @@ function build-dappgui {
         [switch]$shortcut,
         [string]$version
     )
+    
+    $ErrorActionPreference = "Stop"
+
     Write-Verbose "Building dapp-gui"
 
     $gitUrl = "https://github.com/Privatix/dapp-gui.git"

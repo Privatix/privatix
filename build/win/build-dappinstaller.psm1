@@ -13,6 +13,9 @@
 .PARAMETER godep
     Use go dependency
 
+.PARAMETER version
+    Set version, if not overriden by git tag
+
 .EXAMPLE
     build-dappinstaller
 
@@ -21,7 +24,7 @@
     Build Dappinstaller.
 
 .EXAMPLE
-    build-dappinstaller -branch "develop" -godep -gitpull
+    build-dappinstaller -branch "develop" -godep -gitpull -version "0.21.0"
 
     Description
     -----------
@@ -30,15 +33,15 @@
 Function build-dappinstaller {
     [cmdletbinding()]
     Param (
-        [parameter()]
         [ValidatePattern("^(?!@$|build-|.*([.]\.|@\{|\\))[^\000-\037\177 ~^:?*[]+[^\000-\037\177 ~^:?*[]+(?<!\.lock|[.])$")]
         [string]$branch,        
-        [parameter()]
         [switch]$gitpull,
-        [parameter()]
-        [switch]$godep
+        [switch]$godep,
+        [string]$version
     )
 
+    $ErrorActionPreference = "Stop"
+    
     # import helpers
     import-module (join-path $PSScriptRoot "build-helpers.psm1" -resolve) -DisableNameChecking -ErrorAction Stop
     Write-Verbose "Building dapp-installer"
@@ -59,10 +62,12 @@ Function build-dappinstaller {
     $GIT_COMMIT = $(git.exe --git-dir=$PROJECT_PATH\.git --work-tree=$PROJECT_PATH rev-list -1 HEAD)
     $GIT_RELEASE = $(git.exe --git-dir=$PROJECT_PATH\.git --work-tree=$PROJECT_PATH tag -l --points-at HEAD)
 
-    if ($GIT_RELEASE -notmatch "^([0-9]|[1-9][0-9]*)\.([0-9]|[1-9][0-9]*)\.([0-9]|[1-9][0-9]*)(?:-([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?(?:\+[0-9A-Za-z-]+)?$") {
-        Write-Warning "Git release is not valid semver format"
+    if ($version -notmatch "^([0-9]|[1-9][0-9]*)\.([0-9]|[1-9][0-9]*)\.([0-9]|[1-9][0-9]*)(?:-([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?(?:\+[0-9A-Za-z-]+)?$") {
+        Write-Error "Version is not valid semver format"
     }
-    
+    if (($null -eq $GIT_RELEASE) -and ($null -ne $version)) {
+        $GIT_RELEASE = $version
+    }
     
     $lastLocation = (Get-Location).Path
     Set-Location $PROJECT_PATH

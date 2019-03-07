@@ -155,7 +155,8 @@ PARAMETERS
         Accept wildcard characters?  false
 
     -version <String>
-        If version is specified, it will be passed to Bitrock and Dapp-GUI settings.json -> release.
+        If version is specified, it will be passed to Bitrock and 
+        Dapp-GUI settings.json -> release.
 
         Required?                    false
         Position?                    4

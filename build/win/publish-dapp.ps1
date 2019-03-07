@@ -113,6 +113,8 @@ param(
     
 )
 
+$ErrorActionPreference = "Stop"
+
 $vers = $version
 
 if (-not $PSBoundParameters.ContainsKey('wkdir')) {
@@ -159,17 +161,17 @@ Import-Module (Join-Path $PSScriptRoot "new-package.psm1" -Resolve) -ErrorAction
 $TotalTime = 0
 
 $sw = [Diagnostics.Stopwatch]::StartNew()
-. $builddapp -dappctrl -branch $dappctrlbranch -gitpull:$gitpull -godep:$godep
+. $builddapp -dappctrl -branch $dappctrlbranch -gitpull:$gitpull -godep:$godep -version:$vers
 $TotalTime += $sw.Elapsed.TotalSeconds
 Write-Host "It took $($sw.Elapsed.TotalSeconds) seconds to complete" -ForegroundColor Green
 
 $sw.Restart()
-. $builddapp -dappopenvpn -branch $dappopenvpnbranch -gitpull:$gitpull -godep:$godep
+. $builddapp -dappopenvpn -branch $dappopenvpnbranch -gitpull:$gitpull -godep:$godep -version:$vers
 $TotalTime += $sw.Elapsed.TotalSeconds
 Write-Host "It took $($sw.Elapsed.TotalSeconds) seconds to complete" -ForegroundColor Green
 
 $sw.Restart()
-. $builddapp -dappinstaller -branch $dappinstbranch -gitpull:$gitpull -godep:$godep
+. $builddapp -dappinstaller -branch $dappinstbranch -gitpull:$gitpull -godep:$godep -version:$vers
 $TotalTime += $sw.Elapsed.TotalSeconds
 Write-Host "It took $($sw.Elapsed.TotalSeconds) seconds to complete" -ForegroundColor Green
 
