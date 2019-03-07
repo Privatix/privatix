@@ -22,19 +22,22 @@
 .PARAMETER shortcut
     create shortcut (for testing purposes)
 
+.PARAMETER version
+    If version is specified and no git tag set, it will be define Dapp-GUI settings.json -> release.
+
 .EXAMPLE
    build-dappgui
 
    Description
    -----------
-   Build dapp-gui and install to c:\privatix\dapp-gui.
+   Build dapp-gui and install to <default build location>\dapp-gui.
 
 .EXAMPLE
-   build-dappgui -branch "develop" -gitpull -wd "$HOME\gui". Place shortcut is on desktop.
+   build-dappgui -branch "develop" -gitpull -wd "$HOME\gui". -version "0.20.0"
 
    Description
    -----------
-   Checkout develop branch, git pull, build dapp-gui and install to $HOME\gui\dapp-gui. Place shortcut is on desktop.
+   Checkout develop branch, git pull, build dapp-gui and install. Set version of release, if no git tag exists.
 #>
 function build-dappgui {
     [cmdletbinding()]
@@ -44,8 +47,12 @@ function build-dappgui {
         [switch]$gitpull,
         [string]$wd = "c:\privatix\tmp",
         [switch]$package,
-        [switch]$shortcut
+        [switch]$shortcut,
+        [string]$version
     )
+    
+    $ErrorActionPreference = "Stop"
+
     Write-Verbose "Building dapp-gui"
 
     $gitUrl = "https://github.com/Privatix/dapp-gui.git"
@@ -139,6 +146,7 @@ function build-dappgui {
     $SettingsJSON.target = "win"
     $GIT_RELEASE = $(git.exe --git-dir=$sourceCodePath\.git --work-tree=$sourceCodePath tag -l --points-at HEAD)
     if ($null -ne $GIT_RELEASE) {$SettingsJSON.release = $GIT_RELEASE}
+    if ($version) {$SettingsJSON.release = $version}
     $JSONstring = $SettingsJSON | ConvertTo-Json  
     $Utf8NoBomEncoding = New-Object System.Text.UTF8Encoding $False
     [System.IO.File]::WriteAllLines($settingsPath, $JSONstring, $Utf8NoBomEncoding)

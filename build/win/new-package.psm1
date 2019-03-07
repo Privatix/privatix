@@ -22,6 +22,9 @@
 .PARAMETER gitpull
     Make git pull before checkout for privatix repo.
 
+.PARAMETER prodConfig
+    If specified, dappctrl will use production config, else development config.
+
 .EXAMPLE
     new-package -wrkdir "c:\workdir" -staticArtefactsDir "c:\privatix\static_artifacts"
 
@@ -47,7 +50,8 @@ function new-package {
         [string]$staticArtefactsDir,
         [switch]$installer,
         [string]$privatixbranch = "develop",
-        [switch]$gitpull
+        [switch]$gitpull,
+        [switch]$prodConfig
 
     )
  
@@ -150,7 +154,10 @@ function new-package {
     $dappinstallerconf = (Get-Item "$gopath\src\github.com\privatix\dapp-installer\dapp-installer.config.json").FullName
     # common
     $dappctrlbin = (Get-Item "$gopath\bin\dappctrl.exe").FullName
-    $dappctrlconfig = (Get-Item "$gopath\src\github.com\privatix\dappctrl\dappctrl-dev.config.json").FullName
+    if ($prodConfig) {
+        $dappctrlconfig = (Get-Item "$gopath\src\github.com\privatix\dappctrl\dappctrl.config.json").FullName
+    }
+    else {$dappctrlconfig = (Get-Item "$gopath\src\github.com\privatix\dappctrl\dappctrl-dev.config.json").FullName}
     $dappctrlFWruleScript = (Get-Item "$gopath\src\github.com\privatix\dappctrl\scripts\win\set-ctrlfirewall.ps1").FullName
     $dappguiFolder = (Get-Item "$wrkdir\dapp-gui\release-builds\dapp-gui-win32-x64").FullName
     $pgFolder = (Get-Item "$staticArtefactsDir\pgsql").FullName
@@ -248,25 +255,27 @@ function new-package {
     #endregion
 
     #region dev app installation scripts
-    #region install shorcut
-    $lnkcmd = '/c start "" /b .\dapp-installer.exe install --role agent --workdir .\agent --source .\app.zip --verbose'
-    $lnkInstalled = New-Shortcut -Path "$deployAppPath\install_agent.lnk" -TargetPath "%ComSpec%" -Arguments $lnkcmd -WorkDir "%~dp0" -Description "Privatix Core install agent"
-    if (-not $lnkInstalled) {Write-Error "Agent installer shortcut creation failed"}
-    
-    $lnkcmd = '/c start "" /b .\dapp-installer.exe install --role client --workdir .\client --source .\app.zip --verbose'
-    $lnkInstalled = New-Shortcut -Path "$deployAppPath\install_client.lnk" -TargetPath "%ComSpec%" -Arguments $lnkcmd -WorkDir "%~dp0" -Description "Privatix Core install client"
-    if (-not $lnkInstalled) {Write-Error "Client installer shortcut creation failed"}
-    #endregion
+    if (-not $PSBoundParameters.ContainsKey('installer')) {
+        #region install shorcut
+        $lnkcmd = '/c start "" /b .\dapp-installer.exe install --role agent --workdir .\agent --source .\app.zip --verbose'
+        $lnkInstalled = New-Shortcut -Path "$deployAppPath\install_agent.lnk" -TargetPath "%ComSpec%" -Arguments $lnkcmd -WorkDir "%~dp0" -Description "Privatix Core install agent"
+        if (-not $lnkInstalled) {Write-Error "Agent installer shortcut creation failed"}
+        
+        $lnkcmd = '/c start "" /b .\dapp-installer.exe install --role client --workdir .\client --source .\app.zip --verbose'
+        $lnkInstalled = New-Shortcut -Path "$deployAppPath\install_client.lnk" -TargetPath "%ComSpec%" -Arguments $lnkcmd -WorkDir "%~dp0" -Description "Privatix Core install client"
+        if (-not $lnkInstalled) {Write-Error "Client installer shortcut creation failed"}
+        #endregion
 
-    #region remove shortcut
-    $lnkcmd = '/c start "" /b .\dapp-installer.exe remove --workdir .\agent --verbose'
-    $lnkInstalled = New-Shortcut -Path "$deployAppPath\remove_agent.lnk" -TargetPath "%ComSpec%" -Arguments $lnkcmd -WorkDir "%~dp0" -Description "Privatix Core remove agent"
-    if (-not $lnkInstalled) {Write-Error "Agent remover shortcut creation failed"}
-    
-    $lnkcmd = '/c start "" /b .\dapp-installer.exe remove --workdir .\client --verbose'
-    $lnkInstalled = New-Shortcut -Path "$deployAppPath\remove_client.lnk" -TargetPath "%ComSpec%" -Arguments $lnkcmd -WorkDir "%~dp0" -Description "Privatix Core remove client"
-    if (-not $lnkInstalled) {Write-Error "Client remover shortcut creation failed"}
-    
-    #endregion
+        #region remove shortcut
+        $lnkcmd = '/c start "" /b .\dapp-installer.exe remove --workdir .\agent --verbose'
+        $lnkInstalled = New-Shortcut -Path "$deployAppPath\remove_agent.lnk" -TargetPath "%ComSpec%" -Arguments $lnkcmd -WorkDir "%~dp0" -Description "Privatix Core remove agent"
+        if (-not $lnkInstalled) {Write-Error "Agent remover shortcut creation failed"}
+        
+        $lnkcmd = '/c start "" /b .\dapp-installer.exe remove --workdir .\client --verbose'
+        $lnkInstalled = New-Shortcut -Path "$deployAppPath\remove_client.lnk" -TargetPath "%ComSpec%" -Arguments $lnkcmd -WorkDir "%~dp0" -Description "Privatix Core remove client"
+        if (-not $lnkInstalled) {Write-Error "Client remover shortcut creation failed"}
+        
+        #endregion
+    }
     #endregion
 }

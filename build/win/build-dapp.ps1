@@ -55,6 +55,11 @@ param(
     [Parameter(ParameterSetName = "dappopenvpn", HelpMessage = "run go dependency check")]
     [Parameter(ParameterSetName = "dappinstaller", HelpMessage = "run go dependency check")]
     [switch]$godep,
+    [Parameter(ParameterSetName = "dappctrl", HelpMessage = "set release version")]
+    [Parameter(ParameterSetName = "dappgui", HelpMessage = "set release version")]
+    [Parameter(ParameterSetName = "dappopenvpn", HelpMessage = "set release version")]
+    [Parameter(ParameterSetName = "dappinstaller", HelpMessage = "set release version")]
+    [string]$version,
     # dappgui parameters
     [Parameter(ParameterSetName = "dappgui", HelpMessage = "Path to where to clone dapp-gui")]
     [string]$wd,
