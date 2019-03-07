@@ -9,19 +9,9 @@ Install prerequisite software if it's not installed.
 * [Golang](https://golang.org/doc/install) 1.11+. Make sure that 
 `$GOPATH/bin` is added to system path `$PATH`.
 
-* [PostgreSQL](https://www.postgresql.org/download/)
-by default, the Application will try to connect to a postgress
-via ```{"dbname": "dappctrl", "user": "postgres", "host": "localhost",
-"port": "5432"}```
-
 * [gcc](https://gcc.gnu.org/install/)
 
 * [node.js](https://nodejs.org/en/) 9.3+
-
-* [OpenVPN](https://openvpn.net/)
-
-* [OpenSSL](https://www.openssl.org/)
-
 
 ### mac
 
@@ -58,27 +48,19 @@ To clone all required repositories, execute the following script:
 ./git/clone.sh
 ```
 
-## Update Repositories
-
-To update all required repositories, execute the following script:
-
-```bash
-./git/update.sh
-```
-
-## One-command create package
+# Create package
 
 * Install [Bitrock InstallBuilder](https://installbuilder.bitrock.com/)
 
 Ensure, that you have artifacts (openvpn, pgsql, tor), located at `$ARTEFACTS_ZIP_URL`
 (`~/artefacts.zip` by default)
 
-### Mac
+## Mac
 
 To create a package, execute the following script:
 
 ```bash
-./package/mac.sh
+./mac.sh
 ```
 
 The package will be created at `.bin/installbuilder/out` folder.
@@ -88,7 +70,7 @@ The package will be created at `.bin/installbuilder/out` folder.
 To create a package, execute the following script:
 
 ```bash
-./package/ubuntu.sh
+./ubuntu.sh
 ```
 
 The package will be created at `.bin/installbuilder/out` folder.

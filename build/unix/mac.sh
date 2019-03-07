@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-root_dir="$(cd `dirname $0` && pwd)/.."
+root_dir="$(cd `dirname $0` && pwd)"
 cd "${root_dir}"
 
 . ./build.sealed.config
@@ -176,11 +176,12 @@ build_installer(){
 
 clear
 
-./git/update.sh || exit 1
+git/update.sh || exit 1
 
-./build_installer.sh || exit 1
-./build_ctrl.sh || exit 1
-./build_openvpn.sh || exit 1
+build/dapp-installer.sh || exit 1
+build/dappctrl.sh || exit 1
+build/dapp-openvpn.sh || exit 1
+
 create_gui_package
 
 copy_ctrl
