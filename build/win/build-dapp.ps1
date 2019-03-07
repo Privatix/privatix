@@ -62,6 +62,8 @@ param(
     [switch]$package,
     [Parameter(ParameterSetName = "dappgui", HelpMessage = "Create shortcut")]
     [switch]$shortcut,
+    [Parameter(ParameterSetName = "dappgui", HelpMessage = "set release version")]
+    [string]$version,
     # database parameters
     [Parameter(ParameterSetName = "dappdb", HelpMessage = "dappctrl config file path")]
     [string]$dappctrlconf,

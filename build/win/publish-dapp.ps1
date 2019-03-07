@@ -43,7 +43,13 @@
     All - remove binaries and all repos from $gopath\src\github.com\privatix
 
 .PARAMETER installer
-    Run BitRock installer to get packed installer. Requires "pack" flag to be set. 
+    Run BitRock installer to get packed installer. 
+    
+.PARAMETER version
+    If version is specified, it will be passed to Bitrock and Dapp-GUI settings.json -> release.
+
+.PARAMETER prodConfig
+    If specified, dappctrl will use production config, else development config.
 
 .EXAMPLE
     .\publish-dapp.ps1 -wkdir "C:\build" -staticArtefactsDir "C:\static_art"
@@ -78,7 +84,7 @@
     Same as above, but "master" branch is used for all components.
 
 .EXAMPLE
-    .\publish-dapp.ps1 -staticArtefactsDir "C:\privatix\art" -installer -godep -gitpull -dappguibranch "master" -dappctrlbranch "master" -dappinstbranch "master" -dappopenvpnbranch "master" -privatixbranch "master"
+    .\publish-dapp.ps1 -staticArtefactsDir "C:\privatix\art" -installer -version "0.21.0" -godep -gitpull -dappguibranch "master" -dappctrlbranch "master" -dappinstbranch "master" -dappopenvpnbranch "master" -privatixbranch "master" -prodConfig
 
     Description
     -----------
@@ -97,13 +103,18 @@ param(
     [switch]$godep,
     [switch]$pack,
     [switch]$installer,
+    [string]$version,
     [string]$dappguibranch = "develop",
     [string]$dappctrlbranch = "develop",
     [string]$dappinstbranch = "develop",
     [string]$dappopenvpnbranch = "develop",
-    [string]$privatixbranch = "develop"
+    [string]$privatixbranch = "develop",
+    [switch]$prodConfig
     
 )
+
+$vers = $version
+
 if (-not $PSBoundParameters.ContainsKey('wkdir')) {
     $wkdir = $($ENV:SystemDrive) + "\build\" + (Get-Date -Format "MMdd_HHmm")
 }
@@ -111,6 +122,10 @@ if (-not $PSBoundParameters.ContainsKey('wkdir')) {
 if ($PSBoundParameters.ContainsKey('installer')) {
     $pack = $true
 }
+
+if ($PSBoundParameters.ContainsKey('prodConfig')) {
+    $prodConf = $true
+} else {$prodConf = $false}
 
 if ($PSBoundParameters.ContainsKey('Verbose')) {
     $global:VerbosePreference = [System.Management.Automation.ActionPreference]::Continue
@@ -160,7 +175,7 @@ Write-Host "It took $($sw.Elapsed.TotalSeconds) seconds to complete" -Foreground
 
 if ($pack) {
     $sw.Restart()
-    . $builddapp -dappgui -branch $dappguibranch -gitpull:$gitpull -wd $wkdir -package
+    . $builddapp -dappgui -branch $dappguibranch -gitpull:$gitpull -wd $wkdir -package -version:$vers
     $TotalTime += $sw.Elapsed.TotalSeconds
     Write-Host "It took $($sw.Elapsed.TotalSeconds) seconds to complete" -ForegroundColor Green
 
@@ -171,18 +186,26 @@ if ($pack) {
             Write-Error "builder-cli.exe of BitRock installer not found in %PATH%. Please, resolve"
             exit 1
         }
-        new-package -wrkdir $wkdir -staticArtefactsDir $staticArtefactsDir -installer -privatixbranch $privatixbranch -gitpull:$gitpull
-        Invoke-Expression "builder-cli.exe build $wkdir\project\Privatix.xml windows" 
+        
+        new-package -wrkdir $wkdir -staticArtefactsDir $staticArtefactsDir -installer -privatixbranch $privatixbranch -gitpull:$gitpull -prodConfig:$prodConfig.IsPresent
+
+        if ($vers) {
+            Invoke-Expression "builder-cli.exe build $wkdir\project\Privatix.xml windows --setvars project.version=$vers" 
+        } else {
+            Write-Warning "no version specified for installer"
+            Invoke-Expression "builder-cli.exe build $wkdir\project\Privatix.xml windows --setvars project.version=undefined" 
+        }
+        
     }
     else {
-        new-package -wrkdir $wkdir -staticArtefactsDir $staticArtefactsDir -privatixbranch $privatixbranch -gitpull:$gitpull
+        new-package -wrkdir $wkdir -staticArtefactsDir $staticArtefactsDir -privatixbranch $privatixbranch -gitpull:$gitpull -prodConfig:$prodConfig.IsPresent
     }
     $TotalTime += $sw.Elapsed.TotalSeconds
     Write-Host "It took $($sw.Elapsed.TotalSeconds) seconds to complete" -ForegroundColor Green
 }
 else {
     $sw.Restart()
-    . $builddapp -dappgui -branch $dappguibranch -gitpull:$gitpull -wd $wkdir -shortcut 
+    . $builddapp -dappgui -branch $dappguibranch -gitpull:$gitpull -wd $wkdir -shortcut -version:$vers
     $TotalTime += $sw.Elapsed.TotalSeconds
     Write-Host "It took $($sw.Elapsed.TotalSeconds) seconds to complete" -ForegroundColor Green
 }
