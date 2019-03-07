@@ -176,11 +176,12 @@ build_installer(){
 
 clear
 
-./git/update.sh || exit 1
+git/update.sh || exit 1
 
-./build/build_installer.sh || exit 1
-./build/build_ctrl.sh || exit 1
-./build/build_openvpn.sh || exit 1
+build/dapp-installer.sh || exit 1
+build/dappctrl.sh || exit 1
+build/dapp-openvpn.sh || exit 1
+
 create_gui_package
 
 copy_ctrl
