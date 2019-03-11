@@ -16,7 +16,7 @@
     Do not gather additional info about computer and network. Only application info.
 
 .EXAMPLE
-    .\new-dump.ps1 -installDir C:\Program Files\Privatix"
+    .\new-dump.ps1 -outFile "c:\dump.zip" -installDir "C:\Program Files\Privatix\client"
 
     Description
     -----------
@@ -24,7 +24,7 @@
     Gather ipconfig, route, adapter, processes, service and basic OS info.
 
 .EXAMPLE
-    .\new-dump.ps1 -installDir C:\Program Files\Privatix" -NoComputerLogs
+    .\new-dump.ps1 -outFile "c:\dump.zip" -installDir "C:\Program Files\Privatix\client" -NoComputerLogs 
 
     Description
     -----------
@@ -41,6 +41,16 @@ function Flatten($arr) {
     , @($arr | ForEach-Object {$_})
 }
 
+#Check has write permissions
+
+try {
+    New-Item -Path $outFile -ItemType File -ErrorAction Stop
+    Remove-Item -Path $outFile -ErrorAction Stop
+} catch {
+    Write-Error "Cannot create file $outFile. Please, verify you have write permission in this folder."
+    exit 1
+}
+
 # Root install artefacts
 $rootDir = Split-Path -Path $installDir -Parent -ErrorAction Stop
 $version = Join-Path -Path $rootDir -ChildPath "version" -Resolve
@@ -53,6 +63,7 @@ $rootItems = Flatten($rootItemsNested)
 $PGdump = Join-Path -Path $installDir -ChildPath "pgsql\bin\pg_dump.exe" -Resolve
 $CoreLog = Join-Path -Path $installDir -ChildPath "log" -Resolve
 $ProdLog = Join-Path -Path $installDir -ChildPath "product\73e17130-2a1d-4f7d-97a8-93a9aaa6f10d\log" -Resolve
+$ProdData = Join-Path -Path $installDir -ChildPath "product\73e17130-2a1d-4f7d-97a8-93a9aaa6f10d\data" -Resolve
 $coreEnv = Join-Path -Path $installDir -ChildPath ".env.config.json" -Resolve
 $dappctrlconf = Join-Path -Path $installDir -ChildPath "dappctrl\dappctrl.config.json" -Resolve
 $dappguiSettingsJson = Join-Path -Path $installDir -ChildPath "dappgui\resources\app\settings.json" -Resolve
@@ -61,7 +72,7 @@ $ProdConf = Join-Path -Path $installDir -ChildPath "product\73e17130-2a1d-4f7d-9
 # DB dump
 $DBconf = (Get-Content $dappctrlconf | ConvertFrom-Json).DB.conn 
 if ($DBconf.password) {$env:PGPASSWORD = $DBconf.password}
-$OutFolder = (New-Item -Path "$installDir\dump\$(get-date -Format "MMdd_HHmmss")" -ItemType Directory).FullName
+$OutFolder = (New-Item -Path "$($env:TEMP)\privatix_dump\$(get-date -Format "MMdd_HHmmss")" -ItemType Directory).FullName
 Invoke-Expression ".`"$PGdump`" --create --column-inserts --clean --if-exists -d $($DBconf.dbname) -h $($DBconf.host) -p $($DBconf.port) -U $($DBconf.user) -f `"$OutFolder\dbdump$(get-date -Format "MMdd_HHmmss").sql`""
 
 # Copy root artefacts
@@ -77,6 +88,7 @@ Copy-Item -Path $dappctrlconf -Destination "$OutFolder\coreconfig\dappctrl.confi
 Copy-Item -Path $dappguiSettingsJson -Destination "$OutFolder\coreconfig\settings.json" -Force
 Copy-Item -Path $dappguiPackageJson -Destination "$OutFolder\coreconfig\package.json" -Force
 Copy-Item -Path $ProdConf -Destination "$OutFolder\prodconfig" -Recurse -Force
+Copy-Item -Path $ProdData -Destination "$OutFolder\proddata" -Recurse -Force
 
 # Gather additional computer info
 if (-not $PSBoundParameters.ContainsKey('noComputerLogs')) {
