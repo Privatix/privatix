@@ -31,6 +31,7 @@ find_and_copy "*.config.json" "${DESTINATION_FOLDER}/configs"
 find_and_copy "settings.json" "${DESTINATION_FOLDER}/configs"
 find_and_copy "*.log" "${DESTINATION_FOLDER}/logs"
 find_and_copy "*.err" "${DESTINATION_FOLDER}/errs"
+find_and_copy "*.ovpn" "${DESTINATION_FOLDER}/ovpn"
 
 dappctrl_config=$(find "${DESTINATION_FOLDER}"  -name "dappctrl.config.json")
 
