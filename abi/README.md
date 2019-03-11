@@ -1,6 +1,6 @@
 ## RINKEBY
 
-### test version for Furhat
+### test version for Furkhat
 |Contract's Name|Address|
 |-|-|
 |[Sale](https://rinkeby.etherscan.io/address/0x4d15c86c78128a6e216615f4345dfe32fb43181d)|0x4d15c86c78128a6e216615f4345dfe32fb43181d|
