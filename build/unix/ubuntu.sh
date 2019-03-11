@@ -6,14 +6,6 @@ cd "${root_dir}"
 . ./build.sealed.config
 
 
-
-CONFIGS_TO_COPY=(
-    install.agent.linux.config.json
-    install.client.linux.config.json
-    installer.agent.config.json
-    installer.client.config.json
-)
-
 app_dir="${PACKAGE_BIN_LINUX}/${APP}"
 
 clear(){
@@ -107,7 +99,7 @@ copy_product(){
            "${app_dir}/${PRODUCT}/${PRODUCT_ID}/${BIN}" || exit 1
 
     #configs
-    for config in ${CONFIGS_TO_COPY[@]}
+    for config in ${CONFIGS_TO_COPY_UBUNTU[@]}
     do
         new_name=${config/.linux./.}
         cp -v "${DAPP_OPENVPN_DIR}/${DAPP_OPENVPN_INST_PROJECT}/${config}" \

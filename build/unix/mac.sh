@@ -88,7 +88,7 @@ copy_product(){
            "${app_dir}/${PRODUCT}/${PRODUCT_ID}/${BIN}" || exit 1
 
     #configs
-    for config in ${CONFIGS_TO_COPY[@]}
+    for config in ${CONFIGS_TO_COPY_MAC[@]}
     do
           cp -v "${DAPP_OPENVPN_DIR}/${DAPP_OPENVPN_INST_PROJECT}/${config}" \
                 "${app_dir}/${PRODUCT}/${PRODUCT_ID}/${PRODUCT_CONFIG}/${config}" || exit 1
