@@ -730,10 +730,6 @@
 		"outputs": [
 			{
 				"name": "",
-				"type": "bytes32"
-			},
-			{
-				"name": "",
 				"type": "uint192"
 			},
 			{

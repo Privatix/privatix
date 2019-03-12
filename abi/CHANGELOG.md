@@ -1,5 +1,9 @@
 # Change log
 
+## 12.03.2019
+
+- function `getChannelInfo` returns (uint192, uint32, uint192) \[deposit, settle_block_number, closing_balance\]
+
 ## 21.11.2018
 
 - `event LogOfferingCreated(... uint8 _source_type, string _source);`
