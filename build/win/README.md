@@ -53,10 +53,11 @@ Resulting installer binary will be placed to `$wkdir\project\out`
 ### publish-dapp.ps1 parameters
 
 ```bash
-publish-dapp.ps1 [[-wkdir] <string>] [[-staticArtefactsDir] <string>]
-                 [[-dappguibranch] <string>] [[-dappctrlbranch] <string>]
-                 [[-dappinstbranch] <string>] [[-dappopenvpnbranch] <string>]
-                 [-pack] [-godep] [-gitpull] [<CommonParameters>]
+publish-dapp.ps1 [[-wkdir] <String>] [[-staticArtefactsDir] <String>]
+    [[-clean] <String>] [-gitpull] [-godep] [-pack] [-installer] [[-version] <String>]
+    [[-dappguibranch] <String>] [[-dappctrlbranch] <String>] [[-dappinstbranch] <String>] 
+    [[-dappopenvpnbranch] <String>] [[-privatixbranch] <String>] [-prodConfig] [<CommonParameters>]
+
 ```
 
 ### Help on publish-dapp.ps1
@@ -74,11 +75,10 @@ SYNOPSIS
 
 
 SYNTAX
-    publish-dapp.ps1 [[-wkdir] <string>] [[-staticArtefactsDir] <string>] [[-clean]
-    <string>] [[-dappguibranch] <string>] [[-dappctrlbranch] <string>] [[-dappinstbranch] <string>]
-    [[-dappopenvpnbranch] <string>] [[-privatixbranch] <string>] [-gitpull] [-godep] [-pack]
-    [-installer]
-    [<CommonParameters>]
+    publish-dapp.ps1 [[-wkdir] <String>] [[-staticArtefactsDir] <String>]
+    [[-clean] <String>] [-gitpull] [-godep] [-pack] [-installer] [[-version] <String>] [[-dappguibranch] <String>]
+    [[-dappctrlbranch] <String>] [[-dappinstbranch] <String>] [[-dappopenvpnbranch] <String>] [[-privatixbranch]
+    <String>] [-prodConfig] [<CommonParameters>]
 
 
 DESCRIPTION
@@ -146,7 +146,7 @@ PARAMETERS
         Accept wildcard characters?  false
 
     -installer [<SwitchParameter>]
-        Run BitRock installer to get packed installer. Requires "pack" flag to be set.
+        Run BitRock installer to get packed installer.
 
         Required?                    false
         Position?                    named
@@ -154,11 +154,21 @@ PARAMETERS
         Accept pipeline input?       false
         Accept wildcard characters?  false
 
+    -version <String>
+        If version is specified, it will be passed to Bitrock and 
+        Dapp-GUI settings.json -> release.
+
+        Required?                    false
+        Position?                    4
+        Default value
+        Accept pipeline input?       false
+        Accept wildcard characters?  false
+
     -dappguibranch <String>
         Git branch to checkout for dappgui build. If not specified "develop" branch will be used.
 
         Required?                    false
-        Position?                    4
+        Position?                    5
         Default value                develop
         Accept pipeline input?       false
         Accept wildcard characters?  false
@@ -167,7 +177,7 @@ PARAMETERS
         Git branch to checkout for dappctrl build. If not specified "develop" branch will be used.
 
         Required?                    false
-        Position?                    5
+        Position?                    6
         Default value                develop
         Accept pipeline input?       false
         Accept wildcard characters?  false
@@ -176,7 +186,7 @@ PARAMETERS
         Git branch to checkout for dapp-installer build. If not specified "develop" branch will be used.
 
         Required?                    false
-        Position?                    6
+        Position?                    7
         Default value                develop
         Accept pipeline input?       false
         Accept wildcard characters?  false
@@ -185,7 +195,7 @@ PARAMETERS
         Git branch to checkout for dapp-openvpn build. If not specified "develop" branch will be used.
 
         Required?                    false
-        Position?                    7
+        Position?                    8
         Default value                develop
         Accept pipeline input?       false
         Accept wildcard characters?  false
@@ -194,8 +204,17 @@ PARAMETERS
         Git branch to checkout for privatix build. If not specified "develop" branch will be used.
 
         Required?                    false
-        Position?                    8
+        Position?                    9
         Default value                develop
+        Accept pipeline input?       false
+        Accept wildcard characters?  false
+
+    -prodConfig [<SwitchParameter>]
+        If specified, dappctrl will use production config, else development config.
+
+        Required?                    false
+        Position?                    named
+        Default value                False
         Accept pipeline input?       false
         Accept wildcard characters?  false
 
@@ -260,8 +279,9 @@ OUTPUTS
 
     -------------------------- EXAMPLE 5 --------------------------
 
-    PS C:\>.\publish-dapp.ps1 -staticArtefactsDir "C:\privatix\art" -installer -godep -gitpull -dappguibranch "master"
-    -dappctrlbranch "master" -dappinstbranch "master" -dappopenvpnbranch "master" -privatixbranch "master"
+    PS C:\>.\publish-dapp.ps1 -staticArtefactsDir "C:\privatix\art" -installer -version "0.21.0" -godep -gitpull
+    -dappguibranch "master" -dappctrlbranch "master" -dappinstbranch "master" -dappopenvpnbranch "master"
+    -privatixbranch "master" -prodConfig
 
     Description
     -----------

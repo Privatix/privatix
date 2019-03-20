@@ -2,7 +2,7 @@
 
 ![](logo.png)
 
-First Internet Broadband Marketplace powered by P2P VPN Network on Blockchain.
+Internet Bandwidth Marketplace powered by P2P Network on Blockchain.
 
 ## Getting started
 
@@ -12,8 +12,6 @@ First Internet Broadband Marketplace powered by P2P VPN Network on Blockchain.
 ## Installation
 
 - [How to download it and give it a try](https://privatix.atlassian.net/wiki/spaces/BVP/pages/270860384/How+to+download+it+and+give+it+a+try)
-
-Cross platform installer is provided by [http://bitrock.com/](http://bitrock.com/)
 
 ## Documentation
 

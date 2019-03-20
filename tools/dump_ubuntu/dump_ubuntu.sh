@@ -2,14 +2,14 @@
 
 if (( "$#" > 1 ));
 then
-    echo usage: dump_mac.sh [privatix_app_folder_path]
+    echo usage: dump_ubuntu.sh [privatix_app_folder_path]
     exit 1
 fi
 
-PRIVATIX_APP_FOLDER=${1:-/Applications/Privatix}
+PRIVATIX_APP_FOLDER=${1:-/opt/Privatix}
 
 DESTINATION_FOLDER="${PRIVATIX_APP_FOLDER}/dump"
-DESTINATION_ARCHIVE="${DESTINATION_FOLDER}".zip
+DESTINATION_ARCHIVE="${DESTINATION_FOLDER}".tar.gz
 
 rm -rf "${DESTINATION_FOLDER}"
 rm -rf "${DESTINATION_ARCHIVE}"
@@ -45,5 +45,5 @@ find  "${PRIVATIX_APP_FOLDER}" -name "pg_dump" -exec \
     -f "${DESTINATION_FOLDER}/db_dump.sql" \
      \;
 
-echo "zipping files..."
-zip -r "${DESTINATION_ARCHIVE}" "${DESTINATION_FOLDER}"
+echo "archiving files..."
+tar -czf "${DESTINATION_ARCHIVE}" -C "${PRIVATIX_APP_FOLDER}" "dump"
