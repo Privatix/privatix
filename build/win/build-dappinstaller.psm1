@@ -62,10 +62,7 @@ Function build-dappinstaller {
     $GIT_COMMIT = $(git.exe --git-dir=$PROJECT_PATH\.git --work-tree=$PROJECT_PATH rev-list -1 HEAD)
     $GIT_RELEASE = $(git.exe --git-dir=$PROJECT_PATH\.git --work-tree=$PROJECT_PATH tag -l --points-at HEAD)
 
-    if ($version -notmatch "^([0-9]|[1-9][0-9]*)\.([0-9]|[1-9][0-9]*)\.([0-9]|[1-9][0-9]*)(?:-([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?(?:\+[0-9A-Za-z-]+)?$") {
-        Write-Error "Version is not valid semver format"
-    }
-    if (($null -eq $GIT_RELEASE) -and ($null -ne $version)) {
+    if (-not $GIT_RELEASE -and $version) {
         $GIT_RELEASE = $version
     }
     
