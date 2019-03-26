@@ -145,8 +145,12 @@ function build-dappgui {
     $SettingsJSON = Get-Content $settingsPath  | ConvertFrom-Json 
     $SettingsJSON.target = "win"
     $GIT_RELEASE = $(git.exe --git-dir=$sourceCodePath\.git --work-tree=$sourceCodePath tag -l --points-at HEAD)
-    if ($null -ne $GIT_RELEASE) {$SettingsJSON.release = $GIT_RELEASE}
-    if ($version) {$SettingsJSON.release = $version}
+
+    if (-not $GIT_RELEASE -and $version) {
+        $GIT_RELEASE = $version
+    }
+    if ($GIT_RELEASE) {$SettingsJSON.release = $GIT_RELEASE}
+    
     $JSONstring = $SettingsJSON | ConvertTo-Json  
     $Utf8NoBomEncoding = New-Object System.Text.UTF8Encoding $False
     [System.IO.File]::WriteAllLines($settingsPath, $JSONstring, $Utf8NoBomEncoding)
