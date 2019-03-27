@@ -1,6 +1,6 @@
 ## RINKEBY
 
-## TEST BUILD (min_deposit uint192)
+## TEST BUILD (min_deposit uint64)
 ### Average time estimation:
 
 5 blocks -> 4 block per minute -> 1,25 minutes
@@ -21,7 +21,7 @@
 |-|-|
 |[Sale](https://rinkeby.etherscan.io/address/0x4d15c86c78128a6e216615f4345dfe32fb43181d)|0x4d15c86c78128a6e216615f4345dfe32fb43181d|
 |[Token](https://rinkeby.etherscan.io/token/0x0d825eb81b996c67a55f7da350b6e73bab3cb0ec)|0x0d825eb81b996c67a55f7da350b6e73bab3cb0ec|
-|[PSC](https://rinkeby.etherscan.io/address/0xb84f983a50e1e672548fd4d9b4fc87908a1d2236)|0xb84f983a50e1e672548fd4d9b4fc87908a1d2236|
+|[PSC](https://rinkeby.etherscan.io/address/0xd3bb60ba68f7a28bba9a5e9e8aefce927be3117c)|0xd3bb60ba68f7a28bba9a5e9e8aefce927be3117c|
 
 ### Stage
 
@@ -39,9 +39,9 @@
 |-|-|
 |[Sale](https://rinkeby.etherscan.io/address/0x4d15c86c78128a6e216615f4345dfe32fb43181d)|0x4d15c86c78128a6e216615f4345dfe32fb43181d|
 |[Token](https://rinkeby.etherscan.io/token/0x0d825eb81b996c67a55f7da350b6e73bab3cb0ec)|0x0d825eb81b996c67a55f7da350b6e73bab3cb0ec|
-|[PSC](https://rinkeby.etherscan.io/address/0x343a5b50bf364c2293e015b78bcfbca1f614cbd0)|0x343a5b50bf364c2293e015b78bcfbca1f614cbd0|
+|[PSC](https://rinkeby.etherscan.io/address/0xf8177f8e242e48afc545a776f5c90ea9d7902839)|0x0xf8177f8e242e48afc545a776f5c90ea9d7902839|
 
-[abi files](./test_192/)
+[abi files](./test_64/)
 
 ### Average time estimation:
 
