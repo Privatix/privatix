@@ -1,6 +1,6 @@
 const getQuality = function (user, events) {
-    // this is the ratio of money spent in normally closed channels to the total amount
-    // i.e. normalized 0 - 1
+    // This is the ratio of money spent in normally closed channels
+    // to the total amount. I.e. normalized 0 - 1
     let total = 0;
     let success = 0;
 
@@ -9,9 +9,11 @@ const getQuality = function (user, events) {
         if (event === null) {
             continue;
         }
+
         if (event.closed === 'cooperative' || event.closed === 'uncooperative') {
             total += event.cost;
         }
+
         if (event.closed === 'cooperative') {
             success += event.cost;
         }
@@ -21,7 +23,7 @@ const getQuality = function (user, events) {
 };
 
 const getReliability = function (user, events) {
-    // it's the count of money spent
+    // It's the count of money spent
     let res = 0;
     for (let i = 0; i < events.length; i++) {
         const event = events[i];
@@ -33,8 +35,7 @@ const getReliability = function (user, events) {
 
 const getParticipants = function (events, sortedEvents, totalPrix) {
 
-// DONE we have to delete dangling links
-
+    // We have to delete dangling links
     const res = [];
     const counted = [];
 
@@ -43,6 +44,7 @@ const getParticipants = function (events, sortedEvents, totalPrix) {
         if (event === null) {
             return;
         }
+
         const agent = {address: event.agent, role: 'agent'};
         if (!counted.includes(`a${agent.address}`)) {
             const linksCount = sortedEvents[agent.address].length;
@@ -58,6 +60,7 @@ const getParticipants = function (events, sortedEvents, totalPrix) {
             } else {
                 events[i] = null;
             }
+
             counted.push(`a${agent.address}`);
         }
 
@@ -76,15 +79,15 @@ const getParticipants = function (events, sortedEvents, totalPrix) {
             } else {
                 events[i] = null;
             }
+
             counted.push(`c${client.address}`);
         }
     }
-    ;
+
     return res;
 };
 
 const extractIndexes = function (events, participants) {
-
     const res = {};
 
     for (let i = 0; i < events.length; i++) {
@@ -94,6 +97,7 @@ const extractIndexes = function (events, participants) {
         if (!res[event.agent]) {
             res[event.agent] = [];
         }
+
         if (!res[event.client]) {
             res[event.client] = [];
         }
@@ -104,14 +108,12 @@ const extractIndexes = function (events, participants) {
         const clientIndex = participants.findIndex(participant => participant.address === event.client);
         res[event.agent].push(clientIndex);
     }
-    ;
 
     return res;
-}
+};
 
 
 const calculateRank = function (data, receiver, participant, index) {
-
     let reliability = 0;
     let quality = 0;
     for (let index of participant.partners) {
@@ -123,7 +125,7 @@ const calculateRank = function (data, receiver, participant, index) {
 
     receiver.quality[index] = quality / participant.linksCount;
 
-}
+};
 
 const sortEvents = function (events) {
     const res = {};
@@ -132,6 +134,7 @@ const sortEvents = function (events) {
         if (!res[event.agent]) {
             res[event.agent] = [];
         }
+
         if (!res[event.client]) {
             res[event.client] = [];
         }
@@ -141,15 +144,15 @@ const sortEvents = function (events) {
     }
 
     return res;
-}
+};
 
 
 module.exports = function (steps) {
     return function (events) {
-
         const totalPrix = events.reduce((acc, event) => acc + event.cost, 0);
         const sortedEvents = sortEvents(events);
         let participants = getParticipants(events, sortedEvents, totalPrix);
+
         events = events.filter(event => event !== null);
 
         const indexes = extractIndexes(events, participants);
@@ -190,6 +193,7 @@ module.exports = function (steps) {
                 maxReliability = data.reliability[i] * participants[i].linksCount;
             }
         }
+
         const kReliability = 1 / maxReliability;
         for (let i = 0; i < data.reliability.length; i++) {
             data.reliability[i] *= kReliability;
@@ -201,6 +205,7 @@ module.exports = function (steps) {
                 maxQuality = data.quality[i] * participants[i].linksCount;
             }
         }
+
         const kQuality = 1 / maxQuality;
         for (let i = 0; i < data.quality.length; i++) {
             data.quality[i] *= kQuality;
@@ -217,4 +222,4 @@ module.exports = function (steps) {
 
         return participants;
     }
-}
+};
