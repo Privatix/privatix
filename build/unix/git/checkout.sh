@@ -18,7 +18,7 @@ do
     then
         git checkout "${GIT_BRANCH}"
     else
-        git checkout develop
+        git checkout "${GIT_BRANCH_DEFAULT}"
     fi
     echo
     echo
