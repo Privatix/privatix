@@ -8,21 +8,14 @@ echo -----------------------------------------------------------------------
 echo dapp-openvpn
 echo -----------------------------------------------------------------------
 
-
 build(){
     if [[ ! -d "${GOPATH}/bin/" ]]; then
         mkdir "${GOPATH}"/bin/ || exit 1
     fi
 
-    export DAPP_OPENVPN_DIR
+    cd "${DAPP_OPENVPN_DIR}" || exit 1
 
-    cd "${DAPP_OPENVPN_DIR}"
-
-    "./scripts/toml.sh" \
-       "./Gopkg.toml.template" > \
-       "./Gopkg.toml" || exit 1
-
-    "./scripts/build.sh" || exit 1
+    ./scripts/build.sh || exit 1
 }
 
 build

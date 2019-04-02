@@ -169,8 +169,8 @@ clear
 
 git/update.sh || exit 1
 
-build/dapp-installer.sh || exit 1
 build/dappctrl.sh || exit 1
+build/dapp-installer.sh || exit 1
 build/dapp-openvpn.sh || exit 1
 
 create_gui_package

@@ -8,7 +8,6 @@ echo -----------------------------------------------------------------------
 echo dappinstaller
 echo -----------------------------------------------------------------------
 
-
 clean(){
     rm -rf ${DAPPINSTALLER_BIN}
     mkdir -p ${DAPPINSTALLER_BIN} || exit 1
@@ -19,15 +18,9 @@ build(){
         mkdir "${GOPATH}"/bin/ || exit 1
     fi
 
-    export DAPPINST_DIR
+    cd "${DAPPINST_DIR}" || exit 1
 
-    cd ${DAPPINST_DIR}
-
-    "./scripts/toml.sh" \
-       "./Gopkg.toml.template" > \
-       "./Gopkg.toml" || exit 1
-
-    "./scripts/build.sh" || exit 1
+    ./scripts/build.sh || exit 1
 
     cd ${root_dir}
     cp -v   "${GOPATH}"/bin/${DAPP_INSTALLER} \
