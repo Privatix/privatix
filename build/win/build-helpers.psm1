@@ -277,18 +277,14 @@ function New-Folder {
 
 function Invoke-GoCommonOperations {
     [CmdletBinding()]
-    param(
-        [string]$gopath,
-        [string]$PROJECT,
-        [bool]$godep,
+    param(        
+        [string]$PROJECT_PATH,
         [string]$branch,
         [bool]$gitpull,
-        [string]$gitUrl,
-        [string]$tomlTemplateFileName
+        [string]$gitUrl
     )
     $gitQuiet = "-q"
     if (($VerbosePreference -ne 'SilentlyContinue') -or ($PSBoundParameters.ContainsKey('Verbose')) ) {
-        $goVerbose = ' -v '
         $gitQuiet = ""
     }
     #region checks
@@ -302,28 +298,21 @@ function Invoke-GoCommonOperations {
     # Check gcc exists
     Find-App -appname "gcc" -versioncmd "gcc.exe --version" | Out-Null
 
-    $PROJECT_PATH = "$gopath\src\$PROJECT"
+    $gopath = $env:gopath
+    if (!($gopath)) {$gopath = Invoke-Expression "go.exe env gopath"}
+    if (!($gopath)) {throw "gopath is not defined"}    
+    if (!(Test-Path $gopath)) {New-Folder -rootFolder $gopath}
 
+    $srcPath = Split-Path -Path $PROJECT_PATH -Parent
+    
     # Create go essential folders
-    if (!(Test-Path $gopath\src)) {New-Item -ItemType Directory -Path $gopath\src | Out-Null}
+    if (!(Test-Path $srcPath)) {New-Item -ItemType Directory -Path $srcPath | Out-Null}
 
     if (!(Test-Path $gopath\bin)) {New-Item -ItemType Directory -Path $gopath\bin | Out-Null}
     
-    # Check GOPATH bin is on %PATH
-    if (!((($env:PATH).split(";")) -contains "$gopath\bin") ) {throw "GOPATH bin is not found in %PATH. Please, resolve."}
-
-    #Check go dep installed
-    if (Test-Path "$gopath\bin\dep.exe") {
-        Write-Verbose "Go dep is installed"
-        $GoDepInstalled = $true
-    } 
-    #endregion
-   
-    # Install go dep
-    if (!$GoDepInstalled -and $godep -and ($null -ne (Install-GoDep($gopath)))) {        
-        Write-Warning "Failed to install go dep"
-    }
-    else {$GoDepInstalled = $true}
+    # Check gopath bin is on %PATH
+    if (!((($env:PATH).split(";")) -contains "$gopath\bin") ) {throw "gopath bin is not found in %PATH. Please, resolve."}
+    
 
     #region git
 
@@ -347,31 +336,5 @@ function Invoke-GoCommonOperations {
         Invoke-Scriptblock -ScriptBlock "git.exe --git-dir=$PROJECT_PATH\.git --work-tree=$PROJECT_PATH pull $gitQuiet" -StderrPrefix "" -erraction "Continue"
     }
     else {Write-Warning "Skipping git pull"}
-    #endregion
-
-    #region go dep
-    
-    #region Generate Gopkg.toml
-    if ($tomlTemplateFileName) {
-        . $PROJECT_PATH\scripts\win\toml.ps1 -templateFileName $tomlTemplateFileName -PROJECT_PATH $PROJECT_PATH
-        Write-Verbose -Message "Gopkg.toml updated by toml.ps1 script" 
-    }
-    #endregion
-    
-    # Go dep
-    If ($godep -and $GoDepInstalled) {
-        try {
-            Write-Host "executing dep ensure..."
-            $lastLocation = (Get-Location).Path
-            Set-Location $PROJECT_PATH
-            Invoke-Expression "$gopath\bin\dep.exe ensure $goVerbose"
-        }
-        catch {
-            Write-Error "dep ensure execution failed"
-        }
-        finally {Set-Location $lastLocation}
-    }
-    else {Write-Warning "Skipping dep ensure"}
-
     #endregion
 } 

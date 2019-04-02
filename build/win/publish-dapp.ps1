@@ -30,17 +30,14 @@
 .PARAMETER privatixbranch
     Git branch to checkout for privatix build. If not specified "develop" branch will be used.
 
-.PARAMETER godep
-    Run "dep ensure" command for each golang branch. It runs for all of them.
-
 .PARAMETER gitpull
     Make git pull before build.
 
 .PARAMETER clean
     Can be: "nothing","binaries", "all".
     Nothing - do not remove anything before build.
-    Binaries - remove only project binaries form $gopath\bin
-    All - remove binaries and all repos from $gopath\src\github.com\privatix
+    Binaries - remove only project binaries form $wkdir\bin
+    All - remove binaries and all repos from $wkdir\src\github.com\privatix
 
 .PARAMETER installer
     Run BitRock installer to get packed installer. 
@@ -63,28 +60,28 @@
 
     Description
     -----------
-    Same as above, but deletes all project binaries frreom gopath.
-    Additionally it deletes folder in gopath\src\github.com\privatix.
+    Same as above, but deletes all project binaries from gopath\bin.
+    Additionally it deletes folder in $wkdir\src\github.com\privatix.
     Build application from develop branches. 
 
 .EXAMPLE
-    .\publish-dapp.ps1 -staticArtefactsDir "C:\static_art" -pack -godep -gitpull -Verbose
+    .\publish-dapp.ps1 -staticArtefactsDir "C:\static_art" -pack -gitpull -Verbose
 
     Description
     -----------
     Build application. Package it, so it can be installed, using installer.
-    Checkout "develop" branch for each component. Pull latest commints from git. Run go dependecy.
+    Checkout "develop" branch for each component. Pull latest commints from git.
     Place result in default location %SystemDrive%\build\<date-time>\
 
 .EXAMPLE
-    .\publish-dapp.ps1 -staticArtefactsDir "C:\privatix\art" -pack -godep -gitpull -dappguibranch "master" -dappctrlbranch "master" -dappinstbranch "master" -dappopenvpnbranch "master" -privatixbranch "master"
+    .\publish-dapp.ps1 -staticArtefactsDir "C:\privatix\art" -pack -gitpull -dappguibranch "master" -dappctrlbranch "master" -dappinstbranch "master" -dappopenvpnbranch "master" -privatixbranch "master"
 
     Description
     -----------
     Same as above, but "master" branch is used for all components.
 
 .EXAMPLE
-    .\publish-dapp.ps1 -staticArtefactsDir "C:\privatix\art" -installer -version "0.21.0" -godep -gitpull -dappguibranch "master" -dappctrlbranch "master" -dappinstbranch "master" -dappopenvpnbranch "master" -privatixbranch "master" -prodConfig
+    .\publish-dapp.ps1 -staticArtefactsDir "C:\privatix\art" -installer -version "0.21.0" -gitpull -dappguibranch "master" -dappctrlbranch "master" -dappinstbranch "master" -dappopenvpnbranch "master" -privatixbranch "master" -prodConfig
 
     Description
     -----------
@@ -100,7 +97,6 @@ param(
     [ValidateSet('nothing', 'binaries', 'all')]
     [string]$clean = 'nothing',
     [switch]$gitpull,
-    [switch]$godep,
     [switch]$pack,
     [switch]$installer,
     [string]$version,
@@ -120,14 +116,11 @@ $vers = $version
 if (-not $PSBoundParameters.ContainsKey('wkdir')) {
     $wkdir = $($ENV:SystemDrive) + "\build\" + (Get-Date -Format "MMdd_HHmm")
 }
+if (!(Test-Path $wkdir)) {New-Item -Path $wkdir -ItemType Directory | Out-Null}
 
 if ($PSBoundParameters.ContainsKey('installer')) {
     $pack = $true
 }
-
-if ($PSBoundParameters.ContainsKey('prodConfig')) {
-    $prodConf = $true
-} else {$prodConf = $false}
 
 if ($PSBoundParameters.ContainsKey('Verbose')) {
     $global:VerbosePreference = [System.Management.Automation.ActionPreference]::Continue
@@ -143,8 +136,7 @@ if (($clean -eq 'binaries') -or ($clean -eq 'all')) {
 
 if ($clean -eq 'all') {
     try {
-        $gopath = $ENV:GOPATH
-        $privatixDir = "$gopath\src\github.com\privatix"
+        $privatixDir = "$wkdir\src\"
         if (Test-Path $privatixDir) {
             Write-Verbose "Removing $privatixDir folder ..."
             Remove-Item -Path $privatixDir -Recurse -Force -Confirm:$false
@@ -161,23 +153,23 @@ Import-Module (Join-Path $PSScriptRoot "new-package.psm1" -Resolve) -ErrorAction
 $TotalTime = 0
 
 $sw = [Diagnostics.Stopwatch]::StartNew()
-. $builddapp -dappctrl -branch $dappctrlbranch -gitpull:$gitpull -godep:$godep -version:$vers
+. $builddapp -dappctrl -wd $wkdir -branch $dappctrlbranch -gitpull:$gitpull -version:$vers
 $TotalTime += $sw.Elapsed.TotalSeconds
 Write-Host "It took $($sw.Elapsed.TotalSeconds) seconds to complete" -ForegroundColor Green
 
 $sw.Restart()
-. $builddapp -dappopenvpn -branch $dappopenvpnbranch -gitpull:$gitpull -godep:$godep -version:$vers
+. $builddapp -dappopenvpn -wd $wkdir -branch $dappopenvpnbranch -gitpull:$gitpull -version:$vers
 $TotalTime += $sw.Elapsed.TotalSeconds
 Write-Host "It took $($sw.Elapsed.TotalSeconds) seconds to complete" -ForegroundColor Green
 
 $sw.Restart()
-. $builddapp -dappinstaller -branch $dappinstbranch -gitpull:$gitpull -godep:$godep -version:$vers
+. $builddapp -dappinstaller -wd $wkdir -branch $dappinstbranch -gitpull:$gitpull -version:$vers
 $TotalTime += $sw.Elapsed.TotalSeconds
 Write-Host "It took $($sw.Elapsed.TotalSeconds) seconds to complete" -ForegroundColor Green
 
 if ($pack) {
     $sw.Restart()
-    . $builddapp -dappgui -branch $dappguibranch -gitpull:$gitpull -wd $wkdir -package -version:$vers
+    . $builddapp -dappgui -wd $wkdir -branch $dappguibranch -gitpull:$gitpull -package -version:$vers
     $TotalTime += $sw.Elapsed.TotalSeconds
     Write-Host "It took $($sw.Elapsed.TotalSeconds) seconds to complete" -ForegroundColor Green
 
@@ -207,7 +199,7 @@ if ($pack) {
 }
 else {
     $sw.Restart()
-    . $builddapp -dappgui -branch $dappguibranch -gitpull:$gitpull -wd $wkdir -shortcut -version:$vers
+    . $builddapp -dappgui -wd $wkdir -branch $dappguibranch -gitpull:$gitpull  -shortcut -version:$vers
     $TotalTime += $sw.Elapsed.TotalSeconds
     Write-Host "It took $($sw.Elapsed.TotalSeconds) seconds to complete" -ForegroundColor Green
 }

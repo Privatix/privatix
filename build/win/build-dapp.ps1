@@ -9,19 +9,10 @@
     - GUI. dapp-gui repo
     - prepare core DB
 
-.PARAMETER branch
-    Checkout existing git branch
-
-.PARAMETER gitpull
-    Pull from git
-
-.PARAMETER godep
-    Use go dependency
-
 .EXAMPLE
-    build-dapp.ps1 [-dappctrl] [-branch <string>] [-gitpull] [-godep] [<CommonParameters>]
-    build-dapp.ps1 [-dappopenvpn] [-branch <string>] [-gitpull] [-godep] [<CommonParameters>]
-    build-dapp.ps1 [-dappinstaller] [-branch <string>] [-gitpull] [-godep] [<CommonParameters>]
+    build-dapp.ps1 [-dappctrl] [-branch <string>] [-gitpull] [-wd] [<CommonParameters>]
+    build-dapp.ps1 [-dappopenvpn] [-branch <string>] [-gitpull] [-wd] [<CommonParameters>]
+    build-dapp.ps1 [-dappinstaller] [-branch <string>] [-gitpull] [-wd] [<CommonParameters>]
     build-dapp.ps1 [-dappgui] [-branch <string>] [-gitpull] [-wd <string>] [-package] [-shortcut] [<CommonParameters>]
     build-dapp.ps1 [-dappdb] [-dappctrlconf <string>] [-settingSQL <string>] [-schemaSQL <string>] [-dataSQL <string>] [-psqlpath <string>] [<CommonParameters>]
 
@@ -51,18 +42,17 @@ param(
     [Parameter(ParameterSetName = "dappopenvpn", HelpMessage = "git pull")]
     [Parameter(ParameterSetName = "dappinstaller", HelpMessage = "git pull")]
     [switch]$gitpull,
-    [Parameter(ParameterSetName = "dappctrl", HelpMessage = "run go dependency check")]
-    [Parameter(ParameterSetName = "dappopenvpn", HelpMessage = "run go dependency check")]
-    [Parameter(ParameterSetName = "dappinstaller", HelpMessage = "run go dependency check")]
-    [switch]$godep,
-    [Parameter(ParameterSetName = "dappctrl", HelpMessage = "set release version")]
-    [Parameter(ParameterSetName = "dappgui", HelpMessage = "set release version")]
-    [Parameter(ParameterSetName = "dappopenvpn", HelpMessage = "set release version")]
-    [Parameter(ParameterSetName = "dappinstaller", HelpMessage = "set release version")]
+    [Parameter(ParameterSetName = "dappctrl", HelpMessage = "set version")]
+    [Parameter(ParameterSetName = "dappopenvpn", HelpMessage = "set version")]
+    [Parameter(ParameterSetName = "dappinstaller", HelpMessage = "set version")]
+    [Parameter(ParameterSetName = "dappgui", HelpMessage = "set version")]
     [string]$version,
-    # dappgui parameters
-    [Parameter(ParameterSetName = "dappgui", HelpMessage = "Path to where to clone dapp-gui")]
+    [Parameter(ParameterSetName = "dappgui", HelpMessage = "path to where to clone repo")]
+    [Parameter(ParameterSetName = "dappctrl", HelpMessage = "path to where to clone repo")]
+    [Parameter(ParameterSetName = "dappopenvpn", HelpMessage = "path to where to clone repo")]
+    [Parameter(ParameterSetName = "dappinstaller", HelpMessage = "path to where to clone repo")]
     [string]$wd,
+    # dappgui parameters
     [Parameter(ParameterSetName = "dappgui", HelpMessage = "whether to package gui")]
     [switch]$package,
     [Parameter(ParameterSetName = "dappgui", HelpMessage = "Create shortcut")]

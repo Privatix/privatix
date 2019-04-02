@@ -10,8 +10,8 @@
 .PARAMETER gitpull
     Pull from git
 
-.PARAMETER godep
-    Use go dependency
+.PARAMETER wd
+    working directory where source code is cloned/exist
 
 .PARAMETER version
     Set version, if not overriden by git tag
@@ -24,7 +24,7 @@
     Build dappctrl.
 
 .EXAMPLE
-    build-dappctrl -branch "develop" -godep -gitpull -version "0.21.0"
+    build-dappctrl -wd "c:\build\" -branch "develop" -gitpull -version "0.21.0"
 
     Description
     -----------
@@ -36,7 +36,8 @@ Function build-dappctrl {
         [ValidatePattern("^(?!@$|build-|.*([.]\.|@\{|\\))[^\000-\037\177 ~^:?*[]+[^\000-\037\177 ~^:?*[]+(?<!\.lock|[.])$")]
         [string]$branch,        
         [switch]$gitpull,
-        [switch]$godep,
+        [ValidateScript({Test-Path $_ })]
+        [string]$wd,
         [string]$version
     )
     
@@ -47,15 +48,10 @@ Function build-dappctrl {
     Write-Verbose "Building dappctrl"
     $gitUrl = "https://github.com/Privatix/dappctrl.git"
     $PROJECT = "github.com\privatix\dappctrl"
+    
+    $PROJECT_PATH = "$wd\src\$PROJECT"
 
-    # Check GOPATH is defined
-    $gopath = $env:GOPATH
-    if (!($gopath)) {$gopath = Invoke-Expression "go.exe env GOPATH"}
-    if (!($gopath)) {throw "GOPATH is not defined"}
-    if (!(Test-Path $gopath)) {New-Folder -rootFolder $gopath}
-    $PROJECT_PATH = "$gopath\src\$PROJECT"
-
-    Invoke-GoCommonOperations -gopath $gopath -project $PROJECT -godep $godep -branch $branch -gitpull $gitpull -giturl $gitUrl
+    Invoke-GoCommonOperations -PROJECT_PATH $PROJECT_PATH -branch $branch -gitpull $gitpull -giturl $gitUrl
     
     #region build
     $GIT_COMMIT = $(git.exe --git-dir=$PROJECT_PATH\.git --work-tree=$PROJECT_PATH rev-list -1 HEAD)
@@ -71,13 +67,12 @@ Function build-dappctrl {
     $error.Clear()
 
     try {
-        Invoke-Scriptblock "go get $goVerbose -d  $PROJECT/..."
-        Invoke-Scriptblock "go get $goVerbose -u gopkg.in/reform.v1/reform"
-        Invoke-Scriptblock "go get $goVerbose -u github.com/rakyll/statik"
-        Invoke-Scriptblock "go get $goVerbose -u github.com/pressly/goose/cmd/goose"
-        Invoke-Scriptblock "go get $goVerbose github.com/ethereum/go-ethereum/cmd/abigen"
-        Invoke-Scriptblock "go generate $goVerbose $PROJECT/..."
-        Invoke-Scriptblock "go install $goVerbose -ldflags `"-X main.Commit=$GIT_COMMIT -X main.Version=$GIT_RELEASE`" -tags=notest $PROJECT"
+        Invoke-Scriptblock "go get $goVerbose -u gopkg.in/reform.v1/reform" -StderrPrefix ""
+        Invoke-Scriptblock "go get $goVerbose -u github.com/rakyll/statik" -StderrPrefix ""
+        Invoke-Scriptblock "go get $goVerbose -u github.com/pressly/goose/cmd/goose" -StderrPrefix ""
+        Invoke-Scriptblock "go get $goVerbose github.com/ethereum/go-ethereum/cmd/abigen" -StderrPrefix ""
+        Invoke-Scriptblock "go generate $goVerbose -x $PROJECT/..." -StderrPrefix ""
+        Invoke-Scriptblock "go install $goVerbose -ldflags `"-X main.Commit=$GIT_COMMIT -X main.Version=$GIT_RELEASE`" -tags=notest $PROJECT" -StderrPrefix ""
     }
     catch {Write-Error "Some failures accured during build"}
     finally {Set-Location $lastLocation}

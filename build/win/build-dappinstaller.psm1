@@ -10,8 +10,8 @@
 .PARAMETER gitpull
     Pull from git
 
-.PARAMETER godep
-    Use go dependency
+.PARAMETER wd
+    working directory where source code is cloned/exist
 
 .PARAMETER version
     Set version, if not overriden by git tag
@@ -24,7 +24,7 @@
     Build Dappinstaller.
 
 .EXAMPLE
-    build-dappinstaller -branch "develop" -godep -gitpull -version "0.21.0"
+    build-dappinstaller -wd "c:\build\" -branch "develop" -gitpull -version "0.21.0"
 
     Description
     -----------
@@ -36,7 +36,8 @@ Function build-dappinstaller {
         [ValidatePattern("^(?!@$|build-|.*([.]\.|@\{|\\))[^\000-\037\177 ~^:?*[]+[^\000-\037\177 ~^:?*[]+(?<!\.lock|[.])$")]
         [string]$branch,        
         [switch]$gitpull,
-        [switch]$godep,
+        [ValidateScript({Test-Path $_ })]
+        [string]$wd,
         [string]$version
     )
 
@@ -52,11 +53,10 @@ Function build-dappinstaller {
     $gopath = $env:GOPATH
     if (!($gopath)) {$gopath = Invoke-Expression "go.exe env GOPATH"}
     if (!($gopath)) {throw "GOPATH is not defined"}
-    if (!(Test-Path $gopath)) {New-Folder -rootFolder $gopath}
-    $PROJECT_PATH = "$gopath\src\$PROJECT"
     
-    Invoke-GoCommonOperations -gopath $gopath -project $PROJECT -godep $godep -branch $branch -gitpull $gitpull -giturl $gitUrl -tomlTemplateFileName "Gopkg.toml.template"
+    $PROJECT_PATH = "$wd\src\$PROJECT"
     
+    Invoke-GoCommonOperations -PROJECT_PATH $PROJECT_PATH -branch $branch -gitpull $gitpull -giturl $gitUrl
     
     #region build
     $GIT_COMMIT = $(git.exe --git-dir=$PROJECT_PATH\.git --work-tree=$PROJECT_PATH rev-list -1 HEAD)
@@ -72,11 +72,11 @@ Function build-dappinstaller {
     $error.Clear()
 
     try {
-        Invoke-Scriptblock "go get -d github.com/privatix/dapp-installer/..."
-        Invoke-Scriptblock "go get -u github.com/rakyll/statik"
-        Invoke-Scriptblock "go get -u github.com/josephspurrier/goversioninfo/cmd/goversioninfo"
-        Invoke-Scriptblock "go generate $PROJECT/..."
-        Invoke-Scriptblock "go build -o $GOPATH/bin/dapp-installer.exe -ldflags `"-X main.Commit=$GIT_COMMIT -X main.Version=$GIT_RELEASE`""
+        Invoke-Scriptblock "go get $goVerbose -u github.com/rakyll/statik" -StderrPrefix ""
+        Invoke-Scriptblock "go get $goVerbose -u github.com/josephspurrier/goversioninfo/cmd/goversioninfo" -StderrPrefix ""
+        Invoke-Scriptblock "go get $goVerbose -u github.com/denisbrodbeck/machineid" -StderrPrefix ""
+        Invoke-Scriptblock "go generate $goVerbose -x $PROJECT/..." -StderrPrefix ""
+        Invoke-Scriptblock "go build -o $gopath\bin\dapp-installer.exe -ldflags `"-X main.Commit=$GIT_COMMIT -X main.Version=$GIT_RELEASE`"" -StderrPrefix ""
     }
     catch {Write-Error "Some failures accured during build"}
     finally {Set-Location $lastLocation}

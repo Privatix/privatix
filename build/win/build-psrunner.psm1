@@ -10,8 +10,8 @@
 .PARAMETER gitpull
     Pull from git
 
-.PARAMETER godep
-    Use go dependency
+PARAMETER wd
+    working directory where source code is cloned/exist
 
 .EXAMPLE
     build-psrunner
@@ -33,7 +33,8 @@ Function build-psrunner {
         [ValidatePattern("^(?!@$|build-|.*([.]\.|@\{|\\))[^\000-\037\177 ~^:?*[]+[^\000-\037\177 ~^:?*[]+(?<!\.lock|[.])$")]
         [string]$branch,        
         [switch]$gitpull,
-        [switch]$godep
+        [ValidateScript({Test-Path $_ })]
+        [string]$wd
     )
     
     # import helpers
@@ -42,15 +43,13 @@ Function build-psrunner {
     $gitUrl = "https://github.com/Privatix/dapp-installer.git"
     $PROJECT = "github.com\privatix\dapp-installer"
 
-    # Check GOPATH is defined
-    $gopath = $env:GOPATH
-    if (!($gopath)) {$gopath = Invoke-Expression "go.exe env GOPATH"}
-    if (!($gopath)) {throw "GOPATH is not defined"}
-    if (!(Test-Path $gopath)) {New-Folder -rootFolder $gopath}
-    $PROJECT_PATH = "$gopath\src\$PROJECT"
+    $gopath = $env:gopath
+    if (!($gopath)) {$gopath = Invoke-Expression "go.exe env gopath"}
+    if (!($gopath)) {throw "gopath is not defined"}
+    $PROJECT_PATH = "$wd\src\$PROJECT"
     $toolPath = "tool\ps-runner"
 
-    Invoke-GoCommonOperations -gopath $gopath -project $PROJECT -godep $godep -branch $branch -gitpull $gitpull -giturl $gitUrl
+    Invoke-GoCommonOperations -PROJECT_PATH $PROJECT_PATH -branch $branch -gitpull $gitpull -giturl $gitUrl
     
     #region build
 
@@ -60,10 +59,10 @@ Function build-psrunner {
     $error.Clear()
 
     try {
-        Invoke-Scriptblock "go get $goVerbose -d  $PROJECT/$toolPath..."
-        Invoke-Scriptblock "go get $goVerbose -u github.com/josephspurrier/goversioninfo/cmd/goversioninfo"
-        Invoke-Scriptblock "go generate $goVerbose $PROJECT/$toolPath/..."
-        Invoke-Scriptblock "go build -o $GOPATH/bin/ps-runner.exe"
+        Invoke-Scriptblock "go get $goVerbose -d  $PROJECT/$toolPath..." -StderrPrefix ""
+        Invoke-Scriptblock "go get $goVerbose -u github.com/josephspurrier/goversioninfo/cmd/goversioninfo" -StderrPrefix ""
+        Invoke-Scriptblock "go generate $goVerbose $PROJECT/$toolPath/..." -StderrPrefix ""
+        Invoke-Scriptblock "go build -o $gopath\bin\ps-runner.exe" -StderrPrefix ""
     }
     catch {Write-Error "Some failures accured during build"}
     finally {Set-Location $lastLocation}
