@@ -42,7 +42,11 @@ Function build-dappctrl {
     )
     
     $ErrorActionPreference = "Stop"
-    
+    if (($VerbosePreference -ne 'SilentlyContinue') -or ($PSBoundParameters.ContainsKey('Verbose')) ) {
+        $goVerbose = ' -v '
+        $goGenerateVerbose = ' -x '
+    }
+
     # import helpers
     import-module (join-path $PSScriptRoot "build-helpers.psm1" -resolve) -DisableNameChecking -ErrorAction Stop
     Write-Verbose "Building dappctrl"
@@ -71,7 +75,7 @@ Function build-dappctrl {
         Invoke-Scriptblock "go get $goVerbose -u github.com/rakyll/statik" -StderrPrefix ""
         Invoke-Scriptblock "go get $goVerbose -u github.com/pressly/goose/cmd/goose" -StderrPrefix ""
         Invoke-Scriptblock "go get $goVerbose github.com/ethereum/go-ethereum/cmd/abigen" -StderrPrefix ""
-        Invoke-Scriptblock "go generate $goVerbose -x $PROJECT/..." -StderrPrefix ""
+        Invoke-Scriptblock "go generate $goGenerateVerbose $PROJECT/..." -StderrPrefix ""
         Invoke-Scriptblock "go install $goVerbose -ldflags `"-X main.Commit=$GIT_COMMIT -X main.Version=$GIT_RELEASE`" -tags=notest $PROJECT" -StderrPrefix ""
     }
     catch {Write-Error "Some failures accured during build"}

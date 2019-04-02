@@ -37,6 +37,12 @@ Function build-psrunner {
         [string]$wd
     )
     
+    $ErrorActionPreference = "Stop"
+    if (($VerbosePreference -ne 'SilentlyContinue') -or ($PSBoundParameters.ContainsKey('Verbose')) ) {
+        $goVerbose = ' -v '
+        $goGenerateVerbose = ' -x '
+    }
+
     # import helpers
     import-module (join-path $PSScriptRoot "build-helpers.psm1" -resolve) -DisableNameChecking -ErrorAction Stop
     Write-Verbose "Building ps-runner"
@@ -59,9 +65,8 @@ Function build-psrunner {
     $error.Clear()
 
     try {
-        Invoke-Scriptblock "go get $goVerbose -d  $PROJECT/$toolPath..." -StderrPrefix ""
         Invoke-Scriptblock "go get $goVerbose -u github.com/josephspurrier/goversioninfo/cmd/goversioninfo" -StderrPrefix ""
-        Invoke-Scriptblock "go generate $goVerbose $PROJECT/$toolPath/..." -StderrPrefix ""
+        Invoke-Scriptblock "go generate $goGenerateVerbose $PROJECT/$toolPath/..." -StderrPrefix ""
         Invoke-Scriptblock "go build -o $gopath\bin\ps-runner.exe" -StderrPrefix ""
     }
     catch {Write-Error "Some failures accured during build"}

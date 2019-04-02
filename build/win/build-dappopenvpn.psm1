@@ -42,6 +42,10 @@ Function build-dappopenvpn {
     )
     
     $ErrorActionPreference = "Stop"
+    if (($VerbosePreference -ne 'SilentlyContinue') -or ($PSBoundParameters.ContainsKey('Verbose')) ) {
+        $goVerbose = ' -v '
+        $goGenerateVerbose = ' -x '
+    }
     
     # import helpers
     import-module (join-path $PSScriptRoot "build-helpers.psm1" -resolve) -DisableNameChecking -ErrorAction Stop
@@ -72,7 +76,7 @@ Function build-dappopenvpn {
 
     try {
         Invoke-Scriptblock "go get $goVerbose -u github.com/rakyll/statik" -StderrPrefix ""
-        Invoke-Scriptblock "go generate $goVerbose -x $PROJECT/..." -StderrPrefix ""
+        Invoke-Scriptblock "go generate $goGenerateVerbose $PROJECT/..." -StderrPrefix ""
         Invoke-Scriptblock "go build -o $gopath\bin\dappvpn.exe -ldflags `"-X main.Commit=$GIT_COMMIT -X main.Version=$GIT_RELEASE`" -tags=notest ${PROJECT}\adapter" -StderrPrefix ""
         Invoke-Scriptblock "go build -o $gopath\bin\installer.exe -ldflags `"-X main.Commit=$GIT_COMMIT -X main.Version=$GIT_RELEASE`" -tags=notest ${PROJECT}\installer" -StderrPrefix ""
         Invoke-Scriptblock "go build -o $gopath\bin\inst.exe -ldflags `"-X main.Commit=$GIT_COMMIT -X main.Version=$GIT_RELEASE`" -tags=notest ${PROJECT}\inst" -StderrPrefix ""

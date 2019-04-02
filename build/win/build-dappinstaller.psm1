@@ -42,6 +42,10 @@ Function build-dappinstaller {
     )
 
     $ErrorActionPreference = "Stop"
+    if (($VerbosePreference -ne 'SilentlyContinue') -or ($PSBoundParameters.ContainsKey('Verbose')) ) {
+        $goVerbose = ' -v '
+        $goGenerateVerbose = ' -x '
+    }
     
     # import helpers
     import-module (join-path $PSScriptRoot "build-helpers.psm1" -resolve) -DisableNameChecking -ErrorAction Stop
@@ -75,7 +79,7 @@ Function build-dappinstaller {
         Invoke-Scriptblock "go get $goVerbose -u github.com/rakyll/statik" -StderrPrefix ""
         Invoke-Scriptblock "go get $goVerbose -u github.com/josephspurrier/goversioninfo/cmd/goversioninfo" -StderrPrefix ""
         Invoke-Scriptblock "go get $goVerbose -u github.com/denisbrodbeck/machineid" -StderrPrefix ""
-        Invoke-Scriptblock "go generate $goVerbose -x $PROJECT/..." -StderrPrefix ""
+        Invoke-Scriptblock "go generate $goGenerateVerbose $PROJECT/..." -StderrPrefix ""
         Invoke-Scriptblock "go build -o $gopath\bin\dapp-installer.exe -ldflags `"-X main.Commit=$GIT_COMMIT -X main.Version=$GIT_RELEASE`"" -StderrPrefix ""
     }
     catch {Write-Error "Some failures accured during build"}
