@@ -97,8 +97,8 @@ function new-package {
     $productID = '73e17130-2a1d-4f7d-97a8-93a9aaa6f10d'
 
     #region create working dir 
-    New-Folder $wrkdir | Out-Null
-    New-Folder $deployAppPath | Out-Null
+    if (!(Test-Path $wrkdir)) {New-Folder $wrkdir | Out-Null}
+    if (!(Test-Path $deployAppPath)) {New-Folder $deployAppPath | Out-Null}
     #endregion
 
     #region create core app folder structure
@@ -151,14 +151,14 @@ function new-package {
     # artefacts
     # core installer
     $dappinstallerbin = (Get-Item "$gopath\bin\dapp-installer.exe").FullName
-    $dappinstallerconf = (Get-Item "$gopath\src\github.com\privatix\dapp-installer\dapp-installer.config.json").FullName
+    $dappinstallerconf = (Get-Item "$wrkdir\src\github.com\privatix\dapp-installer\dapp-installer.config.json").FullName
     # common
     $dappctrlbin = (Get-Item "$gopath\bin\dappctrl.exe").FullName
     if ($prodConfig) {
-        $dappctrlconfig = (Get-Item "$gopath\src\github.com\privatix\dappctrl\dappctrl.config.json").FullName
+        $dappctrlconfig = (Get-Item "$wrkdir\src\github.com\privatix\dappctrl\dappctrl.config.json").FullName
     }
-    else {$dappctrlconfig = (Get-Item "$gopath\src\github.com\privatix\dappctrl\dappctrl-dev.config.json").FullName}
-    $dappctrlFWruleScript = (Get-Item "$gopath\src\github.com\privatix\dappctrl\scripts\win\set-ctrlfirewall.ps1").FullName
+    else {$dappctrlconfig = (Get-Item "$wrkdir\src\github.com\privatix\dappctrl\dappctrl-dev.config.json").FullName}
+    $dappctrlFWruleScript = (Get-Item "$wrkdir\src\github.com\privatix\dappctrl\scripts\win\set-ctrlfirewall.ps1").FullName
     $dappguiFolder = (Get-Item "$wrkdir\dapp-gui\release-builds\dapp-gui-win32-x64").FullName
     $pgFolder = (Get-Item "$staticArtefactsDir\pgsql").FullName
     $utilFolder = (Get-Item "$staticArtefactsDir\util").FullName
@@ -168,19 +168,19 @@ function new-package {
     # openvpn product
     $dappopenvpnbin = (Get-Item "$gopath\bin\dappvpn.exe").FullName
     $dappopenvpninst = (Get-Item "$gopath\bin\inst.exe").FullName
-    $templatesFolder = (Get-Item "$gopath\src\github.com\privatix\dapp-openvpn\files\example").FullName
-    $dappopenvpninstagentconfig = (Get-Item "$gopath\src\github.com\privatix\dapp-openvpn\inst\install.agent.config.json").FullName
-    $dappopenvpninstclientconfig = (Get-Item "$gopath\src\github.com\privatix\dapp-openvpn\inst\install.client.config.json").FullName
-    $agentAdapterInstallerConfig = (Get-Item "$gopath\src\github.com\privatix\dapp-openvpn\inst\installer.agent.config.json").FullName
-    $clientAdpaterInstallerConfig = (Get-Item "$gopath\src\github.com\privatix\dapp-openvpn\inst\installer.client.config.json").FullName 
-    $dappopenvpnFWruleScript = (Get-Item "$gopath\src\github.com\privatix\dapp-openvpn\scripts\win\set-vpnfirewall.ps1").FullName
-    $dappopenvpnSetNAT = (Get-Item "$gopath\src\github.com\privatix\dapp-openvpn\scripts\win\set-nat.ps1").FullName
-    $dappopenvpnScheduleTaskScript = (Get-Item "$gopath\src\github.com\privatix\dapp-openvpn\scripts\win\new-startupTask.ps1").FullName
-    $dappopenvpnReenableNat = (Get-Item "$gopath\src\github.com\privatix\dapp-openvpn\scripts\win\reenable-nat.ps1").FullName
+    $templatesFolder = (Get-Item "$wrkdir\src\github.com\privatix\dapp-openvpn\files\example").FullName
+    $dappopenvpninstagentconfig = (Get-Item "$wrkdir\src\github.com\privatix\dapp-openvpn\inst\install.agent.config.json").FullName
+    $dappopenvpninstclientconfig = (Get-Item "$wrkdir\src\github.com\privatix\dapp-openvpn\inst\install.client.config.json").FullName
+    $agentAdapterInstallerConfig = (Get-Item "$wrkdir\src\github.com\privatix\dapp-openvpn\inst\installer.agent.config.json").FullName
+    $clientAdpaterInstallerConfig = (Get-Item "$wrkdir\src\github.com\privatix\dapp-openvpn\inst\installer.client.config.json").FullName 
+    $dappopenvpnFWruleScript = (Get-Item "$wrkdir\src\github.com\privatix\dapp-openvpn\scripts\win\set-vpnfirewall.ps1").FullName
+    $dappopenvpnSetNAT = (Get-Item "$wrkdir\src\github.com\privatix\dapp-openvpn\scripts\win\set-nat.ps1").FullName
+    $dappopenvpnScheduleTaskScript = (Get-Item "$wrkdir\src\github.com\privatix\dapp-openvpn\scripts\win\new-startupTask.ps1").FullName
+    $dappopenvpnReenableNat = (Get-Item "$wrkdir\src\github.com\privatix\dapp-openvpn\scripts\win\reenable-nat.ps1").FullName
       
     $openvpnFolder = (Get-Item "$staticArtefactsDir\openvpn").FullName
     # bitrock installer
-    $bitrockProjectDirSource = (Get-Item "$gopath\src\github.com\privatix\dapp-installer\installbuilder\project").FullName
+    $bitrockProjectDirSource = (Get-Item "$wrkdir\src\github.com\privatix\dapp-installer\installbuilder\project").FullName
     #endregion
 
     #region core app

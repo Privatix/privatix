@@ -10,8 +10,8 @@
 .PARAMETER gitpull
     Pull from git
 
-.PARAMETER godep
-    Use go dependency
+.PARAMETER wd
+    working directory where source code is cloned/exist
 
 .PARAMETER version
     Set version, if not overriden by git tag
@@ -24,7 +24,7 @@
     Build DappOpenVpn (includung installer).
 
 .EXAMPLE
-    build-dappopenvpn -branch "develop" -godep -gitpull -version "0.21.0"
+    build-dappopenvpn -wd "c:\build\" -branch "develop" -gitpull -version "0.21.0"
 
     Description
     -----------
@@ -36,11 +36,16 @@ Function build-dappopenvpn {
         [ValidatePattern("^(?!@$|build-|.*([.]\.|@\{|\\))[^\000-\037\177 ~^:?*[]+[^\000-\037\177 ~^:?*[]+(?<!\.lock|[.])$")]
         [string]$branch,        
         [switch]$gitpull,
-        [switch]$godep,
+        [ValidateScript({Test-Path $_ })]
+        [string]$wd,
         [string]$version
     )
     
     $ErrorActionPreference = "Stop"
+    if (($VerbosePreference -ne 'SilentlyContinue') -or ($PSBoundParameters.ContainsKey('Verbose')) ) {
+        $goVerbose = ' -v '
+        $goGenerateVerbose = ' -x '
+    }
     
     # import helpers
     import-module (join-path $PSScriptRoot "build-helpers.psm1" -resolve) -DisableNameChecking -ErrorAction Stop
@@ -48,14 +53,13 @@ Function build-dappopenvpn {
     $gitUrl = "https://github.com/Privatix/dapp-openvpn.git"
     $PROJECT = "github.com\privatix\dapp-openvpn"
 
-    # Check GOPATH is defined
-    $gopath = $env:GOPATH
-    if (!($gopath)) {$gopath = Invoke-Expression "go.exe env GOPATH"}
-    if (!($gopath)) {throw "GOPATH is not defined"}    
-    if (!(Test-Path $gopath)) {New-Folder -rootFolder $gopath}
-    $PROJECT_PATH = "$gopath\src\$PROJECT"
+    $gopath = $env:gopath
+    if (!($gopath)) {$gopath = Invoke-Expression "go.exe env gopath"}
+    if (!($gopath)) {throw "gopath is not defined"}
 
-    Invoke-GoCommonOperations -gopath $gopath -project $PROJECT -godep $godep -branch $branch -gitpull $gitpull -giturl $gitUrl -tomlTemplateFileName "Gopkg.toml.template"
+    $PROJECT_PATH = "$wd\src\$PROJECT"
+
+    Invoke-GoCommonOperations -PROJECT_PATH $PROJECT_PATH -branch $branch -gitpull $gitpull -giturl $gitUrl
 
     #region build
     $GIT_COMMIT = $(git.exe --git-dir=$PROJECT_PATH\.git --work-tree=$PROJECT_PATH rev-list -1 HEAD)
@@ -71,10 +75,11 @@ Function build-dappopenvpn {
     $error.Clear()
 
     try {
-        Invoke-Scriptblock "go generate $PROJECT/..."
-        Invoke-Scriptblock "go build -o $GOPATH/bin/dappvpn.exe -ldflags `"-X main.Commit=$GIT_COMMIT -X main.Version=$GIT_RELEASE`" -tags=notest ${PROJECT}\adapter"
-        Invoke-Scriptblock "go build -o $GOPATH/bin/installer.exe -ldflags `"-X main.Commit=$GIT_COMMIT -X main.Version=$GIT_RELEASE`" -tags=notest ${PROJECT}\installer"
-        Invoke-Scriptblock "go build -o $GOPATH/bin/inst.exe -ldflags `"-X main.Commit=$GIT_COMMIT -X main.Version=$GIT_RELEASE`" -tags=notest ${PROJECT}\inst"
+        Invoke-Scriptblock "go get $goVerbose -u github.com/rakyll/statik" -StderrPrefix ""
+        Invoke-Scriptblock "go generate $goGenerateVerbose $PROJECT/..." -StderrPrefix ""
+        Invoke-Scriptblock "go build -o $gopath\bin\dappvpn.exe -ldflags `"-X main.Commit=$GIT_COMMIT -X main.Version=$GIT_RELEASE`" -tags=notest ${PROJECT}\adapter" -StderrPrefix ""
+        Invoke-Scriptblock "go build -o $gopath\bin\installer.exe -ldflags `"-X main.Commit=$GIT_COMMIT -X main.Version=$GIT_RELEASE`" -tags=notest ${PROJECT}\installer" -StderrPrefix ""
+        Invoke-Scriptblock "go build -o $gopath\bin\inst.exe -ldflags `"-X main.Commit=$GIT_COMMIT -X main.Version=$GIT_RELEASE`" -tags=notest ${PROJECT}\inst" -StderrPrefix ""
     }
     catch {Write-Error "Some failures accured during build"}
     finally {Set-Location $lastLocation}
