@@ -19,10 +19,11 @@ build(){
         mkdir "${GOPATH}"/bin/ || exit 1
     fi
 
-    export DAPPCTRL_DIR
+    cd "${DAPPCTRL_DIR}" || exit 1
 
-    "${DAPPCTRL_DIR}"/scripts/build.sh || exit 1
+    ./scripts/build.sh || exit 1
 
+    cd ${root_dir}
     cp -v   "${GOPATH}"/bin/${DAPPCTRL} \
             ${DAPPCTRL_BIN}/${DAPPCTRL} || exit 1
 }
