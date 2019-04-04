@@ -75,35 +75,35 @@ $ErrorActionPreference = "Stop"
 Write-Host "Working on $($psCmdlet.ParameterSetName)" -ForegroundColor Green
 switch ($psCmdlet.ParameterSetName) {
     "dappctrl" {
-        import-module (join-path $PSScriptRoot "build-dappctrl.psm1" -resolve) -DisableNameChecking -ErrorAction Stop    
+        import-module (join-path $PSScriptRoot "build-dappctrl.psm1" -resolve) -DisableNameChecking -ErrorAction Stop -Verbose:$false 
         $PSBoundParameters.Remove($psCmdlet.ParameterSetName) | Out-Null
         build-dappctrl @PSBoundParameters
         Remove-Module "build-dappctrl"
         break
     }
     "dappgui" {
-        import-module (join-path $PSScriptRoot "build-dappgui.psm1" -resolve) -DisableNameChecking -ErrorAction Stop
+        import-module (join-path $PSScriptRoot "build-dappgui.psm1" -resolve) -DisableNameChecking -ErrorAction Stop -Verbose:$false
         $PSBoundParameters.Remove($psCmdlet.ParameterSetName) | Out-Null
         build-dappgui @PSBoundParameters
         Remove-Module "build-dappgui"
         break
     }
     "dappdb" {
-        import-module (join-path $PSScriptRoot "deploy-dappdb.psm1" -resolve) -DisableNameChecking -ErrorAction Stop
+        import-module (join-path $PSScriptRoot "deploy-dappdb.psm1" -resolve) -DisableNameChecking -ErrorAction Stop -Verbose:$false
         $PSBoundParameters.Remove($psCmdlet.ParameterSetName) | Out-Null
         deploy-dappdb @PSBoundParameters
         Remove-Module "deploy-dappdb"
         break
     }
     "dappopenvpn" {
-        import-module (join-path $PSScriptRoot "build-dappopenvpn.psm1" -resolve) -DisableNameChecking -ErrorAction Stop
+        import-module (join-path $PSScriptRoot "build-dappopenvpn.psm1" -resolve) -DisableNameChecking -ErrorAction Stop -Verbose:$false
         $PSBoundParameters.Remove($psCmdlet.ParameterSetName) | Out-Null
         build-dappopenvpn @PSBoundParameters
         Remove-Module "build-dappopenvpn"
         break
     }
     "dappinstaller" {
-        import-module (join-path $PSScriptRoot "build-dappinstaller.psm1" -resolve) -DisableNameChecking -ErrorAction Stop
+        import-module (join-path $PSScriptRoot "build-dappinstaller.psm1" -resolve) -DisableNameChecking -ErrorAction Stop -Verbose:$false
         $PSBoundParameters.Remove($psCmdlet.ParameterSetName) | Out-Null
         build-dappinstaller @PSBoundParameters
         Remove-Module "build-dappinstaller"

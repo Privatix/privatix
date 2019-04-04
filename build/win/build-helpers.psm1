@@ -283,10 +283,6 @@ function Invoke-GoCommonOperations {
         [bool]$gitpull,
         [string]$gitUrl
     )
-    $gitQuiet = "-q"
-    if (($VerbosePreference -ne 'SilentlyContinue') -or ($PSBoundParameters.ContainsKey('Verbose')) ) {
-        $gitQuiet = ""
-    }
     #region checks
     
     # Check git exists
@@ -320,21 +316,52 @@ function Invoke-GoCommonOperations {
         
     #region Git checkout branch
     if ($PSBoundParameters.ContainsKey('branch')) {
-        Invoke-Scriptblock -ScriptBlock "git.exe --git-dir=$PROJECT_PATH\.git --work-tree=$PROJECT_PATH fetch --all $gitQuiet"
-        Invoke-Scriptblock -ScriptBlock "git.exe --git-dir=$PROJECT_PATH\.git --work-tree=$PROJECT_PATH checkout $branch  $gitQuiet "
-        $currentBranch = Invoke-Expression "git.exe --git-dir=$PROJECT_PATH\.git --work-tree=$PROJECT_PATH rev-parse --abbrev-ref HEAD"
-        if ($branch -ne $currentBranch) {
-            $currentBranch = Invoke-Expression "git.exe --git-dir=$PROJECT_PATH\.git --work-tree=$PROJECT_PATH rev-parse HEAD"    
-            if ($branch -ne $currentBranch) {throw "failed to chekout $branch"}
-        }
+        
+        Checkout-Gitbranch -PROJECT_PATH $PROJECT_PATH -branch $branch
+        
     }
     #endregion
 
     # Git pull
     if ($gitpull) {
-        Write-Host "Pulling from Git..."
-        Invoke-Scriptblock -ScriptBlock "git.exe --git-dir=$PROJECT_PATH\.git --work-tree=$PROJECT_PATH pull $gitQuiet" -StderrPrefix "" -erraction "Continue"
+        Pull-Git -PROJECT_PATH $PROJECT_PATH
     }
     else {Write-Warning "Skipping git pull"}
     #endregion
 } 
+
+function Checkout-Gitbranch {
+    [CmdletBinding()]
+    param (
+        [ValidateScript({Test-Path $_ })]
+        [string]$PROJECT_PATH,
+        [string]$branch
+    )
+    
+    if (($VerbosePreference -ne 'SilentlyContinue') -or ($PSBoundParameters.ContainsKey('Verbose')) ) {
+        $gitQuiet = "-q"
+    }
+
+    Invoke-Scriptblock -ScriptBlock "git.exe --git-dir=$PROJECT_PATH\.git --work-tree=$PROJECT_PATH fetch --all $gitQuiet"
+    Invoke-Scriptblock -ScriptBlock "git.exe --git-dir=$PROJECT_PATH\.git --work-tree=$PROJECT_PATH checkout $branch  $gitQuiet " -StderrPrefix ""
+    $currentBranch = Invoke-Expression "git.exe --git-dir=$PROJECT_PATH\.git --work-tree=$PROJECT_PATH rev-parse --abbrev-ref HEAD"
+    if ($branch -ne $currentBranch) {
+        $currentBranch = Invoke-Expression "git.exe --git-dir=$PROJECT_PATH\.git --work-tree=$PROJECT_PATH rev-parse HEAD"
+        if ($branch -ne $currentBranch) {throw "failed to chekout $branch"}
+    }
+}
+
+function Pull-Git {
+    [CmdletBinding()]
+    param (
+        [ValidateScript({Test-Path $_ })]
+        [string]$PROJECT_PATH
+    )
+    
+    if (($VerbosePreference -ne 'SilentlyContinue') -or ($PSBoundParameters.ContainsKey('Verbose')) ) {
+        $gitQuiet = "-q"
+    }
+
+    Write-Host "Pulling from Git..."
+    Invoke-Scriptblock -ScriptBlock "git.exe --git-dir=$PROJECT_PATH\.git --work-tree=$PROJECT_PATH pull" -StderrPrefix "" -erraction "Continue"
+}

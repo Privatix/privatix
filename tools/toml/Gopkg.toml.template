@@ -1,5 +1,0 @@
-ignored = ["github.com/satori/go.uuid"]
-
-[[constraint]]
-  name = "github.com/privatix/dappctrl"
-  branch = "%BRANCH_NAME%"

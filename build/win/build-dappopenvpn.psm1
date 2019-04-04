@@ -48,7 +48,7 @@ Function build-dappopenvpn {
     }
     
     # import helpers
-    import-module (join-path $PSScriptRoot "build-helpers.psm1" -resolve) -DisableNameChecking -ErrorAction Stop
+    import-module (join-path $PSScriptRoot "build-helpers.psm1" -resolve) -DisableNameChecking -ErrorAction Stop -Verbose:$false
     Write-Verbose "Building dapp-openvpn"
     $gitUrl = "https://github.com/Privatix/dapp-openvpn.git"
     $PROJECT = "github.com\privatix\dapp-openvpn"

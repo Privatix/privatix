@@ -63,7 +63,7 @@ function new-package {
 
     Write-Host "Working on packaging whole app..." -ForegroundColor Green
     # import helpers
-    import-module (join-path $PSScriptRoot "build-helpers.psm1" -resolve) -DisableNameChecking
+    import-module (join-path $PSScriptRoot "build-helpers.psm1" -resolve) -DisableNameChecking -Verbose:$false
 
 
     $rootAppPath = Join-Path $wrkdir "app"
@@ -75,21 +75,17 @@ function new-package {
     #region privatix repo
     $gitUrl = "https://github.com/Privatix/privatix.git"
     Copy-Gitrepo -path $privatixSourceCodePath -gitUrl $gitUrl -ErrorAction Stop
+
         
-    Invoke-Scriptblock -ScriptBlock "git.exe --git-dir=$privatixSourceCodePath\.git --work-tree=$privatixSourceCodePath status"
-        
+
     #region Git checkout branch
-    Invoke-Scriptblock -ScriptBlock "git.exe --git-dir=$privatixSourceCodePath\.git --work-tree=$privatixSourceCodePath fetch --all"
-    if ($PSBoundParameters.ContainsKey('privatixbranch')) {
-        Invoke-Scriptblock -ScriptBlock "git.exe --git-dir=$privatixSourceCodePath\.git --work-tree=$privatixSourceCodePath checkout $privatixbranch"
-        $currentBranch = Invoke-Expression "git.exe --git-dir=$privatixSourceCodePath\.git --work-tree=$privatixSourceCodePath rev-parse --abbrev-ref HEAD"
-        if ($privatixbranch -ne $currentBranch) {
-            $currentBranch = Invoke-Expression "git.exe --git-dir=$privatixSourceCodePath\.git --work-tree=$privatixSourceCodePath rev-parse HEAD"    
-            if ($privatixbranch -ne $currentBranch) {throw "failed to chekout $privatixbranch"}
-        }
+    if ($PSBoundParameters.ContainsKey('branch')) {
+        checkout-gitbranch -PROJECT_PATH $privatixSourceCodePath -branch $privatixbranch
     }
+    #endregion
+    #region Git pull
     if ($PSBoundParameters.ContainsKey('gitpull')) {
-        Invoke-Scriptblock -ScriptBlock "git.exe --git-dir=$privatixSourceCodePath\.git --work-tree=$privatixSourceCodePath pull"
+        Pull-Git -PROJECT_PATH $privatixSourceCodePath
     }
     #endregion
     
