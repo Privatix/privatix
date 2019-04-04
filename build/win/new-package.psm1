@@ -68,9 +68,8 @@ function new-package {
 
     $rootAppPath = Join-Path $wrkdir "app"
     $deployAppPath = Join-Path $wrkdir "win-dapp-installer"
-    $artefactDir = Join-Path $wrkdir "art"
     $bitrockProjectDir = Join-Path $wrkdir "project"
-    $privatixSourceCodePath = Join-Path $artefactDir "privatix"
+    $privatixSourceCodePath = Join-Path $wrkdir "src\github.com\privatix\privatix"
 
     #region privatix repo
     $gitUrl = "https://github.com/Privatix/privatix.git"
@@ -250,28 +249,5 @@ function new-package {
     Copy-Item -Path $dappinstallerconf -Destination "$deployAppPath\dapp-installer.config.json"
     #endregion
 
-    #region dev app installation scripts
-    if (-not $PSBoundParameters.ContainsKey('installer')) {
-        #region install shorcut
-        $lnkcmd = '/c start "" /b .\dapp-installer.exe install --role agent --workdir .\agent --source .\app.zip --verbose'
-        $lnkInstalled = New-Shortcut -Path "$deployAppPath\install_agent.lnk" -TargetPath "%ComSpec%" -Arguments $lnkcmd -WorkDir "%~dp0" -Description "Privatix Core install agent"
-        if (-not $lnkInstalled) {Write-Error "Agent installer shortcut creation failed"}
-        
-        $lnkcmd = '/c start "" /b .\dapp-installer.exe install --role client --workdir .\client --source .\app.zip --verbose'
-        $lnkInstalled = New-Shortcut -Path "$deployAppPath\install_client.lnk" -TargetPath "%ComSpec%" -Arguments $lnkcmd -WorkDir "%~dp0" -Description "Privatix Core install client"
-        if (-not $lnkInstalled) {Write-Error "Client installer shortcut creation failed"}
-        #endregion
-
-        #region remove shortcut
-        $lnkcmd = '/c start "" /b .\dapp-installer.exe remove --workdir .\agent --verbose'
-        $lnkInstalled = New-Shortcut -Path "$deployAppPath\remove_agent.lnk" -TargetPath "%ComSpec%" -Arguments $lnkcmd -WorkDir "%~dp0" -Description "Privatix Core remove agent"
-        if (-not $lnkInstalled) {Write-Error "Agent remover shortcut creation failed"}
-        
-        $lnkcmd = '/c start "" /b .\dapp-installer.exe remove --workdir .\client --verbose'
-        $lnkInstalled = New-Shortcut -Path "$deployAppPath\remove_client.lnk" -TargetPath "%ComSpec%" -Arguments $lnkcmd -WorkDir "%~dp0" -Description "Privatix Core remove client"
-        if (-not $lnkInstalled) {Write-Error "Client remover shortcut creation failed"}
-        
-        #endregion
-    }
     #endregion
 }

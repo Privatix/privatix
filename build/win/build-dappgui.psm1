@@ -10,17 +10,11 @@
 .PARAMETER gitpull
     Pull from git
 
-.PARAMETER godep
-    Use go dependency
-
 .PARAMETER wd
     path where dapp-gui folder stored
 
-.PARAMETER artefactPath
-    path to packaged artefact. If not specified, no packaging is done.
-
-.PARAMETER shortcut
-    create shortcut (for testing purposes)
+.PARAMETER package
+    package electron application
 
 .PARAMETER version
     If version is specified and no git tag set, it will be define Dapp-GUI settings.json -> release.
@@ -33,7 +27,7 @@
    Build dapp-gui and install to <default build location>\dapp-gui.
 
 .EXAMPLE
-   build-dappgui -branch "develop" -gitpull -wd "$HOME\gui". -version "0.20.0"
+   build-dappgui -branch "develop" -gitpull -wd "$HOME\gui". -version "0.20.0" -package
 
    Description
    -----------
@@ -45,9 +39,9 @@ function build-dappgui {
         [ValidatePattern("^(?!@$|build-|.*([.]\.|@\{|\\))[^\000-\037\177 ~^:?*[]+[^\000-\037\177 ~^:?*[]+(?<!\.lock|[.])$")]
         [string]$branch,
         [switch]$gitpull,
-        [string]$wd = "c:\privatix\tmp",
+        [ValidateScript({Test-Path $_ })]
+        [string]$wd,
         [switch]$package,
-        [switch]$shortcut,
         [string]$version
     )
     
@@ -60,9 +54,6 @@ function build-dappgui {
     # import helpers
     import-module (join-path $PSScriptRoot "build-helpers.psm1" -resolve) -DisableNameChecking -ErrorAction Stop -Verbose:$false
     
-    New-Folder $wd | Out-Null
-    $artefactPath = Join-Path $wd "art"
-    New-Folder $artefactPath | Out-Null
     $PROJECT_PATH = Join-Path $wd "dapp-gui"
 
     # check npm
@@ -94,7 +85,7 @@ function build-dappgui {
     Copy-Gitrepo -path $PROJECT_PATH -gitUrl $gitUrl -ErrorAction Stop
         
     #region Git checkout branch
-    if ($PSBoundParameters.ContainsKey('branch')) {
+    if ($branch) {
         checkout-gitbranch -PROJECT_PATH $PROJECT_PATH -branch $branch
     }
     #endregion
@@ -158,18 +149,6 @@ function build-dappgui {
         finally {Set-Location $lastLocation}
     }
 
-
-    #region create shortcut
-    if ($shortcut) {
-        $DesktopPath = [Environment]::GetFolderPath("Desktop")
-        
-        if ($package) {$uiexec = Join-Path $artefactPath "dappctrlgui-win32-x64\dapp-gui.exe" -Resolve -ErrorAction Stop} else {$uiexec = '"npm" start'}
-        
-        $lnkcmd = '/c start "" /b "%GOPATH%\bin\dappctrl.exe" -config=%GOPATH%\src\github.com\privatix\dappctrl\dappctrl-dev.config.json & start "" /b ' + $uiexec
-        $lnkInstalled = New-Shortcut -Path "$DesktopPath\Privatix.lnk" -TargetPath "C:\Windows\System32\cmd.exe" -Arguments $lnkcmd -WorkDir $PROJECT_PATH -Description "Privatix Dapp" -Icon "$PROJECT_PATH\assets\icon_64.png"
-        
-        if (-not $lnkInstalled) {Write-Error "Desktop shortcut creation failed"}
-    }
     #endregion
     
 }

@@ -12,9 +12,6 @@
 .PARAMETER staticArtefactsDir
     Directory with static artefacts (e.g. postgesql, tor, openvpn, visual studio redistributable)
 
-.PARAMETER pack
-    If to package application additionaly to just building components.
-
 .PARAMETER dappguibranch
     Git branch to checkout for dappgui build. If not specified "develop" branch will be used.
 
@@ -65,7 +62,7 @@
     Build application from develop branches. 
 
 .EXAMPLE
-    .\publish-dapp.ps1 -staticArtefactsDir "C:\static_art" -pack -gitpull -Verbose
+    .\publish-dapp.ps1 -staticArtefactsDir "C:\static_art" -gitpull -Verbose
 
     Description
     -----------
@@ -74,7 +71,7 @@
     Place result in default location %SystemDrive%\build\<date-time>\
 
 .EXAMPLE
-    .\publish-dapp.ps1 -staticArtefactsDir "C:\privatix\art" -pack -gitpull -dappguibranch "master" -dappctrlbranch "master" -dappinstbranch "master" -dappopenvpnbranch "master" -privatixbranch "master"
+    .\publish-dapp.ps1 -staticArtefactsDir "C:\privatix\art" -gitpull -dappguibranch "master" -dappctrlbranch "master" -dappinstbranch "master" -dappopenvpnbranch "master" -privatixbranch "master"
 
     Description
     -----------
@@ -97,7 +94,6 @@ param(
     [ValidateSet('nothing', 'binaries', 'all')]
     [string]$clean = 'nothing',
     [switch]$gitpull,
-    [switch]$pack,
     [switch]$installer,
     [string]$version,
     [string]$dappguibranch = "develop",
@@ -117,10 +113,6 @@ if (-not $PSBoundParameters.ContainsKey('wkdir')) {
     $wkdir = $($ENV:SystemDrive) + "\build\" + (Get-Date -Format "MMdd_HHmm")
 }
 if (!(Test-Path $wkdir)) {New-Item -Path $wkdir -ItemType Directory | Out-Null}
-
-if ($PSBoundParameters.ContainsKey('installer')) {
-    $pack = $true
-}
 
 if ($PSBoundParameters.ContainsKey('Verbose')) {
     $global:VerbosePreference = [System.Management.Automation.ActionPreference]::Continue
@@ -167,14 +159,15 @@ $sw.Restart()
 $TotalTime += $sw.Elapsed.TotalSeconds
 Write-Host "It took $($sw.Elapsed.TotalSeconds) seconds to complete" -ForegroundColor Green
 
-if ($pack) {
-    $sw.Restart()
-    . $builddapp -dappgui -wd $wkdir -branch $dappguibranch -gitpull:$gitpull -package -version:$vers
-    $TotalTime += $sw.Elapsed.TotalSeconds
-    Write-Host "It took $($sw.Elapsed.TotalSeconds) seconds to complete" -ForegroundColor Green
+$sw.Restart()
 
-    $sw.Restart()
-    if ($installer) {
+if ($installer) {
+        
+        . $builddapp -dappgui -wd $wkdir -branch $dappguibranch -gitpull:$gitpull -package -version:$vers
+        $TotalTime += $sw.Elapsed.TotalSeconds
+        Write-Host "It took $($sw.Elapsed.TotalSeconds) seconds to complete" -ForegroundColor Green
+
+        $sw.Restart()
         try {Get-Command "builder-cli.exe" | Out-Null} 
         catch {
             Write-Error "builder-cli.exe of BitRock installer not found in %PATH%. Please, resolve"
@@ -189,21 +182,15 @@ if ($pack) {
             Write-Warning "no version specified for installer"
             Invoke-Expression "builder-cli.exe build $wkdir\project\Privatix.xml windows --setvars project.version=undefined" 
         }
-        
     }
-    else {
-        new-package -wrkdir $wkdir -staticArtefactsDir $staticArtefactsDir -privatixbranch $privatixbranch -gitpull:$gitpull -prodConfig:$prodConfig.IsPresent
-    }
-    $TotalTime += $sw.Elapsed.TotalSeconds
-    Write-Host "It took $($sw.Elapsed.TotalSeconds) seconds to complete" -ForegroundColor Green
-}
 else {
-    $sw.Restart()
-    . $builddapp -dappgui -wd $wkdir -branch $dappguibranch -gitpull:$gitpull  -shortcut -version:$vers
-    $TotalTime += $sw.Elapsed.TotalSeconds
-    Write-Host "It took $($sw.Elapsed.TotalSeconds) seconds to complete" -ForegroundColor Green
+        new-package -wrkdir $wkdir -staticArtefactsDir $staticArtefactsDir -privatixbranch $privatixbranch -gitpull:$gitpull -prodConfig:$prodConfig.IsPresent
 }
+
+$TotalTime += $sw.Elapsed.TotalSeconds
+Write-Host "It took $($sw.Elapsed.TotalSeconds) seconds to complete" -ForegroundColor Green
+
 Remove-Module new-package
 
 Write-Host "Total execution time: $TotalTime seconds" -ForegroundColor Green
-Write-Host "Resulting folder: $wkdir" -ForegroundColor DarkMagenta
+Write-Host "Resulting folder: $wkdir" -ForegroundColor Green
