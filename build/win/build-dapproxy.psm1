@@ -17,20 +17,20 @@
     Set version, if not overriden by git tag
 
 .EXAMPLE
-    build-dappproxy
+    build-dapproxy
 
     Description
     -----------
     Build DappOpenVpn (includung installer).
 
 .EXAMPLE
-    build-dappproxy -wd "c:\build\" -branch "develop" -gitpull -version "0.21.0"
+    build-dapproxy -wd "c:\build\" -branch "develop" -gitpull -version "0.21.0"
 
     Description
     -----------
-    Checkout branch "develop". Pull from git. Run go dependecy. Build build-dappproxy adapter. Build build-dappproxy installer.
+    Checkout branch "develop". Pull from git. Run go dependecy. Build build-dapproxy adapter. Build build-dapproxy installer.
 #>
-Function build-dappproxy {
+Function build-dapproxy {
     [cmdletbinding()]
     Param (
         [ValidatePattern("^(?!@$|build-|.*([.]\.|@\{|\\))[^\000-\037\177 ~^:?*[]+[^\000-\037\177 ~^:?*[]+(?<!\.lock|[.])$")]
@@ -49,9 +49,9 @@ Function build-dappproxy {
     
     # import helpers
     import-module (join-path $PSScriptRoot "build-helpers.psm1" -resolve) -DisableNameChecking -ErrorAction Stop -Verbose:$false
-    Write-Verbose "Building build-dappproxy"
-    $gitUrl = "https://github.com/Privatix/build-dappproxy.git"
-    $PROJECT = "github.com\privatix\build-dappproxy"
+    Write-Verbose "Building dapp-proxy"
+    $gitUrl = "https://github.com/Privatix/dapp-proxy.git"
+    $PROJECT = "github.com\privatix\dapp-proxy"
 
     $gopath = $env:gopath
     if (!($gopath)) {$gopath = Invoke-Expression "go.exe env gopath"}
