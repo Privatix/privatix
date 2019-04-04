@@ -45,13 +45,13 @@ copy_ctrl(){
             "${app_dir}/${DAPPCTRL}/${DAPPCTRL}" || exit 1
     cp -v   "${DAPPCTRL_BIN}/${DAPPCTRL_FOR_INSTALLER_CONFIG}" \
             "${app_dir}/${DAPPCTRL}/${DAPPCTRL_FOR_INSTALLER_CONFIG}" || exit 1
-    cp -v   "${DAPPINST_DIR}/${DAPP_INSTALLER_SCRIPTS_DIR_LINUX}/dappctrl.service" \
+    cp -v   "${DAPP_INSTALLER_DIR}/${DAPP_INSTALLER_SCRIPTS_DIR_LINUX}/dappctrl.service" \
             "${app_dir}/${DAPPCTRL}/dappctrl.service" || exit 1
-    cp -v   "${DAPPINST_DIR}/${DAPP_INSTALLER_SCRIPTS_DIR_LINUX}/post-stop.sh" \
+    cp -v   "${DAPP_INSTALLER_DIR}/${DAPP_INSTALLER_SCRIPTS_DIR_LINUX}/post-stop.sh" \
             "${app_dir}/${DAPPCTRL}/post-stop.sh" || exit 1
-    cp -v   "${DAPPINST_DIR}/${DAPP_INSTALLER_SCRIPTS_DIR_LINUX}/pre-start.sh" \
+    cp -v   "${DAPP_INSTALLER_DIR}/${DAPP_INSTALLER_SCRIPTS_DIR_LINUX}/pre-start.sh" \
             "${app_dir}/${DAPPCTRL}/pre-start.sh" || exit 1
-    cp -v   "${DAPPINST_DIR}/${DAPP_INSTALLER_SCRIPTS_DIR_LINUX}/container.sh" \
+    cp -v   "${DAPP_INSTALLER_DIR}/${DAPP_INSTALLER_SCRIPTS_DIR_LINUX}/container.sh" \
             "${PACKAGE_BIN_LINUX}/container.sh" || exit 1
 }
 
@@ -124,7 +124,7 @@ copy_installer(){
     cp -v "${DAPPINSTALLER_BIN}/${DAPP_INSTALLER}" \
           "${PACKAGE_BIN_LINUX}/${DAPP_INSTALLER}" || exit 1
 
-    cp -v "${DAPPINST_DIR}/${DAPP_INSTALLER_LINUX_CONFIG}" \
+    cp -v "${DAPP_INSTALLER_DIR}/${DAPP_INSTALLER_LINUX_CONFIG}" \
           "${PACKAGE_BIN_LINUX}/${DAPP_INSTALLER_CONFIG}" || exit 1
 }
 
@@ -143,7 +143,7 @@ build_installer(){
     echo build installer gui
     echo -----------------------------------------------------------------------
 
-    cp -va "${DAPPINST_DIR}/${INSTALL_BUILDER}/${INSTALL_BUILDER_PROJECT}" \
+    cp -va "${DAPP_INSTALLER_DIR}/${INSTALL_BUILDER}/${INSTALL_BUILDER_PROJECT}" \
            "${PACKAGE_INSTALL_BUILDER_BIN}" || exit 1
     cd "${PACKAGE_INSTALL_BUILDER_BIN}/${INSTALL_BUILDER_PROJECT}" || exit 1
 

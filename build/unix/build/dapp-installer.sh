@@ -18,7 +18,7 @@ build(){
         mkdir "${GOPATH}"/bin/ || exit 1
     fi
 
-    cd "${DAPPINST_DIR}" || exit 1
+    cd "${DAPP_INSTALLER_DIR}" || exit 1
 
     ./scripts/build.sh || exit 1
 
@@ -28,7 +28,7 @@ build(){
 }
 
 copy_config(){
-     cp -v   ${DAPPINST_DIR}/${DAPP_INSTALLER_CONFIG} \
+     cp -v   ${DAPP_INSTALLER_DIR}/${DAPP_INSTALLER_CONFIG} \
              ${DAPPINSTALLER_BIN}/${DAPP_INSTALLER_CONFIG} || exit 1
 }
 

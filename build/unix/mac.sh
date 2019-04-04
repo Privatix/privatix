@@ -158,7 +158,7 @@ build_installer(){
     echo build installer gui
     echo -----------------------------------------------------------------------
 
-    cp -va "${DAPPINST_DIR}/${INSTALL_BUILDER}/${INSTALL_BUILDER_PROJECT}" \
+    cp -va "${DAPP_INSTALLER_DIR}/${INSTALL_BUILDER}/${INSTALL_BUILDER_PROJECT}" \
            "${PACKAGE_INSTALL_BUILDER_BIN}" || exit 1
     cd "${PACKAGE_INSTALL_BUILDER_BIN}/${INSTALL_BUILDER_PROJECT}" || exit 1
     "${BITROCK_INSTALLER_BIN_MAC}/builder" build "${INSTALL_BUILDER_PROJECT_XML}" osx \
