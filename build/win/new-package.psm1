@@ -63,33 +63,28 @@ function new-package {
 
     Write-Host "Working on packaging whole app..." -ForegroundColor Green
     # import helpers
-    import-module (join-path $PSScriptRoot "build-helpers.psm1" -resolve) -DisableNameChecking
+    import-module (join-path $PSScriptRoot "build-helpers.psm1" -resolve) -DisableNameChecking -Verbose:$false
 
 
     $rootAppPath = Join-Path $wrkdir "app"
     $deployAppPath = Join-Path $wrkdir "win-dapp-installer"
-    $artefactDir = Join-Path $wrkdir "art"
     $bitrockProjectDir = Join-Path $wrkdir "project"
-    $privatixSourceCodePath = Join-Path $artefactDir "privatix"
+    $privatixSourceCodePath = Join-Path $wrkdir "src\github.com\privatix\privatix"
 
     #region privatix repo
     $gitUrl = "https://github.com/Privatix/privatix.git"
     Copy-Gitrepo -path $privatixSourceCodePath -gitUrl $gitUrl -ErrorAction Stop
+
         
-    Invoke-Scriptblock -ScriptBlock "git.exe --git-dir=$privatixSourceCodePath\.git --work-tree=$privatixSourceCodePath status"
-        
+
     #region Git checkout branch
-    Invoke-Scriptblock -ScriptBlock "git.exe --git-dir=$privatixSourceCodePath\.git --work-tree=$privatixSourceCodePath fetch --all"
-    if ($PSBoundParameters.ContainsKey('privatixbranch')) {
-        Invoke-Scriptblock -ScriptBlock "git.exe --git-dir=$privatixSourceCodePath\.git --work-tree=$privatixSourceCodePath checkout $privatixbranch"
-        $currentBranch = Invoke-Expression "git.exe --git-dir=$privatixSourceCodePath\.git --work-tree=$privatixSourceCodePath rev-parse --abbrev-ref HEAD"
-        if ($privatixbranch -ne $currentBranch) {
-            $currentBranch = Invoke-Expression "git.exe --git-dir=$privatixSourceCodePath\.git --work-tree=$privatixSourceCodePath rev-parse HEAD"    
-            if ($privatixbranch -ne $currentBranch) {throw "failed to chekout $privatixbranch"}
-        }
+    if ($PSBoundParameters.ContainsKey('branch')) {
+        checkout-gitbranch -PROJECT_PATH $privatixSourceCodePath -branch $privatixbranch
     }
+    #endregion
+    #region Git pull
     if ($PSBoundParameters.ContainsKey('gitpull')) {
-        Invoke-Scriptblock -ScriptBlock "git.exe --git-dir=$privatixSourceCodePath\.git --work-tree=$privatixSourceCodePath pull"
+        Pull-Git -PROJECT_PATH $privatixSourceCodePath
     }
     #endregion
     
@@ -254,28 +249,5 @@ function new-package {
     Copy-Item -Path $dappinstallerconf -Destination "$deployAppPath\dapp-installer.config.json"
     #endregion
 
-    #region dev app installation scripts
-    if (-not $PSBoundParameters.ContainsKey('installer')) {
-        #region install shorcut
-        $lnkcmd = '/c start "" /b .\dapp-installer.exe install --role agent --workdir .\agent --source .\app.zip --verbose'
-        $lnkInstalled = New-Shortcut -Path "$deployAppPath\install_agent.lnk" -TargetPath "%ComSpec%" -Arguments $lnkcmd -WorkDir "%~dp0" -Description "Privatix Core install agent"
-        if (-not $lnkInstalled) {Write-Error "Agent installer shortcut creation failed"}
-        
-        $lnkcmd = '/c start "" /b .\dapp-installer.exe install --role client --workdir .\client --source .\app.zip --verbose'
-        $lnkInstalled = New-Shortcut -Path "$deployAppPath\install_client.lnk" -TargetPath "%ComSpec%" -Arguments $lnkcmd -WorkDir "%~dp0" -Description "Privatix Core install client"
-        if (-not $lnkInstalled) {Write-Error "Client installer shortcut creation failed"}
-        #endregion
-
-        #region remove shortcut
-        $lnkcmd = '/c start "" /b .\dapp-installer.exe remove --workdir .\agent --verbose'
-        $lnkInstalled = New-Shortcut -Path "$deployAppPath\remove_agent.lnk" -TargetPath "%ComSpec%" -Arguments $lnkcmd -WorkDir "%~dp0" -Description "Privatix Core remove agent"
-        if (-not $lnkInstalled) {Write-Error "Agent remover shortcut creation failed"}
-        
-        $lnkcmd = '/c start "" /b .\dapp-installer.exe remove --workdir .\client --verbose'
-        $lnkInstalled = New-Shortcut -Path "$deployAppPath\remove_client.lnk" -TargetPath "%ComSpec%" -Arguments $lnkcmd -WorkDir "%~dp0" -Description "Privatix Core remove client"
-        if (-not $lnkInstalled) {Write-Error "Client remover shortcut creation failed"}
-        
-        #endregion
-    }
     #endregion
 }

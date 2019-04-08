@@ -8,7 +8,7 @@ Install prerequisite software if it's not installed.
 
 - [git](https://git-scm.com/downloads)
 
-- [Golang](https://golang.org/doc/install) 1.11+. Make sure that
+- [Golang](https://golang.org/doc/install) 1.12+. Make sure that
   `$GOPATH/bin` is added to system path `$PATH`.
 
 - [gcc](https://sourceforge.net/projects/mingw-w64/). During the installation
@@ -54,7 +54,7 @@ Resulting installer binary will be placed to `$wkdir\project\out`
 
 ```bash
 publish-dapp.ps1 [[-wkdir] <String>] [[-staticArtefactsDir] <String>]
-    [[-clean] <String>] [-gitpull] [-godep] [-pack] [-installer] [[-version] <String>]
+    [[-clean] <String>] [-gitpull] [-installer] [[-version] <String>]
     [[-dappguibranch] <String>] [[-dappctrlbranch] <String>] [[-dappinstbranch] <String>] 
     [[-dappopenvpnbranch] <String>] [[-privatixbranch] <String>] [-prodConfig] [<CommonParameters>]
 
@@ -76,7 +76,7 @@ SYNOPSIS
 
 SYNTAX
     publish-dapp.ps1 [[-wkdir] <String>] [[-staticArtefactsDir] <String>]
-    [[-clean] <String>] [-gitpull] [-godep] [-pack] [-installer] [[-version] <String>] [[-dappguibranch] <String>]
+    [[-clean] <String>] [-gitpull] [-installer] [[-version] <String>] [[-dappguibranch] <String>]
     [[-dappctrlbranch] <String>] [[-dappinstbranch] <String>] [[-dappopenvpnbranch] <String>] [[-privatixbranch]
     <String>] [-prodConfig] [<CommonParameters>]
 
@@ -120,24 +120,6 @@ PARAMETERS
 
     -gitpull [<SwitchParameter>]
         Make git pull before build.
-
-        Required?                    false
-        Position?                    named
-        Default value                False
-        Accept pipeline input?       false
-        Accept wildcard characters?  false
-
-    -godep [<SwitchParameter>]
-        Run "dep ensure" command for each golang branch. It runs for all of them.
-
-        Required?                    false
-        Position?                    named
-        Default value                False
-        Accept pipeline input?       false
-        Accept wildcard characters?  false
-
-    -pack [<SwitchParameter>]
-        If to package application additionaly to just building components.
 
         Required?                    false
         Position?                    named
@@ -254,7 +236,7 @@ OUTPUTS
 
     -------------------------- EXAMPLE 3 --------------------------
 
-    PS C:\>.\publish-dapp.ps1 -staticArtefactsDir "C:\static_art" -pack -godep -gitpull -Verbose
+    PS C:\>.\publish-dapp.ps1 -staticArtefactsDir "C:\static_art" -gitpull -Verbose
 
     Description
     -----------
@@ -267,7 +249,7 @@ OUTPUTS
 
     -------------------------- EXAMPLE 4 --------------------------
 
-    PS C:\>.\publish-dapp.ps1 -staticArtefactsDir "C:\privatix\art" -pack -godep -gitpull -dappguibranch "master"
+    PS C:\>.\publish-dapp.ps1 -staticArtefactsDir "C:\privatix\art" -gitpull -dappguibranch "master"
     -dappctrlbranch "master" -dappinstbranch "master" -dappopenvpnbranch "master" -privatixbranch "master"
 
     Description
@@ -279,7 +261,7 @@ OUTPUTS
 
     -------------------------- EXAMPLE 5 --------------------------
 
-    PS C:\>.\publish-dapp.ps1 -staticArtefactsDir "C:\privatix\art" -installer -version "0.21.0" -godep -gitpull
+    PS C:\>.\publish-dapp.ps1 -staticArtefactsDir "C:\privatix\art" -installer -version "0.21.0"  -gitpull
     -dappguibranch "master" -dappctrlbranch "master" -dappinstbranch "master" -dappopenvpnbranch "master"
     -privatixbranch "master" -prodConfig
 
