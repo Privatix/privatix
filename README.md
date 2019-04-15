@@ -41,3 +41,8 @@ Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduc
 - [Telegram EN](https://t.me/privatix)
 - [Telegram RU](https://t.me/privatix_ru)
 - [Telegram CH](https://t.me/privatix_cn)
+
+# License
+
+This project is licensed under the **GPL-3.0 License** - see the
+[COPYING](COPYING) file for details.
