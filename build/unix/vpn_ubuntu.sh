@@ -15,11 +15,11 @@ clear(){
     mkdir -p "${PACKAGE_INSTALL_BUILDER_BIN}/${INSTALL_BUILDER_PROJECT}" || exit 1
 
     mkdir -p "${app_dir}/${DAPPCTRL}" || exit 1
-    mkdir -p "${app_dir}/${PRODUCT}/${PRODUCT_ID}/${BIN}" || exit 1
-    mkdir -p "${app_dir}/${PRODUCT}/${PRODUCT_ID}/${PRODUCT_CONFIG}" || exit 1
-    mkdir -p "${app_dir}/${PRODUCT}/${PRODUCT_ID}/${PRODUCT_DATA}" || exit 1
-    mkdir -p "${app_dir}/${PRODUCT}/${PRODUCT_ID}/${LOG}" || exit 1
-    mkdir -p "${app_dir}/${PRODUCT}/${PRODUCT_ID}/${PRODUCT_TEMPLATE}" || exit 1
+    mkdir -p "${app_dir}/${PRODUCT}/${VPN_PRODUCT_ID}/${BIN}" || exit 1
+    mkdir -p "${app_dir}/${PRODUCT}/${VPN_PRODUCT_ID}/${PRODUCT_CONFIG}" || exit 1
+    mkdir -p "${app_dir}/${PRODUCT}/${VPN_PRODUCT_ID}/${PRODUCT_DATA}" || exit 1
+    mkdir -p "${app_dir}/${PRODUCT}/${VPN_PRODUCT_ID}/${LOG}" || exit 1
+    mkdir -p "${app_dir}/${PRODUCT}/${VPN_PRODUCT_ID}/${PRODUCT_TEMPLATE}" || exit 1
     mkdir -p "${app_dir}/${DAPP_INSTALLER_GUI_DIR}" || exit 1
     mkdir -p "${app_dir}/${UTIL}" || exit 1
 }
@@ -54,34 +54,34 @@ copy_ctrl(){
 copy_product(){
     # binaries
     cp -v "${GOPATH}/bin/${DAPP_OPENVPN}" \
-          "${app_dir}/${PRODUCT}/${PRODUCT_ID}/${BIN}/${DAPP_OPENVPN}" || exit 1
+          "${app_dir}/${PRODUCT}/${VPN_PRODUCT_ID}/${BIN}/${DAPP_OPENVPN}" || exit 1
 
     cp -v "${GOPATH}/bin/${OPENVPN_INST}" \
-          "${app_dir}/${PRODUCT}/${PRODUCT_ID}/${BIN}/${DAPP_INST}" || exit 1
+          "${app_dir}/${PRODUCT}/${VPN_PRODUCT_ID}/${BIN}/${DAPP_INST}" || exit 1
 
     cp -va "${DAPP_OPENVPN_DIR}/${DAPP_OPENVPN_SCRIPTS_LOCATION_LINUX}/." \
-           "${app_dir}/${PRODUCT}/${PRODUCT_ID}/${BIN}" || exit 1
+           "${app_dir}/${PRODUCT}/${VPN_PRODUCT_ID}/${BIN}" || exit 1
 
     #configs
     for config in ${VPN_CONFIGS_TO_COPY_UBUNTU[@]}
     do
         new_name=${config/.linux./.}
         cp -v "${DAPP_OPENVPN_DIR}/${DAPP_OPENVPN_INST_PROJECT}/${config}" \
-            "${app_dir}/${PRODUCT}/${PRODUCT_ID}/${PRODUCT_CONFIG}/${new_name}" || exit 1
+            "${app_dir}/${PRODUCT}/${VPN_PRODUCT_ID}/${PRODUCT_CONFIG}/${new_name}" || exit 1
     done
 
     cp -v "${DAPP_OPENVPN_DIR}/${DAPP_OPENVPN_PEM_LOCATION}" \
-          "${app_dir}/${PRODUCT}/${PRODUCT_ID}/${PRODUCT_CONFIG}" || exit 1
+          "${app_dir}/${PRODUCT}/${VPN_PRODUCT_ID}/${PRODUCT_CONFIG}" || exit 1
 
     # templates
     cp -va "${DAPP_OPENVPN_DIR}/${DAPP_OPENVPN_TEMPLATES_LOCATION}/." \
-           "${app_dir}/${PRODUCT}/${PRODUCT_ID}/${PRODUCT_TEMPLATE}" || exit 1
+           "${app_dir}/${PRODUCT}/${VPN_PRODUCT_ID}/${PRODUCT_TEMPLATE}" || exit 1
 
-    mv "${app_dir}/${PRODUCT}/${PRODUCT_ID}/${PRODUCT_TEMPLATE}/${DAPP_VPN_AGENT_CONFIG}" \
-       "${app_dir}/${PRODUCT}/${PRODUCT_ID}/${PRODUCT_TEMPLATE}/${ADAPTER_CONFIG_AGENT}" || exit 1
+    mv "${app_dir}/${PRODUCT}/${VPN_PRODUCT_ID}/${PRODUCT_TEMPLATE}/${DAPP_VPN_AGENT_CONFIG}" \
+       "${app_dir}/${PRODUCT}/${VPN_PRODUCT_ID}/${PRODUCT_TEMPLATE}/${ADAPTER_CONFIG_AGENT}" || exit 1
 
-    mv "${app_dir}/${PRODUCT}/${PRODUCT_ID}/${PRODUCT_TEMPLATE}/${DAPP_VPN_CLIENT_CONFIG}" \
-       "${app_dir}/${PRODUCT}/${PRODUCT_ID}/${PRODUCT_TEMPLATE}/${ADAPTER_CONFIG_CLIENT}" || exit 1
+    mv "${app_dir}/${PRODUCT}/${VPN_PRODUCT_ID}/${PRODUCT_TEMPLATE}/${DAPP_VPN_CLIENT_CONFIG}" \
+       "${app_dir}/${PRODUCT}/${VPN_PRODUCT_ID}/${PRODUCT_TEMPLATE}/${ADAPTER_CONFIG_CLIENT}" || exit 1
 }
 
 copy_installer(){
