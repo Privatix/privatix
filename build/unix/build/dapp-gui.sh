@@ -4,38 +4,46 @@ root_dir="$(cd `dirname $0` && pwd)/.."
 cd ${root_dir}
 . ./build.sealed.config
 
-echo
+echo -----------------------------------------------------------------------
 echo dapp-gui
-echo
+echo -----------------------------------------------------------------------
 
 clean(){
-    rm -rf ${DAPP_GUI_DIR}/build/
-    rm -rf ${DAPP_GUI_BIN}
+    cd "${DAPP_GUI_DIR}" || exit 1
 
-    mkdir -p ${DAPP_GUI_BIN}
-}
-
-build(){
-    cd "${DAPP_GUI_DIR}"
-    npm install
-    npm run build
+    rm -rf ./build/ || exit 1
+    rm -rf ./release-builds/ || exit 1
 }
 
 make_packages(){
-    cd "${DAPP_GUI_DIR}"
-    npm run package-mac
-    npm run package-linux
-    npm run package-win
+    npm i || exit 1
+    npm run build || exit 1
 
-    cd ${root_dir}
-    rsync -avzh ${DAPP_GUI_DIR}/release-builds/. \
-                ${DAPP_GUI_BIN}
+    echo
+    echo run $1
+    echo
+
+    npm run $1 || exit 1
+
+    echo
+    echo copy $2 "->" $3
+    echo
+
+    cd ${root_dir} || exit 1
+    rsync -azhP "$2" \
+                "$3" || exit 1
+
+    # patch settings.json
+    python -c 'import json, sys
+with open(sys.argv[1], "r") as f:
+    obj = json.load(f)
+obj["release"]="'${VERSION_TO_SET_IN_BUILDER}'"
+obj["target"]="osx"
+with open(sys.argv[1], "w") as f:
+   json.dump(obj, f)' \
+   "$5/${DAPP_INSTALLER_GUI_DIR}/${DAPP_INSTALLER_GUI_BINARY_NAME}/$4" || exit 1
+
 }
 
 clean
-build
-
-if [[ ${PACKAGE_GUI} = true ]]
-then
-    make_packages
-fi
+make_packages $1 $2 $3 $4 $5

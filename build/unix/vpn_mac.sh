@@ -44,38 +44,6 @@ copy_ctrl(){
             "${app_dir}/${DAPPCTRL}/${DAPPCTRL_FOR_INSTALLER_CONFIG}" || exit 1
 }
 
-create_gui_package(){
-    echo -----------------------------------------------------------------------
-    echo create gui package
-    echo -----------------------------------------------------------------------
-
-    cd "${DAPP_GUI_DIR}"
-    rm -rf ./build/
-    rm -rf ./release-builds/
-
-    npm i || exit 1
-    npm run build || exit 1
-    npm run package-mac || exit 1
-    echo
-    echo copy ${DAPP_GUI_DIR}/${DAPP_GUI_PACKAGE_MAC}/${DAPP_GUI_PACKAGE_MAC_BINARY_NAME}
-    echo
-
-    cd ${root_dir}
-    rsync -azhP "${DAPP_GUI_DIR}/${DAPP_GUI_PACKAGE_MAC}/${DAPP_GUI_PACKAGE_MAC_BINARY_NAME}/." \
-                "${app_dir}/${DAPP_INSTALLER_GUI_DIR}/${DAPP_INSTALLER_GUI_BINARY_NAME}" || exit 1
-
-    # patch settings.json
-    python -c 'import json, sys
-with open(sys.argv[1], "r") as f:
-    obj = json.load(f)
-obj["release"]="'${VERSION_TO_SET_IN_BUILDER}'"
-obj["target"]="osx"
-with open(sys.argv[1], "w") as f:
-   json.dump(obj, f)' \
-   "${app_dir}/${DAPP_INSTALLER_GUI_DIR}/${DAPP_INSTALLER_GUI_BINARY_NAME}/${DAPP_GUI_SETTINGS_JSON_MAC}" || exit 1
-
-}
-
 copy_product(){
     # binaries
     cp -v "${GOPATH}/bin/${DAPP_OPENVPN}" \
@@ -176,19 +144,55 @@ build_installer(){
 
 clear
 
-git/update.sh || exit 1
+#git/update.sh || exit 1
+#
+#build/dappctrl.sh || exit 1
+#build/dapp-installer.sh || exit 1
+#build/dapp-openvpn.sh || exit 1
+build/dapp-gui.sh   "package-mac" \
+                    "${DAPP_GUI_DIR}/${DAPP_GUI_PACKAGE_MAC}/${DAPP_GUI_PACKAGE_MAC_BINARY_NAME}/." \
+                    "${app_dir}/${DAPP_INSTALLER_GUI_DIR}/${DAPP_INSTALLER_GUI_BINARY_NAME}" \
+                    "${DAPP_GUI_SETTINGS_JSON_MAC}" \
+                    "${app_dir}" \
+                    || exit 1
 
-build/dappctrl.sh || exit 1
-build/dapp-installer.sh || exit 1
-build/dapp-openvpn.sh || exit 1
+#create_gui_package(){
+#    echo -----------------------------------------------------------------------
+#    echo create gui package
+#    echo -----------------------------------------------------------------------
+#
+#    cd "${DAPP_GUI_DIR}"
+#    rm -rf ./build/
+#    rm -rf ./release-builds/
+#
+#    npm i || exit 1
+#    npm run build || exit 1
+#    npm run package-mac || exit 1
+#    echo
+#    echo copy ${DAPP_GUI_DIR}/${DAPP_GUI_PACKAGE_MAC}/${DAPP_GUI_PACKAGE_MAC_BINARY_NAME}
+#    echo
+#
+#    cd ${root_dir}
+#    rsync -azhP "${DAPP_GUI_DIR}/${DAPP_GUI_PACKAGE_MAC}/${DAPP_GUI_PACKAGE_MAC_BINARY_NAME}/." \
+#                "${app_dir}/${DAPP_INSTALLER_GUI_DIR}/${DAPP_INSTALLER_GUI_BINARY_NAME}" || exit 1
+#
+#    # patch settings.json
+#    python -c 'import json, sys
+#with open(sys.argv[1], "r") as f:
+#    obj = json.load(f)
+#obj["release"]="'${VERSION_TO_SET_IN_BUILDER}'"
+#obj["target"]="osx"
+#with open(sys.argv[1], "w") as f:
+#   json.dump(obj, f)' \
+#   "${app_dir}/${DAPP_INSTALLER_GUI_DIR}/${DAPP_INSTALLER_GUI_BINARY_NAME}/${DAPP_GUI_SETTINGS_JSON_MAC}" || exit 1
+#
+#}
 
-create_gui_package
-
-copy_ctrl
-copy_product
-copy_artefacts
-copy_utils
-zip_package
-#remove_app
-copy_installer
-build_installer
+#copy_ctrl
+#copy_product
+#copy_artefacts
+#copy_utils
+#zip_package
+##remove_app
+#copy_installer
+#build_installer
