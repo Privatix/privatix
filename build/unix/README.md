@@ -59,39 +59,34 @@ Ensure, that you have artifacts (openvpn, pgsql, tor), located at `$ARTEFACTS_ZI
 
 To create a package, execute the following script:
 
+### vpn package
+
 ```bash
-./mac.sh
+./vpn_mac.sh
+```
+
+### proxy package
+
+```bash
+./proxy_mac.sh
 ```
 
 The package will be created at `.bin/installbuilder/out` folder.
 
-### Ubuntu
+## Ubuntu
 
 To create a package, execute the following script:
 
+### vpn package
+
 ```bash
-./ubuntu.sh
+./vpn_ubuntu.sh
+```
+
+### proxy package
+
+```bash
+./proxy_ubuntu.sh
 ```
 
 The package will be created at `.bin/installbuilder/out` folder.
-
-## Manual build 
-
-If you want to build all parts of the privatix application manually, 
-follow the steps.
-
-### Build dappctrl
-
-[Build instruction](https://github.com/Privatix/dappctrl/blob/master/README.md)
-
-### Build dapp-openvpn installer
-
-[Build instruction](https://github.com/Privatix/dapp-openvpn/tree/master/inst/README.md)
-
-### Build dapp-openvpn
-
-[Build instruction](https://github.com/Privatix/dapp-openvpn/tree/master/README.md)
-
-### Build dapp-gui
-
-[Build instruction](https://github.com/Privatix/dapp-gui/README.md)
