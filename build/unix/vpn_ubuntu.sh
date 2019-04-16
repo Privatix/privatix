@@ -67,7 +67,7 @@ copy_product(){
            "${app_dir}/${PRODUCT}/${PRODUCT_ID}/${BIN}" || exit 1
 
     #configs
-    for config in ${CONFIGS_TO_COPY_UBUNTU[@]}
+    for config in ${VPN_CONFIGS_TO_COPY_UBUNTU[@]}
     do
         new_name=${config/.linux./.}
         cp -v "${DAPP_OPENVPN_DIR}/${DAPP_OPENVPN_INST_PROJECT}/${config}" \
@@ -146,7 +146,7 @@ build/dapp-gui.sh   "package-linux" \
                     "${DAPP_GUI_SETTINGS_JSON_MAC}" \
                     "${app_dir}" \
                     || exit 1
-                    
+
 copy_ctrl
 copy_product
 copy_utils
