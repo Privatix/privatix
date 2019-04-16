@@ -46,4 +46,4 @@ with open(sys.argv[1], "w") as f:
 }
 
 clean
-make_packages $1 $2 $3 $4 $5
+make_packages "$1" "$2" "$3" "$4" "$5"

@@ -26,10 +26,6 @@ clear(){
     mkdir -p "${app_dir}/${DAPP_INSTALLER_GUI_DIR}/${DAPP_INSTALLER_GUI_BINARY_NAME}" || exit 1
 }
 
-remove_app(){
-    rm -rf "${app_dir}"
-}
-
 zip_package(){
     cd "${PACKAGE_BIN_MAC}/${APP}"
     zip -r "../${APP_ZIP}" * || exit 1
@@ -121,27 +117,6 @@ copy_installer(){
           "${PACKAGE_BIN_MAC}/${DAPP_INSTALLER_CONFIG}" || exit 1
 }
 
-build_installer(){
-    echo -----------------------------------------------------------------------
-    echo build installer gui
-    echo -----------------------------------------------------------------------
-
-    cp -va "${DAPP_INSTALLER_DIR}/${INSTALL_BUILDER}/${INSTALL_BUILDER_PROJECT}" \
-           "${PACKAGE_INSTALL_BUILDER_BIN}" || exit 1
-    cd "${PACKAGE_INSTALL_BUILDER_BIN}/${INSTALL_BUILDER_PROJECT}" || exit 1
-    "${BITROCK_INSTALLER_BIN_MAC}/builder" build "${INSTALL_BUILDER_PROJECT_XML}" osx \
-                            --setvars project.version=${VERSION_TO_SET_IN_BUILDER} \
-                            || exit 1
-
-    cd "${root_dir}"
-
-    mv -v "${PACKAGE_INSTALL_BUILDER_BIN}/${INSTALL_BUILDER_PROJECT}/out" \
-          "${PACKAGE_INSTALL_BUILDER_BIN}" || exit 1
-
-    echo
-    echo done
-}
-
 clear
 
 git/update.sh || exit 1
@@ -161,6 +136,8 @@ copy_product
 copy_artefacts
 copy_utils
 zip_package
-#remove_app
 copy_installer
-build_installer
+
+build/bitrock-installer.sh  "${BITROCK_INSTALLER_BIN_MAC}/builder" \
+                            "osx" \
+                            || exit 1

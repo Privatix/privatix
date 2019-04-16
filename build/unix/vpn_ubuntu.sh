@@ -24,10 +24,6 @@ clear(){
     mkdir -p "${app_dir}/${UTIL}" || exit 1
 }
 
-remove_app(){
-    rm -rf "${app_dir}"
-}
-
 create_container(){
     cd "${PACKAGE_BIN_LINUX}"
     "./container.sh" || exit 1
@@ -106,32 +102,6 @@ copy_utils()
        "${app_dir}/${UTIL}/${DUMP}" || exit 1
 }
 
-build_installer(){
-    echo -----------------------------------------------------------------------
-    echo build installer gui
-    echo -----------------------------------------------------------------------
-
-    cp -va "${DAPP_INSTALLER_DIR}/${INSTALL_BUILDER}/${INSTALL_BUILDER_PROJECT}" \
-           "${PACKAGE_INSTALL_BUILDER_BIN}" || exit 1
-    cd "${PACKAGE_INSTALL_BUILDER_BIN}/${INSTALL_BUILDER_PROJECT}" || exit 1
-
-    # sets RequireInstallationByRootUser
-    sed -i.b \
-        "s/<requireInstallationByRootUser>0/<requireInstallationByRootUser>1/g" \
-        ${INSTALL_BUILDER_PROJECT_XML}
-
-    "${BITROCK_INSTALLER_BIN_LINUX}/builder" build "${INSTALL_BUILDER_PROJECT_XML}" linux-x64 \
-                            --setvars project.version=${VERSION_TO_SET_IN_BUILDER} \
-                            || exit 1
-
-    cd "${root_dir}"
-
-    mv -v "${PACKAGE_INSTALL_BUILDER_BIN}/${INSTALL_BUILDER_PROJECT}/out" \
-          "${PACKAGE_INSTALL_BUILDER_BIN}" || exit 1
-
-    echo
-    echo done
-}
 
 clear
 
@@ -151,6 +121,8 @@ copy_ctrl
 copy_product
 copy_utils
 create_container
-#remove_app
 copy_installer
-build_installer
+
+build/bitrock-installer.sh  "${BITROCK_INSTALLER_BIN_LINUX}/builder" \
+                            "linux-x64" \
+                            || exit 1
