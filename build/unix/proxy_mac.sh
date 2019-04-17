@@ -42,34 +42,19 @@ copy_ctrl(){
 
 copy_product(){
     # binaries
-    cp -v "${GOPATH}/bin/${DAPP_OPENVPN}" \
-          "${app_dir}/${PRODUCT}/${PROXY_PRODUCT_ID}/${BIN}/${DAPP_OPENVPN}" || exit 1
+    cp -v "${GOPATH}/bin/${DAPP_PROXY}" \
+          "${app_dir}/${PRODUCT}/${PROXY_PRODUCT_ID}/${BIN}/${DAPP_PROXY}" || exit 1
 
-    cp -v "${GOPATH}/bin/${OPENVPN_INST}" \
+    cp -v "${GOPATH}/bin/${DAPP_PROXY_INST}" \
           "${app_dir}/${PRODUCT}/${PROXY_PRODUCT_ID}/${BIN}/${DAPP_INST}" || exit 1
 
-    cp -va "${DAPP_OPENVPN_DIR}/${DAPP_OPENVPN_SCRIPTS_LOCATION_MAC}/" \
-           "${app_dir}/${PRODUCT}/${PROXY_PRODUCT_ID}/${BIN}" || exit 1
-
-    #configs
-    for config in ${VPN_CONFIGS_TO_COPY_MAC[@]}
-    do
-          cp -v "${DAPP_OPENVPN_DIR}/${DAPP_OPENVPN_INST_PROJECT}/${config}" \
-                "${app_dir}/${PRODUCT}/${PROXY_PRODUCT_ID}/${PRODUCT_CONFIG}/${config}" || exit 1
-    done
-
-    cp -v "${DAPP_OPENVPN_DIR}/${DAPP_OPENVPN_PEM_LOCATION}" \
-          "${app_dir}/${PRODUCT}/${PROXY_PRODUCT_ID}/${PRODUCT_CONFIG}" || exit 1
-
     # templates
-    cp -va "${DAPP_OPENVPN_DIR}/${DAPP_OPENVPN_TEMPLATES_LOCATION}/" \
+    cp -va "${DAPP_PROXY_DIR}/${DAPP_PROXY_PRODUCT}/${PRODUCT_TEMPLATE}/" \
            "${app_dir}/${PRODUCT}/${PROXY_PRODUCT_ID}/${PRODUCT_TEMPLATE}" || exit 1
 
-    mv "${app_dir}/${PRODUCT}/${PROXY_PRODUCT_ID}/${PRODUCT_TEMPLATE}/${DAPP_VPN_AGENT_CONFIG}" \
-       "${app_dir}/${PRODUCT}/${PROXY_PRODUCT_ID}/${PRODUCT_TEMPLATE}/${ADAPTER_CONFIG_AGENT}" || exit 1
-
-    mv "${app_dir}/${PRODUCT}/${PROXY_PRODUCT_ID}/${PRODUCT_TEMPLATE}/${DAPP_VPN_CLIENT_CONFIG}" \
-       "${app_dir}/${PRODUCT}/${PROXY_PRODUCT_ID}/${PRODUCT_TEMPLATE}/${ADAPTER_CONFIG_CLIENT}" || exit 1
+    # configs
+    cp -va "${DAPP_PROXY_DIR}/${DAPP_PROXY_PRODUCT}/${PRODUCT_CONFIG}/" \
+           "${app_dir}/${PRODUCT}/${PROXY_PRODUCT_ID}/${PRODUCT_CONFIG}" || exit 1
 }
 
 copy_artefacts()
