@@ -89,8 +89,8 @@ copy_artefacts()
     echo copy artefacts
     echo
 
-    cp -r "${ARTEFACTS_BIN}/${OPEN_VPN}/." \
-       "${app_dir}/${PRODUCT}/${PROXY_PRODUCT_ID}/${BIN}/${OPEN_VPN}" || exit 1
+    cp -r "${ARTEFACTS_BIN}/${V2RAY}/." \
+       "${app_dir}/${PRODUCT}/${PROXY_PRODUCT_ID}/${BIN}/${V2RAY}" || exit 1
 
     cp -r "${ARTEFACTS_BIN}/${PGSQL}/." \
        "${app_dir}/${PGSQL}" || exit 1
