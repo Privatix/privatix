@@ -125,4 +125,5 @@ copy_installer
 
 build/bitrock-installer.sh  "${BITROCK_INSTALLER_BIN_LINUX}/builder" \
                             "linux-x64" \
+                            "${VPN_PRODUCT_ID}" \
                             || exit 1

@@ -14,6 +14,7 @@ build(){
     cd "${PACKAGE_INSTALL_BUILDER_BIN}/${INSTALL_BUILDER_PROJECT}" || exit 1
     "$1" build "${INSTALL_BUILDER_PROJECT_XML}" $2 \
                             --setvars project.version=${VERSION_TO_SET_IN_BUILDER} \
+                                      product_id="$3" \
                             || exit 1
 
     cd "${root_dir}"
@@ -25,4 +26,4 @@ build(){
     echo done
 }
 
-build "$1" "$2"
+build "$1" "$2" "$3"

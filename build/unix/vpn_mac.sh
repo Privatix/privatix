@@ -140,4 +140,5 @@ copy_installer
 
 build/bitrock-installer.sh  "${BITROCK_INSTALLER_BIN_MAC}/builder" \
                             "osx" \
+                            "${VPN_PRODUCT_ID}" \
                             || exit 1

@@ -49,12 +49,8 @@ copy_product(){
           "${app_dir}/${PRODUCT}/${PROXY_PRODUCT_ID}/${BIN}/${DAPP_INST}" || exit 1
 
     # templates
-    cp -va "${DAPP_PROXY_DIR}/${DAPP_PROXY_PRODUCT}/${PRODUCT_TEMPLATE}/" \
-           "${app_dir}/${PRODUCT}/${PROXY_PRODUCT_ID}/${PRODUCT_TEMPLATE}" || exit 1
-
-    # configs
-    cp -va "${DAPP_PROXY_DIR}/${DAPP_PROXY_PRODUCT}/${PRODUCT_CONFIG}/" \
-           "${app_dir}/${PRODUCT}/${PROXY_PRODUCT_ID}/${PRODUCT_CONFIG}" || exit 1
+    cp -va "${DAPP_PROXY_DIR}/${DAPP_PROXY_PRODUCT}/" \
+           "${app_dir}/${PRODUCT}/${PROXY_PRODUCT_ID}" || exit 1
 }
 
 copy_artefacts()
@@ -125,4 +121,5 @@ copy_installer
 
 build/bitrock-installer.sh  "${BITROCK_INSTALLER_BIN_MAC}/builder" \
                             "osx" \
+                            "${PROXY_PRODUCT_ID}" \
                             || exit 1
