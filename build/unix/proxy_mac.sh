@@ -122,4 +122,6 @@ copy_installer
 build/bitrock-installer.sh  "${BITROCK_INSTALLER_BIN_MAC}/builder" \
                             "osx" \
                             "${PROXY_PRODUCT_ID}" \
+                            "${PROXY_PRODUCT_NAME}" \
+                            "${PROXY_PRODUCT_CONFIG_NAME}" \
                             || exit 1

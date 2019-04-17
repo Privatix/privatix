@@ -15,6 +15,8 @@ build(){
     "$1" build "${INSTALL_BUILDER_PROJECT_XML}" $2 \
                             --setvars project.version=${VERSION_TO_SET_IN_BUILDER} \
                                       product_id="$3" \
+                                      product_name="$4" \
+                                      agent_product_config_name="$5" \
                             || exit 1
 
     cd "${root_dir}"
@@ -26,4 +28,4 @@ build(){
     echo done
 }
 
-build "$1" "$2" "$3"
+build "$1" "$2" "$3" "$4" "$5"
