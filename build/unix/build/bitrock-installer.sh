@@ -16,7 +16,6 @@ build(){
                             --setvars project.version=${VERSION_TO_SET_IN_BUILDER} \
                                       product_id="$3" \
                                       product_name="$4" \
-                                      agent_product_config_name="$5" \
                             || exit 1
 
     cd "${root_dir}"
@@ -28,4 +27,4 @@ build(){
     echo done
 }
 
-build "$1" "$2" "$3" "$4" "$5"
+build "$1" "$2" "$3" "$4"
