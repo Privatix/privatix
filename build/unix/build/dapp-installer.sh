@@ -5,7 +5,7 @@ cd ${root_dir}
 . ./build.sealed.config
 
 echo -----------------------------------------------------------------------
-echo dappinstaller
+echo dapp-installer
 echo -----------------------------------------------------------------------
 
 clean(){
