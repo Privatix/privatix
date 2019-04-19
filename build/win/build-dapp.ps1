@@ -31,8 +31,8 @@ param(
     [switch]$dappinstaller,
     [Parameter(ParameterSetName = "dappopenvpn", HelpMessage = "build dapp-openvpn")]
     [switch]$dappopenvpn,
-    [Parameter(ParameterSetName = "dapproxy", HelpMessage = "build dapp-proxy")]
-    [switch]$dapproxy,
+    [Parameter(ParameterSetName = "dappproxy", HelpMessage = "build dapp-proxy")]
+    [switch]$dappproxy,
     [Parameter(ParameterSetName = "dappdb", HelpMessage = "init database")]
     [switch]$dappdb,
     # common parameters (not always between all components)
@@ -40,25 +40,25 @@ param(
     [Parameter(ParameterSetName = "dappgui", HelpMessage = "git branch")]
     [Parameter(ParameterSetName = "dappinstaller", HelpMessage = "git branch")]
     [Parameter(ParameterSetName = "dappopenvpn", HelpMessage = "git branch")]
-    [Parameter(ParameterSetName = "dapproxy", HelpMessage = "git branch")]
+    [Parameter(ParameterSetName = "dappproxy", HelpMessage = "git branch")]
     [string]$branch,        
     [Parameter(ParameterSetName = "dappctrl", HelpMessage = "git pull")]
     [Parameter(ParameterSetName = "dappinstaller", HelpMessage = "git pull")]
     [Parameter(ParameterSetName = "dappgui", HelpMessage = "git pull")]
     [Parameter(ParameterSetName = "dappopenvpn", HelpMessage = "git pull")]
-    [Parameter(ParameterSetName = "dapproxy", HelpMessage = "git pull")]
+    [Parameter(ParameterSetName = "dappproxy", HelpMessage = "git pull")]
     [switch]$gitpull,
     [Parameter(ParameterSetName = "dappctrl", HelpMessage = "set version")]
     [Parameter(ParameterSetName = "dappgui", HelpMessage = "set version")]
     [Parameter(ParameterSetName = "dappinstaller", HelpMessage = "set version")]
     [Parameter(ParameterSetName = "dappopenvpn", HelpMessage = "set version")]
-    [Parameter(ParameterSetName = "dapproxy", HelpMessage = "set version")]
+    [Parameter(ParameterSetName = "dappproxy", HelpMessage = "set version")]
     [string]$version,
     [Parameter(ParameterSetName = "dappctrl", HelpMessage = "path to where to clone repo")]
     [Parameter(ParameterSetName = "dappgui", HelpMessage = "path to where to clone repo")]
     [Parameter(ParameterSetName = "dappinstaller", HelpMessage = "path to where to clone repo")]
     [Parameter(ParameterSetName = "dappopenvpn", HelpMessage = "path to where to clone repo")]
-    [Parameter(ParameterSetName = "dapproxy", HelpMessage = "path to where to clone repo")]
+    [Parameter(ParameterSetName = "dappproxy", HelpMessage = "path to where to clone repo")]
     [string]$wd,
     # dappgui parameters
     [Parameter(ParameterSetName = "dappgui", HelpMessage = "whether to package gui")]
@@ -108,11 +108,11 @@ switch ($psCmdlet.ParameterSetName) {
         Remove-Module "build-dappopenvpn"
         break
     }
-    "dapproxy" {
-        import-module (join-path $PSScriptRoot "build-dapproxy.psm1" -resolve) -DisableNameChecking -ErrorAction Stop -Verbose:$false
+    "dappproxy" {
+        import-module (join-path $PSScriptRoot "build-dappproxy.psm1" -resolve) -DisableNameChecking -ErrorAction Stop -Verbose:$false
         $PSBoundParameters.Remove($psCmdlet.ParameterSetName) | Out-Null
-        build-dapproxy @PSBoundParameters
-        Remove-Module "build-dapproxy"
+        build-dappproxy @PSBoundParameters
+        Remove-Module "build-dappproxy"
         break
     }
     "dappdb" {

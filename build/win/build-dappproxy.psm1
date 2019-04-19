@@ -17,20 +17,20 @@
     Set version, if not overriden by git tag
 
 .EXAMPLE
-    build-dapproxy
+    build-dappproxy
 
     Description
     -----------
     Build DappOpenVpn (includung installer).
 
 .EXAMPLE
-    build-dapproxy -wd "c:\build\" -branch "develop" -gitpull -version "0.21.0"
+    build-dappproxy -wd "c:\build\" -branch "develop" -gitpull -version "0.21.0"
 
     Description
     -----------
-    Checkout branch "develop". Pull from git. Run go dependecy. Build build-dapproxy adapter. Build build-dapproxy installer.
+    Checkout branch "develop". Pull from git. Run go dependecy. Build build-dappproxy adapter. Build build-dappproxy installer.
 #>
-Function build-dapproxy {
+Function build-dappproxy {
     [cmdletbinding()]
     Param (
         [ValidatePattern("^(?!@$|build-|.*([.]\.|@\{|\\))[^\000-\037\177 ~^:?*[]+[^\000-\037\177 ~^:?*[]+(?<!\.lock|[.])$")]
@@ -75,7 +75,8 @@ Function build-dapproxy {
     $error.Clear()
 
     try {
-        Invoke-Scriptblock "go build -o $gopath\bin\dapp_proxy.exe .\plugin" -StderrPrefix ""
+        Invoke-Scriptblock "go build -o $gopath\bin\dapp-proxy.exe -ldflags `"-X main.Commit=$GIT_COMMIT -X main.Version=$GIT_RELEASE`" -tags=notest .\plugin" -StderrPrefix ""
+        Invoke-Scriptblock "go build -o $gopath\bin\dappproxy-inst.exe -ldflags `"-X main.Commit=$GIT_COMMIT -X main.Version=$GIT_RELEASE`" -tags=notest .\inst" -StderrPrefix ""
     }
     catch {Write-Error "Some failures accured during build"}
     finally {Set-Location $lastLocation}

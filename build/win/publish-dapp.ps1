@@ -12,6 +12,9 @@
 .PARAMETER staticArtefactsDir
     Directory with static artefacts (e.g. postgesql, tor, openvpn, visual studio redistributable)
 
+.PARAMETER product
+    Which Service plug-in to package. Can be "vpn" or "proxy". If not specified - VPN product is built.
+
 .PARAMETER dappguibranch
     Git branch to checkout for dappgui build. If not specified "develop" branch will be used.
 
@@ -23,6 +26,9 @@
 
 .PARAMETER dappopenvpnbranch
     Git branch to checkout for dapp-openvpn build. If not specified "develop" branch will be used.
+
+.PARAMETER dappproxybranch
+    Git branch to checkout for dapp-proxy build. If not specified "develop" branch will be used.
 
 .PARAMETER privatixbranch
     Git branch to checkout for privatix build. If not specified "develop" branch will be used.
@@ -78,11 +84,11 @@
     Same as above, but "master" branch is used for all components.
 
 .EXAMPLE
-    .\publish-dapp.ps1 -staticArtefactsDir "C:\privatix\art" -installer -version "0.21.0" -gitpull -dappguibranch "master" -dappctrlbranch "master" -dappinstbranch "master" -dappopenvpnbranch "master" -privatixbranch "master" -prodConfig
+    .\publish-dapp.ps1 -product proxy -staticArtefactsDir "C:\privatix\art" -installer -version "0.21.0" -gitpull -dappguibranch "master" -dappctrlbranch "master" -dappinstbranch "master" -dappopenvpnbranch "master" -privatixbranch "master" -prodConfig
 
     Description
     -----------
-    Same as above, but Bitrock installer is triggered to create executable installer.
+    Same as above, but "proxy" product and Bitrock installer is triggered to create executable installer.
     Note: Bitrock installer should be installed (https://installbuilder.bitrock.com/download-step-2.html) and "builder-cli.exe" added to %PATH%
     
 #>
@@ -91,6 +97,8 @@ param(
     [string]$wkdir,
     [ValidateScript( {Test-Path $_ })]
     [string]$staticArtefactsDir = "c:\privatix\art",
+    [ValidateSet('vpn', 'proxy')]
+    [string]$product = 'vpn',
     [ValidateSet('nothing', 'binaries', 'all')]
     [string]$clean = 'nothing',
     [switch]$gitpull,
@@ -100,6 +108,7 @@ param(
     [string]$dappctrlbranch = "develop",
     [string]$dappinstbranch = "develop",
     [string]$dappopenvpnbranch = "develop",
+    [string]$dappproxybranch = "develop",
     [string]$privatixbranch = "develop",
     [switch]$prodConfig
     
@@ -117,6 +126,10 @@ if (!(Test-Path $wkdir)) {New-Item -Path $wkdir -ItemType Directory | Out-Null}
 if ($PSBoundParameters.ContainsKey('Verbose')) {
     $global:VerbosePreference = [System.Management.Automation.ActionPreference]::Continue
 }
+
+# Product ID supposed to be unchangable for single product (e.g. VPN)
+if ($product -eq 'vpn') {$productID = '73e17130-2a1d-4f7d-97a8-93a9aaa6f10d'}
+if ($product -eq 'proxy') {$productID = '881da45b-ce8c-46bf-943d-730e9cee5740'}
 
 if (($clean -eq 'binaries') -or ($clean -eq 'all')) {
     try {
@@ -150,7 +163,12 @@ $TotalTime += $sw.Elapsed.TotalSeconds
 Write-Host "It took $($sw.Elapsed.TotalSeconds) seconds to complete" -ForegroundColor Green
 
 $sw.Restart()
-. $builddapp -dappopenvpn -wd $wkdir -branch $dappopenvpnbranch -gitpull:$gitpull -version:$vers
+if ($product -eq 'vpn') {
+    . $builddapp -dappopenvpn -wd $wkdir -branch $dappopenvpnbranch -gitpull:$gitpull -version:$vers
+}
+if ($product -eq 'proxy') {
+    . $builddapp -dappproxy -wd $wkdir -branch $dappproxybranch -gitpull:$gitpull -version:$vers
+}
 $TotalTime += $sw.Elapsed.TotalSeconds
 Write-Host "It took $($sw.Elapsed.TotalSeconds) seconds to complete" -ForegroundColor Green
 
@@ -174,17 +192,17 @@ if ($installer) {
             exit 1
         }
         
-        new-package -wrkdir $wkdir -staticArtefactsDir $staticArtefactsDir -installer -privatixbranch $privatixbranch -gitpull:$gitpull -prodConfig:$prodConfig.IsPresent
+        new-package -wrkdir $wkdir -staticArtefactsDir $staticArtefactsDir -installer -privatixbranch $privatixbranch -gitpull:$gitpull -prodConfig:$prodConfig.IsPresent -product:$product
 
         if ($vers) {
-            Invoke-Expression "builder-cli.exe build $wkdir\project\Privatix.xml windows --setvars project.version=$vers" 
+            Invoke-Expression "builder-cli.exe build $wkdir\project\Privatix.xml windows --setvars project.version=$vers product_id=$productID product_name=$product" 
         } else {
             Write-Warning "no version specified for installer"
-            Invoke-Expression "builder-cli.exe build $wkdir\project\Privatix.xml windows --setvars project.version=undefined" 
+            Invoke-Expression "builder-cli.exe build $wkdir\project\Privatix.xml windows --setvars project.version=undefined product_id=$productID product_name=$product" 
         }
     }
 else {
-        new-package -wrkdir $wkdir -staticArtefactsDir $staticArtefactsDir -privatixbranch $privatixbranch -gitpull:$gitpull -prodConfig:$prodConfig.IsPresent
+        new-package -wrkdir $wkdir -staticArtefactsDir $staticArtefactsDir -privatixbranch $privatixbranch -gitpull:$gitpull -prodConfig:$prodConfig.IsPresent -product:$product
 }
 
 $TotalTime += $sw.Elapsed.TotalSeconds
