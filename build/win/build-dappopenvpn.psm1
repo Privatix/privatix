@@ -78,8 +78,7 @@ Function build-dappopenvpn {
         Invoke-Scriptblock "go get $goVerbose -u github.com/rakyll/statik" -StderrPrefix ""
         Invoke-Scriptblock "go generate $goGenerateVerbose $PROJECT/..." -StderrPrefix ""
         Invoke-Scriptblock "go build -o $gopath\bin\dappvpn.exe -ldflags `"-X main.Commit=$GIT_COMMIT -X main.Version=$GIT_RELEASE`" -tags=notest ${PROJECT}\adapter" -StderrPrefix ""
-        Invoke-Scriptblock "go build -o $gopath\bin\installer.exe -ldflags `"-X main.Commit=$GIT_COMMIT -X main.Version=$GIT_RELEASE`" -tags=notest ${PROJECT}\installer" -StderrPrefix ""
-        Invoke-Scriptblock "go build -o $gopath\bin\inst.exe -ldflags `"-X main.Commit=$GIT_COMMIT -X main.Version=$GIT_RELEASE`" -tags=notest ${PROJECT}\inst" -StderrPrefix ""
+        Invoke-Scriptblock "go build -o $gopath\bin\dappvpn-inst.exe -ldflags `"-X main.Commit=$GIT_COMMIT -X main.Version=$GIT_RELEASE`" -tags=notest ${PROJECT}\inst" -StderrPrefix ""
     }
     catch {Write-Error "Some failures accured during build"}
     finally {Set-Location $lastLocation}
