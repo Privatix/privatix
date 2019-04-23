@@ -161,7 +161,10 @@ function new-package {
     }
     else {$dappctrlconfig = (Get-Item "$wrkdir\src\github.com\privatix\dappctrl\dappctrl-dev.config.json").FullName}
     $dappctrlFWruleScript = (Get-Item "$wrkdir\src\github.com\privatix\dappctrl\scripts\win\set-ctrlfirewall.ps1").FullName
-    $dappguiFolder = (Get-Item "$wrkdir\dapp-gui\release-builds\dapp-gui-win32-x64").FullName
+    if ($installer) {
+        $dappguiFolder = (Get-Item "$wrkdir\dapp-gui\release-builds\dapp-gui-win32-x64").FullName
+    } else {$dappguiFolder = (Get-Item "$wrkdir\dapp-gui").FullName}
+
     $pgFolder = (Get-Item "$staticArtefactsDir\pgsql").FullName
     $utilFolder = (Get-Item "$staticArtefactsDir\util").FullName
     $torFolder = (Get-Item "$staticArtefactsDir\tor").FullName
@@ -170,7 +173,7 @@ function new-package {
     # openvpn product
     if ($product -eq 'vpn') {
         $dappopenvpnbin = (Get-Item "$gopath\bin\dappvpn.exe").FullName
-        $dappopenvpninst = (Get-Item "$gopath\bin\inst.exe").FullName
+        $dappopenvpninst = (Get-Item "$gopath\bin\dappvpn-inst.exe").FullName
         $dappvpntemplatesFolder = (Get-Item "$wrkdir\src\github.com\privatix\dapp-openvpn\files\example").FullName
         $dappopenvpninstagentconfig = (Get-Item "$wrkdir\src\github.com\privatix\dapp-openvpn\inst\install.agent.config.json").FullName
         $dappopenvpninstclientconfig = (Get-Item "$wrkdir\src\github.com\privatix\dapp-openvpn\inst\install.client.config.json").FullName
@@ -283,9 +286,11 @@ function new-package {
     #endregion
 
     #region archive app
-    Write-Verbose "Making archive for deploy..."
-    add-type -AssemblyName System.IO.Compression.FileSystem
-    [System.IO.Compression.ZipFile]::CreateFromDirectory($rootAppPath, "$deployAppPath\app.zip", 'Optimal', $false)
+    if ($installer) {
+        Write-Verbose "Making archive for deploy..."
+        add-type -AssemblyName System.IO.Compression.FileSystem
+        [System.IO.Compression.ZipFile]::CreateFromDirectory($rootAppPath, "$deployAppPath\app.zip", 'Optimal', $false)
+    }
     #endregion
 
     #region dapp-installer artefact
