@@ -3,7 +3,7 @@
 root_dir="$(cd `dirname $0` && pwd)"
 cd "${root_dir}"
 
-. ./build.sealed.config
+. ./build.global.config
 
 app_dir="${PACKAGE_BIN_MAC}/${APP}"
 
@@ -27,20 +27,40 @@ clear(){
 }
 
 zip_package(){
+    echo -----------------------------------------------------------------------
+    echo zip app
+    echo -----------------------------------------------------------------------
+    echo Please wait, it takes time...
+
+    echo "${PACKAGE_BIN_MAC}/${APP}"
     cd "${PACKAGE_BIN_MAC}/${APP}"
-    zip -r "../${APP_ZIP}" * || exit 1
+
+    zip -qr "../${APP_ZIP}" * || exit 1
+
+    echo && echo done
 
     cd "${root_dir}"
 }
 
 copy_ctrl(){
-    cp -v   "${DAPPCTRL_BIN}/${DAPPCTRL}" \
+    echo -----------------------------------------------------------------------
+    echo copy dappctrl
+    echo -----------------------------------------------------------------------
+
+
+    cp -v   "${GOPATH}/bin/${DAPPCTRL}" \
             "${app_dir}/${DAPPCTRL}/${DAPPCTRL}" || exit 1
-    cp -v   "${DAPPCTRL_BIN}/${DAPPCTRL_FOR_INSTALLER_CONFIG}" \
+    cp -v   "${DAPPCTRL_DIR}/${DAPPCTRL_CONFIG}" \
             "${app_dir}/${DAPPCTRL}/${DAPPCTRL_FOR_INSTALLER_CONFIG}" || exit 1
+
+    echo && echo done
 }
 
 copy_product(){
+    echo -----------------------------------------------------------------------
+    echo copy product binaries
+    echo -----------------------------------------------------------------------
+
     # binaries
     cp -v "${GOPATH}/bin/${DAPP_OPENVPN}" \
           "${app_dir}/${PRODUCT}/${VPN_PRODUCT_ID}/${BIN}/${DAPP_OPENVPN}" || exit 1
@@ -50,6 +70,12 @@ copy_product(){
 
     cp -va "${DAPP_OPENVPN_DIR}/${DAPP_OPENVPN_SCRIPTS_LOCATION_MAC}/" \
            "${app_dir}/${PRODUCT}/${VPN_PRODUCT_ID}/${BIN}" || exit 1
+
+    echo && echo done
+    echo -----------------------------------------------------------------------
+    echo copy product configs
+    echo -----------------------------------------------------------------------
+
 
     #configs
     for config in ${VPN_CONFIGS_TO_COPY_MAC[@]}
@@ -61,6 +87,12 @@ copy_product(){
     cp -v "${DAPP_OPENVPN_DIR}/${DAPP_OPENVPN_PEM_LOCATION}" \
           "${app_dir}/${PRODUCT}/${VPN_PRODUCT_ID}/${PRODUCT_CONFIG}" || exit 1
 
+    echo && echo done
+    echo -----------------------------------------------------------------------
+    echo copy product templates
+    echo -----------------------------------------------------------------------
+
+
     # templates
     cp -va "${DAPP_OPENVPN_DIR}/${DAPP_OPENVPN_TEMPLATES_LOCATION}/" \
            "${app_dir}/${PRODUCT}/${VPN_PRODUCT_ID}/${PRODUCT_TEMPLATE}" || exit 1
@@ -70,10 +102,17 @@ copy_product(){
 
     mv "${app_dir}/${PRODUCT}/${VPN_PRODUCT_ID}/${PRODUCT_TEMPLATE}/${DAPP_VPN_CLIENT_CONFIG}" \
        "${app_dir}/${PRODUCT}/${VPN_PRODUCT_ID}/${PRODUCT_TEMPLATE}/${ADAPTER_CONFIG_CLIENT}" || exit 1
+
+    echo && echo done
 }
 
 copy_artefacts()
 {
+    echo -----------------------------------------------------------------------
+    echo copy artefacts
+    echo -----------------------------------------------------------------------
+
+
     if ! [ -f "${ARTEFACTS_LOCATION}" ]; then
         echo Downloading: "${ARTEFACTS_ZIP_URL}"
         curl -o "${ARTEFACTS_LOCATION}" "${ARTEFACTS_ZIP_URL}" || exit 1
@@ -85,36 +124,46 @@ copy_artefacts()
                 -d "${ARTEFACTS_BIN}" || exit 1
     fi
 
-    echo
-    echo copy artefacts
-    echo
-
+    echo "${app_dir}/${PRODUCT}/${VPN_PRODUCT_ID}/${BIN}/${OPEN_VPN}"
     cp -r "${ARTEFACTS_BIN}/${OPEN_VPN}/." \
        "${app_dir}/${PRODUCT}/${VPN_PRODUCT_ID}/${BIN}/${OPEN_VPN}" || exit 1
 
+    echo "${app_dir}/${PGSQL}"
     cp -r "${ARTEFACTS_BIN}/${PGSQL}/." \
        "${app_dir}/${PGSQL}" || exit 1
 
+    echo "${app_dir}/${PGSQL}"
     cp -r "${ARTEFACTS_BIN}/${TOR}/." \
        "${app_dir}/${TOR}" || exit 1
+
+   echo && echo done
 }
 
 copy_utils()
 {
-    echo
+    echo -----------------------------------------------------------------------
     echo copy utils
-    echo
+    echo -----------------------------------------------------------------------
 
+    echo "${app_dir}/${UTIL}/${DUMP}"
     cp -r  "${DUMP_MAC}/." \
        "${app_dir}/${UTIL}/${DUMP}" || exit 1
+
+    echo && echo done
 }
 
 copy_installer(){
-    cp -v "${DAPPINSTALLER_BIN}/${DAPP_INSTALLER}" \
+    echo -----------------------------------------------------------------------
+    echo copy dapp-installer
+    echo -----------------------------------------------------------------------
+
+    cp -v "${GOPATH}/bin/${DAPP_INSTALLER}" \
           "${PACKAGE_BIN_MAC}/${DAPP_INSTALLER}" || exit 1
 
-    cp -v "${DAPPINSTALLER_BIN}/${DAPP_INSTALLER_CONFIG}" \
+    cp -v "${DAPP_INSTALLER_DIR}/${DAPP_INSTALLER_CONFIG}" \
           "${PACKAGE_BIN_MAC}/${DAPP_INSTALLER_CONFIG}" || exit 1
+
+    echo && echo done
 }
 
 clear
@@ -129,6 +178,7 @@ build/dapp-gui.sh   "package-mac" \
                     "${app_dir}/${DAPP_INSTALLER_GUI_DIR}/${DAPP_INSTALLER_GUI_BINARY_NAME}" \
                     "${DAPP_GUI_SETTINGS_JSON_MAC}" \
                     "${app_dir}" \
+                    "osx" \
                     || exit 1
 
 copy_ctrl

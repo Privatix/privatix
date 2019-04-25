@@ -4,7 +4,7 @@ root_dir="$(cd `dirname $0` && pwd)"
 cd "${root_dir}"
 cd ..
 
-. ./build.sealed.config
+. ./build.global.config
 
 cd "${root_dir}"
 ./each_repo.sh "git checkout ${GIT_BRANCH}"

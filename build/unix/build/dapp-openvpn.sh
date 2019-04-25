@@ -2,20 +2,10 @@
 
 root_dir="$(cd `dirname $0` && pwd)/.."
 cd ${root_dir}
-. ./build.sealed.config
+. ./build.global.config
 
 echo -----------------------------------------------------------------------
-echo dapp-openvpn
+echo build dapp-openvpn
 echo -----------------------------------------------------------------------
 
-build(){
-    if [[ ! -d "${GOPATH}/bin/" ]]; then
-        mkdir "${GOPATH}"/bin/ || exit 1
-    fi
-
-    cd "${DAPP_OPENVPN_DIR}" || exit 1
-
-    ./scripts/build.sh || exit 1
-}
-
-build
+"${DAPP_OPENVPN_DIR}/scripts/build.sh" || exit 1

@@ -3,7 +3,7 @@
 root_dir="$(cd `dirname $0` && pwd)"
 cd "${root_dir}"
 
-. ./build.sealed.config
+. ./build.global.config
 
 
 app_dir="${PACKAGE_BIN_LINUX}/${APP}"
@@ -25,21 +25,33 @@ clear(){
 }
 
 create_container(){
+    echo -----------------------------------------------------------------------
+    echo create container
+    echo -----------------------------------------------------------------------
+
+
     cd "${PACKAGE_BIN_LINUX}"
     "./container.sh" || exit 1
     cd "${root_dir}"
+
+    echo && echo done
 }
 
 copy_ctrl(){
+    echo -----------------------------------------------------------------------
+    echo copy dappctrl
+    echo -----------------------------------------------------------------------
+
+
     # return log location
     location=${DAPPCTRL_LOG//\//\\/}
     sed -i.b \
         "s/${location}/\/var\/log/g" \
         ${DAPPCTRL_BIN}/${DAPPCTRL_FOR_INSTALLER_CONFIG}
 
-    cp -v   "${DAPPCTRL_BIN}/${DAPPCTRL}" \
+    cp -v   "${GOPATH}/bin/${DAPPCTRL}" \
             "${app_dir}/${DAPPCTRL}/${DAPPCTRL}" || exit 1
-    cp -v   "${DAPPCTRL_BIN}/${DAPPCTRL_FOR_INSTALLER_CONFIG}" \
+    cp -v   "${DAPPCTRL_DIR}/${DAPPCTRL_CONFIG}" \
             "${app_dir}/${DAPPCTRL}/${DAPPCTRL_FOR_INSTALLER_CONFIG}" || exit 1
     cp -v   "${DAPP_INSTALLER_DIR}/${DAPP_INSTALLER_SCRIPTS_DIR_LINUX}/dappctrl.service" \
             "${app_dir}/${DAPPCTRL}/dappctrl.service" || exit 1
@@ -49,9 +61,16 @@ copy_ctrl(){
             "${app_dir}/${DAPPCTRL}/pre-start.sh" || exit 1
     cp -v   "${DAPP_INSTALLER_DIR}/${DAPP_INSTALLER_SCRIPTS_DIR_LINUX}/container.sh" \
             "${PACKAGE_BIN_LINUX}/container.sh" || exit 1
+
+    echo && echo done
 }
 
 copy_product(){
+    echo -----------------------------------------------------------------------
+    echo copy product binaries
+    echo -----------------------------------------------------------------------
+
+
     # binaries
     cp -v "${GOPATH}/bin/${DAPP_OPENVPN}" \
           "${app_dir}/${PRODUCT}/${VPN_PRODUCT_ID}/${BIN}/${DAPP_OPENVPN}" || exit 1
@@ -61,6 +80,12 @@ copy_product(){
 
     cp -va "${DAPP_OPENVPN_DIR}/${DAPP_OPENVPN_SCRIPTS_LOCATION_LINUX}/." \
            "${app_dir}/${PRODUCT}/${VPN_PRODUCT_ID}/${BIN}" || exit 1
+
+    echo && echo done
+    echo -----------------------------------------------------------------------
+    echo copy product configs
+    echo -----------------------------------------------------------------------
+
 
     #configs
     for config in ${VPN_CONFIGS_TO_COPY_UBUNTU[@]}
@@ -73,6 +98,12 @@ copy_product(){
     cp -v "${DAPP_OPENVPN_DIR}/${DAPP_OPENVPN_PEM_LOCATION}" \
           "${app_dir}/${PRODUCT}/${VPN_PRODUCT_ID}/${PRODUCT_CONFIG}" || exit 1
 
+    echo && echo done
+    echo -----------------------------------------------------------------------
+    echo copy product templates
+    echo -----------------------------------------------------------------------
+
+
     # templates
     cp -va "${DAPP_OPENVPN_DIR}/${DAPP_OPENVPN_TEMPLATES_LOCATION}/." \
            "${app_dir}/${PRODUCT}/${VPN_PRODUCT_ID}/${PRODUCT_TEMPLATE}" || exit 1
@@ -82,24 +113,36 @@ copy_product(){
 
     mv "${app_dir}/${PRODUCT}/${VPN_PRODUCT_ID}/${PRODUCT_TEMPLATE}/${DAPP_VPN_CLIENT_CONFIG}" \
        "${app_dir}/${PRODUCT}/${VPN_PRODUCT_ID}/${PRODUCT_TEMPLATE}/${ADAPTER_CONFIG_CLIENT}" || exit 1
+
+    echo && echo done
 }
 
 copy_installer(){
-    cp -v "${DAPPINSTALLER_BIN}/${DAPP_INSTALLER}" \
+    echo -----------------------------------------------------------------------
+    echo copy dapp-installer
+    echo -----------------------------------------------------------------------
+
+    cp -v "${GOPATH}/bin/${DAPP_INSTALLER}" \
           "${PACKAGE_BIN_LINUX}/${DAPP_INSTALLER}" || exit 1
 
     cp -v "${DAPP_INSTALLER_DIR}/${DAPP_INSTALLER_LINUX_CONFIG}" \
           "${PACKAGE_BIN_LINUX}/${DAPP_INSTALLER_CONFIG}" || exit 1
+
+    echo && echo done
 }
 
 copy_utils()
 {
-    echo
+    echo -----------------------------------------------------------------------
     echo copy utils
-    echo
+    echo -----------------------------------------------------------------------
 
+    echo "${app_dir}/${UTIL}/${DUMP}"
     cp -r  "${DUMP_LINUX}/." \
        "${app_dir}/${UTIL}/${DUMP}" || exit 1
+
+
+    echo && echo done
 }
 
 
@@ -115,6 +158,7 @@ build/dapp-gui.sh   "package-linux" \
                     "${app_dir}/${DAPP_INSTALLER_GUI_DIR}/" \
                     "${DAPP_GUI_SETTINGS_JSON_MAC}" \
                     "${app_dir}" \
+                    "ubuntu" \
                     || exit 1
 
 copy_ctrl

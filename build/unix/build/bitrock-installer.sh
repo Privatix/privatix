@@ -2,7 +2,7 @@
 
 root_dir="$(cd `dirname $0` && pwd)/.."
 cd ${root_dir}
-. ./build.sealed.config
+. ./build.global.config
 
 build(){
     echo -----------------------------------------------------------------------
@@ -22,9 +22,11 @@ build(){
 
     mv -v "${PACKAGE_INSTALL_BUILDER_BIN}/${INSTALL_BUILDER_PROJECT}/out" \
           "${PACKAGE_INSTALL_BUILDER_BIN}" || exit 1
+    cd "${PACKAGE_INSTALL_BUILDER_BIN}/out"
 
-    echo
-    echo done
+    echo && echo
+    ls -d $PWD/*
+    echo && echo done
 }
 
 build "$1" "$2" "$3" "$4"
