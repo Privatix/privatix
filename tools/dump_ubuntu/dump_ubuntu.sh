@@ -23,7 +23,7 @@ find_and_copy(){
 
 get_value(){
     cat "${dappctrl_config}" | \
-        python -c 'import json,sys;obj=json.load(sys.stdin);print obj["DB"]["Conn"]["'$1'"]';
+        python3 -c 'import json,sys;obj=json.load(sys.stdin);print(obj["DB"]["Conn"]["'$1'"])';
 }
 
 echo "copying files..."
