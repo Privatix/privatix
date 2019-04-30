@@ -177,7 +177,6 @@ build/dapp-gui.sh   "package-mac" \
                     "${DAPP_GUI_DIR}/${DAPP_GUI_PACKAGE_MAC}/${DAPP_GUI_PACKAGE_MAC_BINARY_NAME}/." \
                     "${app_dir}/${DAPP_INSTALLER_GUI_DIR}/${DAPP_INSTALLER_GUI_BINARY_NAME}" \
                     "${DAPP_GUI_SETTINGS_JSON_MAC}" \
-                    "${app_dir}" \
                     "osx" \
                     || exit 1
 

@@ -34,14 +34,14 @@ make_packages(){
 with open(sys.argv[1], "r") as f:
     obj = json.load(f)
 obj["release"]="'${VERSION_TO_SET_IN_BUILDER}'"
-obj["target"]="'$6'"
+obj["target"]="'$5'"
 with open(sys.argv[1], "w") as f:
    json.dump(obj, f)' \
-   "$5/${DAPP_INSTALLER_GUI_DIR}/${DAPP_INSTALLER_GUI_BINARY_NAME}/$4" || exit 1
+   "$3/$4" || exit 1
 
    echo && echo done
 
 }
 
 clean
-make_packages "$1" "$2" "$3" "$4" "$5" "$6"
+make_packages "$1" "$2" "$3" "$4" "$5"
