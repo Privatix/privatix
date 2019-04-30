@@ -132,7 +132,7 @@ copy_artefacts()
     cp -r "${ARTEFACTS_BIN}/${PGSQL}/." \
        "${app_dir}/${PGSQL}" || exit 1
 
-    echo "${app_dir}/${PGSQL}"
+    echo "${app_dir}/${TOR}"
     cp -r "${ARTEFACTS_BIN}/${TOR}/." \
        "${app_dir}/${TOR}" || exit 1
 
@@ -191,4 +191,5 @@ build/bitrock-installer.sh  "${BITROCK_INSTALLER_BIN_MAC}/builder" \
                             "osx" \
                             "${VPN_PRODUCT_ID}" \
                             "${VPN_PRODUCT_NAME}" \
+                            "" \
                             || exit 1

@@ -158,6 +158,7 @@ build/dapp-gui.sh   "package-linux" \
                     "${app_dir}/${DAPP_INSTALLER_GUI_DIR}/" \
                     "${DAPP_GUI_SETTINGS_JSON_LINUX}" \
                     "ubuntu" \
+                    "s/<requireInstallationByRootUser>0/<requireInstallationByRootUser>1/g" \
                     || exit 1
 
 copy_ctrl
