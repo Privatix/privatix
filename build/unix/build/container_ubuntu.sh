@@ -1,25 +1,32 @@
 #!/bin/bash
 
+root_dir="$(cd `dirname $0` && pwd)/.."
+cd ${root_dir}
+. ./build.global.config
+
 echo -----------------------------------------------------------------------
 echo create container
 echo -----------------------------------------------------------------------
 
 
-container="privatix-dapp-container"
-echo "Container name:" ${container}
+container_name="privatix-dapp-container"
+echo "Container name:" ${container_name}
 
-dappcoredir="./app"
+container_location="${PACKAGE_BIN_LINUX}/${container_name}"
+echo "Container location:" ${container_location}
+
+dappcoredir="${PACKAGE_BIN_LINUX}/app"
 echo "App folder path:" ${dappcoredir}
 
 # create container
-sudo debootstrap stretch ./${container} http://deb.debian.org/debian
+sudo debootstrap stretch "${container_location}" http://deb.debian.org/debian
 #sudo chroot ${container} dpkg --print-architecture
 
 # copy dappcore
-sudo cp -R ${dappcoredir}/. ${container}/
+sudo cp -R ${dappcoredir}/. "${container_location}/"
 
 # connect to container
-sudo systemd-nspawn -D ${container}/ << EOF
+sudo systemd-nspawn -D ${container_location}/ << EOF
 
 #set root password: xHd26ksN
 echo -e "xHd26ksN\nxHd26ksN\n" | passwd
@@ -76,9 +83,9 @@ rm -rf /usr/include/*
 
 logout
 EOF
-    
-# create tar archive
-sudo tar cpJf app.tar.xz --exclude="./var/cache/apt/archives/*.deb" \
+
+echo create tar archive...
+sudo tar cpJf "${PACKAGE_BIN_LINUX}/app.tar.xz" --exclude="./var/cache/apt/archives/*.deb" \
 --exclude="./var/lib/apt/lists/*" --exclude="./var/cache/apt/*.bin" \
---one-file-system -C ${container} .
+--one-file-system -C ${container_location} .
 

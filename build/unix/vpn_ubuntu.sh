@@ -143,14 +143,13 @@ build/dapp-gui.sh   "package-linux" \
                     "${app_dir}/${DAPP_INSTALLER_GUI_DIR}/" \
                     "${DAPP_GUI_SETTINGS_JSON_LINUX}" \
                     "ubuntu" \
-                    "s/<requireInstallationByRootUser>0/<requireInstallationByRootUser>1/g" \
                     || exit 1
 
 copy_ctrl
 copy_product
 copy_utils
 
-build/container.sh || exit 1
+build/container_ubuntu.sh || exit 1
 
 copy_installer
 
@@ -158,4 +157,5 @@ build/bitrock-installer.sh  "${BITROCK_INSTALLER_BIN_LINUX}/builder" \
                             "linux-x64" \
                             "${VPN_PRODUCT_ID}" \
                             "${VPN_PRODUCT_NAME}" \
+                             "s/<requireInstallationByRootUser>0/<requireInstallationByRootUser>1/g" \
                             || exit 1
