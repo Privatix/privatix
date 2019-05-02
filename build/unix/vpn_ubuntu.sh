@@ -24,19 +24,6 @@ clear(){
     mkdir -p "${app_dir}/${UTIL}" || exit 1
 }
 
-create_container(){
-    echo -----------------------------------------------------------------------
-    echo create container
-    echo -----------------------------------------------------------------------
-
-
-    cd "${PACKAGE_BIN_LINUX}"
-    "./container.sh" || exit 1
-    cd "${root_dir}"
-
-    echo && echo done
-}
-
 copy_ctrl(){
     echo -----------------------------------------------------------------------
     echo copy dappctrl
@@ -164,7 +151,9 @@ build/dapp-gui.sh   "package-linux" \
 copy_ctrl
 copy_product
 copy_utils
-create_container
+
+build/container.sh || exit 1
+
 copy_installer
 
 build/bitrock-installer.sh  "${BITROCK_INSTALLER_BIN_LINUX}/builder" \
