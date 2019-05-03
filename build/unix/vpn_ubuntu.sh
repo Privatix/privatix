@@ -47,6 +47,15 @@ copy_ctrl(){
     cp -v   "${DAPP_INSTALLER_DIR}/${DAPP_INSTALLER_SCRIPTS_DIR_LINUX}/pre-start.sh" \
             "${app_dir}/${DAPPCTRL}/pre-start.sh" || exit 1
 
+    # patch ${DAPPCTRL_CONFIG}
+    python -c 'import json, sys
+with open(sys.argv[1], "r") as f:
+    obj = json.load(f)
+obj["ReportLog"]["Level"]="'${DAPPCTRL_LOG_LEVEL}'"
+with open(sys.argv[1], "w") as f:
+   json.dump(obj, f)' \
+   "${app_dir}/${DAPPCTRL}/${DAPPCTRL_FOR_INSTALLER_CONFIG}" || exit 1
+
     echo && echo done
 }
 
