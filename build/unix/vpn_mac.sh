@@ -57,7 +57,7 @@ copy_ctrl(){
     python -c 'import json, sys
 with open(sys.argv[1], "r") as f:
     obj = json.load(f)
-obj["ReportLog"]["Level"]="'${DAPPCTRL_LOG_LEVEL}'"
+obj["FileLog"]["Level"]="'${DAPPCTRL_LOG_LEVEL}'"
 with open(sys.argv[1], "w") as f:
    json.dump(obj, f)' \
    "${app_dir}/${DAPPCTRL}/${DAPPCTRL_FOR_INSTALLER_CONFIG}" || exit 1
