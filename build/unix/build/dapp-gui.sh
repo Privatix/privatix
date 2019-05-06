@@ -29,15 +29,10 @@ make_packages(){
     cp -r "$2" \
           "$3" || exit 1
 
-    # patch settings.json
-    python -c 'import json, sys
-with open(sys.argv[1], "r") as f:
-    obj = json.load(f)
-obj["release"]="'${VERSION_TO_SET_IN_BUILDER}'"
-obj["target"]="'$5'"
-with open(sys.argv[1], "w") as f:
-   json.dump(obj, f)' \
-   "$3/$4" || exit 1
+   "${PATCH_JSON_SH}" "$3/$4" \
+                      'j["release"]="'"${VERSION_TO_SET_IN_BUILDER}"'"' \
+                      'j["target"]="'"${5}"'"' \
+                      || exit 1
 
    echo && echo done
 

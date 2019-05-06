@@ -52,14 +52,9 @@ copy_ctrl(){
     cp -v   "${DAPPCTRL_DIR}/${DAPPCTRL_CONFIG}" \
             "${app_dir}/${DAPPCTRL}/${DAPPCTRL_FOR_INSTALLER_CONFIG}" || exit 1
 
-    # patch ${DAPPCTRL_CONFIG}
-    python -c 'import json, sys
-with open(sys.argv[1], "r") as f:
-    obj = json.load(f)
-obj["FileLog"]["Level"]="'${DAPPCTRL_LOG_LEVEL}'"
-with open(sys.argv[1], "w") as f:
-   json.dump(obj, f)' \
-   "${app_dir}/${DAPPCTRL}/${DAPPCTRL_FOR_INSTALLER_CONFIG}" || exit 1
+   "${PATCH_JSON_SH}" "${app_dir}/${DAPPCTRL}/${DAPPCTRL_FOR_INSTALLER_CONFIG}" \
+                                          'j["FileLog"]["Level"]="'"${DAPPCTRL_LOG_LEVEL}"'"' \
+                                          || exit 1
 
     echo && echo done
 }
