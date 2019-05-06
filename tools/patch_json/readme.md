@@ -10,16 +10,16 @@ The script replaces values in a json file.
 patch_json.sh <file_name> <replacement1> <replacement2> ... <replacementN> 
 ```
 
-Where `<replacement>` is a python string like
+Where `<replacement>` is a python-like string:
 
 ```python
-j["key"]="value"
+["key"]="value"
 ```
 
 ### Example of usage:
 
 ```
-./patch_json.sh config.json 'j["FileLog"]["Level"]="debug"' \
-                            'j["FileLog"]["File"]="./file.log"'
+./patch_json.sh config.json '["FileLog"]["Level"]="debug"' \
+                            '["FileLog"]["File"]="./file.log"'
 ```
 

@@ -53,7 +53,7 @@ copy_ctrl(){
             "${app_dir}/${DAPPCTRL}/${DAPPCTRL_FOR_INSTALLER_CONFIG}" || exit 1
 
    "${PATCH_JSON_SH}" "${app_dir}/${DAPPCTRL}/${DAPPCTRL_FOR_INSTALLER_CONFIG}" \
-                                          'j["FileLog"]["Level"]="'"${DAPPCTRL_LOG_LEVEL}"'"' \
+                                          '["FileLog"]["Level"]="'"${DAPPCTRL_LOG_LEVEL}"'"' \
                                           || exit 1
 
     echo && echo done

@@ -30,8 +30,8 @@ make_packages(){
           "$3" || exit 1
 
    "${PATCH_JSON_SH}" "$3/$4" \
-                      'j["release"]="'"${VERSION_TO_SET_IN_BUILDER}"'"' \
-                      'j["target"]="'"${5}"'"' \
+                      '["release"]="'"${VERSION_TO_SET_IN_BUILDER}"'"' \
+                      '["target"]="'"${5}"'"' \
                       || exit 1
 
    echo && echo done
