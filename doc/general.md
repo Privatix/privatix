@@ -113,7 +113,7 @@ VPN provider start selling access to VPN using Privatix Network. He publishes hi
 
 ## Service plug-in
 
-[Service plug-in](/doc/service_plug-in) - is set of templates and optional software for single service that automates:
+[Service plug-in](/doc/service_plug-in.md) - is set of templates and optional software for single service that automates:
 
 - service provisioning
 - usage reporting
