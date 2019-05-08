@@ -4,7 +4,7 @@ root_dir="$(cd `dirname $0` && pwd)"
 cd "${root_dir}"
 cd ..
 
-. ./build.sealed.config
+. ./build.global.config
 
 cd "${root_dir}"
 for repository in ${REPOSITORIES[@]}
@@ -18,7 +18,7 @@ do
     then
         git checkout "${GIT_BRANCH}"
     else
-        git checkout develop
+        git checkout "${GIT_BRANCH_DEFAULT}"
     fi
     echo
     echo

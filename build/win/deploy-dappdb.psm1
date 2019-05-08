@@ -42,7 +42,7 @@ function deploy-dappdb {
     Write-Verbose "Deploying database"
 
     # import helpers
-    import-module (join-path $PSScriptRoot "build-helpers.psm1" -resolve) -DisableNameChecking -ErrorAction Stop
+    import-module (join-path $PSScriptRoot "build-helpers.psm1" -resolve) -DisableNameChecking -ErrorAction Stop -Verbose:$false
 
     # Check psql.exe existance
     If (!($psqlpath)) {

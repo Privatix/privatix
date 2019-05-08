@@ -35,6 +35,10 @@ find_and_copy "*.ovpn" "${DESTINATION_FOLDER}/ovpn"
 
 dappctrl_config=$(find "${DESTINATION_FOLDER}"  -name "dappctrl.config.json")
 
+echo dumping system data...
+mkdir "${DESTINATION_FOLDER}/sysinfo"
+launchctl list | grep privatix > "${DESTINATION_FOLDER}/sysinfo/launchctl.txt"
+
 echo "dumping db..."
 find  "${PRIVATIX_APP_FOLDER}" -name "pg_dump" -exec \
    '{}' --create --column-inserts --clean --if-exists \

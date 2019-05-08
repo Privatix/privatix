@@ -19,6 +19,8 @@ $bin = Join-Path -Path $gopath -ChildPath "bin" -Resolve
 if (!($bin)) {throw "$bin doesn't exists"}
 if (Test-Path "$bin\dappctrl.exe") { Remove-Item -Path "$bin\dappctrl.exe"}
 if (Test-Path "$bin\dappvpn.exe") { Remove-Item -Path "$bin\dappvpn.exe"}
-if (Test-Path "$bin\inst.exe") { Remove-Item -Path "$bin\inst.exe"}
+if (Test-Path "$bin\dappvpn-inst.exe") { Remove-Item -Path "$bin\dappvpn-inst.exe"}
 if (Test-Path "$bin\installer.exe") { Remove-Item -Path "$bin\installer.exe"}
 if (Test-Path "$bin\dapp-installer.exe") { Remove-Item -Path "$bin\dapp-installer.exe"}
+if (Test-Path "$bin\dapp-proxy.exe") { Remove-Item -Path "$bin\dapp-proxy.exe"}
+if (Test-Path "$bin\dappproxy-inst.exe") { Remove-Item -Path "$bin\dappproxy-inst.exe"}

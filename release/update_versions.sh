@@ -9,6 +9,6 @@ git checkout release/${RELEASE_VERSION}
 npm run update_versions
 
 
-cd ${DAPP_CTRL_DIR}
+echo cd ${DAPP_CTRL_DIR}
 git checkout release/${RELEASE_VERSION}
-python ${DAPP_CTRL_DIR}/scripts/update_versions/update_versions.py
+python ${DAPP_CTRL_DIR}/scripts/update_versions/update_versions.py ${DAPP_CTRL_DIR}

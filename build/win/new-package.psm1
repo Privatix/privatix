@@ -25,6 +25,10 @@
 .PARAMETER prodConfig
     If specified, dappctrl will use production config, else development config.
 
+.PARAMETER product
+    Which Service plug-in to package. Can be "vpn" or "proxy"
+
+
 .EXAMPLE
     new-package -wrkdir "c:\workdir" -staticArtefactsDir "c:\privatix\static_artifacts"
 
@@ -51,7 +55,9 @@ function new-package {
         [switch]$installer,
         [string]$privatixbranch = "develop",
         [switch]$gitpull,
-        [switch]$prodConfig
+        [switch]$prodConfig,
+        [ValidateSet('vpn', 'proxy')]
+        [string]$product = 'vpn'
 
     )
  
@@ -63,42 +69,38 @@ function new-package {
 
     Write-Host "Working on packaging whole app..." -ForegroundColor Green
     # import helpers
-    import-module (join-path $PSScriptRoot "build-helpers.psm1" -resolve) -DisableNameChecking
+    import-module (join-path $PSScriptRoot "build-helpers.psm1" -resolve) -DisableNameChecking -Verbose:$false
 
 
     $rootAppPath = Join-Path $wrkdir "app"
     $deployAppPath = Join-Path $wrkdir "win-dapp-installer"
-    $artefactDir = Join-Path $wrkdir "art"
     $bitrockProjectDir = Join-Path $wrkdir "project"
-    $privatixSourceCodePath = Join-Path $artefactDir "privatix"
+    $privatixSourceCodePath = Join-Path $wrkdir "src\github.com\privatix\privatix"
 
     #region privatix repo
     $gitUrl = "https://github.com/Privatix/privatix.git"
     Copy-Gitrepo -path $privatixSourceCodePath -gitUrl $gitUrl -ErrorAction Stop
+
         
-    Invoke-Scriptblock -ScriptBlock "git.exe --git-dir=$privatixSourceCodePath\.git --work-tree=$privatixSourceCodePath status"
-        
+
     #region Git checkout branch
-    Invoke-Scriptblock -ScriptBlock "git.exe --git-dir=$privatixSourceCodePath\.git --work-tree=$privatixSourceCodePath fetch --all"
-    if ($PSBoundParameters.ContainsKey('privatixbranch')) {
-        Invoke-Scriptblock -ScriptBlock "git.exe --git-dir=$privatixSourceCodePath\.git --work-tree=$privatixSourceCodePath checkout $privatixbranch"
-        $currentBranch = Invoke-Expression "git.exe --git-dir=$privatixSourceCodePath\.git --work-tree=$privatixSourceCodePath rev-parse --abbrev-ref HEAD"
-        if ($privatixbranch -ne $currentBranch) {
-            $currentBranch = Invoke-Expression "git.exe --git-dir=$privatixSourceCodePath\.git --work-tree=$privatixSourceCodePath rev-parse HEAD"    
-            if ($privatixbranch -ne $currentBranch) {throw "failed to chekout $privatixbranch"}
-        }
+    if ($PSBoundParameters.ContainsKey('branch')) {
+        checkout-gitbranch -PROJECT_PATH $privatixSourceCodePath -branch $privatixbranch
     }
+    #endregion
+    #region Git pull
     if ($PSBoundParameters.ContainsKey('gitpull')) {
-        Invoke-Scriptblock -ScriptBlock "git.exe --git-dir=$privatixSourceCodePath\.git --work-tree=$privatixSourceCodePath pull"
+        Pull-Git -PROJECT_PATH $privatixSourceCodePath
     }
     #endregion
     
     # Product ID supposed to be unchangable for single product (e.g. VPN)
-    $productID = '73e17130-2a1d-4f7d-97a8-93a9aaa6f10d'
+    if ($product -eq 'vpn') {$productID = '73e17130-2a1d-4f7d-97a8-93a9aaa6f10d'}
+    if ($product -eq 'proxy') {$productID = '881da45b-ce8c-46bf-943d-730e9cee5740'}
 
     #region create working dir 
-    New-Folder $wrkdir | Out-Null
-    New-Folder $deployAppPath | Out-Null
+    if (!(Test-Path $wrkdir)) {New-Folder $wrkdir | Out-Null}
+    if (!(Test-Path $deployAppPath)) {New-Folder $deployAppPath | Out-Null}
     #endregion
 
     #region create core app folder structure
@@ -151,36 +153,54 @@ function new-package {
     # artefacts
     # core installer
     $dappinstallerbin = (Get-Item "$gopath\bin\dapp-installer.exe").FullName
-    $dappinstallerconf = (Get-Item "$gopath\src\github.com\privatix\dapp-installer\dapp-installer.config.json").FullName
+    $dappinstallerconf = (Get-Item "$wrkdir\src\github.com\privatix\dapp-installer\dapp-installer.config.json").FullName
     # common
     $dappctrlbin = (Get-Item "$gopath\bin\dappctrl.exe").FullName
     if ($prodConfig) {
-        $dappctrlconfig = (Get-Item "$gopath\src\github.com\privatix\dappctrl\dappctrl.config.json").FullName
+        $dappctrlconfig = (Get-Item "$wrkdir\src\github.com\privatix\dappctrl\dappctrl.config.json").FullName
     }
-    else {$dappctrlconfig = (Get-Item "$gopath\src\github.com\privatix\dappctrl\dappctrl-dev.config.json").FullName}
-    $dappctrlFWruleScript = (Get-Item "$gopath\src\github.com\privatix\dappctrl\scripts\win\set-ctrlfirewall.ps1").FullName
-    $dappguiFolder = (Get-Item "$wrkdir\dapp-gui\release-builds\dapp-gui-win32-x64").FullName
+    else {$dappctrlconfig = (Get-Item "$wrkdir\src\github.com\privatix\dappctrl\dappctrl-dev.config.json").FullName}
+    $dappctrlFWruleScript = (Get-Item "$wrkdir\src\github.com\privatix\dappctrl\scripts\win\set-ctrlfirewall.ps1").FullName
+    if ($installer) {
+        $dappguiFolder = (Get-Item "$wrkdir\dapp-gui\release-builds\dapp-gui-win32-x64").FullName
+    } else {$dappguiFolder = (Get-Item "$wrkdir\dapp-gui").FullName}
+
     $pgFolder = (Get-Item "$staticArtefactsDir\pgsql").FullName
     $utilFolder = (Get-Item "$staticArtefactsDir\util").FullName
     $torFolder = (Get-Item "$staticArtefactsDir\tor").FullName
     $dumpScript = (Get-Item "$privatixSourceCodePath\tools\dump_win\new-dump.ps1").FullName
     $psRunnerBinary = (Get-Item "$privatixSourceCodePath\tools\dump_win\ps-runner.exe").FullName
     # openvpn product
-    $dappopenvpnbin = (Get-Item "$gopath\bin\dappvpn.exe").FullName
-    $dappopenvpninst = (Get-Item "$gopath\bin\inst.exe").FullName
-    $templatesFolder = (Get-Item "$gopath\src\github.com\privatix\dapp-openvpn\files\example").FullName
-    $dappopenvpninstagentconfig = (Get-Item "$gopath\src\github.com\privatix\dapp-openvpn\inst\install.agent.config.json").FullName
-    $dappopenvpninstclientconfig = (Get-Item "$gopath\src\github.com\privatix\dapp-openvpn\inst\install.client.config.json").FullName
-    $agentAdapterInstallerConfig = (Get-Item "$gopath\src\github.com\privatix\dapp-openvpn\inst\installer.agent.config.json").FullName
-    $clientAdpaterInstallerConfig = (Get-Item "$gopath\src\github.com\privatix\dapp-openvpn\inst\installer.client.config.json").FullName 
-    $dappopenvpnFWruleScript = (Get-Item "$gopath\src\github.com\privatix\dapp-openvpn\scripts\win\set-vpnfirewall.ps1").FullName
-    $dappopenvpnSetNAT = (Get-Item "$gopath\src\github.com\privatix\dapp-openvpn\scripts\win\set-nat.ps1").FullName
-    $dappopenvpnScheduleTaskScript = (Get-Item "$gopath\src\github.com\privatix\dapp-openvpn\scripts\win\new-startupTask.ps1").FullName
-    $dappopenvpnReenableNat = (Get-Item "$gopath\src\github.com\privatix\dapp-openvpn\scripts\win\reenable-nat.ps1").FullName
+    if ($product -eq 'vpn') {
+        $dappopenvpnbin = (Get-Item "$gopath\bin\dappvpn.exe").FullName
+        $dappopenvpninst = (Get-Item "$gopath\bin\dappvpn-inst.exe").FullName
+        $dappvpntemplatesFolder = (Get-Item "$wrkdir\src\github.com\privatix\dapp-openvpn\files\example").FullName
+        $dappopenvpninstagentconfig = (Get-Item "$wrkdir\src\github.com\privatix\dapp-openvpn\inst\install.agent.config.json").FullName
+        $dappopenvpninstclientconfig = (Get-Item "$wrkdir\src\github.com\privatix\dapp-openvpn\inst\install.client.config.json").FullName
+        $dappopenvpnagentAdapterInstallerConfig = (Get-Item "$wrkdir\src\github.com\privatix\dapp-openvpn\inst\installer.agent.config.json").FullName
+        $dappopenvpnclientAdpaterInstallerConfig = (Get-Item "$wrkdir\src\github.com\privatix\dapp-openvpn\inst\installer.client.config.json").FullName 
+        $dappopenvpnFWruleScript = (Get-Item "$wrkdir\src\github.com\privatix\dapp-openvpn\scripts\win\set-vpnfirewall.ps1").FullName
+        $dappopenvpnSetNAT = (Get-Item "$wrkdir\src\github.com\privatix\dapp-openvpn\scripts\win\set-nat.ps1").FullName
+        $dappopenvpnScheduleTaskScript = (Get-Item "$wrkdir\src\github.com\privatix\dapp-openvpn\scripts\win\new-startupTask.ps1").FullName
+        $dappopenvpnReenableNat = (Get-Item "$wrkdir\src\github.com\privatix\dapp-openvpn\scripts\win\reenable-nat.ps1").FullName
+    }
+    if ($product -eq 'proxy') {
+        $dappproxybin = (Get-Item "$gopath\bin\dapp-proxy.exe").FullName
+        $dappproxyinst = (Get-Item "$gopath\bin\dappproxy-inst.exe").FullName
+        $dappproxytemplatesFolder = (Get-Item "$wrkdir\src\github.com\privatix\dapp-proxy\product\template").FullName
+        $dappproxyconfigFolder = (Get-Item "$wrkdir\src\github.com\privatix\dapp-proxy\product\config").FullName
+
+
+        #$dappproxyFWruleScript = (Get-Item "$wrkdir\src\github.com\privatix\dapp-proxy\scripts\win\set-vpnfirewall.ps1").FullName
+        #$dappproxySetNAT = (Get-Item "$wrkdir\src\github.com\privatix\dapp-proxy\scripts\win\set-nat.ps1").FullName
+        #$dappproxyScheduleTaskScript = (Get-Item "$wrkdir\src\github.com\privatix\dapp-proxy\scripts\win\new-startupTask.ps1").FullName
+        #$dappproxyReenableNat = (Get-Item "$wrkdir\src\github.com\privatix\dapp-proxy\scripts\win\reenable-nat.ps1").FullName
+    }
       
     $openvpnFolder = (Get-Item "$staticArtefactsDir\openvpn").FullName
+    $proxyFolder = (Get-Item "$staticArtefactsDir\v2ray").FullName
     # bitrock installer
-    $bitrockProjectDirSource = (Get-Item "$gopath\src\github.com\privatix\dapp-installer\installbuilder\project").FullName
+    $bitrockProjectDirSource = (Get-Item "$wrkdir\src\github.com\privatix\dapp-installer\installbuilder\project").FullName
     #endregion
 
     #region core app
@@ -214,28 +234,50 @@ function new-package {
     #region product
 
     #region binary
-    Copy-Item -Path $dappopenvpnbin -Destination "$prodInstancePath\bin\dappvpn.exe"
-    Copy-Item -Path $dappopenvpninst -Destination "$prodInstancePath\bin\inst.exe"
-    Copy-Item -Path $dappopenvpnFWruleScript -Destination "$prodInstancePath\bin\set-vpnfirewall.ps1"
-    Copy-Item -Path $dappopenvpnSetNAT -Destination "$prodInstancePath\bin\set-nat.ps1"
-    Copy-Item -Path $dappopenvpnScheduleTaskScript -Destination "$prodInstancePath\bin\new-startupTask.ps1"
-    Copy-Item -Path $dappopenvpnReenableNat -Destination "$prodInstancePath\bin\reenable-nat.ps1"
-    Copy-Item -Path "$openvpnFolder" -Destination "$prodInstancePath\bin\openvpn" -Recurse -Force
+    if ($product -eq 'vpn') {
+        Copy-Item -Path $dappopenvpnbin -Destination "$prodInstancePath\bin\dappvpn.exe"
+        Copy-Item -Path $dappopenvpninst -Destination "$prodInstancePath\bin\inst.exe"
+        Copy-Item -Path $dappopenvpnFWruleScript -Destination "$prodInstancePath\bin\set-vpnfirewall.ps1"
+        Copy-Item -Path $dappopenvpnSetNAT -Destination "$prodInstancePath\bin\set-nat.ps1"
+        Copy-Item -Path $dappopenvpnScheduleTaskScript -Destination "$prodInstancePath\bin\new-startupTask.ps1"
+        Copy-Item -Path $dappopenvpnReenableNat -Destination "$prodInstancePath\bin\reenable-nat.ps1"
+        Copy-Item -Path $openvpnFolder -Destination "$prodInstancePath\bin\openvpn" -Recurse -Force
+    }
+    if ($product -eq 'proxy') {
+        Copy-Item -Path $dappproxybin -Destination "$prodInstancePath\bin\dappproxy.exe"
+        Copy-Item -Path $dappproxyinst -Destination "$prodInstancePath\bin\inst.exe"
+        
+        #Copy-Item -Path $dappproxyFWruleScript -Destination "$prodInstancePath\bin\set-vpnfirewall.ps1"
+        #Copy-Item -Path $dappproxySetNAT -Destination "$prodInstancePath\bin\set-nat.ps1"
+        #Copy-Item -Path $dappproxyScheduleTaskScript -Destination "$prodInstancePath\bin\new-startupTask.ps1"
+        #Copy-Item -Path $dappproxyReenableNat -Destination "$prodInstancePath\bin\reenable-nat.ps1"
+        Copy-Item -Path $proxyFolder -Destination "$prodInstancePath\bin\v2ray" -Recurse -Force
+    }
     #endregion
 
     #region templates
-    Copy-Item -Path "$templatesFolder\*" -Destination "$prodInstancePath\template" -Recurse -Force
-    Rename-Item -Path "$prodInstancePath\template\dappvpn.agent.config.json" -NewName "$prodInstancePath\template\adapter.agent.config.json"
-    Rename-Item -Path "$prodInstancePath\template\dappvpn.client.config.json" -NewName "$prodInstancePath\template\adapter.client.config.json"
+    if ($product -eq 'vpn') {
+        Copy-Item -Path "$dappvpntemplatesFolder\*" -Destination "$prodInstancePath\template" -Recurse -Force
+        Rename-Item -Path "$prodInstancePath\template\dappvpn.agent.config.json" -NewName "$prodInstancePath\template\adapter.agent.config.json"
+        Rename-Item -Path "$prodInstancePath\template\dappvpn.client.config.json" -NewName "$prodInstancePath\template\adapter.client.config.json"
+    }
+    if ($product -eq 'proxy') {
+        Copy-Item -Path "$dappproxytemplatesFolder\*" -Destination "$prodInstancePath\template" -Recurse -Force
+    }
     #endregion
 
     #region configs
     
-    #Copy-Item -Path "$adapterconfig" -Destination "$prodInstancePath\config\adapter.config.json"
-    Copy-Item -Path "$dappopenvpninstagentconfig" -Destination "$prodInstancePath\config\install.agent.config.json"
-    Copy-Item -Path "$dappopenvpninstclientconfig" -Destination "$prodInstancePath\config\install.client.config.json"
-    Copy-Item -Path "$agentAdapterInstallerConfig" -Destination "$prodInstancePath\config\installer.agent.config.json"
-    Copy-Item -Path "$clientAdpaterInstallerConfig" -Destination "$prodInstancePath\config\installer.client.config.json"
+    if ($product -eq 'vpn') {
+        Copy-Item -Path "$dappopenvpninstagentconfig" -Destination "$prodInstancePath\config\install.agent.config.json"
+        Copy-Item -Path "$dappopenvpninstclientconfig" -Destination "$prodInstancePath\config\install.client.config.json"
+        Copy-Item -Path "$dappopenvpnagentAdapterInstallerConfig" -Destination "$prodInstancePath\config\installer.agent.config.json"
+        Copy-Item -Path "$dappopenvpnclientAdpaterInstallerConfig" -Destination "$prodInstancePath\config\installer.client.config.json"
+    }
+    if ($product -eq 'proxy') {
+        Copy-Item -Path "$dappproxyconfigFolder\*" -Destination "$prodInstancePath\config" -Recurse -Force
+        
+    }
     #endregion
     #endregion
 
@@ -244,9 +286,11 @@ function new-package {
     #endregion
 
     #region archive app
-    Write-Verbose "Making archive for deploy..."
-    add-type -AssemblyName System.IO.Compression.FileSystem
-    [System.IO.Compression.ZipFile]::CreateFromDirectory($rootAppPath, "$deployAppPath\app.zip", 'Optimal', $false)
+    if ($installer) {
+        Write-Verbose "Making archive for deploy..."
+        add-type -AssemblyName System.IO.Compression.FileSystem
+        [System.IO.Compression.ZipFile]::CreateFromDirectory($rootAppPath, "$deployAppPath\app.zip", 'Optimal', $false)
+    }
     #endregion
 
     #region dapp-installer artefact
@@ -254,28 +298,5 @@ function new-package {
     Copy-Item -Path $dappinstallerconf -Destination "$deployAppPath\dapp-installer.config.json"
     #endregion
 
-    #region dev app installation scripts
-    if (-not $PSBoundParameters.ContainsKey('installer')) {
-        #region install shorcut
-        $lnkcmd = '/c start "" /b .\dapp-installer.exe install --role agent --workdir .\agent --source .\app.zip --verbose'
-        $lnkInstalled = New-Shortcut -Path "$deployAppPath\install_agent.lnk" -TargetPath "%ComSpec%" -Arguments $lnkcmd -WorkDir "%~dp0" -Description "Privatix Core install agent"
-        if (-not $lnkInstalled) {Write-Error "Agent installer shortcut creation failed"}
-        
-        $lnkcmd = '/c start "" /b .\dapp-installer.exe install --role client --workdir .\client --source .\app.zip --verbose'
-        $lnkInstalled = New-Shortcut -Path "$deployAppPath\install_client.lnk" -TargetPath "%ComSpec%" -Arguments $lnkcmd -WorkDir "%~dp0" -Description "Privatix Core install client"
-        if (-not $lnkInstalled) {Write-Error "Client installer shortcut creation failed"}
-        #endregion
-
-        #region remove shortcut
-        $lnkcmd = '/c start "" /b .\dapp-installer.exe remove --workdir .\agent --verbose'
-        $lnkInstalled = New-Shortcut -Path "$deployAppPath\remove_agent.lnk" -TargetPath "%ComSpec%" -Arguments $lnkcmd -WorkDir "%~dp0" -Description "Privatix Core remove agent"
-        if (-not $lnkInstalled) {Write-Error "Agent remover shortcut creation failed"}
-        
-        $lnkcmd = '/c start "" /b .\dapp-installer.exe remove --workdir .\client --verbose'
-        $lnkInstalled = New-Shortcut -Path "$deployAppPath\remove_client.lnk" -TargetPath "%ComSpec%" -Arguments $lnkcmd -WorkDir "%~dp0" -Description "Privatix Core remove client"
-        if (-not $lnkInstalled) {Write-Error "Client remover shortcut creation failed"}
-        
-        #endregion
-    }
     #endregion
 }

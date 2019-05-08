@@ -10,17 +10,11 @@
 .PARAMETER gitpull
     Pull from git
 
-.PARAMETER godep
-    Use go dependency
-
 .PARAMETER wd
     path where dapp-gui folder stored
 
-.PARAMETER artefactPath
-    path to packaged artefact. If not specified, no packaging is done.
-
-.PARAMETER shortcut
-    create shortcut (for testing purposes)
+.PARAMETER package
+    package electron application
 
 .PARAMETER version
     If version is specified and no git tag set, it will be define Dapp-GUI settings.json -> release.
@@ -33,7 +27,7 @@
    Build dapp-gui and install to <default build location>\dapp-gui.
 
 .EXAMPLE
-   build-dappgui -branch "develop" -gitpull -wd "$HOME\gui". -version "0.20.0"
+   build-dappgui -branch "develop" -gitpull -wd "$HOME\gui". -version "0.20.0" -package
 
    Description
    -----------
@@ -45,9 +39,9 @@ function build-dappgui {
         [ValidatePattern("^(?!@$|build-|.*([.]\.|@\{|\\))[^\000-\037\177 ~^:?*[]+[^\000-\037\177 ~^:?*[]+(?<!\.lock|[.])$")]
         [string]$branch,
         [switch]$gitpull,
-        [string]$wd = "c:\privatix\tmp",
+        [ValidateScript({Test-Path $_ })]
+        [string]$wd,
         [switch]$package,
-        [switch]$shortcut,
         [string]$version
     )
     
@@ -58,12 +52,9 @@ function build-dappgui {
     $gitUrl = "https://github.com/Privatix/dapp-gui.git"
 
     # import helpers
-    import-module (join-path $PSScriptRoot "build-helpers.psm1" -resolve) -DisableNameChecking -ErrorAction Stop
+    import-module (join-path $PSScriptRoot "build-helpers.psm1" -resolve) -DisableNameChecking -ErrorAction Stop -Verbose:$false
     
-    New-Folder $wd | Out-Null
-    $artefactPath = Join-Path $wd "art"
-    New-Folder $artefactPath | Out-Null
-    $sourceCodePath = Join-Path $wd "dapp-gui"
+    $PROJECT_PATH = Join-Path $wd "dapp-gui"
 
     # check npm
     $ver = Find-App -appname "npm" -versioncmd "npm -v"
@@ -91,33 +82,24 @@ function build-dappgui {
     }    
     #endregion
 
-    Copy-Gitrepo -path $sourceCodePath -gitUrl $gitUrl -ErrorAction Stop
-        
-    Invoke-Scriptblock -ScriptBlock "git.exe --git-dir=$sourceCodePath\.git --work-tree=$sourceCodePath status"
+    Copy-Gitrepo -path $PROJECT_PATH -gitUrl $gitUrl -ErrorAction Stop
         
     #region Git checkout branch
-    Invoke-Scriptblock -ScriptBlock "git.exe --git-dir=$sourceCodePath\.git --work-tree=$sourceCodePath fetch --all"
-    if ($PSBoundParameters.ContainsKey('branch')) {
-        Invoke-Scriptblock -ScriptBlock "git.exe --git-dir=$sourceCodePath\.git --work-tree=$sourceCodePath checkout $branch"
-        $currentBranch = Invoke-Expression "git.exe --git-dir=$sourceCodePath\.git --work-tree=$sourceCodePath rev-parse --abbrev-ref HEAD"
-        if ($branch -ne $currentBranch) {
-            $currentBranch = Invoke-Expression "git.exe --git-dir=$sourceCodePath\.git --work-tree=$sourceCodePath rev-parse HEAD"    
-            if ($branch -ne $currentBranch) {throw "failed to chekout $branch"}
-        }
+    if ($branch) {
+        checkout-gitbranch -PROJECT_PATH $PROJECT_PATH -branch $branch
     }
     #endregion
 
     # Git pull
     if ($gitpull) {
-        Write-Host "Pulling from Git..."
-        Invoke-Scriptblock -ScriptBlock "git.exe --git-dir=$sourceCodePath\.git --work-tree=$sourceCodePath pull" -StderrPrefix "" -erraction "Continue"
+        Pull-Git -PROJECT_PATH $PROJECT_PATH
     }
     else {Write-Warning "Skipping git pull"}
     #endregion
     
     
     $lastLocation = (Get-Location).Path
-    Set-Location $sourceCodePath
+    Set-Location $PROJECT_PATH
 
     $error.Clear()
 
@@ -141,12 +123,16 @@ function build-dappgui {
 
     #region set update fields
     
-    $settingsPath = "$sourceCodePath\build\settings.json"
+    $settingsPath = "$PROJECT_PATH\build\settings.json"
     $SettingsJSON = Get-Content $settingsPath  | ConvertFrom-Json 
     $SettingsJSON.target = "win"
-    $GIT_RELEASE = $(git.exe --git-dir=$sourceCodePath\.git --work-tree=$sourceCodePath tag -l --points-at HEAD)
-    if ($null -ne $GIT_RELEASE) {$SettingsJSON.release = $GIT_RELEASE}
-    if ($version) {$SettingsJSON.release = $version}
+    $GIT_RELEASE = $(git.exe --git-dir=$PROJECT_PATH\.git --work-tree=$PROJECT_PATH tag -l --points-at HEAD)
+
+    if (-not $GIT_RELEASE -and $version) {
+        $GIT_RELEASE = $version
+    }
+    if ($GIT_RELEASE) {$SettingsJSON.release = $GIT_RELEASE}
+    
     $JSONstring = $SettingsJSON | ConvertTo-Json  
     $Utf8NoBomEncoding = New-Object System.Text.UTF8Encoding $False
     [System.IO.File]::WriteAllLines($settingsPath, $JSONstring, $Utf8NoBomEncoding)
@@ -155,7 +141,7 @@ function build-dappgui {
     # npm package
     if ($package) {
         $lastLocation = (Get-Location).Path
-        Set-Location $sourceCodePath
+        Set-Location $PROJECT_PATH
         try {
             Invoke-Scriptblock -ScriptBlock "npm run package-win" -StderrPrefix "" -ThrowOnError
         }
@@ -163,18 +149,6 @@ function build-dappgui {
         finally {Set-Location $lastLocation}
     }
 
-
-    #region create shortcut
-    if ($shortcut) {
-        $DesktopPath = [Environment]::GetFolderPath("Desktop")
-        
-        if ($package) {$uiexec = Join-Path $artefactPath "dappctrlgui-win32-x64\dapp-gui.exe" -Resolve -ErrorAction Stop} else {$uiexec = '"npm" start'}
-        
-        $lnkcmd = '/c start "" /b "%GOPATH%\bin\dappctrl.exe" -config=%GOPATH%\src\github.com\privatix\dappctrl\dappctrl-dev.config.json & start "" /b ' + $uiexec
-        $lnkInstalled = New-Shortcut -Path "$DesktopPath\Privatix.lnk" -TargetPath "C:\Windows\System32\cmd.exe" -Arguments $lnkcmd -WorkDir $sourceCodePath -Description "Privatix Dapp" -Icon "$sourceCodePath\assets\icon_64.png"
-        
-        if (-not $lnkInstalled) {Write-Error "Desktop shortcut creation failed"}
-    }
     #endregion
     
 }

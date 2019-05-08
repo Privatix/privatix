@@ -38,7 +38,7 @@
 |-|-|
 |[Sale](https://rinkeby.etherscan.io/address/0x4d15c86c78128a6e216615f4345dfe32fb43181d)|0x4d15c86c78128a6e216615f4345dfe32fb43181d|
 |[Token](https://rinkeby.etherscan.io/token/0x0d825eb81b996c67a55f7da350b6e73bab3cb0ec)|0x0d825eb81b996c67a55f7da350b6e73bab3cb0ec|
-|[PSC](https://rinkeby.etherscan.io/address/0xf8177f8e242e48afc545a776f5c90ea9d7902839)|0x0xf8177f8e242e48afc545a776f5c90ea9d7902839|
+|[PSC](https://rinkeby.etherscan.io/address/0xf8177f8e242e48afc545a776f5c90ea9d7902839)|0xf8177f8e242e48afc545a776f5c90ea9d7902839|
 
 ## History
 

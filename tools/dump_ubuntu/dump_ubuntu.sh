@@ -23,7 +23,7 @@ find_and_copy(){
 
 get_value(){
     cat "${dappctrl_config}" | \
-        python -c 'import json,sys;obj=json.load(sys.stdin);print obj["DB"]["Conn"]["'$1'"]';
+        python3 -c 'import json,sys;obj=json.load(sys.stdin);print(obj["DB"]["Conn"]["'$1'"])';
 }
 
 echo "copying files..."
@@ -34,6 +34,11 @@ find_and_copy "*.err" "${DESTINATION_FOLDER}/errs"
 find_and_copy "*.ovpn" "${DESTINATION_FOLDER}/ovpn"
 
 dappctrl_config=$(find "${DESTINATION_FOLDER}"  -name "dappctrl.config.json")
+
+echo dumping system data...
+mkdir "${DESTINATION_FOLDER}/sysinfo"
+systemctl list-units --type=service --state=active > "${DESTINATION_FOLDER}/sysinfo/systemctl.txt"
+
 
 echo "dumping db..."
 find  "${PRIVATIX_APP_FOLDER}" -name "pg_dump" -exec \

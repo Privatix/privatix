@@ -8,7 +8,7 @@ Install prerequisite software if it's not installed.
 
 - [git](https://git-scm.com/downloads)
 
-- [Golang](https://golang.org/doc/install) 1.11+. Make sure that
+- [Golang](https://golang.org/doc/install) 1.12+. Make sure that
   `$GOPATH/bin` is added to system path `$PATH`.
 
 - [gcc](https://sourceforge.net/projects/mingw-w64/). During the installation
@@ -54,9 +54,9 @@ Resulting installer binary will be placed to `$wkdir\project\out`
 
 ```bash
 publish-dapp.ps1 [[-wkdir] <String>] [[-staticArtefactsDir] <String>]
-    [[-clean] <String>] [-gitpull] [-godep] [-pack] [-installer] [[-version] <String>]
-    [[-dappguibranch] <String>] [[-dappctrlbranch] <String>] [[-dappinstbranch] <String>] 
-    [[-dappopenvpnbranch] <String>] [[-privatixbranch] <String>] [-prodConfig] [<CommonParameters>]
+    [[-product] <String>] [[-clean] <String>] [-gitpull] [-installer] [[-version] <String>] [[-dappguibranch]
+    <String>] [[-dappctrlbranch] <String>] [[-dappinstbranch] <String>] [[-dappopenvpnbranch] <String>]
+    [[-dappproxybranch] <String>] [[-privatixbranch] <String>] [-prodConfig] [<CommonParameters>]
 
 ```
 
@@ -76,9 +76,9 @@ SYNOPSIS
 
 SYNTAX
     publish-dapp.ps1 [[-wkdir] <String>] [[-staticArtefactsDir] <String>]
-    [[-clean] <String>] [-gitpull] [-godep] [-pack] [-installer] [[-version] <String>] [[-dappguibranch] <String>]
-    [[-dappctrlbranch] <String>] [[-dappinstbranch] <String>] [[-dappopenvpnbranch] <String>] [[-privatixbranch]
-    <String>] [-prodConfig] [<CommonParameters>]
+    [[-product] <String>] [[-clean] <String>] [-gitpull] [-installer] [[-version] <String>] [[-dappguibranch]
+    <String>] [[-dappctrlbranch] <String>] [[-dappinstbranch] <String>] [[-dappopenvpnbranch] <String>]
+    [[-dappproxybranch] <String>] [[-privatixbranch] <String>] [-prodConfig] [<CommonParameters>]
 
 
 DESCRIPTION
@@ -106,38 +106,29 @@ PARAMETERS
         Accept pipeline input?       false
         Accept wildcard characters?  false
 
-    -clean <String>
-        Can be: "nothing","binaries", "all".
-        Nothing - do not remove anything before build.
-        Binaries - remove only project binaries form $gopath\bin
-        All - remove binaries and all repos from $gopath\src\github.com\privatix
+    -product <String>
+        Which Service plug-in to package. Can be "vpn" or "proxy". If not specified - VPN product is built.
 
         Required?                    false
         Position?                    3
+        Default value                vpn
+        Accept pipeline input?       false
+        Accept wildcard characters?  false
+
+    -clean <String>
+        Can be: "nothing","binaries", "all".
+        Nothing - do not remove anything before build.
+        Binaries - remove only project binaries form $wkdir\bin
+        All - remove binaries and all repos from $wkdir\src\github.com\privatix
+
+        Required?                    false
+        Position?                    4
         Default value                nothing
         Accept pipeline input?       false
         Accept wildcard characters?  false
 
     -gitpull [<SwitchParameter>]
         Make git pull before build.
-
-        Required?                    false
-        Position?                    named
-        Default value                False
-        Accept pipeline input?       false
-        Accept wildcard characters?  false
-
-    -godep [<SwitchParameter>]
-        Run "dep ensure" command for each golang branch. It runs for all of them.
-
-        Required?                    false
-        Position?                    named
-        Default value                False
-        Accept pipeline input?       false
-        Accept wildcard characters?  false
-
-    -pack [<SwitchParameter>]
-        If to package application additionaly to just building components.
 
         Required?                    false
         Position?                    named
@@ -155,11 +146,10 @@ PARAMETERS
         Accept wildcard characters?  false
 
     -version <String>
-        If version is specified, it will be passed to Bitrock and 
-        Dapp-GUI settings.json -> release.
+        If version is specified, it will be passed to Bitrock and Dapp-GUI settings.json -> release.
 
         Required?                    false
-        Position?                    4
+        Position?                    5
         Default value
         Accept pipeline input?       false
         Accept wildcard characters?  false
@@ -168,7 +158,7 @@ PARAMETERS
         Git branch to checkout for dappgui build. If not specified "develop" branch will be used.
 
         Required?                    false
-        Position?                    5
+        Position?                    6
         Default value                develop
         Accept pipeline input?       false
         Accept wildcard characters?  false
@@ -177,7 +167,7 @@ PARAMETERS
         Git branch to checkout for dappctrl build. If not specified "develop" branch will be used.
 
         Required?                    false
-        Position?                    6
+        Position?                    7
         Default value                develop
         Accept pipeline input?       false
         Accept wildcard characters?  false
@@ -186,7 +176,7 @@ PARAMETERS
         Git branch to checkout for dapp-installer build. If not specified "develop" branch will be used.
 
         Required?                    false
-        Position?                    7
+        Position?                    8
         Default value                develop
         Accept pipeline input?       false
         Accept wildcard characters?  false
@@ -195,7 +185,16 @@ PARAMETERS
         Git branch to checkout for dapp-openvpn build. If not specified "develop" branch will be used.
 
         Required?                    false
-        Position?                    8
+        Position?                    9
+        Default value                develop
+        Accept pipeline input?       false
+        Accept wildcard characters?  false
+
+    -dappproxybranch <String>
+        Git branch to checkout for dapp-proxy build. If not specified "develop" branch will be used.
+
+        Required?                    false
+        Position?                    10
         Default value                develop
         Accept pipeline input?       false
         Accept wildcard characters?  false
@@ -204,7 +203,7 @@ PARAMETERS
         Git branch to checkout for privatix build. If not specified "develop" branch will be used.
 
         Required?                    false
-        Position?                    9
+        Position?                    11
         Default value                develop
         Accept pipeline input?       false
         Accept wildcard characters?  false
@@ -245,8 +244,8 @@ OUTPUTS
 
     Description
     -----------
-    Same as above, but deletes all project binaries frreom gopath.
-    Additionally it deletes folder in gopath\src\github.com\privatix.
+    Same as above, but deletes all project binaries from gopath\bin.
+    Additionally it deletes folder in $wkdir\src\github.com\privatix.
     Build application from develop branches.
 
 
@@ -254,12 +253,12 @@ OUTPUTS
 
     -------------------------- EXAMPLE 3 --------------------------
 
-    PS C:\>.\publish-dapp.ps1 -staticArtefactsDir "C:\static_art" -pack -godep -gitpull -Verbose
+    PS C:\>.\publish-dapp.ps1 -staticArtefactsDir "C:\static_art" -gitpull -Verbose
 
     Description
     -----------
     Build application. Package it, so it can be installed, using installer.
-    Checkout "develop" branch for each component. Pull latest commints from git. Run go dependecy.
+    Checkout "develop" branch for each component. Pull latest commints from git.
     Place result in default location %SystemDrive%\build\<date-time>\
 
 
@@ -267,8 +266,8 @@ OUTPUTS
 
     -------------------------- EXAMPLE 4 --------------------------
 
-    PS C:\>.\publish-dapp.ps1 -staticArtefactsDir "C:\privatix\art" -pack -godep -gitpull -dappguibranch "master"
-    -dappctrlbranch "master" -dappinstbranch "master" -dappopenvpnbranch "master" -privatixbranch "master"
+    PS C:\>.\publish-dapp.ps1 -staticArtefactsDir "C:\privatix\art" -gitpull -dappguibranch "master" -dappctrlbranch
+    "master" -dappinstbranch "master" -dappopenvpnbranch "master" -privatixbranch "master"
 
     Description
     -----------
@@ -279,13 +278,13 @@ OUTPUTS
 
     -------------------------- EXAMPLE 5 --------------------------
 
-    PS C:\>.\publish-dapp.ps1 -staticArtefactsDir "C:\privatix\art" -installer -version "0.21.0" -godep -gitpull
-    -dappguibranch "master" -dappctrlbranch "master" -dappinstbranch "master" -dappopenvpnbranch "master"
+    PS C:\>.\publish-dapp.ps1 -product proxy -staticArtefactsDir "C:\privatix\art" -installer -version "0.21.0"
+    -gitpull -dappguibranch "master" -dappctrlbranch "master" -dappinstbranch "master" -dappopenvpnbranch "master"
     -privatixbranch "master" -prodConfig
 
     Description
     -----------
-    Same as above, but Bitrock installer is triggered to create executable installer.
+    Same as above, but "proxy" product and Bitrock installer is triggered to create executable installer.
     Note: Bitrock installer should be installed (https://installbuilder.bitrock.com/download-step-2.html) and
     "builder-cli.exe" added to %PATH%
 

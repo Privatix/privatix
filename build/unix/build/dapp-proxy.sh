@@ -5,7 +5,7 @@ cd ${root_dir}
 . ./build.global.config
 
 echo -----------------------------------------------------------------------
-echo build dapp-openvpn
+echo build dapp-proxy
 echo -----------------------------------------------------------------------
 
-"${DAPP_OPENVPN_DIR}/scripts/build.sh" || exit 1
+"${DAPP_PROXY_DIR}/scripts/build.sh" || exit 1
