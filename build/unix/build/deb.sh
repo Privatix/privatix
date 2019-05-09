@@ -53,6 +53,7 @@ copy(){
 patch(){
 	"${PATCH_JSON_SH}" "${DEB_PACKAGE_BIN_DIR}/${DAPP_INSTALLER_CONFIG}" \
               '["Role"]="agent"' \
+              '["Path"]="/var/lib/container/agent"' \
               || exit 1
 }
 
