@@ -47,6 +47,16 @@ copy(){
     echo "sudo python /opt/privatix_installer/autooffer.py" \
 	      >> "${DEB_PACKAGE_BIN_DIR}/publish_offering.sh" &&
     chmod +x "${DEB_PACKAGE_BIN_DIR}/publish_offering.sh" || exit 1
+
+    cat > "${DEB_PACKAGE_BIN_DIR}/install_and_publish.sh" <<EOL
+#!/usr/bin/env bash
+
+./install.sh &&
+./get_autooffer.sh &&
+./publish_offering.sh
+EOL
+    chmod +x "${DEB_PACKAGE_BIN_DIR}/install_and_publish.sh" || exit 1
+
 }
 
 
