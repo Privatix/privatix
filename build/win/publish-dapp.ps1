@@ -131,6 +131,8 @@ if ($PSBoundParameters.ContainsKey('Verbose')) {
 if ($product -eq 'vpn') {$productID = '73e17130-2a1d-4f7d-97a8-93a9aaa6f10d'}
 if ($product -eq 'proxy') {$productID = '881da45b-ce8c-46bf-943d-730e9cee5740'}
 
+$forceUpdate = '0'
+
 if (($clean -eq 'binaries') -or ($clean -eq 'all')) {
     try {
         Write-Verbose "Removing binaries..."
@@ -195,10 +197,10 @@ if ($installer) {
     new-package -wrkdir $wkdir -staticArtefactsDir $staticArtefactsDir -installer -privatixbranch $privatixbranch -gitpull:$gitpull -prodConfig:$prodConfig.IsPresent -product:$product
 
     if ($vers) {
-        Invoke-Expression "builder-cli.exe build $wkdir\project\Privatix.xml windows --setvars project.version=$vers product_id=$productID product_name=$product" 
+        Invoke-Expression "builder-cli.exe build $wkdir\project\Privatix.xml windows --setvars project.version=$vers product_id=$productID product_name=$product forceUpdate=$forceUpdate"
     } else {
         Write-Warning "no version specified for installer"
-        Invoke-Expression "builder-cli.exe build $wkdir\project\Privatix.xml windows --setvars project.version=undefined product_id=$productID product_name=$product" 
+        Invoke-Expression "builder-cli.exe build $wkdir\project\Privatix.xml windows --setvars project.version=undefined product_id=$productID product_name=$product forceUpdate=$forceUpdate"
     }
 }
 else {
