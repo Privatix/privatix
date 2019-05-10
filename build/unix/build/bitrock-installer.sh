@@ -22,6 +22,7 @@ build(){
                             --setvars project.version=${VERSION_TO_SET_IN_BUILDER} \
                                       product_id="$3" \
                                       product_name="$4" \
+                                      forceUpdate="${DAPP_INSTALLER_FORCE_UPDATE}" \
                             || exit 1
 
     cd "${root_dir}"
