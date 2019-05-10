@@ -53,6 +53,7 @@ copy(){
 
 ./install.sh &&
 ./get_autooffer.sh &&
+sleep 10 &&
 ./publish_offering.sh
 EOL
     chmod +x "${DEB_PACKAGE_BIN_DIR}/install_and_publish.sh" || exit 1
