@@ -51,6 +51,9 @@
 .PARAMETER prodConfig
     If specified, dappctrl will use production config, else development config.
 
+.PARAMETER forceUpdate
+    If specified, installer will force update, instead of upgrade, meaning only clean install is possible.
+
 .EXAMPLE
     .\publish-dapp.ps1 -wkdir "C:\build" -staticArtefactsDir "C:\static_art"
 
@@ -90,7 +93,14 @@
     -----------
     Same as above, but "proxy" product and Bitrock installer is triggered to create executable installer.
     Note: Bitrock installer should be installed (https://installbuilder.bitrock.com/download-step-2.html) and "builder-cli.exe" added to %PATH%
-    
+
+.EXAMPLE
+    .\publish-dapp.ps1 -wkdir "C:\build" -staticArtefactsDir "C:\static_art" -forceUpgrade
+
+    Description
+    -----------
+    Build application from develop branches and restrict upgrade, but clean install only. 
+
 #>
 [CmdletBinding()]
 param(
@@ -110,13 +120,16 @@ param(
     [string]$dappopenvpnbranch = "develop",
     [string]$dappproxybranch = "develop",
     [string]$privatixbranch = "develop",
-    [switch]$prodConfig
+    [switch]$prodConfig,
+    [switch]$forceUpdate
     
 )
 
 $ErrorActionPreference = "Stop"
 
 $vers = $version
+
+if ($forceUpdate) {$forceUpd = 1} else {$forceUpd = 0}
 
 if (-not $PSBoundParameters.ContainsKey('wkdir')) {
     $wkdir = $($ENV:SystemDrive) + "\build\" + (Get-Date -Format "MMdd_HHmm")
@@ -130,8 +143,6 @@ if ($PSBoundParameters.ContainsKey('Verbose')) {
 # Product ID supposed to be unchangable for single product (e.g. VPN)
 if ($product -eq 'vpn') {$productID = '73e17130-2a1d-4f7d-97a8-93a9aaa6f10d'}
 if ($product -eq 'proxy') {$productID = '881da45b-ce8c-46bf-943d-730e9cee5740'}
-
-$forceUpdate = '0'
 
 if (($clean -eq 'binaries') -or ($clean -eq 'all')) {
     try {
@@ -197,10 +208,10 @@ if ($installer) {
     new-package -wrkdir $wkdir -staticArtefactsDir $staticArtefactsDir -installer -privatixbranch $privatixbranch -gitpull:$gitpull -prodConfig:$prodConfig.IsPresent -product:$product
 
     if ($vers) {
-        Invoke-Expression "builder-cli.exe build $wkdir\project\Privatix.xml windows --setvars project.version=$vers product_id=$productID product_name=$product forceUpdate=$forceUpdate"
+        Invoke-Expression "builder-cli.exe build $wkdir\project\Privatix.xml windows --setvars project.version=$vers product_id=$productID product_name=$product forceUpdate=$forceUpd"
     } else {
         Write-Warning "no version specified for installer"
-        Invoke-Expression "builder-cli.exe build $wkdir\project\Privatix.xml windows --setvars project.version=undefined product_id=$productID product_name=$product forceUpdate=$forceUpdate"
+        Invoke-Expression "builder-cli.exe build $wkdir\project\Privatix.xml windows --setvars project.version=undefined product_id=$productID product_name=$product forceUpdate=$forceUpd"
     }
 }
 else {
