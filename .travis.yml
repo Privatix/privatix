@@ -1,0 +1,95 @@
+language: go
+sudo: required
+
+go:
+  - 1.12.1
+
+node_js:
+  - 10.13.0
+
+os:
+  - linux
+#  - osx
+#
+
+env:
+  global:
+    - GO111MODULE=on
+
+    # user defined
+
+    # linux
+    - BITROCK_INSTALLER_DOWNLOAD_LINUX=installbuilder-professional-19.5.0-linux-x64-installer.run
+    - BITROCK_INSTALLER_LINUX=~/installbuilder-19.5.0
+    - BITROCK_INSTALLER_BIN_LINUX=~${BITROCK_INSTALLER_LINUX}/bin
+
+#cache: npm
+cache:
+  directories:
+    - $HOME/.cache/go-build
+    - $HOME/gopath/pkg/mod
+
+git:
+  depth: 1
+
+
+
+before_install:
+  # common
+
+  # make build.local.config
+  - cp ${TRAVIS_BUILD_DIR}/build/unix/build.config ${TRAVIS_BUILD_DIR}/build/unix/build.local.config
+
+  # clone repositories
+  - ${TRAVIS_BUILD_DIR}/build/unix/git/clone.sh
+
+  # decrypt bitrock license
+  - >
+    openssl aes-256-cbc -K $encrypted_bd83225125eb_key -iv $encrypted_bd83225125eb_iv
+    -in ${TRAVIS_BUILD_DIR}/build/license.xml.enc
+    -out ${TRAVIS_BUILD_DIR}/build/license.xml -d
+
+
+  # ubuntu
+  - |
+    if [ "$TRAVIS_OS_NAME" = "linux" ]; then
+      sudo apt-get update
+    fi
+
+install:
+  #common
+
+  # ubuntu
+  - |
+    if [ "$TRAVIS_OS_NAME" = "linux" ]; then
+      sudo apt-get install debootstrap -y
+
+      # download and install bitrock
+      wget https://installbuilder.bitrock.com/${BITROCK_INSTALLER_DOWNLOAD_LINUX}
+      chmod u+x ./${BITROCK_INSTALLER_DOWNLOAD_LINUX}
+
+      ./${BITROCK_INSTALLER_DOWNLOAD_LINUX} --mode unattended
+
+      cp "${TRAVIS_BUILD_DIR}/build/license.xml" "${BITROCK_INSTALLER_LINUX}/license.xml"
+    fi
+
+before_script:
+
+
+script:
+  # ubuntu
+    - |
+      if [ "$TRAVIS_OS_NAME" = "linux" ]; then
+        ${TRAVIS_BUILD_DIR}/build/unix/vpn_ubuntu.sh
+      fi
+
+before_deploy:
+deploy:
+
+notifications:
+  email: false
+
+#notifications:
+#    slack:
+#        rooms:
+#            - privatix:ntmw2wh4PAHoodqtMc95KFDt#dapp-tech
