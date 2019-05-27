@@ -8,8 +8,8 @@ node_js:
   - 10.13.0
 
 os:
-  - linux
-#  - osx
+#  - linux
+  - osx
 #
 
 env:
@@ -18,10 +18,15 @@ env:
 
     # user defined
 
+    - BITROCK_VERSION=19.5.0
+
     # linux
-    - BITROCK_INSTALLER_DOWNLOAD_LINUX=installbuilder-professional-19.5.0-linux-x64-installer.run
-    - BITROCK_INSTALLER_LINUX=~/installbuilder-19.5.0
+    - BITROCK_INSTALLER_LINUX=~/installbuilder-${BITROCK_VERSION}
     - BITROCK_INSTALLER_BIN_LINUX=${BITROCK_INSTALLER_LINUX}/bin
+
+    # osx
+    - BITROCK_INSTALLER_MAC="/Applications/BitRock InstallBuilder Enterprise ${BITROCK_VERSION}"
+    - BITROCK_INSTALLER_BIN_MAC="${BITROCK_INSTALLER_MAC}/bin"
 
 #cache: npm
 cache:
@@ -62,13 +67,16 @@ install:
   # ubuntu
   - |
     if [ "$TRAVIS_OS_NAME" = "linux" ]; then
+
+      # install debootstrap
       sudo apt-get install debootstrap -y
 
       # download and install bitrock
-      wget https://installbuilder.bitrock.com/${BITROCK_INSTALLER_DOWNLOAD_LINUX}
-      chmod u+x ./${BITROCK_INSTALLER_DOWNLOAD_LINUX}
+      downloading_binary=installbuilder-professional-${BITROCK_VERSION}-linux-x64-installer.run
+      wget https://installbuilder.bitrock.com/${downloading_binary}
+      chmod u+x ./${downloading_binary}
 
-      ./${BITROCK_INSTALLER_DOWNLOAD_LINUX} --mode unattended || exit 1
+      ./${downloading_binary} --mode unattended || exit 1
 
       cp "${TRAVIS_BUILD_DIR}/build/license.xml" "${BITROCK_INSTALLER_LINUX}/license.xml" || exit 1
     fi
