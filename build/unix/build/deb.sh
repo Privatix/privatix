@@ -10,7 +10,8 @@ echo -----------------------------------------------------------------------
 
 DEB_DIR="${BIN}/deb"
 DEB_PACKAGE_NAME="privatix"
-DEB_PACKAGE_DIR="${BIN}/deb/${DEB_PACKAGE_NAME}_ubuntu_x64_${VERSION_TO_SET_IN_BUILDER}_cli"
+DEB_BIN_DIR="${BIN}/deb"
+DEB_PACKAGE_DIR="${DEB_BIN_DIR}/${DEB_PACKAGE_NAME}_ubuntu_x64_${VERSION_TO_SET_IN_BUILDER}_cli"
 DEB_PACKAGE_CONTROL_DIR="${DEB_PACKAGE_DIR}/DEBIAN"
 DEB_PACKAGE_BIN_DIR="${DEB_PACKAGE_DIR}/opt/privatix_installer"
 
@@ -85,6 +86,12 @@ EOL
 
 build(){
 	dpkg-deb --build "${DEB_PACKAGE_DIR}"
+
+    cd "${DEB_BIN_DIR}"
+
+    echo && echo
+    ls -d $PWD/*
+    echo && echo done
 }
 
 clear
