@@ -88,7 +88,7 @@ install:
       # download and install bitrock
       # https://installbuilder.bitrock.com/installbuilder-enterprise-19.5.0-osx-installer.dmg
       downloading_binary=installbuilder-enterprise-${BITROCK_VERSION}-osx-installer.dmg
-      curl -L -O ${downloading_binary}
+      curl -L -O https://installbuilder.bitrock.com/${downloading_binary}
 
       ./${downloading_binary} --mode unattended || exit 1
 
