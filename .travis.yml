@@ -85,12 +85,17 @@ install:
   # osx
   - |
     if [ "$TRAVIS_OS_NAME" = "osx" ]; then
-      # download and install bitrock
+      # download
       # https://installbuilder.bitrock.com/installbuilder-enterprise-19.5.0-osx-installer.dmg
-      downloading_binary=installbuilder-enterprise-${BITROCK_VERSION}-osx-installer.dmg
-      curl -L -O https://installbuilder.bitrock.com/${downloading_binary}
+      bitrock_installer=installbuilder-enterprise-${BITROCK_VERSION}-osx-installer
 
-      ./${downloading_binary} --mode unattended || exit 1
+      curl -L -O https://installbuilder.bitrock.com/${bitrock_installer}.dmg
+
+      # mount
+      hdiutil attach -mountpoint ${bitrock_installer} ${bitrock_installer}.dmg
+
+      # install
+      "./${bitrock_installer}/${bitrock_installer}.app/Contents/MacOS/installbuilder.sh" --mode unattended || exit 1
 
       cp "${TRAVIS_BUILD_DIR}/build/license.xml" "${BITROCK_INSTALLER_MAC}/license.xml" || exit 1
     fi
