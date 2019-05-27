@@ -26,12 +26,18 @@ get_value(){
         python -c 'import json,sys;obj=json.load(sys.stdin);print obj["DB"]["Conn"]["'$1'"]';
 }
 
+
 echo "copying files..."
 find_and_copy "*.config.json" "${DESTINATION_FOLDER}/configs"
 find_and_copy "settings.json" "${DESTINATION_FOLDER}/configs"
 find_and_copy "*.log" "${DESTINATION_FOLDER}/logs"
 find_and_copy "*.err" "${DESTINATION_FOLDER}/errs"
 find_and_copy "*.ovpn" "${DESTINATION_FOLDER}/ovpn"
+
+
+echo "executing commands..."
+networksetup -getsocksfirewallproxy Wi-Fi > "${DESTINATION_FOLDER}/wifi.txt"
+networksetup -getsocksfirewallproxy Ethernet > "${DESTINATION_FOLDER}/ethernet.txt"
 
 dappctrl_config=$(find "${DESTINATION_FOLDER}"  -name "dappctrl.config.json")
 
