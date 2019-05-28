@@ -20,8 +20,6 @@ build(){
     # make replacement in project.xml
     [[ ! -z "$5" ]] && sed -i.b "$5" ${project_xml}
 
-    rm -rf "$7"
-
     # build installer
     "$1" build "${project_xml}" $2 \
                             --setvars project.version=${VERSION_TO_SET_IN_BUILDER} \
@@ -30,8 +28,6 @@ build(){
                                       forceUpdate="${DAPP_INSTALLER_FORCE_UPDATE}" \
                                       project.outputDirectory="$7" \
                             || exit 1
-
-    cd "${root_dir}"
 
     cd "$7"
 

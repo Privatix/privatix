@@ -5,7 +5,6 @@
 #
 if [ "$TRAVIS_OS_NAME" = "linux" ]; then
     ${TRAVIS_BUILD_DIR}/build/unix/vpn_ubuntu.sh || exit 1
-    ${TRAVIS_BUILD_DIR}/build/unix/build/deb.sh || exit 1
 fi
 
 #

@@ -12,6 +12,7 @@ app_dir="${installer_bin_dir}/${APP}"
 
 clear(){
     sudo rm -rf "${bin_dir}"
+    rm -rf "${VPN_UBUNTU_OUTPUT_DIR}"
     
     mkdir -p "${installer_bin_dir}" || exit 1
 
@@ -23,6 +24,8 @@ clear(){
     mkdir -p "${app_dir}/${PRODUCT}/${VPN_PRODUCT_ID}/${PRODUCT_TEMPLATE}" || exit 1
     mkdir -p "${app_dir}/${DAPP_INSTALLER_GUI_DIR}" || exit 1
     mkdir -p "${app_dir}/${UTIL}" || exit 1
+
+    mkdir -p "${VPN_UBUNTU_OUTPUT_DIR}"
 }
 
 copy_ctrl(){
@@ -152,7 +155,7 @@ copy_ctrl
 copy_product
 copy_utils
 
-build/container_ubuntu.sh "${bin_dir}" || exit 1
+build/container_ubuntu.sh "${installer_bin_dir}" || exit 1
 
 copy_installer
 
@@ -164,3 +167,7 @@ build/bitrock-installer.sh  "${BITROCK_INSTALLER_BIN_LINUX}/builder" \
                             "${bin_dir}" \
                             "${VPN_UBUNTU_OUTPUT_DIR}" \
                             || exit 1
+
+build/deb.sh "${installer_bin_dir}" \
+             "${VPN_UBUNTU_OUTPUT_DIR}" \
+             || exit 1

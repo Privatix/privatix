@@ -99,7 +99,8 @@ rm -rf /usr/include/*
 logout
 EOF
 
-echo create tar archive...
+echo create tar archive:
+echo $1/app.tar.xz
 sudo tar cpJf "$1/app.tar.xz" --exclude="./var/cache/apt/archives/*.deb" \
 --exclude="./var/lib/apt/lists/*" --exclude="./var/cache/apt/*.bin" \
 --one-file-system -C ${container_location} .

@@ -11,8 +11,8 @@ installer_bin_dir=${bin_dir}/mac-dapp-installer
 app_dir="${installer_bin_dir}/${APP}"
 
 clear(){
-     rm -rf "${bin_dir}"
-#    rm -rf "${ARTEFACTS_BIN}"
+    rm -rf "${bin_dir}"
+    rm -rf "${VPN_MAC_OUTPUT_DIR}"
 
 
     mkdir -p "${installer_bin_dir}" || exit 1
@@ -26,6 +26,8 @@ clear(){
     mkdir -p "${app_dir}/${PRODUCT}/${VPN_PRODUCT_ID}/${LOG}" || exit 1
     mkdir -p "${app_dir}/${PRODUCT}/${VPN_PRODUCT_ID}/${PRODUCT_TEMPLATE}" || exit 1
     mkdir -p "${app_dir}/${DAPP_INSTALLER_GUI_DIR}/${DAPP_INSTALLER_GUI_BINARY_NAME}" || exit 1
+
+    mkdir -p "${VPN_MAC_OUTPUT_DIR}"
 }
 
 zip_package(){
