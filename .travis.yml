@@ -55,8 +55,8 @@ before_script:
 script:
   - ${TRAVIS_BUILD_DIR}/travis/script.sh
 
-before_deploy:
-  - ${TRAVIS_BUILD_DIR}/travis/before_deploy.sh
+after_success:
+  - ${TRAVIS_BUILD_DIR}/travis/after_success.sh
 
 deploy:
 
