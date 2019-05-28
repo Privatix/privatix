@@ -8,8 +8,8 @@ node_js:
   - 10.13.0
 
 os:
-  #  - linux
-  - osx
+  - linux
+#  - osx
 #
 
 env:
@@ -40,76 +40,17 @@ git:
 
 
 before_install:
-  # common
-
-  # make build.local.config
-  - cp ${TRAVIS_BUILD_DIR}/build/unix/build.config ${TRAVIS_BUILD_DIR}/build/unix/build.local.config
-
-  # clone repositories
-  - ${TRAVIS_BUILD_DIR}/build/unix/git/clone.sh
-
-  # decrypt bitrock license
-  - >
-    openssl aes-256-cbc -K $encrypted_bd83225125eb_key -iv $encrypted_bd83225125eb_iv
-    -in ${TRAVIS_BUILD_DIR}/build/license.xml.enc
-    -out ${TRAVIS_BUILD_DIR}/build/license.xml -d
-
-
-  # ubuntu
-  - |
-    if [ "$TRAVIS_OS_NAME" = "linux" ]; then
-      sudo apt-get update
-    fi
+  - ${TRAVIS_BUILD_DIR}/travis/before_install.sh
 
 install:
-  #common
-
-  # ubuntu
-  - |
-    if [ "$TRAVIS_OS_NAME" = "linux" ]; then
-
-      # install debootstrap
-      sudo apt-get install debootstrap -y
-
-      # download and install bitrock
-      # https://installbuilder.bitrock.com/installbuilder-enterprise-19.5.0-linux-x64-installer.run
-      downloading_binary=installbuilder-professional-${BITROCK_VERSION}-linux-x64-installer.run
-      wget https://installbuilder.bitrock.com/${downloading_binary}
-      chmod u+x ./${downloading_binary}
-
-      ./${downloading_binary} --mode unattended || exit 1
-
-      cp "${TRAVIS_BUILD_DIR}/build/license.xml" "${BITROCK_INSTALLER_LINUX}/license.xml" || exit 1
-    fi
-
-  # osx
-  - |
-    if [ "$TRAVIS_OS_NAME" = "osx" ]; then
-      # download
-      # https://installbuilder.bitrock.com/installbuilder-enterprise-19.5.0-osx-installer.dmg
-      bitrock_installer=installbuilder-enterprise-${BITROCK_VERSION}-osx-installer
-
-      curl -L -O https://installbuilder.bitrock.com/${bitrock_installer}.dmg
-
-      # mount
-      hdiutil attach -mountpoint ${bitrock_installer} ${bitrock_installer}.dmg
-
-      # install
-      "./${bitrock_installer}/${bitrock_installer}.app/Contents/MacOS/installbuilder.sh" --mode unattended || exit 1
-
-      cp "${TRAVIS_BUILD_DIR}/build/license.xml" "${BITROCK_INSTALLER_MAC}/license.xml" || exit 1
-    fi
+  - ${TRAVIS_BUILD_DIR}/travis/install.sh
 
 before_script:
-
+  - ${TRAVIS_BUILD_DIR}/travis/before_script.sh
 
 script:
-  # ubuntu
-  - |
-    if [ "$TRAVIS_OS_NAME" = "linux" ]; then
-      ${TRAVIS_BUILD_DIR}/build/unix/vpn_ubuntu.sh || exit 1
-      ${TRAVIS_BUILD_DIR}/build/unix/build/deb.sh || exit 1
-    fi
+  - ${TRAVIS_BUILD_DIR}/travis/script.sh
+
 
 before_deploy:
 deploy:

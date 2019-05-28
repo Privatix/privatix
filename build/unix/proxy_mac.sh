@@ -5,15 +5,16 @@ cd "${root_dir}"
 
 . ./build.global.config
 
-app_dir="${PACKAGE_BIN_MAC}/${APP}"
+bin_dir=${BIN}/proxy/mac
+installer_bin_dir=${bin_dir}/mac-dapp-installer
+app_dir="${installer_bin_dir}/${APP}"
 
 clear(){
-     rm -rf "${PACKAGE_INSTALL_BUILDER_BIN}"
+     rm -rf "${bin_dir}"
 #    rm -rf "${ARTEFACTS_BIN}"
 
 
-    mkdir -p "${PACKAGE_BIN_MAC}" || exit 1
-    mkdir -p "${PACKAGE_INSTALL_BUILDER_BIN}/${INSTALL_BUILDER_PROJECT}" || exit 1
+    mkdir -p "${installer_bin_dir}" || exit 1
 
     mkdir -p "${app_dir}/${DAPPCTRL}" || exit 1
     mkdir -p "${app_dir}/${LOG}" || exit 1
@@ -32,8 +33,8 @@ zip_package(){
     echo -----------------------------------------------------------------------
     echo Please wait, it takes time...
 
-    echo "${PACKAGE_BIN_MAC}/${APP}"
-    cd "${PACKAGE_BIN_MAC}/${APP}"
+    echo "${installer_bin_dir}/${APP}"
+    cd "${installer_bin_dir}/${APP}"
 
     zip -qr "../${APP_ZIP}" * || exit 1
 
@@ -138,10 +139,10 @@ copy_installer(){
 
 
     cp -v "${GOPATH}/bin/${DAPP_INSTALLER}" \
-          "${PACKAGE_BIN_MAC}/${DAPP_INSTALLER}" || exit 1
+          "${installer_bin_dir}/${DAPP_INSTALLER}" || exit 1
 
     cp -v "${DAPP_INSTALLER_DIR}/${DAPP_INSTALLER_CONFIG}" \
-          "${PACKAGE_BIN_MAC}/${DAPP_INSTALLER_CONFIG}" || exit 1
+          "${installer_bin_dir}/${DAPP_INSTALLER_CONFIG}" || exit 1
 
     echo && echo done
 }
@@ -171,4 +172,6 @@ build/bitrock-installer.sh  "${BITROCK_INSTALLER_BIN_MAC}/builder" \
                             "osx" \
                             "${PROXY_PRODUCT_ID}" \
                             "${PROXY_PRODUCT_NAME}" \
+                            "" \
+                            "${bin_dir}" \
                             || exit 1
