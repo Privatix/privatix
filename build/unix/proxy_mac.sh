@@ -174,4 +174,5 @@ build/bitrock-installer.sh  "${BITROCK_INSTALLER_BIN_MAC}/builder" \
                             "${PROXY_PRODUCT_NAME}" \
                             "" \
                             "${bin_dir}" \
+                            "${PROXY_MAC_OUTPUT_DIR}" \
                             || exit 1

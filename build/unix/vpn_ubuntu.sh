@@ -152,7 +152,7 @@ copy_ctrl
 copy_product
 copy_utils
 
-build/container_ubuntu.sh || exit 1
+build/container_ubuntu.sh "${bin_dir}" || exit 1
 
 copy_installer
 
@@ -162,4 +162,5 @@ build/bitrock-installer.sh  "${BITROCK_INSTALLER_BIN_LINUX}/builder" \
                             "${VPN_PRODUCT_NAME}" \
                             "s/<requireInstallationByRootUser>0/<requireInstallationByRootUser>1/g" \
                             "${bin_dir}" \
+                            "${VPN_UBUNTU_OUTPUT_DIR}" \
                             || exit 1

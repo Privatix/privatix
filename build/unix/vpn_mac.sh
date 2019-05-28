@@ -200,4 +200,5 @@ build/bitrock-installer.sh  "${BITROCK_INSTALLER_BIN_MAC}/builder" \
                             "${VPN_PRODUCT_NAME}" \
                             "" \
                             "${bin_dir}" \
+                            "${VPN_MAC_OUTPUT_DIR}" \
                             || exit 1

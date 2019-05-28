@@ -12,10 +12,10 @@ echo -----------------------------------------------------------------------
 container_name="privatix-dapp-container"
 echo "Container name:" ${container_name}
 
-container_location="${PACKAGE_BIN_LINUX}/${container_name}"
+container_location="$1/${container_name}"
 echo "Container location:" ${container_location}
 
-dappcoredir="${PACKAGE_BIN_LINUX}/app"
+dappcoredir="$1/app"
 echo "App folder path:" ${dappcoredir}
 
 # create container
@@ -100,7 +100,7 @@ logout
 EOF
 
 echo create tar archive...
-sudo tar cpJf "${PACKAGE_BIN_LINUX}/app.tar.xz" --exclude="./var/cache/apt/archives/*.deb" \
+sudo tar cpJf "$1/app.tar.xz" --exclude="./var/cache/apt/archives/*.deb" \
 --exclude="./var/lib/apt/lists/*" --exclude="./var/cache/apt/*.bin" \
 --one-file-system -C ${container_location} .
 
