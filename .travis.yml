@@ -38,7 +38,7 @@ git:
 
 
 before_install:
-  - powershell ${TRAVIS_BUILD_DIR}/travis/win/before_install.ps1
+  - ls ${TRAVIS_BUILD_DIR}/travis/win/before_install.ps1
 
 install:
 - powershell ${TRAVIS_BUILD_DIR}/travis/win/install.ps1
