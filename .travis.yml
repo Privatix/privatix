@@ -8,8 +8,7 @@ node_js:
   - 10.13.0
 
 os:
-  - linux
-  - osx
+  - windows
 
 env:
   global:
@@ -18,24 +17,20 @@ env:
     # user defined
 
     # artefacts
-    - ARTEFACTS_ZIP_URL=http://artdev.privatix.net/artefacts_mac.zip
+    - ARTEFACTS_ZIP_URL=http://artdev.privatix.net/artefacts_win.zip
 
     #bitrock
     - BITROCK_VERSION=19.5.0
 
-    # linux
-    - BITROCK_INSTALLER_LINUX=$HOME/installbuilder-${BITROCK_VERSION}
-    - BITROCK_INSTALLER_BIN_LINUX=${BITROCK_INSTALLER_LINUX}/bin
-
-    # osx
-    - BITROCK_INSTALLER_MAC="/Applications/BitRock InstallBuilder Enterprise ${BITROCK_VERSION}"
-    - BITROCK_INSTALLER_BIN_MAC="${BITROCK_INSTALLER_MAC}/bin"
+    # windows
+    - BITROCK_INSTALLER_WIN=$HOME/installbuilder-${BITROCK_VERSION}
+    - BITROCK_INSTALLER_BIN_WIN=${BITROCK_INSTALLER_WIN}\bin
 
 #cache: npm
 cache:
   directories:
-    - $HOME/.cache/go-build
-    - $HOME/gopath/pkg/mod
+    - $HOME\AppData\Local\go-build
+    - $HOME\go\pkg\mod
 
 git:
   depth: 1
@@ -43,19 +38,19 @@ git:
 
 
 before_install:
-  - ${TRAVIS_BUILD_DIR}/travis/before_install.sh
+  - powershell ${TRAVIS_BUILD_DIR}/travis/win/before_install.ps1
 
 install:
-  - ${TRAVIS_BUILD_DIR}/travis/install.sh
+- powershell ${TRAVIS_BUILD_DIR}/travis/win/install.ps1
 
 before_script:
-  - ${TRAVIS_BUILD_DIR}/travis/before_script.sh
+- bash.exe ${TRAVIS_BUILD_DIR}/travis/win/before_script.sh
 
 script:
-  - ${TRAVIS_BUILD_DIR}/travis/script.sh
+- powershell ${TRAVIS_BUILD_DIR}/travis/win/script.ps1
 
 after_success:
-  - ${TRAVIS_BUILD_DIR}/travis/after_success.sh
+- bash.exe ${TRAVIS_BUILD_DIR}/travis/win/after_success.sh
 
 deploy:
 
