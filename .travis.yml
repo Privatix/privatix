@@ -8,8 +8,8 @@ node_js:
   - 10.13.0
 
 os:
-  - linux
-#  - osx
+#  - linux
+  - osx
 #
 
 env:
