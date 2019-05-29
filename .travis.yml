@@ -40,7 +40,6 @@ git:
   depth: 1
 
 
-
 before_install:
   - ${TRAVIS_BUILD_DIR}/travis/before_install.sh
 
