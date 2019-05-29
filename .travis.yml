@@ -38,6 +38,7 @@ git:
 
 
 before_install:
+- powershell.exe -command "write-host asadda"
 - powershell.exe -File c:\\Users\\Travis\\Privatix\\privatix\\travis\\win\\before_install.ps1
 
 install:
