@@ -54,7 +54,7 @@ To clone all required repositories, execute the following script:
 
 ## Mac
 
-Ensure, that you have artifacts (openvpn, pgsql, tor), located at `$ARTEFACTS_ZIP_URL`
+Ensure, that you have artifacts (openvpn, pgsql, tor), located at `$ARTEFACTS_MAC_ZIP_URL`
 (`~/artefacts.zip` by default)
 
 To create a package, execute the following script:

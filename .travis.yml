@@ -18,7 +18,7 @@ env:
     # user defined
 
     # artefacts
-    - ARTEFACTS_ZIP_URL=http://artdev.privatix.net/artefacts_mac.zip
+    - ARTEFACTS_MAC_ZIP_URL=http://artdev.privatix.net/artefacts_mac.zip
 
     #bitrock
     - BITROCK_VERSION=19.5.0
