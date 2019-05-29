@@ -31,7 +31,6 @@ env:
     - BITROCK_INSTALLER_MAC="/Applications/BitRock InstallBuilder Enterprise ${BITROCK_VERSION}"
     - BITROCK_INSTALLER_BIN_MAC="${BITROCK_INSTALLER_MAC}/bin"
 
-#cache: npm
 cache:
   directories:
     - $HOME/.cache/go-build
