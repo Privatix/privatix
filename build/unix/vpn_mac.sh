@@ -27,7 +27,7 @@ clear(){
     mkdir -p "${app_dir}/${PRODUCT}/${VPN_PRODUCT_ID}/${PRODUCT_TEMPLATE}" || exit 1
     mkdir -p "${app_dir}/${DAPP_INSTALLER_GUI_DIR}/${DAPP_INSTALLER_GUI_BINARY_NAME}" || exit 1
 
-    mkdir -p "${VPN_MAC_OUTPUT_DIR}"
+    mkdir -p "${VPN_MAC_OUTPUT_DIR}" || exit 1
 }
 
 zip_package(){

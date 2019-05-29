@@ -8,9 +8,8 @@ node_js:
   - 10.13.0
 
 os:
-#  - linux
+  - linux
   - osx
-#
 
 env:
   global:
@@ -25,7 +24,7 @@ env:
     - BITROCK_VERSION=19.5.0
 
     # linux
-    - BITROCK_INSTALLER_LINUX=~/installbuilder-${BITROCK_VERSION}
+    - BITROCK_INSTALLER_LINUX=$HOME/installbuilder-${BITROCK_VERSION}
     - BITROCK_INSTALLER_BIN_LINUX=${BITROCK_INSTALLER_LINUX}/bin
 
     # osx
