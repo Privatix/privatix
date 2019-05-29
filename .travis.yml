@@ -38,19 +38,19 @@ git:
 
 
 before_install:
-  - ls ${TRAVIS_BUILD_DIR}/travis/win/before_install.ps1
+- powershell.exe -File c:\\Users\\Travis\\Privatix\\privatix\\travis\\win\\before_install.ps1
 
 install:
-- powershell ${TRAVIS_BUILD_DIR}/travis/win/install.ps1
+- powershell.exe -File c:\\Users\\Travis\\Privatix\\privatix\\travis\\win\\install.ps1
 
 before_script:
-- bash.exe ${TRAVIS_BUILD_DIR}/travis/win/before_script.sh
+- . ${TRAVIS_BUILD_DIR}/travis/win/before_script.sh
 
 script:
-- powershell ${TRAVIS_BUILD_DIR}/travis/win/script.ps1
+- powershell.exe -File c:\\Users\\Travis\\Privatix\\privatix\\travis\\win\\script.ps1
 
 after_success:
-- bash.exe ${TRAVIS_BUILD_DIR}/travis/win/after_success.sh
+- . ${TRAVIS_BUILD_DIR}/travis/win/after_success.sh
 
 deploy:
 
