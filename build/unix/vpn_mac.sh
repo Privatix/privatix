@@ -5,15 +5,17 @@ cd "${root_dir}"
 
 . ./build.global.config
 
-app_dir="${PACKAGE_BIN_MAC}/${APP}"
+
+bin_dir=${BIN}/vpn/mac
+installer_bin_dir=${bin_dir}/mac-dapp-installer
+app_dir="${installer_bin_dir}/${APP}"
 
 clear(){
-     rm -rf "${PACKAGE_INSTALL_BUILDER_BIN}"
-#    rm -rf "${ARTEFACTS_BIN}"
+    rm -rf "${bin_dir}"
+    rm -rf "${VPN_MAC_OUTPUT_DIR}"
 
 
-    mkdir -p "${PACKAGE_BIN_MAC}" || exit 1
-    mkdir -p "${PACKAGE_INSTALL_BUILDER_BIN}/${INSTALL_BUILDER_PROJECT}" || exit 1
+    mkdir -p "${installer_bin_dir}" || exit 1
 
     mkdir -p "${app_dir}/${DAPPCTRL}" || exit 1
     mkdir -p "${app_dir}/${LOG}" || exit 1
@@ -24,6 +26,8 @@ clear(){
     mkdir -p "${app_dir}/${PRODUCT}/${VPN_PRODUCT_ID}/${LOG}" || exit 1
     mkdir -p "${app_dir}/${PRODUCT}/${VPN_PRODUCT_ID}/${PRODUCT_TEMPLATE}" || exit 1
     mkdir -p "${app_dir}/${DAPP_INSTALLER_GUI_DIR}/${DAPP_INSTALLER_GUI_BINARY_NAME}" || exit 1
+
+    mkdir -p "${VPN_MAC_OUTPUT_DIR}" || exit 1
 }
 
 zip_package(){
@@ -32,8 +36,8 @@ zip_package(){
     echo -----------------------------------------------------------------------
     echo Please wait, it takes time...
 
-    echo "${PACKAGE_BIN_MAC}/${APP}"
-    cd "${PACKAGE_BIN_MAC}/${APP}"
+    echo "${installer_bin_dir}/${APP}"
+    cd "${installer_bin_dir}/${APP}"
 
     zip -qr "../${APP_ZIP}" * || exit 1
 
@@ -119,8 +123,8 @@ copy_artefacts()
 
 
     if ! [ -f "${ARTEFACTS_LOCATION}" ]; then
-        echo Downloading: "${ARTEFACTS_ZIP_URL}"
-        curl -o "${ARTEFACTS_LOCATION}" "${ARTEFACTS_ZIP_URL}" || exit 1
+        echo Downloading: "${ARTEFACTS_MAC_ZIP_URL}"
+        curl -o "${ARTEFACTS_LOCATION}" "${ARTEFACTS_MAC_ZIP_URL}" || exit 1
     fi
 
     if [[ ! -d "${ARTEFACTS_BIN}" ]]; then
@@ -163,10 +167,10 @@ copy_installer(){
     echo -----------------------------------------------------------------------
 
     cp -v "${GOPATH}/bin/${DAPP_INSTALLER}" \
-          "${PACKAGE_BIN_MAC}/${DAPP_INSTALLER}" || exit 1
+          "${installer_bin_dir}/${DAPP_INSTALLER}" || exit 1
 
     cp -v "${DAPP_INSTALLER_DIR}/${DAPP_INSTALLER_CONFIG}" \
-          "${PACKAGE_BIN_MAC}/${DAPP_INSTALLER_CONFIG}" || exit 1
+          "${installer_bin_dir}/${DAPP_INSTALLER_CONFIG}" || exit 1
 
     echo && echo done
 }
@@ -197,4 +201,6 @@ build/bitrock-installer.sh  "${BITROCK_INSTALLER_BIN_MAC}/builder" \
                             "${VPN_PRODUCT_ID}" \
                             "${VPN_PRODUCT_NAME}" \
                             "" \
+                            "${bin_dir}" \
+                            "${VPN_MAC_OUTPUT_DIR}" \
                             || exit 1
