@@ -60,9 +60,6 @@ after_success:
 deploy:
 
 notifications:
-  email: false
-
-#notifications:
-#    slack:
-#        rooms:
-#            - privatix:ntmw2wh4PAHoodqtMc95KFDt#dapp-tech
+    slack:
+        rooms:
+            - privatix:ntmw2wh4PAHoodqtMc95KFDt#dapp-tech
