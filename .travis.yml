@@ -10,6 +10,9 @@ node_js:
 os:
   - windows
 
+# Workaround for travis bug (https://travis-ci.community/t/windows-instances-hanging-before-install/250/15)
+filter_secrets: false
+
 env:
   global:
     - GO111MODULE=on
