@@ -14,6 +14,7 @@ header = {
     'Authorization': 'token ' + token,
 }
 endpoint = "https://api.travis-ci.org/repo/privatix%2Fprivatix"
+privatix_repo_branch = "develop"
 
 
 def check_ok(text, response):
@@ -44,8 +45,8 @@ def add_env_var(name, value):
         'env_var.public': True,
     }
 
-    check_ok("Add {0}".format(name),
-             requests.post(endpoint + "/env_vars", params=env_var, headers=header))
+    response = requests.post(endpoint + "/env_vars", json=env_var, headers=header)
+    check_ok("Add {0}: {1}".format(name, value), response)
 
 
 def update_env_var(name, var_id, value):
@@ -53,8 +54,26 @@ def update_env_var(name, var_id, value):
         'env_var.value': value,
     }
 
-    check_ok("Update {0}: {1}".format(name, value),
-             requests.patch(endpoint + "/env_var/" + var_id, params=env_var, headers=header))
+    response = requests.patch(endpoint + "/env_var/" + var_id, json=env_var, headers=header)
+    check_ok("Update {0}: {1}".format(name, value), response)
+
+
+def start_build(branch):
+    request = {
+        'request': {
+            'branch': branch
+        }}
+
+    response = requests.post(endpoint + "/requests", json=request, headers=header)
+    check_ok("\n\nStart build on {0}".format(branch), response)
+
+    j = response.json()
+    print(
+        "\nBuild info:"
+        "\n\ttype:   {0}".format(j["@type"]) +
+        "\n\tbranch: {0}".format(j["request"]["branch"]) +
+        "\n\tlink:   {0}/{1}".format("https://travis-ci.org", j["repository"]["slug"])
+    )
 
 
 json_vars = get_json_vars(json_vars_path)
@@ -79,3 +98,5 @@ env_vars = dict(get_env_vars())
 print('\n\nActual env_vars:')
 for v in env_vars:
     print("\t{0}: {1}".format(v, env_vars[v][1]))
+
+start_build(privatix_repo_branch)
