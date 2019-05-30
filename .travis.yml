@@ -45,9 +45,10 @@ before_install:
 - PowerShell -Command 'Set-ExecutionPolicy -ExecutionPolicy Unrestricted'
 - echo ${TRAVIS_BUILD_DIR}
 - ls 
+- ls ${TRAVIS_BUILD_DIR}
 # - PowerShell -File 'c:\Users\Travis\Privatix\privatix\travis\win\before_install.ps1'
 
-install:
+#install:
 #- powershell.exe -File c:\\Users\\Travis\\Privatix\\privatix\\travis\\win\\install.ps1
 
 before_script:
@@ -61,7 +62,7 @@ script:
 after_success:
 - . ${TRAVIS_BUILD_DIR}/travis/win/after_success.sh
 
-deploy:
+#deploy:
 
 notifications:
   email: false
