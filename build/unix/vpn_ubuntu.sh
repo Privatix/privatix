@@ -139,17 +139,19 @@ copy_utils()
 
 clear
 
-git/update.sh || exit 1
+if [[ -z "$1" ]] || [[ "$1" != "--keep_binaries" ]]; then
+    git/update.sh || exit 1
 
-build/dappctrl.sh || exit 1
-build/dapp-installer.sh || exit 1
-build/dapp-openvpn.sh || exit 1
-build/dapp-gui.sh   "package-linux" \
-                    "${DAPP_GUI_DIR}/${DAPP_GUI_PACKAGE_LINUX}/." \
-                    "${app_dir}/${DAPP_INSTALLER_GUI_DIR}/" \
-                    "${DAPP_GUI_SETTINGS_JSON_LINUX}" \
-                    "ubuntu" \
-                    || exit 1
+    build/dappctrl.sh || exit 1
+    build/dapp-installer.sh || exit 1
+    build/dapp-openvpn.sh || exit 1
+    build/dapp-gui.sh   "package-linux" \
+                        "${DAPP_GUI_DIR}/${DAPP_GUI_PACKAGE_LINUX}/." \
+                        "${app_dir}/${DAPP_INSTALLER_GUI_DIR}/" \
+                        "${DAPP_GUI_SETTINGS_JSON_LINUX}" \
+                        "ubuntu" \
+                        || exit 1
+fi
 
 copy_ctrl
 copy_product

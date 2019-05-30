@@ -177,17 +177,20 @@ copy_installer(){
 
 clear
 
-git/update.sh || exit 1
+if [[ -z "$1" ]] || [[ "$1" != "--keep_binaries" ]]; then
+    git/update.sh || exit 1
 
-build/dappctrl.sh || exit 1
-build/dapp-installer.sh || exit 1
-build/dapp-openvpn.sh || exit 1
-build/dapp-gui.sh   "package-mac" \
-                    "${DAPP_GUI_DIR}/${DAPP_GUI_PACKAGE_MAC}/${DAPP_GUI_PACKAGE_MAC_BINARY_NAME}/." \
-                    "${app_dir}/${DAPP_INSTALLER_GUI_DIR}/${DAPP_INSTALLER_GUI_BINARY_NAME}" \
-                    "${DAPP_GUI_SETTINGS_JSON_MAC}" \
-                    "osx" \
-                    || exit 1
+    build/dappctrl.sh || exit 1
+    build/dapp-installer.sh || exit 1
+    build/dapp-openvpn.sh || exit 1
+    build/dapp-gui.sh   "package-mac" \
+                        "${DAPP_GUI_DIR}/${DAPP_GUI_PACKAGE_MAC}/${DAPP_GUI_PACKAGE_MAC_BINARY_NAME}/." \
+                        "${app_dir}/${DAPP_INSTALLER_GUI_DIR}/${DAPP_INSTALLER_GUI_BINARY_NAME}" \
+                        "${DAPP_GUI_SETTINGS_JSON_MAC}" \
+                        "osx" \
+                        || exit 1
+fi
+
 
 copy_ctrl
 copy_product

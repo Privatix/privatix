@@ -73,6 +73,14 @@ To create a package, execute the following script:
 
 The package will be created at `.bin/installbuilder/out` folder.
 
+#### Options
+
+You can use key `--keep_binaries` for prevent git update and build binaries operations.
+
+Example:
+```bash
+./proxy_mac.sh --keep_binaries
+```
 ## Ubuntu
 
 To create a package, execute the following script:
