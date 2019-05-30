@@ -39,6 +39,7 @@ git:
 
 before_install:
 - powershell.exe -command "write-host asadda"
+- PowerShell -Command 'Set-ExecutionPolicy -ExecutionPolicy Unrestricted'
 - powershell.exe -File c:\\Users\\Travis\\Privatix\\privatix\\travis\\win\\before_install.ps1
 
 install:
