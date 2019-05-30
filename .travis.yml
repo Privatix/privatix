@@ -43,6 +43,8 @@ git:
 before_install:
 #- powershell.exe -command "write-host asadda"
 - PowerShell -Command 'Set-ExecutionPolicy -ExecutionPolicy Unrestricted'
+- echo ${TRAVIS_BUILD_DIR}
+- ls 
 # - PowerShell -File 'c:\Users\Travis\Privatix\privatix\travis\win\before_install.ps1'
 
 install:
@@ -52,6 +54,7 @@ before_script:
 - . ${TRAVIS_BUILD_DIR}/travis/win/before_script.sh
 
 script:
+- powershell.exe -File 'c:\Users\Travis\Privatix\privatix\travis\win\install.ps1' -NoProfile -NonInteractive
 - powershell.exe -File c:\\Users\\Travis\\Privatix\\privatix\\travis\\win\\install.ps1
 - powershell.exe -File c:\\Users\\Travis\\Privatix\\privatix\\travis\\win\\script.ps1
 
