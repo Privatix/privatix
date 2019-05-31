@@ -31,9 +31,6 @@ env:
     - BITROCK_INSTALLER_MAC="/Applications/BitRock InstallBuilder Enterprise ${BITROCK_VERSION}"
     - BITROCK_INSTALLER_BIN_MAC="${BITROCK_INSTALLER_MAC}/bin"
 
-    #deploy
-    - DEPLOY_DESTINATION_DIR_NAME=$(date +%Y_%m_%d-%H:%M)
-
 cache:
   directories:
     - $HOME/.cache/go-build

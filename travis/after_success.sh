@@ -10,7 +10,7 @@ host=$(cat "${deploy_file}" | head -1)
 user=$(cat "${deploy_file}" | head -2 | tail -1)
 pass=$(cat "${deploy_file}" | head -3 | tail -1)
 
-destination="${GIT_BRANCH}-${DEPLOY_DESTINATION_DIR_NAME}"
+destination="${GIT_BRANCH}-$(date +%Y_%m_%d-%H:%M)"
 
 #
 # ubuntu
