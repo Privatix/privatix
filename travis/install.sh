@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
-
 #
 # ubuntu
 #
@@ -22,7 +21,7 @@ if [ "$TRAVIS_OS_NAME" = "linux" ]; then
     ./${downloading_binary} --mode unattended || exit 1
 
     # add license
-    cp "${TRAVIS_BUILD_DIR}/build/license.xml" \
+    cp "${TRAVIS_BUILD_DIR}/travis/encrypted/license.xml" \
        "${BITROCK_INSTALLER_LINUX}/license.xml" || exit 1
 fi
 
@@ -45,6 +44,6 @@ if [ "$TRAVIS_OS_NAME" = "osx" ]; then
     "./${bitrock_installer}/${bitrock_installer}.app/Contents/MacOS/installbuilder.sh" --mode unattended || exit 1
 
     # add license
-    cp      "${TRAVIS_BUILD_DIR}/build/license.xml" \
+    cp      "${TRAVIS_BUILD_DIR}/travis/encrypted/license.xml" \
             "${BITROCK_INSTALLER_MAC}/license.xml" || exit 1
 fi

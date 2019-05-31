@@ -13,3 +13,7 @@ build/unix/build\.local\.config
 release/release\.local\.config
 
 .idea/
+
+travis/encrypted/
+
+travis/encrypted\.zip
