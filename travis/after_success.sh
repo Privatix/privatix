@@ -4,13 +4,13 @@
 cd "${TRAVIS_BUILD_DIR}/build/unix"
 . "./build.global.config"
 
+destination="${GIT_BRANCH}-$(date +%Y_%m_%d)_build${TRAVIS_BUILD_NUMBER}"
+
 deploy_file="${TRAVIS_BUILD_DIR}/travis/encrypted/deploy.txt"
 
 host=$(cat "${deploy_file}" | head -1)
 user=$(cat "${deploy_file}" | head -2 | tail -1)
 pass=$(cat "${deploy_file}" | head -3 | tail -1)
-
-destination="${GIT_BRANCH}-$(date +%Y_%m_%d-%H:%M)"
 
 #
 # ubuntu
