@@ -9,12 +9,12 @@ cp ${TRAVIS_BUILD_DIR}/build/unix/build.config \
 # clone repositories
 ${TRAVIS_BUILD_DIR}/build/unix/git/clone.sh
 
-# decrypt bitrock license
-openssl aes-256-cbc \
-    -K $encrypted_bd83225125eb_key \
-    -iv $encrypted_bd83225125eb_iv \
-    -in ${TRAVIS_BUILD_DIR}/build/license.xml.enc \
-    -out ${TRAVIS_BUILD_DIR}/build/license.xml -d
+openssl aes-256-cbc -K $encrypted_b3625d5d910f_key -iv $encrypted_b3625d5d910f_iv \
+    -in ${TRAVIS_BUILD_DIR}/travis/encrypted.zip.enc \
+    -out ${TRAVIS_BUILD_DIR}/travis/encrypted.zip -d
+
+unzip ${TRAVIS_BUILD_DIR}/travis/encrypted.zip \
+      -d ${TRAVIS_BUILD_DIR}/travis/
 
 #
 # ubuntu
