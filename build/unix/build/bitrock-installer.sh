@@ -27,7 +27,6 @@ build(){
                                       product_name="$4" \
                                       forceUpdate="${DAPP_INSTALLER_FORCE_UPDATE}" \
                                       project.outputDirectory="$7" \
-                                      project.installerFilename="$8" \
                             || exit 1
 
     cd "$7"
@@ -37,4 +36,4 @@ build(){
     echo && echo done
 }
 
-build "$1" "$2" "$3" "$4" "$5" "$6" "$7" "$8"
+build "$1" "$2" "$3" "$4" "$5" "$6" "$7"

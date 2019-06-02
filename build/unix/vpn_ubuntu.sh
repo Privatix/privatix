@@ -170,7 +170,6 @@ build/bitrock-installer.sh  "${BITROCK_INSTALLER_BIN_LINUX}/builder" \
                             "s/<requireInstallationByRootUser>0/<requireInstallationByRootUser>1/g" \
                             "${bin_dir}" \
                             "${VPN_UBUNTU_OUTPUT_DIR}" \
-                            "privatix_ubuntu_x64_${VERSION_TO_SET_IN_BUILDER}_installer" \
                             || exit 1
 
 build/deb.sh "${installer_bin_dir}" \

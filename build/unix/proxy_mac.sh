@@ -180,5 +180,4 @@ build/bitrock-installer.sh  "${BITROCK_INSTALLER_BIN_MAC}/builder" \
                             "" \
                             "${bin_dir}" \
                             "${PROXY_MAC_OUTPUT_DIR}" \
-                            "privatix_proxy_osx_x64_${VERSION_TO_SET_IN_BUILDER}_installer" \
                             || exit 1
