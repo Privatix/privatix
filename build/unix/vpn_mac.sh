@@ -177,12 +177,11 @@ copy_installer(){
 
 clear
 
-if [[ -z "$1" ]] || [[ "$1" != "--keep_binaries" ]]; then
-    git/update.sh || exit 1
+git/update.sh || exit 1
 
+if [[ -z "$1" ]] || [[ "$1" != "--keep_common_binaries" ]]; then
     build/dappctrl.sh || exit 1
     build/dapp-installer.sh || exit 1
-    build/dapp-openvpn.sh || exit 1
     build/dapp-gui.sh   "package-mac" \
                         "${DAPP_GUI_DIR}/${DAPP_GUI_PACKAGE_MAC}/${DAPP_GUI_PACKAGE_MAC_BINARY_NAME}/." \
                         "${app_dir}/${DAPP_INSTALLER_GUI_DIR}/${DAPP_INSTALLER_GUI_BINARY_NAME}" \
@@ -191,6 +190,7 @@ if [[ -z "$1" ]] || [[ "$1" != "--keep_binaries" ]]; then
                         || exit 1
 fi
 
+build/dapp-openvpn.sh || exit 1
 
 copy_ctrl
 copy_product
@@ -206,4 +206,5 @@ build/bitrock-installer.sh  "${BITROCK_INSTALLER_BIN_MAC}/builder" \
                             "" \
                             "${bin_dir}" \
                             "${VPN_MAC_OUTPUT_DIR}" \
+                            "privatix_osx_x64_${VERSION_TO_SET_IN_BUILDER}_installer" \
                             || exit 1

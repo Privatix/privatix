@@ -12,5 +12,5 @@ fi
 #
 if [ "$TRAVIS_OS_NAME" = "osx" ]; then
     ${TRAVIS_BUILD_DIR}/build/unix/vpn_mac.sh || exit 1
-    ${TRAVIS_BUILD_DIR}/build/unix/proxy_mac.sh --keep_binaries || exit 1
+    ${TRAVIS_BUILD_DIR}/build/unix/proxy_mac.sh --keep_common_binaries || exit 1
 fi

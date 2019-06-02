@@ -75,11 +75,11 @@ The package will be created at `.bin/installbuilder/out` folder.
 
 #### Options
 
-You can use key `--keep_binaries` for prevent git update and build binaries operations.
+You can use key `--keep_common_binaries` for prevent build common binaries.
 
 Example:
 ```bash
-./proxy_mac.sh --keep_binaries
+./proxy_mac.sh --keep_common_binaries
 ```
 ## Ubuntu
 

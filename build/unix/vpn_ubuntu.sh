@@ -139,12 +139,11 @@ copy_utils()
 
 clear
 
-if [[ -z "$1" ]] || [[ "$1" != "--keep_binaries" ]]; then
-    git/update.sh || exit 1
+git/update.sh || exit 1
 
+if [[ -z "$1" ]] || [[ "$1" != "--keep_common_binaries" ]]; then
     build/dappctrl.sh || exit 1
     build/dapp-installer.sh || exit 1
-    build/dapp-openvpn.sh || exit 1
     build/dapp-gui.sh   "package-linux" \
                         "${DAPP_GUI_DIR}/${DAPP_GUI_PACKAGE_LINUX}/." \
                         "${app_dir}/${DAPP_INSTALLER_GUI_DIR}/" \
@@ -153,6 +152,8 @@ if [[ -z "$1" ]] || [[ "$1" != "--keep_binaries" ]]; then
                         || exit 1
 fi
 
+build/dapp-openvpn.sh || exit 1
+
 copy_ctrl
 copy_product
 copy_utils
@@ -160,6 +161,7 @@ copy_utils
 build/container_ubuntu.sh "${installer_bin_dir}" || exit 1
 
 copy_installer
+#deb_package_dir="privatix_ubuntu_x64_${VERSION_TO_SET_IN_BUILDER}_cli"
 
 build/bitrock-installer.sh  "${BITROCK_INSTALLER_BIN_LINUX}/builder" \
                             "linux-x64" \
@@ -168,6 +170,7 @@ build/bitrock-installer.sh  "${BITROCK_INSTALLER_BIN_LINUX}/builder" \
                             "s/<requireInstallationByRootUser>0/<requireInstallationByRootUser>1/g" \
                             "${bin_dir}" \
                             "${VPN_UBUNTU_OUTPUT_DIR}" \
+                            "privatix_ubuntu_x64_${VERSION_TO_SET_IN_BUILDER}_installer" \
                             || exit 1
 
 build/deb.sh "${installer_bin_dir}" \
