@@ -188,6 +188,7 @@ function new-package {
         $dappproxybin = (Get-Item "$gopath\bin\dapp-proxy.exe").FullName
         $dappproxyinst = (Get-Item "$gopath\bin\dappproxy-inst.exe").FullName
         $dappproxytemplatesFolder = (Get-Item "$wrkdir\src\github.com\privatix\dapp-proxy\product\template").FullName
+        $dappproxybinFolder = (Get-Item "$wrkdir\src\github.com\privatix\dapp-proxy\product\bin").FullName
         $dappproxyconfigFolder = (Get-Item "$wrkdir\src\github.com\privatix\dapp-proxy\product\config").FullName
 
 
@@ -263,6 +264,7 @@ function new-package {
     }
     if ($product -eq 'proxy') {
         Copy-Item -Path "$dappproxytemplatesFolder\*" -Destination "$prodInstancePath\template" -Recurse -Force
+        Copy-Item -Path "$dappproxybinFolder\*" -Destination "$prodInstancePath\bin" -Recurse -Force
     }
     #endregion
 
