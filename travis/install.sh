@@ -12,7 +12,7 @@ if [ "$TRAVIS_OS_NAME" = "linux" ]; then
     #
     # download
     # https://installbuilder.bitrock.com/installbuilder-enterprise-19.5.0-linux-x64-installer.run
-    downloading_binary=installbuilder-professional-${BITROCK_VERSION}-linux-x64-installer.run
+    downloading_binary=installbuilder-enterprise-${BITROCK_VERSION}-linux-x64-installer.run
 
     wget https://installbuilder.bitrock.com/${downloading_binary}
     chmod u+x ./${downloading_binary}
