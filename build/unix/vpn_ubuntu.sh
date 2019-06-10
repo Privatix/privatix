@@ -46,7 +46,7 @@ copy_ctrl(){
             "${app_dir}/${DAPPCTRL}/${DAPPCTRL_FOR_INSTALLER_CONFIG}" || exit 1
 
     # scripts
-    cp -va  "${DAPP_INSTALLER_DIR}/scripts/linux/" \
+    cp -va  "${DAPP_INSTALLER_DIR}/scripts/linux/." \
             "${app_dir}/${DAPPCTRL}"
 
    "${PATCH_JSON_SH}" "${app_dir}/${DAPPCTRL}/${DAPPCTRL_FOR_INSTALLER_CONFIG}" \
