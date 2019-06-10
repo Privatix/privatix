@@ -7,9 +7,12 @@ go:
 node_js:
   - 10.13.0
 
-os:
-  - linux
-  - osx
+matrix:
+    include:
+    - os: linux
+      dist: xenial
+    - os: osx
+      osx_image: xcode10.2
 
 env:
   global:

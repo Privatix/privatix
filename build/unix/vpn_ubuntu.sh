@@ -38,7 +38,7 @@ copy_ctrl(){
     location=${DAPPCTRL_LOG//\//\\/}
     sed -i.b \
         "s/${location}/\/var\/log/g" \
-        ${DAPPCTRL_BIN}/${DAPPCTRL_FOR_INSTALLER_CONFIG}
+        ${DAPPCTRL_DIR}/${DAPPCTRL_FOR_INSTALLER_CONFIG}
 
     cp -v   "${GOPATH}/bin/${DAPPCTRL}" \
             "${app_dir}/${DAPPCTRL}/${DAPPCTRL}" || exit 1
