@@ -7,6 +7,7 @@ if [ "$TRAVIS_OS_NAME" = "linux" ]; then
 
     # install debootstrap
     sudo apt-get install debootstrap -y
+    sudo apt-get install systemd-container -y
 
     # bitrock
     #
