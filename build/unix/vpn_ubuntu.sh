@@ -38,7 +38,7 @@ copy_ctrl(){
     location=${DAPPCTRL_LOG//\//\\/}
     sed -i.b \
         "s/${location}/\/var\/log/g" \
-        ${DAPPCTRL_BIN}/${DAPPCTRL_FOR_INSTALLER_CONFIG}
+        ${DAPPCTRL_DIR}/${DAPPCTRL_FOR_INSTALLER_CONFIG}
 
     cp -v   "${GOPATH}/bin/${DAPPCTRL}" \
             "${app_dir}/${DAPPCTRL}/${DAPPCTRL}" || exit 1
@@ -46,7 +46,7 @@ copy_ctrl(){
             "${app_dir}/${DAPPCTRL}/${DAPPCTRL_FOR_INSTALLER_CONFIG}" || exit 1
 
     # scripts
-    cp -va  "${DAPP_INSTALLER_DIR}/scripts/linux/" \
+    cp -va  "${DAPP_INSTALLER_DIR}/scripts/linux/." \
             "${app_dir}/${DAPPCTRL}"
 
    "${PATCH_JSON_SH}" "${app_dir}/${DAPPCTRL}/${DAPPCTRL_FOR_INSTALLER_CONFIG}" \
