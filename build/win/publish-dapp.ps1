@@ -129,6 +129,8 @@ $ErrorActionPreference = "Stop"
 
 $vers = $version
 
+$env:GO111MODULE="on"
+
 if ($forceUpdate) {$forceUpd = 1} else {$forceUpd = 0}
 
 if (-not $PSBoundParameters.ContainsKey('wkdir')) {
