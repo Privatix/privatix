@@ -54,4 +54,6 @@ fi
 #
 if [ "$TRAVIS_OS_NAME" = "windows" ]; then
     powershell -File 'build\win\prepare-environment-travis.ps1'
+    cp "${TRAVIS_BUILD_DIR}/travis/encrypted/license.xml" \
+       "/mnt/c/installbuilder/license.xml" || exit 1
 fi
