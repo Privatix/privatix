@@ -13,3 +13,4 @@ Expand-Archive -Path ($static_art_folder + $static_artefact_zip) -DestinationPat
 Write-Host "`n Bitrock version: $env:BITROCK_VERSION `n"
 Invoke-WebRequest -URI https://installbuilder.bitrock.com/installbuilder-enterprise-$($env:BITROCK_VERSION)-windows-x64-installer.exe -OutFile .\installbuilder-installer.exe -UseBasicParsing
 .\installbuilder-installer.exe --mode unattended --prefix $bitrock_folder
+ls $bitrock_folder
