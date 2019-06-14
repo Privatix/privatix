@@ -22,3 +22,10 @@ unzip ${TRAVIS_BUILD_DIR}/travis/encrypted.zip \
 if [ "$TRAVIS_OS_NAME" = "linux" ]; then
     sudo apt-get update
 fi
+
+#
+# windows
+#
+if [ "$TRAVIS_OS_NAME" = "windows" ]; then
+    powershell -Command "Set-ExecutionPolicy Bypass"
+fi

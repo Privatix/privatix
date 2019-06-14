@@ -45,6 +45,13 @@ if [ "$TRAVIS_OS_NAME" = "osx" ]; then
     "./${bitrock_installer}/${bitrock_installer}.app/Contents/MacOS/installbuilder.sh" --mode unattended || exit 1
 
     # add license
-    cp      "${TRAVIS_BUILD_DIR}/travis/encrypted/license.xml" \
-            "${BITROCK_INSTALLER_MAC}/license.xml" || exit 1
+    cp "${TRAVIS_BUILD_DIR}/travis/encrypted/license.xml" \
+       "${BITROCK_INSTALLER_MAC}/license.xml" || exit 1
+fi
+
+#
+# windows
+#
+if [ "$TRAVIS_OS_NAME" = "windows" ]; then
+    powershell -File 'build\win\prepare-environment-travis.ps1'
 fi
