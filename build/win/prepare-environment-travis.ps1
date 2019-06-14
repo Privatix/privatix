@@ -5,6 +5,7 @@ $bitrock_folder = "c:\installbuilder"
 
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 # Prepare static artifacts
+mkdir $static_art_folder
 Invoke-WebRequest -Uri $static_artefacts_url -OutFile ($static_art_folder + $static_artefact_zip)
 Expand-Archive -Path ($static_art_folder + $static_artefact_zip) -DestinationPath $static_art_folder
 
