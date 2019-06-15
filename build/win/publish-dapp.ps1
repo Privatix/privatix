@@ -131,6 +131,11 @@ $vers = $version
 
 $env:GO111MODULE="on"
 
+$env:Path += ";$env:GOPATH\bin"
+$env:Path += ";C:\Program Files\nodejs"
+# Bitrock builder Travis location
+$env:Path += ";C:\installbuilder\bin"
+
 if ($forceUpdate) {$forceUpd = 1} else {$forceUpd = 0}
 
 if (-not $PSBoundParameters.ContainsKey('wkdir')) {

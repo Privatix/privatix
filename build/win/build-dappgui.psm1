@@ -72,6 +72,7 @@ function build-dappgui {
     catch {
         Write-Verbose "electron-packager not found. Trying to install..."
         Invoke-Scriptblock -ScriptBlock "npm install electron-packager -g" -StderrPrefix "" -ThrowOnError
+        $env:Path += ";$env:APPDATA\npm"
     }
        
     try {
