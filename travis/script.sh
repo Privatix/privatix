@@ -27,5 +27,7 @@ if [ "$TRAVIS_OS_NAME" = "windows" ]; then
     powershell -Command '.\installbuilder-installer.exe --mode unattended --prefix c:\installbuilder'
     powershell -Command 'ls c:\installbuilder'
     powershell -Command 'Copy-Item -Path "c:\Users\travis\gopath\src\github.com\Privatix\privatix\travis\encrypted\license.xml" -Destination "c:\installbuilder\"'
-    powershell -File 'build\win\publish-dapp.ps1' -staticArtefactsDir 'C:\art\' -product vpn -gitpull -installer -version "0.23.2" -prodConfig -Verbose
+    powershell -Command 'mkdir c:\build' 
+    powershell -File 'build\win\publish-dapp.ps1' -wkdir 'c:\build' -staticArtefactsDir 'C:\art\' -product vpn -gitpull -installer -version ${VERSION_TO_SET_IN_BUILDER} -prodConfig -Verbose
+    powershell -Command 'ls C:\build\project\out\'
 fi
