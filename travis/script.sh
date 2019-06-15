@@ -23,9 +23,8 @@ if [ "$TRAVIS_OS_NAME" = "windows" ]; then
     powershell -Command 'wget http://artdev.privatix.net/artefacts_win.zip -outFile c:/art/artefacts_win.zip'
     powershell -Command 'Expand-Archive -Path c:\art\artefacts_win.zip -DestinationPath C:\art'
     powershell -Command 'curl.exe -L "https://installbuilder.bitrock.com/installbuilder-enterprise-19.5.0-windows-x64-installer.exe" --output .\installbuilder-installer.exe'
-    #powershell -Command '[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; wget -URI https://installbuilder.bitrock.com/installbuilder-enterprise-19.5.0-windows-x64-installer.exe -OutFile .\installbuilder-installer.exe -UseBasicParsing'
+    powershell -Command 'mkdir c:\installbuilder'
     powershell -Command '.\installbuilder-installer.exe --mode unattended --prefix c:\installbuilder'
     powershell -Command 'ls c:\installbuilder'
-    #powershell -File 'build\win\prepare-environment-travis.ps1'
     powershell -Command 'Copy-Item -Path "c:\Users\travis\gopath\src\github.com\Privatix\privatix\travis\encrypted\license.xml" -Destination "c:\installbuilder\"'
 fi
