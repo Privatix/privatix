@@ -14,5 +14,6 @@ Write-Host "`n Bitrock version: $env:BITROCK_VERSION `n"
 $bitrock_url = "https://installbuilder.bitrock.com/installbuilder-enterprise-$($env:BITROCK_VERSION)-windows-x64-installer.exe"
 Write-Host "Downloading Bitirock from: $bitrock_url"
 Invoke-WebRequest -URI $bitrock_url -OutFile .\installbuilder-installer.exe -UseBasicParsing
+mkdir $bitrock_folder
 .\installbuilder-installer.exe --mode unattended --prefix $bitrock_folder
 ls $bitrock_folder
