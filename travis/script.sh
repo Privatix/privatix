@@ -25,7 +25,7 @@ if [ "$TRAVIS_OS_NAME" = "windows" ]; then
     powershell -Command 'curl.exe -L "https://installbuilder.bitrock.com/installbuilder-enterprise-19.5.0-windows-x64-installer.exe" --output .\installbuilder-installer.exe'
     #powershell -Command '[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; wget -URI https://installbuilder.bitrock.com/installbuilder-enterprise-19.5.0-windows-x64-installer.exe -OutFile .\installbuilder-installer.exe -UseBasicParsing'
     powershell -Command '.\installbuilder-installer.exe --mode unattended --prefix c:\installbuilder'
+    powershell -Command 'ls c:\installbuilder'
     #powershell -File 'build\win\prepare-environment-travis.ps1'
-    cp "${TRAVIS_BUILD_DIR}/travis/encrypted/license.xml" \
-       "/mnt/c/installbuilder/license.xml" || exit 1
+    powershell -Command 'Copy-Item -Path "c:\Users\travis\gopath\src\github.com\Privatix\privatix\travis\encrypted\license.xml" -Destination "c:\installbuilder\"'
 fi
