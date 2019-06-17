@@ -4,8 +4,8 @@
 cd "${TRAVIS_BUILD_DIR}/build/unix"
 . "./build.global.config"
 
-git_branch_name=mod=${GIT_BRANCH//[\/ -]/_}
-destination="(date +%Y_%m_%d)-build${TRAVIS_BUILD_NUMBER}"
+git_branch_name=${GIT_BRANCH//[\/ -]/_}
+destination="$(date +%Y_%m_%d)-build${TRAVIS_BUILD_NUMBER}"
 
 deploy_file="${TRAVIS_BUILD_DIR}/travis/encrypted/deploy.txt"
 
