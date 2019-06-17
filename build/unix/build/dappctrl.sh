@@ -8,4 +8,5 @@ echo -----------------------------------------------------------------------
 echo build dappctrl
 echo -----------------------------------------------------------------------
 
+export VERSION_TO_SET_IN_BUILDER
 "${DAPPCTRL_DIR}/scripts/build.sh" || exit 1
