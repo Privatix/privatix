@@ -5,15 +5,16 @@ cd "${root_dir}"
 
 . ./build.global.config
 
-app_dir="${PACKAGE_BIN_MAC}/${APP}"
+bin_dir=${BIN}/proxy/mac
+installer_bin_dir=${bin_dir}/mac-dapp-installer
+app_dir="${installer_bin_dir}/${APP}"
 
 clear(){
-     rm -rf "${PACKAGE_INSTALL_BUILDER_BIN}"
-#    rm -rf "${ARTEFACTS_BIN}"
+    rm -rf "${bin_dir}"
+    rm -rf "${PROXY_MAC_OUTPUT_DIR}"
 
 
-    mkdir -p "${PACKAGE_BIN_MAC}" || exit 1
-    mkdir -p "${PACKAGE_INSTALL_BUILDER_BIN}/${INSTALL_BUILDER_PROJECT}" || exit 1
+    mkdir -p "${installer_bin_dir}" || exit 1
 
     mkdir -p "${app_dir}/${DAPPCTRL}" || exit 1
     mkdir -p "${app_dir}/${LOG}" || exit 1
@@ -24,6 +25,8 @@ clear(){
     mkdir -p "${app_dir}/${PRODUCT}/${PROXY_PRODUCT_ID}/${LOG}" || exit 1
     mkdir -p "${app_dir}/${PRODUCT}/${PROXY_PRODUCT_ID}/${PRODUCT_TEMPLATE}" || exit 1
     mkdir -p "${app_dir}/${DAPP_INSTALLER_GUI_DIR}/${DAPP_INSTALLER_GUI_BINARY_NAME}" || exit 1
+
+    mkdir -p "${PROXY_MAC_OUTPUT_DIR}" || exit 1
 }
 
 zip_package(){
@@ -32,8 +35,8 @@ zip_package(){
     echo -----------------------------------------------------------------------
     echo Please wait, it takes time...
 
-    echo "${PACKAGE_BIN_MAC}/${APP}"
-    cd "${PACKAGE_BIN_MAC}/${APP}"
+    echo "${installer_bin_dir}/${APP}"
+    cd "${installer_bin_dir}/${APP}"
 
     zip -qr "../${APP_ZIP}" * || exit 1
 
@@ -93,8 +96,8 @@ copy_artefacts()
 
 
     if ! [ -f "${ARTEFACTS_LOCATION}" ]; then
-        echo Downloading: "${ARTEFACTS_ZIP_URL}"
-        curl -o "${ARTEFACTS_LOCATION}" "${ARTEFACTS_ZIP_URL}" || exit 1
+        echo Downloading: "${ARTEFACTS_MAC_ZIP_URL}"
+        curl -o "${ARTEFACTS_LOCATION}" "${ARTEFACTS_MAC_ZIP_URL}" || exit 1
     fi
 
     if [[ ! -d "${ARTEFACTS_BIN}" ]]; then
@@ -138,10 +141,10 @@ copy_installer(){
 
 
     cp -v "${GOPATH}/bin/${DAPP_INSTALLER}" \
-          "${PACKAGE_BIN_MAC}/${DAPP_INSTALLER}" || exit 1
+          "${installer_bin_dir}/${DAPP_INSTALLER}" || exit 1
 
     cp -v "${DAPP_INSTALLER_DIR}/${DAPP_INSTALLER_CONFIG}" \
-          "${PACKAGE_BIN_MAC}/${DAPP_INSTALLER_CONFIG}" || exit 1
+          "${installer_bin_dir}/${DAPP_INSTALLER_CONFIG}" || exit 1
 
     echo && echo done
 }
@@ -150,15 +153,18 @@ clear
 
 git/update.sh || exit 1
 
-build/dappctrl.sh || exit 1
-build/dapp-installer.sh || exit 1
+if [[ -z "$1" ]] || [[ "$1" != "--keep_common_binaries" ]]; then
+    build/dappctrl.sh || exit 1
+    build/dapp-installer.sh || exit 1
+    build/dapp-gui.sh   "package-mac" \
+                        "${DAPP_GUI_DIR}/${DAPP_GUI_PACKAGE_MAC}/${DAPP_GUI_PACKAGE_MAC_BINARY_NAME}/." \
+                        "${app_dir}/${DAPP_INSTALLER_GUI_DIR}/${DAPP_INSTALLER_GUI_BINARY_NAME}" \
+                        "${DAPP_GUI_SETTINGS_JSON_MAC}" \
+                        "proxy_osx" \
+                        || exit 1
+fi
+
 build/dapp-proxy.sh || exit 1
-build/dapp-gui.sh   "package-mac" \
-                    "${DAPP_GUI_DIR}/${DAPP_GUI_PACKAGE_MAC}/${DAPP_GUI_PACKAGE_MAC_BINARY_NAME}/." \
-                    "${app_dir}/${DAPP_INSTALLER_GUI_DIR}/${DAPP_INSTALLER_GUI_BINARY_NAME}" \
-                    "${DAPP_GUI_SETTINGS_JSON_MAC}" \
-                    "${app_dir}" \
-                    || exit 1
 
 copy_ctrl
 copy_product
@@ -171,4 +177,7 @@ build/bitrock-installer.sh  "${BITROCK_INSTALLER_BIN_MAC}/builder" \
                             "osx" \
                             "${PROXY_PRODUCT_ID}" \
                             "${PROXY_PRODUCT_NAME}" \
+                            "" \
+                            "${bin_dir}" \
+                            "${PROXY_MAC_OUTPUT_DIR}" \
                             || exit 1

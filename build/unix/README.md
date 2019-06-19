@@ -54,7 +54,7 @@ To clone all required repositories, execute the following script:
 
 ## Mac
 
-Ensure, that you have artifacts (openvpn, pgsql, tor), located at `$ARTEFACTS_ZIP_URL`
+Ensure, that you have artifacts (openvpn, pgsql, tor), located at `$ARTEFACTS_MAC_ZIP_URL`
 (`~/artefacts.zip` by default)
 
 To create a package, execute the following script:
@@ -73,6 +73,14 @@ To create a package, execute the following script:
 
 The package will be created at `.bin/installbuilder/out` folder.
 
+#### Options
+
+You can use key `--keep_common_binaries` for prevent build common binaries.
+
+Example:
+```bash
+./proxy_mac.sh --keep_common_binaries
+```
 ## Ubuntu
 
 To create a package, execute the following script:

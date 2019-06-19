@@ -6,13 +6,15 @@ cd "${root_dir}"
 . ./build.global.config
 
 
-app_dir="${PACKAGE_BIN_LINUX}/${APP}"
+bin_dir=${BIN}/vpn/ubuntu
+installer_bin_dir=${bin_dir}/linux-dapp-installer
+app_dir="${installer_bin_dir}/${APP}"
 
 clear(){
-    sudo rm -rf "${PACKAGE_INSTALL_BUILDER_BIN}"
+    sudo rm -rf "${bin_dir}"
+    rm -rf "${VPN_UBUNTU_OUTPUT_DIR}"
     
-    mkdir -p "${PACKAGE_BIN_LINUX}" || exit 1
-    mkdir -p "${PACKAGE_INSTALL_BUILDER_BIN}/${INSTALL_BUILDER_PROJECT}" || exit 1
+    mkdir -p "${installer_bin_dir}" || exit 1
 
     mkdir -p "${app_dir}/${DAPPCTRL}" || exit 1
     mkdir -p "${app_dir}/${PRODUCT}/${VPN_PRODUCT_ID}/${BIN}" || exit 1
@@ -22,6 +24,8 @@ clear(){
     mkdir -p "${app_dir}/${PRODUCT}/${VPN_PRODUCT_ID}/${PRODUCT_TEMPLATE}" || exit 1
     mkdir -p "${app_dir}/${DAPP_INSTALLER_GUI_DIR}" || exit 1
     mkdir -p "${app_dir}/${UTIL}" || exit 1
+
+    mkdir -p "${VPN_UBUNTU_OUTPUT_DIR}"
 }
 
 copy_ctrl(){
@@ -34,18 +38,16 @@ copy_ctrl(){
     location=${DAPPCTRL_LOG//\//\\/}
     sed -i.b \
         "s/${location}/\/var\/log/g" \
-        ${DAPPCTRL_BIN}/${DAPPCTRL_FOR_INSTALLER_CONFIG}
+        ${DAPPCTRL_DIR}/${DAPPCTRL_FOR_INSTALLER_CONFIG}
 
     cp -v   "${GOPATH}/bin/${DAPPCTRL}" \
             "${app_dir}/${DAPPCTRL}/${DAPPCTRL}" || exit 1
     cp -v   "${DAPPCTRL_DIR}/${DAPPCTRL_CONFIG}" \
             "${app_dir}/${DAPPCTRL}/${DAPPCTRL_FOR_INSTALLER_CONFIG}" || exit 1
-    cp -v   "${DAPP_INSTALLER_DIR}/${DAPP_INSTALLER_SCRIPTS_DIR_LINUX}/dappctrl.service" \
-            "${app_dir}/${DAPPCTRL}/dappctrl.service" || exit 1
-    cp -v   "${DAPP_INSTALLER_DIR}/${DAPP_INSTALLER_SCRIPTS_DIR_LINUX}/post-stop.sh" \
-            "${app_dir}/${DAPPCTRL}/post-stop.sh" || exit 1
-    cp -v   "${DAPP_INSTALLER_DIR}/${DAPP_INSTALLER_SCRIPTS_DIR_LINUX}/pre-start.sh" \
-            "${app_dir}/${DAPPCTRL}/pre-start.sh" || exit 1
+
+    # scripts
+    cp -va  "${DAPP_INSTALLER_DIR}/scripts/linux/." \
+            "${app_dir}/${DAPPCTRL}"
 
    "${PATCH_JSON_SH}" "${app_dir}/${DAPPCTRL}/${DAPPCTRL_FOR_INSTALLER_CONFIG}" \
                                           '["FileLog"]["Level"]="'"${DAPPCTRL_LOG_LEVEL}"'"' \
@@ -112,10 +114,10 @@ copy_installer(){
     echo -----------------------------------------------------------------------
 
     cp -v "${GOPATH}/bin/${DAPP_INSTALLER}" \
-          "${PACKAGE_BIN_LINUX}/${DAPP_INSTALLER}" || exit 1
+          "${installer_bin_dir}/${DAPP_INSTALLER}" || exit 1
 
     cp -v "${DAPP_INSTALLER_DIR}/${DAPP_INSTALLER_LINUX_CONFIG}" \
-          "${PACKAGE_BIN_LINUX}/${DAPP_INSTALLER_CONFIG}" || exit 1
+          "${installer_bin_dir}/${DAPP_INSTALLER_CONFIG}" || exit 1
 
     echo && echo done
 }
@@ -139,27 +141,37 @@ clear
 
 git/update.sh || exit 1
 
-build/dappctrl.sh || exit 1
-build/dapp-installer.sh || exit 1
+if [[ -z "$1" ]] || [[ "$1" != "--keep_common_binaries" ]]; then
+    build/dappctrl.sh || exit 1
+    build/dapp-installer.sh || exit 1
+    build/dapp-gui.sh   "package-linux" \
+                        "${DAPP_GUI_DIR}/${DAPP_GUI_PACKAGE_LINUX}/." \
+                        "${app_dir}/${DAPP_INSTALLER_GUI_DIR}/" \
+                        "${DAPP_GUI_SETTINGS_JSON_LINUX}" \
+                        "ubuntu" \
+                        || exit 1
+fi
+
 build/dapp-openvpn.sh || exit 1
-build/dapp-gui.sh   "package-linux" \
-                    "${DAPP_GUI_DIR}/${DAPP_GUI_PACKAGE_LINUX}/." \
-                    "${app_dir}/${DAPP_INSTALLER_GUI_DIR}/" \
-                    "${DAPP_GUI_SETTINGS_JSON_LINUX}" \
-                    "ubuntu" \
-                    || exit 1
 
 copy_ctrl
 copy_product
 copy_utils
 
-build/container_ubuntu.sh || exit 1
+build/container_ubuntu.sh "${installer_bin_dir}" || exit 1
 
 copy_installer
+#deb_package_dir="privatix_ubuntu_x64_${VERSION_TO_SET_IN_BUILDER}_cli"
 
 build/bitrock-installer.sh  "${BITROCK_INSTALLER_BIN_LINUX}/builder" \
                             "linux-x64" \
                             "${VPN_PRODUCT_ID}" \
                             "${VPN_PRODUCT_NAME}" \
-                             "s/<requireInstallationByRootUser>0/<requireInstallationByRootUser>1/g" \
+                            "s/<requireInstallationByRootUser>0/<requireInstallationByRootUser>1/g" \
+                            "${bin_dir}" \
+                            "${VPN_UBUNTU_OUTPUT_DIR}" \
                             || exit 1
+
+build/deb.sh "${installer_bin_dir}" \
+             "${VPN_UBUNTU_OUTPUT_DIR}" \
+             || exit 1

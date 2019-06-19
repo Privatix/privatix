@@ -4,36 +4,36 @@ root_dir="$(cd `dirname $0` && pwd)/.."
 cd ${root_dir}
 . ./build.global.config
 
+project_xml=Privatix.xml
+project_name=project
+#Error: Cannot add /Users/drew2a/Projects/github.com/Privatix/privatix/build/unix/bin/proxy/mac/mac-dapp-installer/app.zip to packed archive. File does not exist
 build(){
     echo -----------------------------------------------------------------------
     echo build bitrock installer
     echo -----------------------------------------------------------------------
 
     # copy project
-    cp -va "${DAPP_INSTALLER_DIR}/${INSTALL_BUILDER}/${INSTALL_BUILDER_PROJECT}" \
-           "${PACKAGE_INSTALL_BUILDER_BIN}" || exit 1
-    cd "${PACKAGE_INSTALL_BUILDER_BIN}/${INSTALL_BUILDER_PROJECT}" || exit 1
+    cp -va "${DAPP_INSTALLER_DIR}/installbuilder/${project_name}" \
+           "$6" || exit 1
+    cd "$6/${project_name}" || exit 1
 
     # make replacement in project.xml
-    [[ ! -z "$5" ]] && sed -i.b "$5" ${INSTALL_BUILDER_PROJECT_XML}
+    [[ ! -z "$5" ]] && sed -i.b "$5" ${project_xml}
 
     # build installer
-    "$1" build "${INSTALL_BUILDER_PROJECT_XML}" $2 \
+    "$1" build "${project_xml}" $2 \
                             --setvars project.version=${VERSION_TO_SET_IN_BUILDER} \
                                       product_id="$3" \
                                       product_name="$4" \
+                                      forceUpdate="${DAPP_INSTALLER_FORCE_UPDATE}" \
+                                      project.outputDirectory="$7" \
                             || exit 1
 
-    cd "${root_dir}"
-
-    # move installer to out
-    mv -v "${PACKAGE_INSTALL_BUILDER_BIN}/${INSTALL_BUILDER_PROJECT}/out" \
-          "${PACKAGE_INSTALL_BUILDER_BIN}" || exit 1
-    cd "${PACKAGE_INSTALL_BUILDER_BIN}/out"
+    cd "$7"
 
     echo && echo
     ls -d $PWD/*
     echo && echo done
 }
 
-build "$1" "$2" "$3" "$4" "$5"
+build "$1" "$2" "$3" "$4" "$5" "$6" "$7"
