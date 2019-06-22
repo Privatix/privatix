@@ -54,6 +54,10 @@
 .PARAMETER forceUpdate
     If specified, installer will force update, instead of upgrade, meaning only clean install is possible.
 
+.PARAMETER installerOutDir
+    Where resulting executable windows installer is placed. If installer option is set.
+    
+
 .EXAMPLE
     .\publish-dapp.ps1 -wkdir "C:\build" -staticArtefactsDir "C:\static_art"
 
@@ -121,7 +125,8 @@ param(
     [string]$dappproxybranch = "develop",
     [string]$privatixbranch = "develop",
     [switch]$prodConfig,
-    [switch]$forceUpdate
+    [switch]$forceUpdate,
+    [string]$installerOutDir
     
 )
 
@@ -142,6 +147,10 @@ if (-not $PSBoundParameters.ContainsKey('wkdir')) {
     $wkdir = $($ENV:SystemDrive) + "\build\" + (Get-Date -Format "MMdd_HHmm")
 }
 if (!(Test-Path $wkdir)) {New-Item -Path $wkdir -ItemType Directory | Out-Null}
+
+if (-not $installerOutDir) {
+    $installerOutDir = "$wkdir\project\out\$($product.tolower())_win"
+}
 
 if ($PSBoundParameters.ContainsKey('Verbose')) {
     $global:VerbosePreference = [System.Management.Automation.ActionPreference]::Continue
@@ -215,10 +224,10 @@ if ($installer) {
     new-package -wrkdir $wkdir -staticArtefactsDir $staticArtefactsDir -installer -privatixbranch $privatixbranch -gitpull:$gitpull -prodConfig:$prodConfig.IsPresent -product:$product
 
     if ($vers) {
-        Invoke-Expression "builder-cli.exe build $wkdir\project\Privatix.xml windows --setvars project.version=$vers product_id=$productID product_name=$product forceUpdate=$forceUpd"
+        Invoke-Expression "builder-cli.exe build $wkdir\project\Privatix.xml windows --setvars project.version=$vers product_id=$productID product_name=$product forceUpdate=$forceUpd project.outputDirectory=$installerOutDir"
     } else {
         Write-Warning "no version specified for installer"
-        Invoke-Expression "builder-cli.exe build $wkdir\project\Privatix.xml windows --setvars project.version=undefined product_id=$productID product_name=$product forceUpdate=$forceUpd"
+        Invoke-Expression "builder-cli.exe build $wkdir\project\Privatix.xml windows --setvars project.version=undefined product_id=$productID product_name=$product forceUpdate=$forceUpd project.outputDirectory=$installerOutDir"
     }
 }
 else {
