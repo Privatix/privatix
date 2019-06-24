@@ -40,5 +40,7 @@ if [ "$TRAVIS_OS_NAME" = "windows" ]; then
     echo "---------------"
     ls -Al /
     echo "---------------"
-    find /mnt -maxdepth 2 -type d -exec ls -ld "{}" \;
+    find / -maxdepth 3 -type d -exec ls -ld "{}" \;
+    echo "---------------"
+    find /c -maxdepth 2 -type d -exec ls -ld "{}" \;
 fi
