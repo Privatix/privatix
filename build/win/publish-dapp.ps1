@@ -135,7 +135,7 @@ $ErrorActionPreference = "Stop"
 $vers = $version
 
 $env:GO111MODULE="on"
-ls "C:\Program Files\nodejs"
+
 $env:Path += ";$env:GOPATH\bin"
 $env:Path += ";C:\Program Files\nodejs"
 # Bitrock builder Travis location

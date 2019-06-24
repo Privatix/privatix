@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 
 # add variables to current process
-cd "${TRAVIS_BUILD_DIR}/build/unix"
-. "./build.global.config"
 
 destination="$(date +%Y_%m_%d)_build${TRAVIS_BUILD_NUMBER}"
 
@@ -16,6 +14,9 @@ pass=$(cat "${deploy_file}" | head -3 | tail -1)
 # ubuntu
 #
 if [ "$TRAVIS_OS_NAME" = "linux" ]; then
+    cd "${TRAVIS_BUILD_DIR}/build/unix"
+    . "./build.global.config"
+
     (
     echo "
     cd travis
@@ -31,6 +32,9 @@ fi
 # mac
 #
 if [ "$TRAVIS_OS_NAME" = "osx" ]; then
+    cd "${TRAVIS_BUILD_DIR}/build/unix"
+    . "./build.global.config"
+    
     (
     echo "
     cd travis

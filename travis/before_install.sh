@@ -35,5 +35,10 @@ fi
 #
 if [ "$TRAVIS_OS_NAME" = "windows" ]; then
     powershell -Command "Set-ExecutionPolicy Bypass"
-    powershell -Command "choco install nodejs -y"
+    #powershell -Command "choco install nodejs -y"
+    powershell -Command 'mkdir c:\build'
+    echo "---------------"
+    ls -Al /
+    echo "---------------"
+    find /mnt -maxdepth 2 -type d -exec ls -ld "{}" \;
 fi
