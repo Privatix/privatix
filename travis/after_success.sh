@@ -43,3 +43,22 @@ if [ "$TRAVIS_OS_NAME" = "osx" ]; then
     ") | sftp -oStrictHostKeyChecking=no -i "${TRAVIS_BUILD_DIR}/travis/encrypted/travis.ed25519" ${user}@${host}
 fi
 
+if [ "$TRAVIS_OS_NAME" = "windows" ]; then
+    cd "${TRAVIS_BUILD_DIR}/build/win"
+    . "./build.win.global.config"
+    
+    echo ${VPN_WIN_OUTPUT_DIR}
+    echo ${VPN_WIN_INPUT_DIR}
+    ls ${VPN_WIN_INPUT_DIR}
+    ls /mnt/c/build/project/out/
+    
+    (
+    . 
+    echo "
+    cd travis
+    mkdir ${destination}
+    cd ${destination}
+    mkdir $(basename "${VPN_WIN_OUTPUT_DIR}")
+    put -r ${VPN_WIN_INPUT_DIR}
+    ") | sftp -oStrictHostKeyChecking=no -i "${TRAVIS_BUILD_DIR}/travis/encrypted/travis.ed25519" ${user}@${host}
+fi
