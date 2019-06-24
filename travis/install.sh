@@ -52,8 +52,8 @@ fi
 if [ "$TRAVIS_OS_NAME" = "windows" ]; then
     # download and unpack static artefacts
     powershell -Command 'mkdir c:\art'
-    powershell -Command 'wget http://artdev.privatix.net/artefacts_win.zip -outFile c:/art/artefacts_win.zip'
-    powershell -Command 'Expand-Archive -Path c:\art\artefacts_win.zip -DestinationPath C:\art'
+    powershell -Command 'wget http://artdev.privatix.net/artefacts_win.zip -outFile c:\art\artefacts_win.zip'
+    powershell -Command 'Expand-Archive -Path c:\art\artefacts_win.zip -DestinationPath c:\art'
     # download and install Bitrock installer
     powershell -Command 'mkdir c:\installbuilder'
     powershell -Command 'curl.exe -L "https://installbuilder.bitrock.com/installbuilder-enterprise-19.5.0-windows-x64-installer.exe" --output .\installbuilder-installer.exe'
