@@ -51,11 +51,6 @@ if [ "$TRAVIS_OS_NAME" = "windows" ]; then
     cd "${TRAVIS_BUILD_DIR}/build/win"
     . "./build.win.global.config"
     
-    echo ${VPN_WIN_OUTPUT_DIR}
-    echo ${VPN_WIN_INPUT_DIR}
-    ls ${VPN_WIN_INPUT_DIR}
-    ls /mnt/c/build/project/out/
-    
     (
     . 
     echo "
