@@ -32,6 +32,11 @@ copy(){
     cp -v "${DAPP_INSTALLER_DIR}/${DAPP_INSTALLER_LINUX_CONFIG}" \
           "${deb_package_bin_dir}/${DAPP_INSTALLER_CONFIG}" || exit 1
 
+    echo "${DAPP_INSTALLER_DIR}/scripts/autooffer/ ->"
+    echo "${deb_package_bin_dir}"
+    cp -r "${DAPP_INSTALLER_DIR}/scripts/autooffer/" \
+          "${deb_package_bin_dir}" || exit 1
+
     cp -v "$1/app.tar.xz" \
           "${deb_package_bin_dir}/app.tar.xz" || exit 1
 
@@ -42,10 +47,6 @@ copy(){
     echo "sudo ./dapp-installer remove --workdir /var/lib/container/agent/" \
 	      >> "${deb_package_bin_dir}/remove.sh" &&
     chmod +x "${deb_package_bin_dir}/remove.sh" || exit 1
-
-    echo "wget https://raw.githubusercontent.com/Privatix/dapp-installer/master/scripts/autooffer/autooffer.py " \
-	      >> "${deb_package_bin_dir}/get_autooffer.sh" &&
-    chmod +x "${deb_package_bin_dir}/get_autooffer.sh" || exit 1
 
     echo "sudo python /opt/privatix_installer/autooffer.py" \
 	      >> "${deb_package_bin_dir}/publish_offering.sh" &&
