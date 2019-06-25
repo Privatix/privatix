@@ -21,10 +21,6 @@ fi
 if [ "$TRAVIS_OS_NAME" = "windows" ]; then    
     cd "${TRAVIS_BUILD_DIR}/build/win"
     . "./build.win.global.config"
-    powershell -Command 'Get-Location'
-    powershell -Command "mkdir ${BUILD_WIN_DIR}"
-    powershell -Command "echo ${BUILD_WIN_DIR}"
-    powershell -Command "ls ${BUILD_WIN_DIR}"
-    powershell -File 'build\win\publish-dapp.ps1' -wkdir "${BUILD_WIN_DIR}" -staticArtefactsDir "${ARTEFACTS_WIN_LOCATION}" -product vpn -installer -version ${VERSION_TO_SET_IN_BUILDER} -forceUpdate:${DAPP_INSTALLER_FORCE_UPDATE} -prodConfig -Verbose -dappguibranch "${GIT_BRANCH}" -dappctrlbranch "${GIT_BRANCH}" -dappinstbranch "${GIT_BRANCH}" -dappopenvpnbranch "${GIT_BRANCH}"
-    #powershell -File 'build\win\publish-dapp.ps1' -wkdir "${BUILD_WIN_DIR}" -staticArtefactsDir "${ARTEFACTS_WIN_LOCATION}" -product proxy -installer -version ${VERSION_TO_SET_IN_BUILDER} -forceUpdate:${DAPP_INSTALLER_FORCE_UPDATE} -prodConfig -Verbose -dappguibranch "${GIT_BRANCH}" -dappctrlbranch "${GIT_BRANCH}" -dappinstbranch "${GIT_BRANCH}" -dappproxybranch "${GIT_BRANCH}"
+    powershell -File '.\publish-dapp.ps1' -wkdir "${BUILD_WIN_DIR}" -staticArtefactsDir "${ARTEFACTS_WIN_LOCATION}" -product vpn -installer -version ${VERSION_TO_SET_IN_BUILDER} -forceUpdate:${DAPP_INSTALLER_FORCE_UPDATE} -prodConfig -Verbose -dappguibranch "${GIT_BRANCH}" -dappctrlbranch "${GIT_BRANCH}" -dappinstbranch "${GIT_BRANCH}" -dappopenvpnbranch "${GIT_BRANCH}"
+    #powershell -File '.\publish-dapp.ps1' -wkdir "${BUILD_WIN_DIR}" -staticArtefactsDir "${ARTEFACTS_WIN_LOCATION}" -product proxy -installer -version ${VERSION_TO_SET_IN_BUILDER} -forceUpdate:${DAPP_INSTALLER_FORCE_UPDATE} -prodConfig -Verbose -dappguibranch "${GIT_BRANCH}" -dappctrlbranch "${GIT_BRANCH}" -dappinstbranch "${GIT_BRANCH}" -dappproxybranch "${GIT_BRANCH}"
 fi
