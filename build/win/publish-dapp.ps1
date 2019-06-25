@@ -49,10 +49,10 @@
     If version is specified, it will be passed to Bitrock and Dapp-GUI settings.json -> release.
 
 .PARAMETER prodConfig
-    If specified, dappctrl will use production config, else development config.
+    If true, dappctrl will use production config, else development config.
 
 .PARAMETER forceUpdate
-    If specified, installer will force update, instead of upgrade, meaning only clean install is possible.
+    If true, installer will force update, instead of upgrade, meaning only clean install is possible.
 
 .PARAMETER installerOutDir
     Where resulting executable windows installer is placed. If installer option is set.
@@ -91,7 +91,7 @@
     Same as above, but "master" branch is used for all components.
 
 .EXAMPLE
-    .\publish-dapp.ps1 -product proxy -staticArtefactsDir "C:\privatix\art" -installer -version "0.21.0" -gitpull -dappguibranch "master" -dappctrlbranch "master" -dappinstbranch "master" -dappopenvpnbranch "master" -privatixbranch "master" -prodConfig
+    .\publish-dapp.ps1 -product proxy -staticArtefactsDir "C:\privatix\art" -installer -version "0.21.0" -gitpull -dappguibranch "master" -dappctrlbranch "master" -dappinstbranch "master" -dappopenvpnbranch "master" -privatixbranch "master" -prodConfig $true
 
     Description
     -----------
@@ -99,7 +99,7 @@
     Note: Bitrock installer should be installed (https://installbuilder.bitrock.com/download-step-2.html) and "builder-cli.exe" added to %PATH%
 
 .EXAMPLE
-    .\publish-dapp.ps1 -wkdir "C:\build" -staticArtefactsDir "C:\static_art" -forceUpgrade
+    .\publish-dapp.ps1 -wkdir "C:\build" -staticArtefactsDir "C:\static_art" -forceUpgrade $true
 
     Description
     -----------
@@ -124,8 +124,8 @@ param(
     [string]$dappopenvpnbranch = "develop",
     [string]$dappproxybranch = "develop",
     [string]$privatixbranch = "develop",
-    [switch]$prodConfig,
-    [switch]$forceUpdate,
+    [bool]$prodConfig = $true,
+    [bool]$forceUpdate = $false,
     [string]$installerOutDir
     
 )
@@ -221,7 +221,7 @@ if ($installer) {
         exit 1
     }
     
-    new-package -wrkdir $wkdir -staticArtefactsDir $staticArtefactsDir -installer -privatixbranch $privatixbranch -gitpull:$gitpull -prodConfig:$prodConfig.IsPresent -product:$product
+    new-package -wrkdir $wkdir -staticArtefactsDir $staticArtefactsDir -installer -privatixbranch $privatixbranch -gitpull:$gitpull -prodConfig $prodConfig -product:$product
 
     if ($vers) {
         Invoke-Expression "builder-cli.exe build $wkdir\project\Privatix.xml windows --setvars project.version=$vers product_id=$productID product_name=$product forceUpdate=$forceUpd project.outputDirectory=$installerOutDir"
@@ -236,7 +236,7 @@ else {
     Write-Host "It took $($sw.Elapsed.TotalSeconds) seconds to complete" -ForegroundColor Green
     
     $sw.Restart()
-    new-package -wrkdir $wkdir -staticArtefactsDir $staticArtefactsDir -privatixbranch $privatixbranch -gitpull:$gitpull -prodConfig:$prodConfig.IsPresent -product:$product
+    new-package -wrkdir $wkdir -staticArtefactsDir $staticArtefactsDir -privatixbranch $privatixbranch -gitpull:$gitpull -prodConfig $prodConfig -product:$product
 }
 
 $TotalTime += $sw.Elapsed.TotalSeconds
