@@ -22,9 +22,9 @@
 .PARAMETER gitpull
     Make git pull before checkout for privatix repo.
 
-.PARAMETER prodConfig
-    If specified, dappctrl will use production config, else development config.
-
+.PARAMETER dappctrlConf
+    Specifes filename of dappctrl config. By default "dappctrl-dev.config.json" is used
+    
 .PARAMETER product
     Which Service plug-in to package. Can be "vpn" or "proxy"
 
