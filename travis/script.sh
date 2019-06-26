@@ -22,5 +22,9 @@ if [ "$TRAVIS_OS_NAME" = "windows" ]; then
     cd "${TRAVIS_BUILD_DIR}/build/win"
     . "./build.win.global.config"
     # TODO: resolve issue when passing ProdConfig and 
-    powershell -File '.\publish-dapp.ps1' -wkdir "${BUILD_WIN_DIR}" -staticArtefactsDir "${ARTEFACTS_WIN_LOCATION}" -product vpn -installer -version ${VERSION_TO_SET_IN_BUILDER} -forceUpdate ${DAPP_INSTALLER_FORCE_UPDATE} -dappguibranch "${GIT_BRANCH}" -dappctrlbranch "${GIT_BRANCH}" -dappinstbranch "${GIT_BRANCH}" -dappopenvpnbranch "${GIT_BRANCH}" -Verbose
+    if [ ${DAPP_INSTALLER_FORCE_UPDATE} = "1" ]; then
+        DAPP_INSTALLER_WIN_FORCE_UPDATE = "true"
+    fi
+        
+    powershell -File '.\publish-dapp.ps1' -wkdir "${BUILD_WIN_DIR}" -staticArtefactsDir "${ARTEFACTS_WIN_LOCATION}" -product vpn -installer -version ${VERSION_TO_SET_IN_BUILDER} -forceUpdate ${DAPP_INSTALLER_FORCE_UPDATE} -dappctrlConf ${DAPPCTRL_CONFIG} -dappguibranch "${GIT_BRANCH}" -dappctrlbranch "${GIT_BRANCH}" -dappinstbranch "${GIT_BRANCH}" -dappopenvpnbranch "${GIT_BRANCH}" -Verbose
 fi
