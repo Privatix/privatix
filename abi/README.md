@@ -20,25 +20,7 @@
 |-|-|
 |[Sale](https://rinkeby.etherscan.io/address/0x4d15c86c78128a6e216615f4345dfe32fb43181d)|0x4d15c86c78128a6e216615f4345dfe32fb43181d|
 |[Token](https://rinkeby.etherscan.io/token/0x0d825eb81b996c67a55f7da350b6e73bab3cb0ec)|0x0d825eb81b996c67a55f7da350b6e73bab3cb0ec|
-|[PSC](https://rinkeby.etherscan.io/address/0xd3bb60ba68f7a28bba9a5e9e8aefce927be3117c)|0xd3bb60ba68f7a28bba9a5e9e8aefce927be3117c|
-
-### Stage
-
-#### Periods
-
-|Period's name|Value in blocks|
-|-|-|
-|remove_period|100|
-|popup_period|500|
-|challenge_period|5000|
-
-#### Addresses
-
-|Contract's Name|Address|
-|-|-|
-|[Sale](https://rinkeby.etherscan.io/address/0x4d15c86c78128a6e216615f4345dfe32fb43181d)|0x4d15c86c78128a6e216615f4345dfe32fb43181d|
-|[Token](https://rinkeby.etherscan.io/token/0x0d825eb81b996c67a55f7da350b6e73bab3cb0ec)|0x0d825eb81b996c67a55f7da350b6e73bab3cb0ec|
-|[PSC](https://rinkeby.etherscan.io/address/0xf8177f8e242e48afc545a776f5c90ea9d7902839)|0xf8177f8e242e48afc545a776f5c90ea9d7902839|
+|[PSC](https://rinkeby.etherscan.io/address/0x7c70f8da8829756b807ef18acaaaf0ef344f94cf)|0x7c70f8da8829756b807ef18acaaaf0ef344f94cf|
 
 ## History
 

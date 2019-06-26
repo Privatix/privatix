@@ -11,7 +11,8 @@
 		],
 		"payable": false,
 		"stateMutability": "view",
-		"type": "function"
+		"type": "function",
+		"signature": "0x0a4625af"
 	},
 	{
 		"constant": true,
@@ -25,7 +26,8 @@
 		],
 		"payable": false,
 		"stateMutability": "view",
-		"type": "function"
+		"type": "function",
+		"signature": "0x217ad35a"
 	},
 	{
 		"constant": true,
@@ -39,7 +41,8 @@
 		],
 		"payable": false,
 		"stateMutability": "view",
-		"type": "function"
+		"type": "function",
+		"signature": "0x22b96b42"
 	},
 	{
 		"constant": true,
@@ -53,7 +56,8 @@
 		],
 		"payable": false,
 		"stateMutability": "view",
-		"type": "function"
+		"type": "function",
+		"signature": "0x3197cbb6"
 	},
 	{
 		"constant": true,
@@ -67,7 +71,8 @@
 		],
 		"payable": false,
 		"stateMutability": "view",
-		"type": "function"
+		"type": "function",
+		"signature": "0x521eb273"
 	},
 	{
 		"constant": true,
@@ -81,7 +86,8 @@
 		],
 		"payable": false,
 		"stateMutability": "view",
-		"type": "function"
+		"type": "function",
+		"signature": "0x62c5fa4b"
 	},
 	{
 		"constant": false,
@@ -95,7 +101,8 @@
 		"outputs": [],
 		"payable": false,
 		"stateMutability": "nonpayable",
-		"type": "function"
+		"type": "function",
+		"signature": "0x70284d19"
 	},
 	{
 		"constant": false,
@@ -109,7 +116,8 @@
 		"outputs": [],
 		"payable": false,
 		"stateMutability": "nonpayable",
-		"type": "function"
+		"type": "function",
+		"signature": "0x74a8f103"
 	},
 	{
 		"constant": true,
@@ -123,7 +131,8 @@
 		],
 		"payable": false,
 		"stateMutability": "view",
-		"type": "function"
+		"type": "function",
+		"signature": "0x78e97925"
 	},
 	{
 		"constant": true,
@@ -137,7 +146,8 @@
 		],
 		"payable": false,
 		"stateMutability": "view",
-		"type": "function"
+		"type": "function",
+		"signature": "0x8f32d59b"
 	},
 	{
 		"constant": true,
@@ -156,7 +166,8 @@
 		],
 		"payable": false,
 		"stateMutability": "view",
-		"type": "function"
+		"type": "function",
+		"signature": "0x9653f8a1"
 	},
 	{
 		"constant": true,
@@ -170,7 +181,8 @@
 		],
 		"payable": false,
 		"stateMutability": "view",
-		"type": "function"
+		"type": "function",
+		"signature": "0xc3a9bd8b"
 	},
 	{
 		"constant": true,
@@ -184,7 +196,8 @@
 		],
 		"payable": false,
 		"stateMutability": "view",
-		"type": "function"
+		"type": "function",
+		"signature": "0xdab8263a"
 	},
 	{
 		"constant": true,
@@ -203,7 +216,8 @@
 		],
 		"payable": false,
 		"stateMutability": "view",
-		"type": "function"
+		"type": "function",
+		"signature": "0xe0e3671c"
 	},
 	{
 		"constant": true,
@@ -217,7 +231,8 @@
 		],
 		"payable": false,
 		"stateMutability": "view",
-		"type": "function"
+		"type": "function",
+		"signature": "0xfc0c546a"
 	},
 	{
 		"inputs": [
@@ -259,7 +274,8 @@
 			}
 		],
 		"name": "TokenPurchase",
-		"type": "event"
+		"type": "event",
+		"signature": "0xcd60aa75dea3072fbc07ae6d7d856b5dc5f4eee88854f5b4abf7b680ef8bc50f"
 	},
 	{
 		"anonymous": false,
@@ -271,7 +287,8 @@
 			}
 		],
 		"name": "AccessGrant",
-		"type": "event"
+		"type": "event",
+		"signature": "0x1350a997c6c86bcc51dd7e51f7ef618d620e6a85d8fdabb82a980c149ad88d47"
 	},
 	{
 		"anonymous": false,
@@ -283,7 +300,8 @@
 			}
 		],
 		"name": "AccessRevoke",
-		"type": "event"
+		"type": "event",
+		"signature": "0x1d1eff42eefbeecfca7e39f8adb5d7f19a7ebbb4c3e82c51f2500d7d76ab2468"
 	},
 	{
 		"constant": false,
@@ -297,7 +315,8 @@
 		"outputs": [],
 		"payable": true,
 		"stateMutability": "payable",
-		"type": "function"
+		"type": "function",
+		"signature": "0xec8ac4d8"
 	},
 	{
 		"constant": false,
@@ -315,7 +334,8 @@
 		"outputs": [],
 		"payable": false,
 		"stateMutability": "nonpayable",
-		"type": "function"
+		"type": "function",
+		"signature": "0xccddff47"
 	},
 	{
 		"constant": true,
@@ -329,6 +349,7 @@
 		],
 		"payable": false,
 		"stateMutability": "view",
-		"type": "function"
+		"type": "function",
+		"signature": "0xd85bd526"
 	}
 ]
