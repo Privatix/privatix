@@ -66,11 +66,16 @@ if [ "$TRAVIS_OS_NAME" = "windows" ]; then
     . "./build.win.global.config"
     
     (
-    . 
     echo "
+
     cd travis
+
+    mkdir ${git_branch_name}
+    cd ${git_branch_name}
+
     mkdir ${destination}
     cd ${destination}
+
     mkdir $(basename "${VPN_WIN_OUTPUT_DIR}")
     put -r ${VPN_WIN_INPUT_DIR}
     ") | sftp -oStrictHostKeyChecking=no -i "${TRAVIS_BUILD_DIR}/travis/encrypted/travis.ed25519" ${user}@${host}
