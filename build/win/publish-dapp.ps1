@@ -48,11 +48,15 @@
 .PARAMETER version
     If version is specified, it will be passed to Bitrock and Dapp-GUI settings.json -> release.
 
-.PARAMETER prodConfig
-    If specified, dappctrl will use production config, else development config.
+.PARAMETER dappctrlConf
+    Specifes filename of dappctrl config. By default "dappctrl-dev.config.json" is used
 
 .PARAMETER forceUpdate
-    If specified, installer will force update, instead of upgrade, meaning only clean install is possible.
+    If "1", installer will force update, instead of upgrade, meaning only clean install is possible.
+
+.PARAMETER installerOutDir
+    Where resulting executable windows installer is placed. If installer option is set.
+    
 
 .EXAMPLE
     .\publish-dapp.ps1 -wkdir "C:\build" -staticArtefactsDir "C:\static_art"
@@ -87,7 +91,7 @@
     Same as above, but "master" branch is used for all components.
 
 .EXAMPLE
-    .\publish-dapp.ps1 -product proxy -staticArtefactsDir "C:\privatix\art" -installer -version "0.21.0" -gitpull -dappguibranch "master" -dappctrlbranch "master" -dappinstbranch "master" -dappopenvpnbranch "master" -privatixbranch "master" -prodConfig
+    .\publish-dapp.ps1 -product proxy -staticArtefactsDir "C:\privatix\art" -installer -version "0.21.0" -gitpull -dappguibranch "master" -dappctrlbranch "master" -dappinstbranch "master" -dappopenvpnbranch "master" -privatixbranch "master" -dappctrlConf "dappctrl.config.json"
 
     Description
     -----------
@@ -95,7 +99,7 @@
     Note: Bitrock installer should be installed (https://installbuilder.bitrock.com/download-step-2.html) and "builder-cli.exe" added to %PATH%
 
 .EXAMPLE
-    .\publish-dapp.ps1 -wkdir "C:\build" -staticArtefactsDir "C:\static_art" -forceUpgrade
+    .\publish-dapp.ps1 -wkdir "C:\build" -staticArtefactsDir "C:\static_art" -forceUpdate "1"
 
     Description
     -----------
@@ -120,8 +124,10 @@ param(
     [string]$dappopenvpnbranch = "develop",
     [string]$dappproxybranch = "develop",
     [string]$privatixbranch = "develop",
-    [switch]$prodConfig,
-    [switch]$forceUpdate
+    [string]$dappctrlConf = "dappctrl-dev.config.json",
+    [ValidateSet('0', '1')]
+    [string]$forceUpdate = '0',
+    [string]$installerOutDir
     
 )
 
@@ -131,12 +137,21 @@ $vers = $version
 
 $env:GO111MODULE="on"
 
-if ($forceUpdate) {$forceUpd = 1} else {$forceUpd = 0}
+$env:Path += ";$env:GOPATH\bin"
+$env:Path += ";C:\Program Files\nodejs"
+# Bitrock builder Travis location
+$env:Path += ";C:\installbuilder\bin"
+
+if (-not $dappctrlConf) {$dappctrlConf = "dappctrl-dev.config.json"}
 
 if (-not $PSBoundParameters.ContainsKey('wkdir')) {
     $wkdir = $($ENV:SystemDrive) + "\build\" + (Get-Date -Format "MMdd_HHmm")
 }
 if (!(Test-Path $wkdir)) {New-Item -Path $wkdir -ItemType Directory | Out-Null}
+
+if (-not $installerOutDir) {
+    $installerOutDir = "$wkdir\project\out\$($product.tolower())_win"
+}
 
 if ($PSBoundParameters.ContainsKey('Verbose')) {
     $global:VerbosePreference = [System.Management.Automation.ActionPreference]::Continue
@@ -207,13 +222,13 @@ if ($installer) {
         exit 1
     }
     
-    new-package -wrkdir $wkdir -staticArtefactsDir $staticArtefactsDir -installer -privatixbranch $privatixbranch -gitpull:$gitpull -prodConfig:$prodConfig.IsPresent -product:$product
+    new-package -wrkdir $wkdir -staticArtefactsDir $staticArtefactsDir -installer -privatixbranch $privatixbranch -gitpull:$gitpull -dappctrlConf $dappctrlConf -product:$product
 
     if ($vers) {
-        Invoke-Expression "builder-cli.exe build $wkdir\project\Privatix.xml windows --setvars project.version=$vers product_id=$productID product_name=$product forceUpdate=$forceUpd"
+        Invoke-Expression "builder-cli.exe build $wkdir\project\Privatix.xml windows --setvars project.version=$vers product_id=$productID product_name=$product forceUpdate=$forceUpdate project.outputDirectory=$installerOutDir"
     } else {
         Write-Warning "no version specified for installer"
-        Invoke-Expression "builder-cli.exe build $wkdir\project\Privatix.xml windows --setvars project.version=undefined product_id=$productID product_name=$product forceUpdate=$forceUpd"
+        Invoke-Expression "builder-cli.exe build $wkdir\project\Privatix.xml windows --setvars project.version=undefined product_id=$productID product_name=$product forceUpdate=$forceUpdate project.outputDirectory=$installerOutDir"
     }
 }
 else {
@@ -222,7 +237,7 @@ else {
     Write-Host "It took $($sw.Elapsed.TotalSeconds) seconds to complete" -ForegroundColor Green
     
     $sw.Restart()
-    new-package -wrkdir $wkdir -staticArtefactsDir $staticArtefactsDir -privatixbranch $privatixbranch -gitpull:$gitpull -prodConfig:$prodConfig.IsPresent -product:$product
+    new-package -wrkdir $wkdir -staticArtefactsDir $staticArtefactsDir -privatixbranch $privatixbranch -gitpull:$gitpull -dappctrlConf $dappctrlConf -product:$product
 }
 
 $TotalTime += $sw.Elapsed.TotalSeconds

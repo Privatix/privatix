@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 
 # add variables to current process
-cd "${TRAVIS_BUILD_DIR}/build/unix"
-. "./build.global.config"
 
 git_branch_name=${GIT_BRANCH//[\/ -]/_}
 destination="$(date +%Y_%m_%d)-build${TRAVIS_BUILD_NUMBER}"
@@ -17,6 +15,9 @@ pass=$(cat "${deploy_file}" | head -3 | tail -1)
 # ubuntu
 #
 if [ "$TRAVIS_OS_NAME" = "linux" ]; then
+    cd "${TRAVIS_BUILD_DIR}/build/unix"
+    . "./build.global.config"
+
     (
     echo "
 
@@ -38,6 +39,9 @@ fi
 # mac
 #
 if [ "$TRAVIS_OS_NAME" = "osx" ]; then
+    cd "${TRAVIS_BUILD_DIR}/build/unix"
+    . "./build.global.config"
+    
     (
     echo "
 
@@ -57,3 +61,17 @@ if [ "$TRAVIS_OS_NAME" = "osx" ]; then
     ") | sftp -oStrictHostKeyChecking=no -i "${TRAVIS_BUILD_DIR}/travis/encrypted/travis.ed25519" ${user}@${host}
 fi
 
+if [ "$TRAVIS_OS_NAME" = "windows" ]; then
+    cd "${TRAVIS_BUILD_DIR}/build/win"
+    . "./build.win.global.config"
+    
+    (
+    . 
+    echo "
+    cd travis
+    mkdir ${destination}
+    cd ${destination}
+    mkdir $(basename "${VPN_WIN_OUTPUT_DIR}")
+    put -r ${VPN_WIN_INPUT_DIR}
+    ") | sftp -oStrictHostKeyChecking=no -i "${TRAVIS_BUILD_DIR}/travis/encrypted/travis.ed25519" ${user}@${host}
+fi

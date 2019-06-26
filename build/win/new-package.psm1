@@ -22,9 +22,9 @@
 .PARAMETER gitpull
     Make git pull before checkout for privatix repo.
 
-.PARAMETER prodConfig
-    If specified, dappctrl will use production config, else development config.
-
+.PARAMETER dappctrlConf
+    Specifes filename of dappctrl config. By default "dappctrl-dev.config.json" is used
+    
 .PARAMETER product
     Which Service plug-in to package. Can be "vpn" or "proxy"
 
@@ -55,7 +55,7 @@ function new-package {
         [switch]$installer,
         [string]$privatixbranch = "develop",
         [switch]$gitpull,
-        [switch]$prodConfig,
+        [string]$dappctrlConf = "dappctrl-dev.config.json",
         [ValidateSet('vpn', 'proxy')]
         [string]$product = 'vpn'
 
@@ -156,10 +156,7 @@ function new-package {
     $dappinstallerconf = (Get-Item "$wrkdir\src\github.com\privatix\dapp-installer\dapp-installer.config.json").FullName
     # common
     $dappctrlbin = (Get-Item "$gopath\bin\dappctrl.exe").FullName
-    if ($prodConfig) {
-        $dappctrlconfig = (Get-Item "$wrkdir\src\github.com\privatix\dappctrl\dappctrl.config.json").FullName
-    }
-    else {$dappctrlconfig = (Get-Item "$wrkdir\src\github.com\privatix\dappctrl\dappctrl-dev.config.json").FullName}
+    $dappctrlconfig = (Get-Item "$wrkdir\src\github.com\privatix\dappctrl\$dappctrlConf").FullName
     $dappctrlFWruleScript = (Get-Item "$wrkdir\src\github.com\privatix\dappctrl\scripts\win\set-ctrlfirewall.ps1").FullName
     if ($installer) {
         $dappguiFolder = (Get-Item "$wrkdir\dapp-gui\release-builds\dapp-gui-win32-x64").FullName
