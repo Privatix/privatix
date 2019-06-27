@@ -4,7 +4,8 @@
 
 git_branch_name=${GIT_BRANCH//[\/ -]/_}
 config=${DAPPCTRL_CONFIG//[\/ -]/_}
-destination="$(date +%Y_%m_%d)-build${TRAVIS_BUILD_NUMBER}(${config})"
+force_update=${DAPP_INSTALLER_FORCE_UPDATE}
+destination="$(date +%Y_%m_%d)-build${TRAVIS_BUILD_NUMBER}(${config}-${force_update})"
 
 deploy_file="${TRAVIS_BUILD_DIR}/travis/encrypted/deploy.txt"
 
