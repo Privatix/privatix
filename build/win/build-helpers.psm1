@@ -167,7 +167,7 @@ function Checkout-Gitbranch {
 
     Invoke-Scriptblock -ScriptBlock "git.exe --git-dir=$PROJECT_PATH\.git --work-tree=$PROJECT_PATH fetch --all $gitQuiet"
     
-    $branchFound = Invoke-Scriptblock -ScriptBlock "((git.exe rev-parse --verify `"$branch`") -match `"\b[0-9a-f]{5,40}\b`")"
+    $branchFound = (git.exe rev-parse --verify "origin/$branch") -match "\b[0-9a-f]{5,40}\b"
     
     # TODO: on unix "GIT_BRANCH_DEFAULT" variable is used to set alternative branch
     if ($branchFound -ne $true) {$branch = "develop"}
