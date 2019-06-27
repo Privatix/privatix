@@ -131,6 +131,13 @@ param(
     
 )
 
+Write-Host "GUI: $dappguibranch"
+Write-Host "dappctrlConf: $dappctrlConf"
+Write-Host "forceUpdate: $forceUpdate"
+Write-Host "installerOutDir: $installerOutDir"
+
+
+
 $ErrorActionPreference = "Stop"
 
 $vers = $version
