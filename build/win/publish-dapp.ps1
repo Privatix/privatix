@@ -142,7 +142,7 @@ $env:Path += ";C:\Program Files\nodejs"
 # Bitrock builder Travis location
 $env:Path += ";C:\installbuilder\bin"
 
-if (-not $dappctrlConf) {$dappctrlConf = "dappctrl-dev.config.json"}
+$ctrl_conf = $dappctrlConf
 
 if (-not $PSBoundParameters.ContainsKey('wkdir')) {
     $wkdir = $($ENV:SystemDrive) + "\build\" + (Get-Date -Format "MMdd_HHmm")
@@ -222,7 +222,7 @@ if ($installer) {
         exit 1
     }
     
-    new-package -wrkdir $wkdir -staticArtefactsDir $staticArtefactsDir -installer -privatixbranch $privatixbranch -gitpull:$gitpull -dappctrlConf $dappctrlConf -product:$product
+    new-package -wrkdir $wkdir -staticArtefactsDir $staticArtefactsDir -installer -privatixbranch $privatixbranch -gitpull:$gitpull -dappctrlConf:$ctrl_conf -product:$product
 
     if ($vers) {
         Invoke-Expression "builder-cli.exe build $wkdir\project\Privatix.xml windows --setvars project.version=$vers product_id=$productID product_name=$product forceUpdate=$forceUpdate project.outputDirectory=$installerOutDir"
@@ -237,7 +237,7 @@ else {
     Write-Host "It took $($sw.Elapsed.TotalSeconds) seconds to complete" -ForegroundColor Green
     
     $sw.Restart()
-    new-package -wrkdir $wkdir -staticArtefactsDir $staticArtefactsDir -privatixbranch $privatixbranch -gitpull:$gitpull -dappctrlConf $dappctrlConf -product:$product
+    new-package -wrkdir $wkdir -staticArtefactsDir $staticArtefactsDir -privatixbranch $privatixbranch -gitpull:$gitpull -dappctrlConf:$ctrl_conf -product:$product
 }
 
 $TotalTime += $sw.Elapsed.TotalSeconds

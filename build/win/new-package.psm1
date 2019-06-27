@@ -60,7 +60,13 @@ function new-package {
         [string]$product = 'vpn'
 
     )
- 
+
+    # Check if dappctrl config defined
+    if ([string]::IsNullOrEmpty($dappctrlConf)) {
+        $dappctrlConf = "dappctrl-dev.config.json"
+        Write-Verbose "Config for dappctrl not set explicitly. Fallback to `"dappctrl-dev.config.json`""
+    }
+
     $ErrorActionPreference = "Stop"
 
     if ($PSBoundParameters.ContainsKey('Verbose')) {
