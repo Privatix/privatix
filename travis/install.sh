@@ -45,6 +45,21 @@ if [ "$TRAVIS_OS_NAME" = "osx" ]; then
     "./${bitrock_installer}/${bitrock_installer}.app/Contents/MacOS/installbuilder.sh" --mode unattended || exit 1
 
     # add license
-    cp      "${TRAVIS_BUILD_DIR}/travis/encrypted/license.xml" \
-            "${BITROCK_INSTALLER_MAC}/license.xml" || exit 1
+    cp "${TRAVIS_BUILD_DIR}/travis/encrypted/license.xml" \
+       "${BITROCK_INSTALLER_MAC}/license.xml" || exit 1
 fi
+
+if [ "$TRAVIS_OS_NAME" = "windows" ]; then
+    # download and unpack static artefacts
+    powershell -Command 'mkdir c:\art'
+    powershell -Command 'curl.exe -L "http://artdev.privatix.net/artefacts_win.zip" --output c:\art\artefacts_win.zip'
+    powershell -Command 'Expand-Archive -Path c:\art\artefacts_win.zip -DestinationPath c:\art'
+    # download and install Bitrock installer
+    powershell -Command 'mkdir c:\installbuilder'
+    powershell -Command 'curl.exe -L "https://installbuilder.bitrock.com/installbuilder-enterprise-19.5.0-windows-x64-installer.exe" --output .\installbuilder-installer.exe'
+    powershell -Command '.\installbuilder-installer.exe --mode unattended --prefix c:\installbuilder'
+    # add license to Bitrock installer
+    powershell -Command 'Copy-Item -Path "c:\Users\travis\gopath\src\github.com\Privatix\privatix\travis\encrypted\license.xml" -Destination "c:\installbuilder\"'
+fi
+
+    
