@@ -32,6 +32,7 @@ make_packages(){
    "${PATCH_JSON_SH}" "$3/$4" \
                       '["release"]="'"${VERSION_TO_SET_IN_BUILDER}"'"' \
                       '["target"]="'"${5}"'"' \
+                      '["network"]="'"${DAPP_GUI_NETWORK}"'"' \
                       || exit 1
 
    echo && echo done
