@@ -21,6 +21,7 @@ if [ "$TRAVIS_OS_NAME" = "linux" ]; then
     chmod u+x ./${downloading_binary}
 
     # install
+    echo install: ./${downloading_binary} --mode unattended || exit 1
     ./${downloading_binary} --mode unattended || exit 1
 
     # add license
