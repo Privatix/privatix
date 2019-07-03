@@ -61,7 +61,7 @@ if [ "$TRAVIS_OS_NAME" = "windows" ]; then
     powershell -Command 'Expand-Archive -Path c:\art\artefacts_win.zip -DestinationPath c:\art'
     # download and install Bitrock installer
     powershell -Command 'mkdir c:\installbuilder'
-    powershell -Command 'curl.exe -L "http://artdev.privatix.net/installbuilder/installbuilder-enterprise-19.5.0-windows-x64-installer.exe" --output .\installbuilder-installer.exe'
+    powershell -Command 'curl.exe -L "http://artdev.privatix.net/installbuilder/installbuilder-enterprise-'${BITROCK_VERSION}'-windows-x64-installer.exe" --output .\installbuilder-installer.exe'
     powershell -Command '.\installbuilder-installer.exe --mode unattended --prefix c:\installbuilder'
     # add license to Bitrock installer
     powershell -Command 'Copy-Item -Path "c:\Users\travis\gopath\src\github.com\Privatix\privatix\travis\encrypted\license.xml" -Destination "c:\installbuilder\"'
