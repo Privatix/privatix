@@ -1,8 +1,9 @@
 {
   "GIT_BRANCH": "develop",
   "GIT_BRANCH_DEFAULT": "develop",
-  "VERSION_TO_SET_IN_BUILDER": "0.23.0",
+  "VERSION_TO_SET_IN_BUILDER": "1.0.0",
   "DAPPCTRL_CONFIG": "dappctrl.config.json",
+  "DAPP_GUI_NETWORK": "mainnet",
   "DAPPCTRL_LOG_LEVEL": "info",
   "DAPP_INSTALLER_FORCE_UPDATE": "0"
 }
