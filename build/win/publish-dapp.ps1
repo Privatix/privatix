@@ -57,8 +57,8 @@
 .PARAMETER installerOutDir
     Where resulting executable windows installer is placed. If installer option is set.
     
-.PARAMETER ethNetwork
-    Ethereum network to use. Can be 'rinkeby' or 'mainnet'
+.PARAMETER guiEthNetwork
+    Ethereum network to use in GUI. Can be 'rinkeby' or 'mainnet'
 
 .EXAMPLE
     .\publish-dapp.ps1 -wkdir "C:\build" -staticArtefactsDir "C:\static_art"
@@ -93,7 +93,7 @@
     Same as above, but "master" branch is used for all components.
 
 .EXAMPLE
-    .\publish-dapp.ps1 -product Proxy -staticArtefactsDir "C:\privatix\art" -installer -version "0.21.0" -gitpull -dappguibranch "master" -dappctrlbranch "master" -dappinstbranch "master" -dappopenvpnbranch "master" -privatixbranch "master" -dappctrlConf "dappctrl.config.json" -ethNetwork mainnet
+    .\publish-dapp.ps1 -product Proxy -staticArtefactsDir "C:\privatix\art" -installer -version "0.21.0" -gitpull -dappguibranch "master" -dappctrlbranch "master" -dappinstbranch "master" -dappopenvpnbranch "master" -privatixbranch "master" -dappctrlConf "dappctrl.config.json" -guiEthNetwork mainnet
 
     Description
     -----------
@@ -121,7 +121,7 @@ param(
     [switch]$installer,
     [string]$version,
     [ValidateSet('rinkeby', 'mainnet')]
-    [string]$ethNetwork = "rinkeby",
+    [string]$guiEthNetwork = "rinkeby",
     [string]$dappguibranch = "develop",
     [string]$dappctrlbranch = "develop",
     [string]$dappinstbranch = "develop",
@@ -147,7 +147,7 @@ $env:Path += ";C:\Program Files\nodejs"
 $env:Path += ";C:\installbuilder\bin"
 
 $ctrl_conf = $dappctrlConf
-$network = $ethNetwork
+$network = $guiEthNetwork
 
 if (-not $PSBoundParameters.ContainsKey('wkdir')) {
     $wkdir = $($ENV:SystemDrive) + "\build\" + (Get-Date -Format "MMdd_HHmm")
@@ -216,7 +216,7 @@ $sw.Restart()
 
 if ($installer) {
         
-    . $builddapp -dappgui -wd $wkdir -branch $dappguibranch -gitpull:$gitpull -package -version:$vers -ethNetwork $network
+    . $builddapp -dappgui -wd $wkdir -branch $dappguibranch -gitpull:$gitpull -package -version:$vers -guiEthNetwork $network
     $TotalTime += $sw.Elapsed.TotalSeconds
     Write-Host "It took $($sw.Elapsed.TotalSeconds) seconds to complete" -ForegroundColor Green
 
@@ -237,7 +237,7 @@ if ($installer) {
     }
 }
 else {
-    . $builddapp -dappgui -wd $wkdir -branch $dappguibranch -gitpull:$gitpull -version:$vers -ethNetwork $network
+    . $builddapp -dappgui -wd $wkdir -branch $dappguibranch -gitpull:$gitpull -version:$vers -guiEthNetwork $network
     $TotalTime += $sw.Elapsed.TotalSeconds
     Write-Host "It took $($sw.Elapsed.TotalSeconds) seconds to complete" -ForegroundColor Green
     

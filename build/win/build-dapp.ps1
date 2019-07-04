@@ -63,8 +63,8 @@ param(
     # dappgui parameters
     [Parameter(ParameterSetName = "dappgui", HelpMessage = "whether to package gui")]
     [switch]$package,
-    [Parameter(ParameterSetName = "dappgui", HelpMessage = "ethereum network")]
-    [string]$ethNetwork,
+    [Parameter(ParameterSetName = "dappgui", HelpMessage = "ethereum network in GUI")]
+    [string]$guiEthNetwork,
     # database parameters
     [Parameter(ParameterSetName = "dappdb", HelpMessage = "dappctrl config file path")]
     [string]$dappctrlconf,
