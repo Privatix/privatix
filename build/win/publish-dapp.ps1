@@ -13,7 +13,7 @@
     Directory with static artefacts (e.g. postgesql, tor, openvpn, visual studio redistributable)
 
 .PARAMETER product
-    Which Service plug-in to package. Can be "vpn" or "proxy". If not specified - VPN product is built.
+    Which Service plug-in to package. Can be "VPN" or "Proxy". If not specified - VPN product is built.
 
 .PARAMETER dappguibranch
     Git branch to checkout for dappgui build. If not specified "develop" branch will be used.
@@ -57,6 +57,8 @@
 .PARAMETER installerOutDir
     Where resulting executable windows installer is placed. If installer option is set.
     
+.PARAMETER ethNetwork
+    Ethereum network to use. Can be 'rinkeby' or 'mainnet'
 
 .EXAMPLE
     .\publish-dapp.ps1 -wkdir "C:\build" -staticArtefactsDir "C:\static_art"
@@ -91,7 +93,7 @@
     Same as above, but "master" branch is used for all components.
 
 .EXAMPLE
-    .\publish-dapp.ps1 -product proxy -staticArtefactsDir "C:\privatix\art" -installer -version "0.21.0" -gitpull -dappguibranch "master" -dappctrlbranch "master" -dappinstbranch "master" -dappopenvpnbranch "master" -privatixbranch "master" -dappctrlConf "dappctrl.config.json"
+    .\publish-dapp.ps1 -product Proxy -staticArtefactsDir "C:\privatix\art" -installer -version "0.21.0" -gitpull -dappguibranch "master" -dappctrlbranch "master" -dappinstbranch "master" -dappopenvpnbranch "master" -privatixbranch "master" -dappctrlConf "dappctrl.config.json" -ethNetwork mainnet
 
     Description
     -----------
@@ -112,12 +114,14 @@ param(
     [ValidateScript( {Test-Path $_ })]
     [string]$staticArtefactsDir = "c:\privatix\art",
     [ValidateSet('vpn', 'proxy')]
-    [string]$product = 'vpn',
+    [string]$product = 'VPN',
     [ValidateSet('nothing', 'binaries', 'all')]
     [string]$clean = 'nothing',
     [switch]$gitpull,
     [switch]$installer,
     [string]$version,
+    [ValidateSet('rinkeby', 'mainnet')]
+    [string]$ethNetwork = "rinkeby",
     [string]$dappguibranch = "develop",
     [string]$dappctrlbranch = "develop",
     [string]$dappinstbranch = "develop",
@@ -143,6 +147,7 @@ $env:Path += ";C:\Program Files\nodejs"
 $env:Path += ";C:\installbuilder\bin"
 
 $ctrl_conf = $dappctrlConf
+$network = $ethNetwork
 
 if (-not $PSBoundParameters.ContainsKey('wkdir')) {
     $wkdir = $($ENV:SystemDrive) + "\build\" + (Get-Date -Format "MMdd_HHmm")
@@ -211,7 +216,7 @@ $sw.Restart()
 
 if ($installer) {
         
-    . $builddapp -dappgui -wd $wkdir -branch $dappguibranch -gitpull:$gitpull -package -version:$vers
+    . $builddapp -dappgui -wd $wkdir -branch $dappguibranch -gitpull:$gitpull -package -version:$vers -ethNetwork $network
     $TotalTime += $sw.Elapsed.TotalSeconds
     Write-Host "It took $($sw.Elapsed.TotalSeconds) seconds to complete" -ForegroundColor Green
 
@@ -232,7 +237,7 @@ if ($installer) {
     }
 }
 else {
-    . $builddapp -dappgui -wd $wkdir -branch $dappguibranch -gitpull:$gitpull -version:$vers
+    . $builddapp -dappgui -wd $wkdir -branch $dappguibranch -gitpull:$gitpull -version:$vers -ethNetwork $network
     $TotalTime += $sw.Elapsed.TotalSeconds
     Write-Host "It took $($sw.Elapsed.TotalSeconds) seconds to complete" -ForegroundColor Green
     
