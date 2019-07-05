@@ -17,14 +17,12 @@ build(){
            "$6" || exit 1
     cd "$6/${project_name}" || exit 1
 
-    # make replacement in project.xml
-    [[ ! -z "$5" ]] && sed -i.b "$5" ${project_xml}
-
     # build installer
     "$1" build "${project_xml}" $2 \
                             --setvars project.version=${VERSION_TO_SET_IN_BUILDER} \
                                       product_id="$3" \
                                       product_name="$4" \
+                                      project.requireInstallationByRootUser="$5" \
                                       forceUpdate="${DAPP_INSTALLER_FORCE_UPDATE}" \
                                       project.outputDirectory="$7" \
                             || exit 1
