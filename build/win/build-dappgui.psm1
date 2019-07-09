@@ -19,6 +19,9 @@
 .PARAMETER version
     If version is specified and no git tag set, it will be define Dapp-GUI settings.json -> release.
 
+.PARAMETER guiEthNetwork
+    Ethereum network to use in GUI. Can be 'rinkeby' or 'mainnet'
+
 .EXAMPLE
    build-dappgui
 
@@ -27,11 +30,11 @@
    Build dapp-gui and install to <default build location>\dapp-gui.
 
 .EXAMPLE
-   build-dappgui -branch "develop" -gitpull -wd "$HOME\gui". -version "0.20.0" -package
+   build-dappgui -branch "develop" -gitpull -wd "$HOME\gui". -version "0.20.0" -package -guiEthNetwork "mainnet" -
 
    Description
    -----------
-   Checkout develop branch, git pull, build dapp-gui and install. Set version of release, if no git tag exists.
+   Checkout develop branch, git pull, build dapp-gui and install. Set version of release, if no git tag exists. Use Ethereum mainnet.
 #>
 function build-dappgui {
     [cmdletbinding()]
@@ -42,7 +45,9 @@ function build-dappgui {
         [ValidateScript({Test-Path $_ })]
         [string]$wd,
         [switch]$package,
-        [string]$version
+        [string]$version,
+        [ValidateSet('rinkeby', 'mainnet')]
+        [string]$guiEthNetwork = "rinkeby"
     )
     
     $ErrorActionPreference = "Stop"
@@ -133,6 +138,7 @@ function build-dappgui {
         $GIT_RELEASE = $version
     }
     if ($GIT_RELEASE) {$SettingsJSON.release = $GIT_RELEASE}
+    if ($guiEthNetwork) {$SettingsJSON.network = $guiEthNetwork}
     
     $JSONstring = $SettingsJSON | ConvertTo-Json  
     $Utf8NoBomEncoding = New-Object System.Text.UTF8Encoding $False

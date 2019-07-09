@@ -168,6 +168,8 @@ copy_installer(){
 
     cp -v "${GOPATH}/bin/${DAPP_INSTALLER}" \
           "${installer_bin_dir}/${DAPP_INSTALLER}" || exit 1
+    cp -v "${GOPATH}/bin/${DAPP_SUPERVISOR}" \
+          "${installer_bin_dir}/${DAPP_SUPERVISOR}" || exit 1
 
     cp -v "${DAPP_INSTALLER_DIR}/${DAPP_INSTALLER_CONFIG}" \
           "${installer_bin_dir}/${DAPP_INSTALLER_CONFIG}" || exit 1
@@ -203,7 +205,7 @@ build/bitrock-installer.sh  "${BITROCK_INSTALLER_BIN_MAC}/builder" \
                             "osx" \
                             "${VPN_PRODUCT_ID}" \
                             "${VPN_PRODUCT_NAME}" \
-                            "" \
+                            "0" \
                             "${bin_dir}" \
                             "${VPN_MAC_OUTPUT_DIR}" \
                             || exit 1
