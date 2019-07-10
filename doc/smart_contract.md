@@ -106,8 +106,6 @@ Then
 
 We can take in account `OMD - CSB` or `OMD/CSB`.
 
-</details>
-
 # Ethereum operations by core
 
 Monitoring and operations on ethereum are done:
