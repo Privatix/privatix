@@ -1,9 +1,5 @@
 # Summary
 
-## General
-
-* [General](general.md)
-
 ## ​Privatix core
 
 * [Privatix core](core.md)

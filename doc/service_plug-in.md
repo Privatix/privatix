@@ -55,4 +55,4 @@ Service plug-ins stores service configuration in `products` table `config` field
 
 # Standards
 
-To make service plug-ins easily added to `Privatix core` they should comply with [ Service plug-in standards](/doc/#service_plug-in_standards)
+To make service plug-ins easily added to `Privatix core` they should comply with [ Service plug-in standards](#service_plug-in_standards)

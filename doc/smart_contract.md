@@ -123,5 +123,5 @@ We can take in account `OMD - CSB` or `OMD/CSB`.
 
 Monitoring and operations on ethereum are done:
 
-- [by ethereum monitor](/doc/ethereum_monitor.md) - events retrieval
+- [by ethereum monitor](ethereum_monitor.md) - events retrieval
 - [by eth package](https://github.com/Privatix/dappctrl/tree/master/eth) - transactions

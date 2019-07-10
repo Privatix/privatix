@@ -89,9 +89,9 @@ Templates are located in `template` folder. Following naming and folder structur
 
 `server.json` - server product object that imported to Privatix Core DB to products table. Represents server service plug-in initial configuration/settings.
 
-`access.json` - access message template (see [Access](/doc/access.md) for more)
+`access.json` - access message template (see [Access](access.md) for more)
 
-`offering.json` - offering message template (see [Offerings](/doc/offering.md) for more)
+`offering.json` - offering message template (see [Offerings](offering.md) for more)
 
 `adapter.agent.config.json` - service plug-in adapter configuration file for Agent. It is template only for customization during installation. Resulting config file should reside in `config` folder.
 
