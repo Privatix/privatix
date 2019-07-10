@@ -2,34 +2,45 @@
 
 ## General
 
+* [General](general.md)
+
 ## ​Privatix core
+
 * [Privatix core](core.md)
 
-### Service messaging
+## Service messaging
+
 * [Messaging](messaging.md)
     * [Offering](offering.md)
     * [Access](access.md)
 
-### Payments
+## Payments
+
 * [State channel](channel.md)
 * [Payment cheques](payments.md)
 
-### Billing
+## Billing
+
 * [Agent billing](agent_billing.md)
 * [Client billing](client_billing.md)
 
-### Ethereum
+## Ethereum
+
 * [Ethereum monitor](ethereum_monitor.md)
 
-### Jobs
+## Jobs
+
 * [Jobs](job.md)
 
 ## Smart contracts
+
 * [Smart contracts](smart_contract.md)
 
 ## Services
+
 * [Service plug-in](service_plug-in.md)
     * [Standards](service_plug-in_standards.md)
 
 ## Other
+
 * [Update](update.md)
