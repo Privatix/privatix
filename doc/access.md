@@ -6,7 +6,7 @@ Access to service is granted after Agent receives notification of new channel wa
 event LogChannelCreated(address indexed _agent, address indexed _client, bytes32 indexed offering_hash, uint192 _deposit)
 ```
 
-When Client receives same ethereum event, he knows that he should shortly try to contact Agent and get `access message`. Client queries Agent for `access message`, providing `channel key` compliant with smart contract method:
+When Client receives same Ethereum event, he knows that he should shortly try to contact Agent and get `access message`. Client queries Agent for `access message`, providing `channel key` compliant with smart contract method:
 
 ```Solidity
 function getKey(address _client_address, address _agent_address, uint32 _open_block_number,  bytes32 _offering_hash)
@@ -14,7 +14,7 @@ function getKey(address _client_address, address _agent_address, uint32 _open_bl
 
 Agent than retrieves `access message` from database and passed it to Client.
 
-`access message` is always encrypted using Client's public key, thus can be decrypted only by intended Client. Client's public key is reconstructed from `createChannel` ethereum transaction.
+`access message` is always encrypted using Client's public key, thus can be decrypted only by intended Client. Client's public key is reconstructed from `createChannel` Ethereum transaction.
 
 Access message (aka endpoint message) is created by Agent according to `access template`.
 
@@ -38,8 +38,6 @@ Such validation ensures, that Agent and Client both has:
 - access message is properly filled according to access template schema
 
 ## Access template schema example
-
-<details><summary>Click to expand</summary>
 
 ```JSON
 {
@@ -103,16 +101,14 @@ Such validation ensures, that Agent and Client both has:
 }
 ```
 
-</details>
 
 `additionalProperties` parameter may contain any arbitrary data required to access the service or receive the product.
 
-<details><summary>Examples</summary>
+**Examples**
 
 - `additionalProperties` may contain DNS name and credentials for some web service. It will be received by Client's adapter and used to connect to web-service and consume a service.
 - `additionalProperties` may contain geolocation of apartment with direction how to open it. Direction maybe seen via user interface and/or sent to e-mail.
 
-</details>
 
 All automation is done by adapter. Adapter gets access message content and can process `additionalProperties` data for authentication, preparing necessary configuration, running additional processes.
 

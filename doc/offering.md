@@ -56,7 +56,7 @@ Such validation ensures, that Agent and Client both has:
 
 ### Offering template schema
 
-<details><summary>Schema example</summary>
+**Schema example**
 
 ```JSON
 {
@@ -264,7 +264,6 @@ Such validation ensures, that Agent and Client both has:
 }
 ```
 
-</details>
 
 ## Offering message packaging
 

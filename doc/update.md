@@ -4,7 +4,7 @@
 
 GUI periodically checks github releases to find out, if new version was released. It starts form the latest release and iteratively checks for for file `versions.txt` inside each release.
 
-<details><summary>versions.txt format</summary>
+**versions.txt format**
 
 ```JSON
 {
@@ -22,8 +22,6 @@ GUI periodically checks github releases to find out, if new version was released
 }
 ```
 
-</details>
-
 - It compares `target` from `settings.json` file to OS tag found in `versions.txt` to decide, if OS is affected in that release.
 - If it is affected it compares `release` from `settings.json` file to `minVersion` in `versions.txt` to decide, if current version can be updated to that `minVersion` required by new release.
 - If user chooses to dismiss update, we store in DB dismissed version and do not notify about update till newer version is released.
@@ -34,7 +32,7 @@ GUI periodically checks github releases to find out, if new version was released
 - `target` is defined during the release delivery
 - `target` is just a string to compare, thus can be used to describe OS platform plus particular version in single tag. (e.g. "ubuntu18")
 
-<details><summary>settings.json update related fields</summary>
+**settings.json update related fields**
 
 ```JSON
 "releasesEndpoint": "https://api.github.com/repos/Privatix/privatix/releases",
@@ -44,4 +42,3 @@ GUI periodically checks github releases to find out, if new version was released
 "target":"osx"
 ```
 
-</details>

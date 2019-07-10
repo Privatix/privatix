@@ -49,18 +49,7 @@ PSC contract implements state channels features, service offering discovery, hel
 
 `Network fee` is a fee that goes in favor of `Privatix company`. It can be changed by `Privatix company` anytime. Fee manipulation is limited by smart contract.
 
-    Network fee percent maybe vary between 0 and 1%
-
-#### Network fee update
-
-```Solidity
-/// @notice Change network fee value. It is limited from 0 to 1%.
-/// @param  _network_fee Fee that goes to network_fee_address from each closed channel balance.
-function setNetworkFee(uint32 _network_fee) external onlyOwner { // test S22
-    require(_network_fee <= 1000); // test S23
-    network_fee = _network_fee;
-}
-```
+    Network fee percent maybe vary between 0 and 10%
 
 ## Contract upgrade
 
@@ -89,13 +78,13 @@ To harm Agent's reputation malicious Client can create state channel and will no
 
 # Reputation
 
-Both Client and Agent communication results in cooperative or uncooperative channel close. Each time blockchain event is generated with address of Client and Agent included in it. These events can be used to make decisions about user reputation. User can not only count number of cooperative vs uncooperative closes for another user, but also go deeper and build web of trust.
+Both Client and Agent communication results in cooperative or uncooperative channel close. Each time blockchain event is generated with address of Client and Agent included in it. These events are used to make decisions about user reputation. 
 
-<details><summary>Example</summary>
+Read more about rating in blog post [Rating Quality system on Privatix P2P Network](https://medium.com/privatix/privatix-network-rating-651b5171cf1f)
+
+**Example**
 
 If Agent want to decide on Client's reputation he can check Client's good transactions with other Agents and then check, if he had previously communicated with some of those Agent's.
-
-</details>
 
 ### Normal to Dispute close
 
@@ -108,7 +97,7 @@ We may analyze reputation of service offering submitters (Agents) by observing n
 
 We may analyze delta between min. deposit and closed channel balance. This can make indication of expected deal and its result.
 
-<details><summary>Example</summary>
+**Example**
 
 - Let's offering min. deposit be OMD.
 - Let's channel closing balance be CSB.
@@ -117,11 +106,9 @@ Then
 
 We can take in account `OMD - CSB` or `OMD/CSB`.
 
-</details>
-
 # Ethereum operations by core
 
 Monitoring and operations on ethereum are done:
 
-- [by ethereum monitor](/doc/ethereum_monitor.md) - events retrieval
+- [by ethereum monitor](ethereum_monitor.md) - events retrieval
 - [by eth package](https://github.com/Privatix/dappctrl/tree/master/eth) - transactions

@@ -8,8 +8,8 @@ Billing responsible for:
 
    - Send payments. It compares actual usage (converted to tokens) to last sent payment amount and sends payments, if necessary.
 
-   Payment frequency is controlled by offering [billingFrequency](/doc/offering.md#Offering-template-schema) (aka BillingInterval) parameter.
+   Payment frequency is controlled by offering [billingFrequency](offering.md#Offering-template-schema) (aka BillingInterval) parameter.
 
 2. Service aging
 
-   - Termination of services, that was suspended longer that [maxSuspendTime](/doc/offering.md#Offering-template-schema) for corresponding offering. It prevents client from occupating service without using it for indefinite time. Same operation is performed on Agent side. Thus it is done to keep service state synchronized between Agent and Client.
+   - Termination of services, that was suspended longer that [maxSuspendTime](offering.md#Offering-template-schema) for corresponding offering. It prevents client from occupating service without using it for indefinite time. Same operation is performed on Agent side. Thus it is done to keep service state synchronized between Agent and Client.

@@ -20,7 +20,7 @@ Jobs names are defined in data model and mapped to [job types](https://github.co
 
 Each `job type` may have its custom configuration taken from `privatix core config`.
 
-<details><summary>Job type configurable parameters</summary>
+#### Job type configurable parameters#### 
 
 `TryLimit` - Maximum retry count
 
@@ -30,9 +30,8 @@ Each `job type` may have its custom configuration taken from `privatix core conf
 
 `Duplicated` - Allow duplicate of job type per object
 
-</details>
 
-<details><summary>Job type configuration example</summary>
+#### Job type configuration example#### 
 
 ```JSON
 "clientPreChannelCreate": {
@@ -43,7 +42,6 @@ Each `job type` may have its custom configuration taken from `privatix core conf
 }
 ```
 
-</details>
 
 ## Job structure
 
@@ -91,7 +89,7 @@ Jobs can be scheduled to start at specific time using `NotBefore`. They can be r
 
 Job queue is implemented using database table. Its configuration is done in `core config`.
 
-<details><summary>Job queue configuration</summary>
+#### Job queue configuration
 
 ```Go
 type Config struct {
@@ -105,7 +103,6 @@ type Config struct {
 }
 ```
 
-</details>
 
 Function `queue.Add()` will check, if desired job can be created, create it or return an error.
 
@@ -122,11 +119,10 @@ Function `queue.Add()` will check, if desired job can be created, create it or r
 | Cancelled | Will be excluded from processing. If still running, result will be ignored (don't care). |
 | Done      | Successfully finished.                                                                   |
 
-<details><summary>Job workflow schema</summary>
+#### Job workflow schema
 
-![image with schema](http://privatix.io)
+[view schema](https://drive.google.com/file/d/1uhc6uJ1MYDYvzia4y0Ikwg7LfPyZ88I3/view?usp=sharing)
 
-</details>
 
 ## Job handlers
 
@@ -138,130 +134,134 @@ When job executed its [job handler](https://github.com/Privatix/dappctrl/blob/ma
 
 ---
 
+#### AgentAfterChannelCreate
+
 `AgentAfterChannelCreate` - registers client and creates `AgentPreEndpointMsgCreate` job.
 
-<details><summary>Created by:</summary>
+_Created by:_
 
 - Ethereum monitor events `LogChannelCreated` or `LogOfferingPopedUp`
 
-</details>
+
+#### AgentAfterChannelTopUp
 
 `AgentAfterChannelTopUp` - updates deposit of a channel in Agents database.
 
-<details><summary>Created by:</summary>
+_Created by:_
 
 - Ethereum monitor event `LogChannelToppedUp`
 
-</details>
+#### AgentAfterUncooperativeCloseRequest
 
 `AgentAfterUncooperativeCloseRequest` - sets channel's status to challenge period.
 
-<details><summary>Created by:</summary>
+_Created by:_
 
 - Ethereum monitor event `LogChannelCloseRequested`
 
-</details>
+#### AgentAfterUncooperativeClose
 
 `AgentAfterUncooperativeClose` - marks channel closed uncooperatively.
 
-<details><summary>Created by:</summary>
+_Created by:_
 
 - Ethereum monitor event `LogUnCooperativeChannelClose`
 
-</details>
+
+#### AgentAfterCooperativeClose
 
 `AgentAfterCooperativeClose` - marks channel as closed cooperatively.
 
-<details><summary>Created by:</summary>
+_Created by:_
 
 - Ethereum monitor event `LogUnCooperativeChannelClose`
 
-</details>
+#### AgentPreServiceSuspend
 
 `AgentPreServiceSuspend` - marks service as suspended.
 
-<details><summary>Created by:</summary>
+_Created by:_
 
 - UI API method `changeChannelStatus`
 - Agent billing monitor `VerifyBillingLags()`
 
-</details>
+#### AgentPreServiceUnsuspend
 
 `AgentPreServiceUnsuspend` - marks service as active.
 
-<details><summary>Created by:</summary>
+_Created by:_
 
 - UI API method `changeChannelStatus`
 - Agent billing monitor `VerifySuspendedChannelsAndTryToUnsuspend()`
 
-</details>
+#### AgentPreServiceTerminate
 
 `AgentPreServiceTerminate` - terminates the service.
 
-<details><summary>Created by:</summary>
+_Created by:_
 
 - UI API method `changeChannelStatus`
 - Agent billing monitor `VerifyUnitsBasedChannels()`
 - Agent billing monitor `VerifyChannelsForInactivity()`
 - Agent billing monitor `VerifySuspendedChannelsAndTryToTerminate()`
 
-</details>
+#### AgentPreEndpointMsgCreate
 
 `AgentPreEndpointMsgCreate` - prepares endpoint message to be sent to client.
 
-<details><summary>Created by:</summary>
+_Created by:_
 
 - Job `AgentAfterChannelCreate`
 
-</details>
+
+#### AgentPreOfferingMsgBCPublish
 
 `AgentPreOfferingMsgBCPublish` - publishes offering to blockchain.
 
-<details><summary>Created by:</summary>
+_Created by:_
 
 - UI API method `ChangeOfferingStatus`
 
-</details>
+#### AgentAfterOfferingMsgBCPublish
 
 `AgentAfterOfferingMsgBCPublish` - updates offering status and account balance.
 
-<details><summary>Created by:</summary>
+_Created by:_
 
 - Ethereum monitor event `LogOfferingCreated`
 
-</details>
+#### AgentPreOfferingPopUp
 
 `AgentPreOfferingPopUp` - pop ups an offering.
 
-<details><summary>Created by:</summary>
+_Created by:_
 
 - UI API method `ChangeOfferingStatus`
 
-</details>
+#### AgentAfterOfferingPopUp
 
 `AgentAfterOfferingPopUp` - updates the block number when the offering was popped up.
 
-<details><summary>Created by:</summary>
+_Created by:_
 
 - Ethereum monitor event `LogOfferingPopedUp`
 
-</details>
+#### AgentPreOfferingDelete
 
 `AgentPreOfferingDelete` - calls PSC remove an offering.
 
-<details><summary>Created by:</summary>
+_Created by:_
 
 - UI API method `ChangeOfferingStatus`
 
-</details>
+#### AgentAfterOfferingDelete
 
 `AgentAfterOfferingDelete` - set offering status to 'remove'
 
-<details><summary>Created by:</summary>
+_Created by:_
 
 - Ethereum monitor event `LogOfferingDeleted`
 
-</details>
 
 ---
 
@@ -269,144 +269,146 @@ When job executed its [job handler](https://github.com/Privatix/dappctrl/blob/ma
 
 ---
 
+#### ClientAfterOfferingDelete
+
 `ClientAfterOfferingDelete` - sets offer status to `remove`
 
-<details><summary>Created by:</summary>
+_Created by:_
 
 - Ethereum monitor event `LogOfferingDeleted`
 
-</details>
+#### ClientAfterOfferingPopUp
 
 `ClientAfterOfferingPopUp` - updates offering in DB or retrieves from Agent and stores in DB.
 
-<details><summary>Created by:</summary>
+_Created by:_
 
 - Ethereum monitor event `LogOfferingPopedUp`
 
-</details>
+#### ClientPreChannelCreate
 
 `ClientPreChannelCreate` - triggers a channel creation.
 
-<details><summary>Created by:</summary>
+_Created by:_
 
 - UI API method `acceptOffering`
 
-</details>
+#### ClientAfterChannelCreate
 
 `ClientAfterChannelCreate` - activates channel and triggers access message retrieval
 
-<details><summary>Created by:</summary>
+_Created by:_
 
 - Ethereum monitor event `LogChannelCreated`
 
-</details>
+#### ClientEndpointCreate
 
 `ClientEndpointCreate` - decodes endpoint message, saves it in the DB and triggers product configuration.
 
-<details><summary>Created by:</summary>
+_Created by:_
 
 - Job `ClientAfterChannelCreate`
 
-</details>
+#### ClientAfterUncooperativeClose
 
 `ClientAfterUncooperativeClose` - changes channel status to closed uncooperatively.
 
-<details><summary>Created by:</summary>
+_Created by:_
 
 - Ethereum monitor event `LogUnCooperativeChannelClose`
 
-</details>
+#### ClientAfterCooperativeClose
 
 `ClientAfterCooperativeClose` - changes channel status to closed cooperatively and launches termination of service.
 
-<details><summary>Created by:</summary>
+_Created by:_
 
 - Ethereum monitor event `LogCooperativeChannelClose`
 
-</details>
+#### ClientPreUncooperativeClose
 
 `ClientPreUncooperativeClose` - terminates service.
 
-<details><summary>Created by:</summary>
+_Created by:_
 
 - Job `ClientAfterUncooperativeCloseRequest`
 
-</details>
+#### ClientPreChannelTopUp
 
 `ClientPreChannelTopUp` - checks client balance and creates transaction to increase channel deposit.
 
-<details><summary>Created by:</summary>
+_Created by:_
 
 - UI API method `TopUpChannel`
 
-</details>
+#### ClientAfterChannelTopUp
 
 `ClientAfterChannelTopUp` - updates deposit of a channel in local DB.
 
-<details><summary>Created by:</summary>
+_Created by:_
 
 - Ethereum monitor event `LogChannelToppedUp`
 
-</details>
+#### ClientPreUncooperativeCloseRequest
 
 `ClientPreUncooperativeCloseRequest` - requests uncooperative close of channel. Challenge period started.
 
-<details><summary>Created by:</summary>
+_Created by:_
 
 - UI API method `changeChannelStatus`
 
-</details>
+#### ClientAfterUncooperativeCloseRequest
 
 `ClientAfterUncooperativeCloseRequest` - waits for channel to close uncooperatively, starts the service termination process.
 
-<details><summary>Created by:</summary>
+_Created by:_
 
 - Ethereum monitor event `LogUnCooperativeChannelClose`
 
-</details>
+#### ClientPreServiceTerminate
 
 `ClientPreServiceTerminate` - terminates service.
 
-<details><summary>Created by:</summary>
+_Created by:_
 
 - Job `ClientAfterCooperativeClose`
 - Client billing `postPayload()`
 - Client billing `processChannel()`
 - UI API method `ChangeChannelStatus`
 
-</details>
+
+#### ClientPreServiceSuspend
 
 `ClientPreServiceSuspend` - suspends service.
 
-<details><summary>Created by:</summary>
+_Created by:_
 
 - UI API method `ChangeChannelStatus`
 
-</details>
+#### ClientPreServiceUnsuspend
 
 `ClientPreServiceUnsuspend` - activates service.
 
-<details><summary>Created by:</summary>
+_Created by:_
 
 - UI API method `ChangeChannelStatus`
 
-</details>
+#### ClientAfterOfferingMsgBCPublish
 
 `ClientAfterOfferingMsgBCPublish` - creates offering.
 
-<details><summary>Created by:</summary>
+_Created by:_
 
 - Ethereum monitor event `LogOfferingCreated`
 
-</details>
+#### ClientCompleteServiceTransition
 
 `ClientCompleteServiceTransition` - complete service state transition. Service status changes.
 
-<details><summary>Created by:</summary>
+_Created by:_
 
 - Session server (adapter)
 
-</details>
 
 ---
 
@@ -414,49 +416,51 @@ When job executed its [job handler](https://github.com/Privatix/dappctrl/blob/ma
 
 ---
 
+#### PreAccountAddBalanceApprove
+
 `PreAccountAddBalanceApprove` - approve balance if amount exists.
 
-<details><summary>Created by:</summary>
+_Created by:_
 
 - UI API method `transferTokens`
 
-</details>
+#### PreAccountAddBalance
 
 `PreAccountAddBalance` - adds balance to PSC.
 
-<details><summary>Created by:</summary>
+_Created by:_
 
 - Ethereum monitor PTC event `Approval`
 
-</details>
+#### AfterAccountAddBalance
 
 `AfterAccountAddBalance` - updates PSC and PTC balance of an account.
 
-<details><summary>Created by:</summary>
+_Created by:_
 
 - Ethereum monitor PTC event `Transfer`
 
-</details>
+#### PreAccountReturnBalance
 
 `PreAccountReturnBalance` - returns from PSC to PTC.
 
-<details><summary>Created by:</summary>
+_Created by:_
 
 - UI API method `transferTokens`
 
-</details>
+#### AfterAccountReturnBalance
 
 `AfterAccountReturnBalance` - updates PSC and PTC balance of an account.
 
-<details><summary>Created by:</summary>
+_Created by:_
 
 - Ethereum monitor PTC event `Transfer`
 
-</details>
+#### AccountUpdateBalances
 
 `AccountUpdateBalances` - updates PTC, PSC and ETH account balance values.
 
-<details><summary>Created by:</summary>
+_Created by:_
 
 - Job AgentAfterUncooperativeClose
 - Job AgentAfterCooperativeClose
@@ -470,14 +474,15 @@ When job executed its [job handler](https://github.com/Privatix/dappctrl/blob/ma
 - UI API ImportAccountFromJSON
 - UI API UpdateBalance
 
-</details>
+
+#### DecrementCurrentSupply
 
 `DecrementCurrentSupply` - finds offering and decrements its current supply for Client.
 
-<details><summary>Created by:</summary>
+_Created by:_
 
 - Ethereum monitor event `LogChannelCreated`
 
-</details>
+#### IncrementCurrentSupply
 
 `IncrementCurrentSupply` - finds offering and increments its current supply for Client.

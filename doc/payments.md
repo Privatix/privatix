@@ -8,7 +8,7 @@ After Client starts using service, `Client billing` would identify that current 
 
 `Cheque` - is specially crafted message, signed by Client. If signed further by Agent and sent to smart contract it closes channel, while completing transfer of tokens owed by Client to Agent. Signed by Client balance proofs that it permits to Agent to get exact amount of tokens from channel deposit.
 
-<details><summary>Cheque format</summary>
+**Cheque format**
 
     AgentAddress    data.HexString
     OpenBlockNumber uint32
@@ -16,8 +16,6 @@ After Client starts using service, `Client billing` would identify that current 
     Balance         uint64
     BalanceMsgSig   data.Base64String
     ContractAddress data.HexString
-
-</details>
 
 ### Payment web service
 

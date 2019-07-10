@@ -23,33 +23,33 @@ Example of `product id`: `73e17130-2a1d-4f7d-97a8-93a9aaa6f10d`
 
 ## Folder structure
 
--:open_file_folder: core folder
+- core folder
 
---:open_file_folder: product
+-- product
 
----:open_file_folder: \<product id\>
+--- \<product id\>
 
-----:open_file_folder: bin
+---- bin
 
-----:open_file_folder: config
+---- config
 
-----:open_file_folder: data
+---- data
 
-----:open_file_folder: log
+---- log
 
-----:open_file_folder: template
+---- template
 
----:open_file_folder: \<product id\>
+--- \<product id\>
 
-----:open_file_folder: bin
+---- bin
 
-----:open_file_folder: config
+---- config
 
-----:open_file_folder: data
+---- data
 
-----:open_file_folder: log
+---- log
 
-----:open_file_folder: template
+---- template
 
 ### Folder conventions
 
@@ -67,31 +67,31 @@ Example of `product id`: `73e17130-2a1d-4f7d-97a8-93a9aaa6f10d`
 
 Templates are located in `template` folder. Following naming and folder structure must be maintained:
 
-----:open_file_folder: template
+-- template
 
------:open_file_folder: products
+--- products
 
-------:page_facing_up: `client.json`
+---- `client.json`
 
-------:page_facing_up: `server.json`
+---- `server.json`
 
------:open_file_folder: templates
+--- templates
 
-------:page_facing_up: `access.json`
+---- `access.json`
 
-------:page_facing_up: `offering.json`
+---- `offering.json`
 
------:page_facing_up: `adapter.agent.config.json`
+---- `adapter.agent.config.json`
 
------:page_facing_up: `adapter.client.config.json`
+---- `adapter.client.config.json`
 
 `client.json` - client product object that imported to Privatix Core DB to products table. Represents client service plug-in initial configuration/settings.
 
 `server.json` - server product object that imported to Privatix Core DB to products table. Represents server service plug-in initial configuration/settings.
 
-`access.json` - access message template (see [Access](/doc/access.md) for more)
+`access.json` - access message template (see [Access](access.md) for more)
 
-`offering.json` - offering message template (see [Offerings](/doc/offering.md) for more)
+`offering.json` - offering message template (see [Offerings](offering.md) for more)
 
 `adapter.agent.config.json` - service plug-in adapter configuration file for Agent. It is template only for customization during installation. Resulting config file should reside in `config` folder.
 
@@ -103,7 +103,7 @@ dapp-installer can install, update, remove service plug-in which is compliant wi
 
 Given `install.agent.config.json` or `install.client.config.json` found in `config` folder by dapp-installer, they would be executed sequentially as part of install, update or remove workflow.
 
-<details><summary>dapp-installer compatible config</summary>
+**dapp-installer compatible config**
 
 ```JSON
 {
@@ -120,7 +120,6 @@ Given `install.agent.config.json` or `install.client.config.json` found in `conf
 }
 ```
 
-</details>
 
 For each workflow dapp-installer will execute commands listed in `install.agent.config.json` or `install.client.config.json` files sequentially.
 
