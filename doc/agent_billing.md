@@ -12,5 +12,5 @@ Billing responsible for:
 
 2. Service aging
 
-   - Termination of services, that was suspended longer that `max. suspend time` for corresponding offering. It prevents client from occupating service without using it for indefinite time.
-   - Termination of services, that was never used longer that `max. inactive time` for corresponding offering. It prevents client from occupating service without ever using it for indefinite time.
+   - Termination of services, that was suspended longer that `max. suspend time` for corresponding offering. It prevents client from occupying service without using it for indefinite time.
+   - Termination of services, that was never used longer that `max. inactive time` for corresponding offering. It prevents client from occupying service without ever using it for indefinite time.

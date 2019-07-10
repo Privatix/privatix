@@ -1,6 +1,6 @@
 # About this document
 
-This document describes how Privatix Network works.
+This documentation describes how Privatix Network works and intended for tech savvy people.
 
 # General
 

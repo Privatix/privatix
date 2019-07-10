@@ -10,7 +10,7 @@
     * [Offering](offering.md)
     * [Access](access.md)
 
-## Payments
+## Payment
 
 * [State channels](channel.md)
 * [Payment cheques](payments.md)
