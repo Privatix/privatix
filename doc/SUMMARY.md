@@ -4,27 +4,27 @@
 
 * [Privatix core](core.md)
 
-### Service messaging
+## Service messaging
 
 * [Messaging](messaging.md)
     * [Offering](offering.md)
     * [Access](access.md)
 
-### Payments
+## Payments
 
 * [State channels](channel.md)
 * [Payment cheques](payments.md)
 
-### Billing
+## Billing
 
 * [Agent billing](agent_billing.md)
 * [Client billing](client_billing.md)
 
-### Ethereum
+## Ethereum
 
 * [Ethereum monitor](ethereum_monitor.md)
 
-### Jobs
+## Jobs
 
 * [Jobs](job.md)
 
