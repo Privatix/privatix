@@ -16,7 +16,7 @@
 
 ## Payments
 
-* [State channel](channel.md)
+* [State channels](channel.md)
 * [Payment cheques](payments.md)
 
 ## Billing
