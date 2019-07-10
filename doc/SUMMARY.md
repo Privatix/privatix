@@ -40,3 +40,4 @@
 ## Other
 
 * [Update](update.md)
+* [Basic usage scenario](usage_scenario.md)
