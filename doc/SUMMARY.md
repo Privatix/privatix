@@ -1,43 +1,31 @@
-# Summary
+# Table of contents
+
+* [What is Privatix Network](README.md)
 
 ## ​Privatix core
 
-* [Privatix core](core.md)
+* [Privatix core](privatix-core/core/README.md)
+  * [Software components](privatix-core/core/software-components.md)
+  * [Concepts](privatix-core/core/concepts.md)
+  * [Messaging](privatix-core/core/messaging/README.md)
+    * [Offering message](privatix-core/core/messaging/offering/README.md)
+      * [Offering template](privatix-core/core/messaging/offering/offering-template.md)
+    * [Access message](privatix-core/core/messaging/access/README.md)
+      * [Access template](privatix-core/core/messaging/access/access-template.md)
+  * [Payments](privatix-core/core/payments/README.md)
+    * [State channels](privatix-core/core/payments/channel.md)
+    * [Payment cheque](privatix-core/core/payments/payments-1.md)
+    * [Agent billing](privatix-core/core/payments/agent_billing.md)
+    * [Client billing](privatix-core/core/payments/client_billing.md)
+  * [Ethereum](privatix-core/core/ethereum/README.md)
+    * [Smart contracts](privatix-core/core/ethereum/smart_contract.md)
+    * [Ethereum monitor](privatix-core/core/ethereum/ethereum_monitor.md)
+  * [Jobs](privatix-core/core/jobs/README.md)
+    * [Jobs](privatix-core/core/jobs/job.md)
+  * [Other](privatix-core/core/other/README.md)
+    * [Update](privatix-core/core/other/update.md)
+    * [Basic usage scenario](privatix-core/core/other/usage_scenario.md)
+* [Service](privatix-core/service/README.md)
+  * [Service module](privatix-core/service/service_plug-in.md)
+  * [Conventions](privatix-core/service/service_plug-in_standards.md)
 
-## Service messaging
-
-* [Messaging](messaging.md)
-    * [Offering](offering.md)
-    * [Access](access.md)
-
-## Payment
-
-* [State channels](channel.md)
-* [Payment cheques](payments.md)
-
-## Billing
-
-* [Agent billing](agent_billing.md)
-* [Client billing](client_billing.md)
-
-## Ethereum
-
-* [Ethereum monitor](ethereum_monitor.md)
-
-## Jobs
-
-* [Jobs](job.md)
-
-## Smart contracts
-
-* [Smart contracts](smart_contract.md)
-
-## Services
-
-* [Service plug-in](service_plug-in.md)
-    * [Standards](service_plug-in_standards.md)
-
-## Other
-
-* [Update](update.md)
-* [Basic usage scenario](usage_scenario.md)
