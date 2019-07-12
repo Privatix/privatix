@@ -4,7 +4,7 @@
 
 [Privatix core](./) - software that orchestrates payments, billing, communication with other components for both Agents and Clients.
 
-*  `Privatix core database` - used to save state of services and operations.
+* `Privatix core database` - used to save state of services and operations.
 * `Privatix GUI` - _optional_ graphical user interface for `Privatix core`. All essential operations can be made interactively. Alternatively, one can use `Privatix core UI API` to programmatically operate the software.
 
 ### Infrastructure

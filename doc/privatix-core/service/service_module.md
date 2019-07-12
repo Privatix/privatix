@@ -10,7 +10,7 @@ Service module must be registered in `privatix core database`and make use of Pri
 
 `Templates` - unique [offering ](../core/messaging/offering/)and [access ](../core/messaging/access/)template
 
-`Service module` - software that consumes `Service API` to automate service life-cycle. Can be standalone or communicate with `Privatix core` on one side and with `3rd party software` on another to provide particular service. \(_e.g. adapter for VPN server / adapter for VPN client_\)​. 
+`Service module` - software that consumes `Service API` to automate service life-cycle. Can be standalone or communicate with `Privatix core` on one side and with `3rd party software` on another to provide particular service. \(_e.g. adapter for VPN server / adapter for VPN client_\)​.
 
 ## Service API
 
@@ -70,5 +70,5 @@ Service adapter stores service configuration in `products` database table `confi
 
 ## Conventions
 
-To make service modules easily added to `Privatix core` they should comply with [ Service module conventions](service_module.md#service_module_standards). They include some conventions that should be follow to guarantee compatibility and reuse as much as possible functionality of Privatix core.
+To make service modules easily added to `Privatix core` they should comply with [ Service module conventions](service_module_standards.md). They include some conventions that should be follow to guarantee compatibility and reuse as much as possible functionality of Privatix core.
 

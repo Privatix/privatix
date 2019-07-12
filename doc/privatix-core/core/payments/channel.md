@@ -52,13 +52,13 @@ event LogChannelCreated(address indexed _agent, address indexed _client, bytes32
 
 ## Top-up channel deposit
 
-After channel is created and before it was deleted Client can increase deposit calling smart contract method:
+After channel is created and before it was deleted Client can increase state channel deposit calling smart contract method:
 
 ```text
 function topUpChannel(address _agent_address, uint32 _open_block_number, bytes32 _offering_hash, uint192 _added_deposit)
 ```
 
-Agent can continue to provide the service continuously paid for small service portions, because he knows Client have enough token deposit to pay.
+Agent then receives event and can continue to provide the service up to new total deposit value. 
 
 ## Close channel
 
@@ -66,36 +66,38 @@ Channel can be closed by Agent \(normally\) or by Client \(dispute\).
 
 ### Normal close
 
-Agent closes channel optimally when he have cheque with amount equal to channel deposit. It means that client used at least minimum expected units to be sold. It is done automatically by `Agent billing` engine. But he can choose to close channel manually anytime via `UI API`. Smart contract method called:
+Agent closes channel optimally when he have cheque with amount equal to channel deposit. It means that client used at least minimum expected units to be sold. It is done automatically by [Agent billing](agent_billing.md) engine. But he can choose to close channel manually anytime via `UI API`. Smart contract method called:
 
 ```text
 function cooperativeClose(address _agent_address, uint32 _open_block_number, bytes32 _offering_hash, uint192 _balance, bytes _balance_msg_sig, bytes _closing_sig)
 ```
 
-during this call Agent sends greatest cheque received from Client with Client's and his own signatures ensuring integrity and belonging. Channel will be deleted.
+during this call Agent sends the greatest cheque received from Client. Transaction must contain both Client's and Agent's signatures to ensure integrity and belonging. Channel will be deleted.
 
 ### Dispute close
 
 Client may also want to close channel and return full deposit back. Reasons:
 
-* Agent never provided service and thus never closes channel himself
-* Agent doesn't closes channel for long time, but Client should get part of its deposit back, as he haven't used it all.
+* Agent never provided service, thus never received cheque and doesn't closes channel
+* Agent doesn't closes channel for long time, but Client eligible to get part of its deposit back, as he haven't used whole deposit.
 
-Client will need to call two smart contract methods after some period passes between the calls.
+Client will need to call two smart contract methods after some period passes between each call.
 
-First Client create notice in form of blockchain event.
+This period is specified in smart contract and doesn't change. Such period is called `Dispute period` or `Challenge period`.
 
-```text
-event LogChannelCloseRequested(address indexed _agent, address indexed _client, bytes32 indexed _offering_hash, uint32 _open_block_number, uint192 _balance)
-```
-
-Event is generated during smart contract method call:
+First Client create calls smart contract method: 
 
 ```text
 function uncooperativeClose(address _agent_address, uint32 _open_block_number, bytes32 _offering_hash, uint192 _balance)
 ```
 
-It notifies an Agent that Client wants to take his all deposit back. Than Agent can immediately present cheque, if he already have it from Client and make `normal close`.
+This method generates Ethereum event
+
+```text
+event LogChannelCloseRequested(address indexed _agent, address indexed _client, bytes32 indexed _offering_hash, uint32 _open_block_number, uint192 _balance)
+```
+
+It notifies an Agent that Client wants to take his whole deposit back from state channel. Than Agent can immediately present cheque, if he already have it from Client and make `normal close`.
 
 But, if Agent doesn't make `normal close` and `dispute period` is passed, Client can call second smart contract method:
 
@@ -107,34 +109,35 @@ and this call will make full deposit return from channel back to Client's accoun
 
 #### Dispute period
 
-`Dispute period` - some challenge period that need to pass between Client calls `uncooperativeClose` and `settle` methods of smart contract. If period is not passed, `settle` method will fail.
+`Dispute period` - period counted in Ethereum blocks that need to pass between Client calls `uncooperativeClose` and `settle` methods of smart contract. If period is not passed, `settle` method will fail.
 
 ## Status
 
-There are to statuses related to channel:
+There are to statuses related to state channel. 
 
 * status of service - responsible for access to service
-* channel status in blockchain
+* state channel status in blockchain
 
-### Channel service status
+### Service status
+
+Specifies service status for specific state channel
 
 | **Service status** | **Agent description** | **Client description** |
-| :---: | :--- | :--- |
+| :--- | :--- | :--- |
 | Pending | Service is still not provisioned and cannot be used. | Service is still not provisioned and cannot be used. |
-| Activating |  | Core is waiting for service activation by adapter |
+| Activating | Core is waiting for service provisioning | Core is waiting for service activation by adapter |
 | Active | Service is ready to be used. | Currently using service. |
-| Suspending |  | Core is waiting for service usage pause by adapter |
+| Suspending | Core is waiting for service access blocking. | Core is waiting for service usage pause by adapter |
 | Suspended | Service usage is suspended. Only payment receival is allowed, but service usage is restricted. | Service is not used - currently paused |
-| Terminating |  | Core is waiting to be stopped and deprovisioned by adapter. |
+| Terminating | Core is waiting for service access to be blocked and service deprovisioning | Core is waiting for service to be stopped and deprovisioned by adapter. |
 | Terminated | Service is permanently deactivated. | Service is permanently deactivated. |
 
-### Channel blockchain status
+### Channel status
 
-In UI known as contract.
+Channel status is registered in database and specifies last known state channel status in blockchain
 
 | **Blockchain status** | **Description** |
-| :---: | :---: |
-|  |  |
+| :--- | :--- |
 | Pending | Transaction was sent, but confirmation still not received. |
 | Active | State channel is registered and desired confirmation number is reached. |
 | Wait for cooperative close | Cooperative close transaction was submitted, but confirmation still not received. |
@@ -143,4 +146,8 @@ In UI known as contract.
 | In challenge period | Challenge period started for uncooperative close. |
 | Wait for uncooperative close | Waiting for settling state channel uncooperatively. |
 | Uncooperatively closed | Uncooperative close transaction is registered and desired confirmation number is reached. |
+
+{% hint style="info" %}
+In UI known as contract status.
+{% endhint %}
 

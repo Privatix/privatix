@@ -8,7 +8,7 @@ Access to service is granted after Agent receives notification of new channel wa
 event LogChannelCreated(address indexed _agent, address indexed _client, bytes32 indexed offering_hash, uint192 _deposit)
 ```
 
-When Client receives same Ethereum event, he knows that he should shortly try to contact Agent and get `access message`. Client queries Agent for `access message`, providing `channel key` compliant with smart contract method:
+When Client receives Ethereum event `LogChannelCreated` , he knows that he should shortly try to contact Agent and get `access message`. Client queries Agent for `access message`, providing `channel key` compliant with smart contract method:
 
 ```text
 function getKey(address _client_address, address _agent_address, uint32 _open_block_number,  bytes32 _offering_hash)
@@ -22,13 +22,12 @@ Access message \(aka endpoint message\) is created by Agent according to `access
 
 ## Access workflow
 
-After Agent receives event `LogChannelCreated` he should process order and give access to Client for a service. This can be handled by adapter making additional work. Finally, `access message` is generated in `Privatix core database` and ready to be passed to Client.
+After Agent receives event `LogChannelCreated` he should process order and give access to Client for a service. `Access message` is generated and then stored in `Privatix core database` ready to be passed to Client on demand.
 
-1. Client queries Agent for `access message` via one of `messaging transport`
-2. access message received from Agent \(job `ClientAfterChannelCreate`\)
-3. Then in job `AgentPreEndpointMsgCreate`
-
-   a. Agent's signature verified
+1. Client queries Agent for `access message` via one of [`messaging transport`](../transport.md)
+2. Access message received from Agent \(job [`ClientAfterChannelCreate`](../../jobs/job.md#clientafterchannelcreate)\)
+3. Then in job [`AgentPreEndpointMsgCreate`](../../jobs/job.md#agentpreendpointmsgcreate)
+4. Agent's signature verified
 
    b. Message payload is decrypted
 
@@ -38,7 +37,9 @@ After Agent receives event `LogChannelCreated` he should process order and give 
 
 Access is granted and maybe consumed by Client. Usually processed by Client's adapter.
 
-## Access message format
+## Access message processing
+
+### Format
 
 | encrypted payload | signature |
 | :--- | :--- |
@@ -51,11 +52,11 @@ Access is granted and maybe consumed by Client. Usually processed by Client's ad
 3. Generate keccak-256 hash of encrypted message payload \(as raw bytes\)
 4. Sign hash with private key using Ethereum crypto package `Sign()` function
 
-## Access message hash
+### Access message hash
 
 Keccak-256 hash of access message is used to uniquely identify access message. Hash is performed on whole offering message \(already encrypted and signed\).
 
-## Access message verification
+### Access message verification
 
 1. Split message encrypted payload by removing last 64 bytes of message
 2. Generate keccak-256 hash of message payload

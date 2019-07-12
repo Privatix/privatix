@@ -107,18 +107,24 @@ There are several ethereum events that involved in current supply change notific
 * `LogCooperativeChannelClose` - somebody closed channel. Offering supply increased.
 * `LogUnCooperativeChannelClose` - somebody closed channel. Offering supply increased.
 
-## Offering message packaging
+## Offering message processing
+
+### Format
 
 Offering message is composed from:
 
 * message payload - filled offering template
 * signature - Agent's account signature using public key \(same as for offering publishing\)
 
-Service offering message format:
-
 | message payload | signature |
 | :--- | :--- |
 | variable length | 64 bytes |
+
+### Offering message packaging
+
+1. Fill offering template \(JSON\)
+2. Generate keccak-256 hash of encrypted message payload \(as raw bytes\)
+3. Sign hash with private key using Ethereum crypto package `Sign()` function
 
 ### Offering signing
 
@@ -137,7 +143,7 @@ Keccak-256 hash of offering message \(aka offering hash\) is used to uniquely id
 
 1. Generate keccak-256 hash of offering message
 
-## Offering verification
+### Offering verification
 
 1. Split message payload by removing last 64 bytes of message
 2. Verify that specified in payload template exists
