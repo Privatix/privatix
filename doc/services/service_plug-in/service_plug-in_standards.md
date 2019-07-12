@@ -1,33 +1,35 @@
-# Service plug-in standards
+# Standards
 
-## Requirements
+## Service plug-in standards
 
-- At minimum service plug-in must contain offering and access template with unique hash
-- Usage should be reported using `Adapter API`
+### Requirements
 
-# Installation by dapp-installer
+* At minimum service plug-in must contain offering and access template with unique hash
+* Usage should be reported using `Adapter API`
+
+## Installation by dapp-installer
 
 To make offering template be imported by `dapp-installer`, folder and file naming should comply with `service plug-in naming conventions`.
 
-# Service plug-in naming conventions
+## Service plug-in naming conventions
 
-## Product id
+### Product id
 
-Each service plug-in should have unique `product id` (uuid v4). We expect in future to create mapping between service plug-in maintainer ethereum address and unique product id. This will give ability for a maintainer to reserve `product id` for his service plug-in and sign his service plug-in. User/software will have ability to:
+Each service plug-in should have unique `product id` \(uuid v4\). We expect in future to create mapping between service plug-in maintainer ethereum address and unique product id. This will give ability for a maintainer to reserve `product id` for his service plug-in and sign his service plug-in. User/software will have ability to:
 
-- verify that service plug-in is maintained by somebody that user trusts
-- prevent from scammers to have same products (`product id's`) as trusted maintainer
-- allow service plug-in signature verification and belonging to trusted maintainer
+* verify that service plug-in is maintained by somebody that user trusts
+* prevent from scammers to have same products \(`product id's`\) as trusted maintainer
+* allow service plug-in signature verification and belonging to trusted maintainer
 
 Example of `product id`: `73e17130-2a1d-4f7d-97a8-93a9aaa6f10d`
 
-## Folder structure
+### Folder structure
 
-- core folder
+* core folder
 
 -- product
 
---- \<product id\>
+--- \
 
 ---- bin
 
@@ -39,7 +41,7 @@ Example of `product id`: `73e17130-2a1d-4f7d-97a8-93a9aaa6f10d`
 
 ---- template
 
---- \<product id\>
+--- \
 
 ---- bin
 
@@ -51,7 +53,7 @@ Example of `product id`: `73e17130-2a1d-4f7d-97a8-93a9aaa6f10d`
 
 ---- template
 
-### Folder conventions
+#### Folder conventions
 
 `bin` - contains all binary/executable/scripts. Can contain subfolders. Can contain 3rd party software in subfolders. During upgrade, it should be replaced by newer versions.
 
@@ -63,7 +65,7 @@ Example of `product id`: `73e17130-2a1d-4f7d-97a8-93a9aaa6f10d`
 
 `template` - offering, access, product template stored here and imported during install of service plug-in.
 
-#### Templates
+**Templates**
 
 Templates are located in `template` folder. Following naming and folder structure must be maintained:
 
@@ -89,15 +91,15 @@ Templates are located in `template` folder. Following naming and folder structur
 
 `server.json` - server product object that imported to Privatix Core DB to products table. Represents server service plug-in initial configuration/settings.
 
-`access.json` - access message template (see [Access](access.md) for more)
+`access.json` - access message template \(see [Access](../../service-messaging/messaging/access.md) for more\)
 
-`offering.json` - offering message template (see [Offerings](offering.md) for more)
+`offering.json` - offering message template \(see [Offerings](../../service-messaging/messaging/offering.md) for more\)
 
 `adapter.agent.config.json` - service plug-in adapter configuration file for Agent. It is template only for customization during installation. Resulting config file should reside in `config` folder.
 
 `adapter.client.config.json` - service plug-in adapter configuration file for Client. It is template only for customization during installation. Resulting config file should reside in `config` folder.
 
-# Dapp-installer
+## Dapp-installer
 
 dapp-installer can install, update, remove service plug-in which is compliant with conventions listed above.
 
@@ -105,7 +107,7 @@ Given `install.agent.config.json` or `install.client.config.json` found in `conf
 
 **dapp-installer compatible config**
 
-```JSON
+```javascript
 {
     "CoreDapp": false,
     "Install": [
@@ -120,11 +122,11 @@ Given `install.agent.config.json` or `install.client.config.json` found in `conf
 }
 ```
 
-
 For each workflow dapp-installer will execute commands listed in `install.agent.config.json` or `install.client.config.json` files sequentially.
 
-## Update
+### Update
 
 Before update, service plug-in folder is backed up. It is removed, only, if no errors occurred during installation. On errors, old folder is returned back.
 
 For more information, please refer to [dapp-installer repository](https://github.com/Privatix/dapp-installer)
+

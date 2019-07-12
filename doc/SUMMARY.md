@@ -1,43 +1,46 @@
-# Summary
+# Table of contents
+
+* [Introduction](README.md)
 
 ## ​Privatix core
 
-* [Privatix core](core.md)
+* [Privatix core](privatix-core/core.md)
 
 ## Service messaging
 
-* [Messaging](messaging.md)
-    * [Offering](offering.md)
-    * [Access](access.md)
+* [Messaging](service-messaging/messaging/README.md)
+  * [Offering](service-messaging/messaging/offering.md)
+  * [Access](service-messaging/messaging/access.md)
 
 ## Payment
 
-* [State channels](channel.md)
-* [Payment cheques](payments.md)
+* [State channels](payment/channel.md)
+* [Payment cheques](payment/payments.md)
 
 ## Billing
 
-* [Agent billing](agent_billing.md)
-* [Client billing](client_billing.md)
+* [Agent billing](billing/agent_billing.md)
+* [Client billing](billing/client_billing.md)
 
 ## Ethereum
 
-* [Ethereum monitor](ethereum_monitor.md)
+* [Ethereum monitor](ethereum/ethereum_monitor.md)
 
 ## Jobs
 
-* [Jobs](job.md)
+* [Jobs](jobs/job.md)
 
 ## Smart contracts
 
-* [Smart contracts](smart_contract.md)
+* [Smart contracts](smart-contracts/smart_contract.md)
 
 ## Services
 
-* [Service plug-in](service_plug-in.md)
-    * [Standards](service_plug-in_standards.md)
+* [Service plug-in](services/service_plug-in/README.md)
+  * [Standards](services/service_plug-in/service_plug-in_standards.md)
 
 ## Other
 
-* [Update](update.md)
-* [Basic usage scenario](usage_scenario.md)
+* [Update](other/update.md)
+* [Basic usage scenario](other/usage_scenario.md)
+
