@@ -18,7 +18,7 @@
 
 Service module is not part of core, but always come together with Privatix core. This module responsible to deliver/consume a service. It communicates with Privatix core via Service API.
 
-[Service module](../service/service_plug-in.md) - is set of templates and software for single service that automates:
+[Service module](../service/service_module.md) - is set of templates and software for single service that automates:
 
 * service provisioning
 * usage reporting
@@ -29,5 +29,5 @@ Service module is not part of core, but always come together with Privatix core.
 
 [UI API](https://github.com/Privatix/dappctrl/blob/master/doc/ui/rpc.md) - user view and control of services, offerings, servers, balances, etc.
 
-[Service API](../service/service_plug-in.md#service-api) - automation of service provisioning/deprovisioning, access and usage monitoring.
+[Service API](../service/service_module.md#service-api) - automation of service provisioning/deprovisioning, access and usage monitoring.
 

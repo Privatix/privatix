@@ -2,7 +2,7 @@
 
 ## Access template
 
-`Access template` is agreed format for message, that contains all data needed to Client for this particular service. Access template shipped with `service plug-in`. Each `service plug-in` has unique access template. Both Agent and Client have identical access template, when choose to use same `service plug-in`.
+`Access template` is agreed format for message, that contains all data needed to Client for this particular service. Access template shipped with `service module`. Each `service module` has unique access template. Both Agent and Client have identical access template, when choose to use same `service module`.
 
 `Access template` - is JSON schema that includes:
 
@@ -11,7 +11,7 @@
   * `Service custom fields` - \(aka additional parameters\) any fields that needed for particular service operation. They do not processed by `Privatix core`, but passed to `Service adapter` for any custom logic.
 * `UI schema` - schema that can be used by GUI to display fields for best user experience \(currently not implemented\)
 
-Each `Access template` has unique hash. Any access message always includes in its body hash of corresponding `access template`. That's how access message is linked to template and related `service plug-in`. When Client receives access message, he checks that:
+Each `Access template` has unique hash. Any access message always includes in its body hash of corresponding `access template`. That's how access message is linked to template and related `service module`. When Client receives access message, he checks that:
 
 * Access template with noted hash exists in Client's database
 * Access message passes validation according to access template

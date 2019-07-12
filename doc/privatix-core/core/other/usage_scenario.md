@@ -8,9 +8,9 @@
 **Agent setup workflow**
 
 1. Get some `PRIX tokens` on any token exchange. \(airdropped via `Privatix telegram bot` @PRIXBot in testnet\)
-2. Install `Privatix core` software and at least one `service plug-in` \(_currently VPN plug-in is pre-installed_\).
+2. Install `Privatix core` software and at least one `service module` \(_currently VPN module is pre-installed_\).
 3. Setup account via `Privatix UI`. This includes setting up private key and making token transfer.
-4. Fill offering template for the particular service \(template comes with `service plug-in`\). Specify:
+4. Fill offering template for the particular service \(template comes with `service module`\). Specify:
    * Max. concurrent users of this offering
    * Price for unit of service
    * Minimum required deposit
@@ -30,7 +30,7 @@ Agent setup finished. Client can accept offerings and all other essential operat
 **Client setup workflow**
 
 1. Get some `PRIX tokens` on any token exchange. \(Currently airdropped via `Privatix telegram bot` in testnet\)
-2. Install Privatix core software and at least one `service plug-in` \(_currently VPN plug-in is pre-installed_\).
+2. Install Privatix core software and at least one `service module` \(_currently VPN module is pre-installed_\).
 3. Setup account via `Privatix GUI`. This includes setting up private key and making token transfer.
 4. Accept offering. Deposit required by offering will be placed. Access credentials for service will be retrieved. It usually takes about 1 minute to complete.
 

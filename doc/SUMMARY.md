@@ -27,6 +27,6 @@
     * [Update](privatix-core/core/other/update.md)
     * [Basic usage scenario](privatix-core/core/other/usage_scenario.md)
 * [Service](privatix-core/service/README.md)
-  * [Service module](privatix-core/service/service_plug-in.md)
-  * [Conventions](privatix-core/service/service_plug-in_standards.md)
+  * [Service module](privatix-core/service/service_module.md)
+  * [Conventions](privatix-core/service/service_module_standards.md)
 

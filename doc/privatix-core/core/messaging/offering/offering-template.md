@@ -2,7 +2,7 @@
 
 ## Offering template
 
-`Offering template` maybe seen as standard contract for particular service, where some parameters are variable per Agent. Offering template shipped with `service plug-in`. Each `service plug-in` has unique offering template. Both Agent and Client have identical offering template, when choose to use same `service plug-in`.
+`Offering template` maybe seen as standard contract for particular service, where some parameters are variable per Agent. Offering template shipped with `service module`. Each `service module` has unique offering template. Both Agent and Client have identical offering template, when choose to use same `service module`.
 
 `Offering template` - is JSON schema that includes:
 
@@ -11,7 +11,7 @@
   * `Service custom fields` - \(aka additional parameters\) any fields that needed for particular service operation. They do not processed by `Privatix core`, but passed to `Privatix adapter` for any custom logic.
 * `UI schema` - schema that can be used by GUI to display fields for best user experience
 
-Each `Offering template` has unique hash. Any offering always includes in its body hash of corresponding `offering template`. That's how offering is linked to template and related `service plug-in`.
+Each `Offering template` has unique hash. Any offering always includes in its body hash of corresponding `offering template`. That's how offering is linked to template and related `service module`.
 
 When Client receives offering, he checks that:
 

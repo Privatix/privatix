@@ -17,7 +17,7 @@ To make offering template be imported by `dapp-installer`, folder and file namin
 
 ### Product id
 
-Each service module should have unique `product id` \(uuid v4\). We expect in future to create mapping between service plug-in maintainer ethereum address and unique product id. This will give ability for a maintainer to reserve `product id` for his service module and sign his service module. User/software will have ability to:
+Each service module should have unique `product id` \(uuid v4\). We expect in future to create mapping between service module maintainer ethereum address and unique product id. This will give ability for a maintainer to reserve `product id` for his service module and sign his service module. User/software will have ability to:
 
 * verify that service module is maintained by somebody that user trusts
 * prevent from scammers to have same products \(`product id's`\) as trusted maintainer

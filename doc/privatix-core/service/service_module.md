@@ -70,5 +70,5 @@ Service adapter stores service configuration in `products` database table `confi
 
 ## Conventions
 
-To make service modules easily added to `Privatix core` they should comply with [ Service module conventions](service_plug-in.md#service_plug-in_standards). They include some conventions that should be follow to guarantee compatibility and reuse as much as possible functionality of Privatix core.
+To make service modules easily added to `Privatix core` they should comply with [ Service module conventions](service_module.md#service_module_standards). They include some conventions that should be follow to guarantee compatibility and reuse as much as possible functionality of Privatix core.
 
