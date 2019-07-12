@@ -33,7 +33,11 @@ make_packages(){
                       '["release"]="'"${VERSION_TO_SET_IN_BUILDER}"'"' \
                       '["target"]="'"${5}"'"' \
                       '["network"]="'"${DAPP_GUI_NETWORK}"'"' \
+                      '["role"]="agent"' \
                       || exit 1
+                      
+   # please keep ["role"]="agent", because this default is used for non-GUI OS
+   # installer (e.g. ubuntu deb)
 
    echo && echo done
 
