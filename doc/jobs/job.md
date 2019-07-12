@@ -2,13 +2,13 @@
 
 [Jobs](https://github.com/Privatix/dappctrl/tree/master/job) plays important role in application workflows. They are created by:
 
-| Creator          | Description                                                      |
-| ---------------- | ---------------------------------------------------------------- |
-| user             | by user through `UI API`                                         |
-| billing monitor  | by billing monitor                                               |
-| ethereum monitor | by ethereum monitor                                              |
-| job              | by another job                                                   |
-| session server   | by session server triggered by adapter, on service status change |
+| Creator | Description |
+| :--- | :--- |
+| user | by user through `UI API` |
+| billing monitor | by billing monitor |
+| ethereum monitor | by ethereum monitor |
+| job | by another job |
+| session server | by session server triggered by adapter, on service status change |
 
 ## Names
 
@@ -20,7 +20,7 @@ Jobs names are defined in data model and mapped to [job types](https://github.co
 
 Each `job type` may have its custom configuration taken from `privatix core config`.
 
-#### Job type configurable parameters#### 
+#### Job type configurable parameters
 
 `TryLimit` - Maximum retry count
 
@@ -30,10 +30,9 @@ Each `job type` may have its custom configuration taken from `privatix core conf
 
 `Duplicated` - Allow duplicate of job type per object
 
+#### Job type configuration example
 
-#### Job type configuration example#### 
-
-```JSON
+```javascript
 "clientPreChannelCreate": {
     "TryLimit": 3,
     "TryPeriod": 60000,
@@ -42,10 +41,9 @@ Each `job type` may have its custom configuration taken from `privatix core conf
 }
 ```
 
-
 ## Job structure
 
-```Go
+```go
     type Job struct {
     ID          string    `reform:"id,pk"`
     Type        string    `reform:"type"`
@@ -91,7 +89,7 @@ Job queue is implemented using database table. Its configuration is done in `cor
 
 #### Job queue configuration
 
-```Go
+```go
 type Config struct {
     CollectJobs   uint // Number of jobs to process for collect-iteration.
     CollectPeriod uint // Collect-iteration period, in milliseconds.
@@ -103,36 +101,30 @@ type Config struct {
 }
 ```
 
-
 Function `queue.Add()` will check, if desired job can be created, create it or return an error.
 
 `Job queue workers` - are threads, that periodically scans job queue, retrieves jobs that should be processed and executes them. Workers can run in parallel, can retrieve error codes from underlying functions. Number of workers are defined in `dappctrl.config.json`. Jobs that relates to same object are processed by single worker, preventing race.
 
-`Job queue` gets jobs from database table `jobs`. Jobs related to single object (e.g. particular offering) processed sequentially, but jobs for different objects (e.g. two different offerings) maybe processed in parallel. Sequence is defined using sorting by `CreatedAt` field.
+`Job queue` gets jobs from database table `jobs`. Jobs related to single object \(e.g. particular offering\) processed sequentially, but jobs for different objects \(e.g. two different offerings\) maybe processed in parallel. Sequence is defined using sorting by `CreatedAt` field.
 
 ## Job status
 
-| Status    | Description                                                                              |
-| --------- | ---------------------------------------------------------------------------------------- |
-| Active    | Processing or to be processed                                                            |
-| Failed    | Permanently failed. Retry threshold is reached.                                          |
-| Cancelled | Will be excluded from processing. If still running, result will be ignored (don't care). |
-| Done      | Successfully finished.                                                                   |
+| Status | Description |
+| :--- | :--- |
+| Active | Processing or to be processed |
+| Failed | Permanently failed. Retry threshold is reached. |
+| Cancelled | Will be excluded from processing. If still running, result will be ignored \(don't care\). |
+| Done | Successfully finished. |
 
 #### Job workflow schema
 
 [view schema](https://drive.google.com/file/d/1uhc6uJ1MYDYvzia4y0Ikwg7LfPyZ88I3/view?usp=sharing)
 
-
 ## Job handlers
 
 When job executed its [job handler](https://github.com/Privatix/dappctrl/blob/master/proc/handlers/job.go) is invoked.
 
----
-
 ### Agent jobs
-
----
 
 #### AgentAfterChannelCreate
 
@@ -140,8 +132,7 @@ When job executed its [job handler](https://github.com/Privatix/dappctrl/blob/ma
 
 _Created by:_
 
-- Ethereum monitor events `LogChannelCreated` or `LogOfferingPopedUp`
-
+* Ethereum monitor events `LogChannelCreated` or `LogOfferingPopedUp`
 
 #### AgentAfterChannelTopUp
 
@@ -149,7 +140,7 @@ _Created by:_
 
 _Created by:_
 
-- Ethereum monitor event `LogChannelToppedUp`
+* Ethereum monitor event `LogChannelToppedUp`
 
 #### AgentAfterUncooperativeCloseRequest
 
@@ -157,7 +148,7 @@ _Created by:_
 
 _Created by:_
 
-- Ethereum monitor event `LogChannelCloseRequested`
+* Ethereum monitor event `LogChannelCloseRequested`
 
 #### AgentAfterUncooperativeClose
 
@@ -165,8 +156,7 @@ _Created by:_
 
 _Created by:_
 
-- Ethereum monitor event `LogUnCooperativeChannelClose`
-
+* Ethereum monitor event `LogUnCooperativeChannelClose`
 
 #### AgentAfterCooperativeClose
 
@@ -174,7 +164,7 @@ _Created by:_
 
 _Created by:_
 
-- Ethereum monitor event `LogUnCooperativeChannelClose`
+* Ethereum monitor event `LogUnCooperativeChannelClose`
 
 #### AgentPreServiceSuspend
 
@@ -182,8 +172,8 @@ _Created by:_
 
 _Created by:_
 
-- UI API method `changeChannelStatus`
-- Agent billing monitor `VerifyBillingLags()`
+* UI API method `changeChannelStatus`
+* Agent billing monitor `VerifyBillingLags()`
 
 #### AgentPreServiceUnsuspend
 
@@ -191,8 +181,8 @@ _Created by:_
 
 _Created by:_
 
-- UI API method `changeChannelStatus`
-- Agent billing monitor `VerifySuspendedChannelsAndTryToUnsuspend()`
+* UI API method `changeChannelStatus`
+* Agent billing monitor `VerifySuspendedChannelsAndTryToUnsuspend()`
 
 #### AgentPreServiceTerminate
 
@@ -200,10 +190,10 @@ _Created by:_
 
 _Created by:_
 
-- UI API method `changeChannelStatus`
-- Agent billing monitor `VerifyUnitsBasedChannels()`
-- Agent billing monitor `VerifyChannelsForInactivity()`
-- Agent billing monitor `VerifySuspendedChannelsAndTryToTerminate()`
+* UI API method `changeChannelStatus`
+* Agent billing monitor `VerifyUnitsBasedChannels()`
+* Agent billing monitor `VerifyChannelsForInactivity()`
+* Agent billing monitor `VerifySuspendedChannelsAndTryToTerminate()`
 
 #### AgentPreEndpointMsgCreate
 
@@ -211,8 +201,7 @@ _Created by:_
 
 _Created by:_
 
-- Job `AgentAfterChannelCreate`
-
+* Job `AgentAfterChannelCreate`
 
 #### AgentPreOfferingMsgBCPublish
 
@@ -220,7 +209,7 @@ _Created by:_
 
 _Created by:_
 
-- UI API method `ChangeOfferingStatus`
+* UI API method `ChangeOfferingStatus`
 
 #### AgentAfterOfferingMsgBCPublish
 
@@ -228,7 +217,7 @@ _Created by:_
 
 _Created by:_
 
-- Ethereum monitor event `LogOfferingCreated`
+* Ethereum monitor event `LogOfferingCreated`
 
 #### AgentPreOfferingPopUp
 
@@ -236,7 +225,7 @@ _Created by:_
 
 _Created by:_
 
-- UI API method `ChangeOfferingStatus`
+* UI API method `ChangeOfferingStatus`
 
 #### AgentAfterOfferingPopUp
 
@@ -244,7 +233,7 @@ _Created by:_
 
 _Created by:_
 
-- Ethereum monitor event `LogOfferingPopedUp`
+* Ethereum monitor event `LogOfferingPopedUp`
 
 #### AgentPreOfferingDelete
 
@@ -252,7 +241,7 @@ _Created by:_
 
 _Created by:_
 
-- UI API method `ChangeOfferingStatus`
+* UI API method `ChangeOfferingStatus`
 
 #### AgentAfterOfferingDelete
 
@@ -260,14 +249,9 @@ _Created by:_
 
 _Created by:_
 
-- Ethereum monitor event `LogOfferingDeleted`
-
-
----
+* Ethereum monitor event `LogOfferingDeleted`
 
 ### Client jobs
-
----
 
 #### ClientAfterOfferingDelete
 
@@ -275,7 +259,7 @@ _Created by:_
 
 _Created by:_
 
-- Ethereum monitor event `LogOfferingDeleted`
+* Ethereum monitor event `LogOfferingDeleted`
 
 #### ClientAfterOfferingPopUp
 
@@ -283,7 +267,7 @@ _Created by:_
 
 _Created by:_
 
-- Ethereum monitor event `LogOfferingPopedUp`
+* Ethereum monitor event `LogOfferingPopedUp`
 
 #### ClientPreChannelCreate
 
@@ -291,7 +275,7 @@ _Created by:_
 
 _Created by:_
 
-- UI API method `acceptOffering`
+* UI API method `acceptOffering`
 
 #### ClientAfterChannelCreate
 
@@ -299,7 +283,7 @@ _Created by:_
 
 _Created by:_
 
-- Ethereum monitor event `LogChannelCreated`
+* Ethereum monitor event `LogChannelCreated`
 
 #### ClientEndpointCreate
 
@@ -307,7 +291,7 @@ _Created by:_
 
 _Created by:_
 
-- Job `ClientAfterChannelCreate`
+* Job `ClientAfterChannelCreate`
 
 #### ClientAfterUncooperativeClose
 
@@ -315,7 +299,7 @@ _Created by:_
 
 _Created by:_
 
-- Ethereum monitor event `LogUnCooperativeChannelClose`
+* Ethereum monitor event `LogUnCooperativeChannelClose`
 
 #### ClientAfterCooperativeClose
 
@@ -323,7 +307,7 @@ _Created by:_
 
 _Created by:_
 
-- Ethereum monitor event `LogCooperativeChannelClose`
+* Ethereum monitor event `LogCooperativeChannelClose`
 
 #### ClientPreUncooperativeClose
 
@@ -331,7 +315,7 @@ _Created by:_
 
 _Created by:_
 
-- Job `ClientAfterUncooperativeCloseRequest`
+* Job `ClientAfterUncooperativeCloseRequest`
 
 #### ClientPreChannelTopUp
 
@@ -339,7 +323,7 @@ _Created by:_
 
 _Created by:_
 
-- UI API method `TopUpChannel`
+* UI API method `TopUpChannel`
 
 #### ClientAfterChannelTopUp
 
@@ -347,7 +331,7 @@ _Created by:_
 
 _Created by:_
 
-- Ethereum monitor event `LogChannelToppedUp`
+* Ethereum monitor event `LogChannelToppedUp`
 
 #### ClientPreUncooperativeCloseRequest
 
@@ -355,7 +339,7 @@ _Created by:_
 
 _Created by:_
 
-- UI API method `changeChannelStatus`
+* UI API method `changeChannelStatus`
 
 #### ClientAfterUncooperativeCloseRequest
 
@@ -363,7 +347,7 @@ _Created by:_
 
 _Created by:_
 
-- Ethereum monitor event `LogUnCooperativeChannelClose`
+* Ethereum monitor event `LogUnCooperativeChannelClose`
 
 #### ClientPreServiceTerminate
 
@@ -371,11 +355,10 @@ _Created by:_
 
 _Created by:_
 
-- Job `ClientAfterCooperativeClose`
-- Client billing `postPayload()`
-- Client billing `processChannel()`
-- UI API method `ChangeChannelStatus`
-
+* Job `ClientAfterCooperativeClose`
+* Client billing `postPayload()`
+* Client billing `processChannel()`
+* UI API method `ChangeChannelStatus`
 
 #### ClientPreServiceSuspend
 
@@ -383,7 +366,7 @@ _Created by:_
 
 _Created by:_
 
-- UI API method `ChangeChannelStatus`
+* UI API method `ChangeChannelStatus`
 
 #### ClientPreServiceUnsuspend
 
@@ -391,7 +374,7 @@ _Created by:_
 
 _Created by:_
 
-- UI API method `ChangeChannelStatus`
+* UI API method `ChangeChannelStatus`
 
 #### ClientAfterOfferingMsgBCPublish
 
@@ -399,7 +382,7 @@ _Created by:_
 
 _Created by:_
 
-- Ethereum monitor event `LogOfferingCreated`
+* Ethereum monitor event `LogOfferingCreated`
 
 #### ClientCompleteServiceTransition
 
@@ -407,14 +390,9 @@ _Created by:_
 
 _Created by:_
 
-- Session server (adapter)
-
-
----
+* Session server \(adapter\)
 
 ### Common jobs
-
----
 
 #### PreAccountAddBalanceApprove
 
@@ -422,7 +400,7 @@ _Created by:_
 
 _Created by:_
 
-- UI API method `transferTokens`
+* UI API method `transferTokens`
 
 #### PreAccountAddBalance
 
@@ -430,7 +408,7 @@ _Created by:_
 
 _Created by:_
 
-- Ethereum monitor PTC event `Approval`
+* Ethereum monitor PTC event `Approval`
 
 #### AfterAccountAddBalance
 
@@ -438,7 +416,7 @@ _Created by:_
 
 _Created by:_
 
-- Ethereum monitor PTC event `Transfer`
+* Ethereum monitor PTC event `Transfer`
 
 #### PreAccountReturnBalance
 
@@ -446,7 +424,7 @@ _Created by:_
 
 _Created by:_
 
-- UI API method `transferTokens`
+* UI API method `transferTokens`
 
 #### AfterAccountReturnBalance
 
@@ -454,7 +432,7 @@ _Created by:_
 
 _Created by:_
 
-- Ethereum monitor PTC event `Transfer`
+* Ethereum monitor PTC event `Transfer`
 
 #### AccountUpdateBalances
 
@@ -462,18 +440,17 @@ _Created by:_
 
 _Created by:_
 
-- Job AgentAfterUncooperativeClose
-- Job AgentAfterCooperativeClose
-- Job AgentAfterOfferingMsgBCPublish
-- Job AgentAfterOfferingDelete
-- Job ClientAfterUncooperativeClose
-- Job ClientAfterCooperativeClose
-- Job ClientAfterChannelCreate
-- Job afterChannelTopUp
-- UI API ImportAccountFromHex
-- UI API ImportAccountFromJSON
-- UI API UpdateBalance
-
+* Job AgentAfterUncooperativeClose
+* Job AgentAfterCooperativeClose
+* Job AgentAfterOfferingMsgBCPublish
+* Job AgentAfterOfferingDelete
+* Job ClientAfterUncooperativeClose
+* Job ClientAfterCooperativeClose
+* Job ClientAfterChannelCreate
+* Job afterChannelTopUp
+* UI API ImportAccountFromHex
+* UI API ImportAccountFromJSON
+* UI API UpdateBalance
 
 #### DecrementCurrentSupply
 
@@ -481,8 +458,9 @@ _Created by:_
 
 _Created by:_
 
-- Ethereum monitor event `LogChannelCreated`
+* Ethereum monitor event `LogChannelCreated`
 
 #### IncrementCurrentSupply
 
 `IncrementCurrentSupply` - finds offering and increments its current supply for Client.
+
