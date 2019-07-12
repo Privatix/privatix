@@ -25,8 +25,8 @@ PSC contract implements state channels features, service offering discovery, hel
 #### Features
 
 * Local balance storage
-* Agent SO registration and deposit placement
-* Agent SO deactivation and deposit return
+* Agent offering registration and deposit placement
+* Agent offering deactivation and deposit return
 * Retrieving available supply for offering
 * Pop up offering
 * Create state channel
@@ -45,7 +45,7 @@ PSC contract implements state channels features, service offering discovery, hel
 
 `_challenge_period` - A fixed number of blocks representing the challenge period.
 
-`_network_fee_address` - Address where fee from each closed channel transaction goes. This is `Privatix company` help address to support software development.
+`_network_fee_address` - Address where fee from each closed channel transaction goes. This is `Privatix company` address where fees goes in order to support Privatix Network development.
 
 #### Network fee
 

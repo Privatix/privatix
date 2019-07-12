@@ -9,7 +9,7 @@ Privatix Network is a platform for buying and selling various services. Any serv
 Privatix Network developer team is developing:
 
 * Privatix core software and protocol that others may use to rapidly develop application on top of it. 
-* proof of concept DApps built on the top of this platform that focused solely on internet bandwidth products.
+* Proof of concept DApps built on the top of this platform that focused solely on internet bandwidth products.
 
 ### Use case example
 

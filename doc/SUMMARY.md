@@ -12,6 +12,7 @@
       * [Offering template](privatix-core/core/messaging/offering/offering-template.md)
     * [Access message](privatix-core/core/messaging/access/README.md)
       * [Access template](privatix-core/core/messaging/access/access-template.md)
+    * [Transport](privatix-core/core/messaging/transport.md)
   * [Payments](privatix-core/core/payments/README.md)
     * [State channels](privatix-core/core/payments/channel.md)
     * [Payment cheque](privatix-core/core/payments/payments-1.md)
