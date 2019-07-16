@@ -30,3 +30,7 @@
   * [Service module](privatix-core/service/service_module.md)
   * [Conventions](privatix-core/service/service_module_standards.md)
 
+## Support
+
+* [Install Privatix Agent node \(via CLI\) to a DigitalOcean cloud](support/install-privatix-agent-node-via-cli-to-a-digitalocean-cloud.md)
+
