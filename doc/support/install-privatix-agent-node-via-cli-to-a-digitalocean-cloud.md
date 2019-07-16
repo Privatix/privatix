@@ -18,7 +18,7 @@ Before installation you need to create [a droplet:](https://www.digitalocean.com
 * Go through the Wizard's steps.
 * After 2-3 minutes the droplet will be available for `ssh` access
 
-![Choosing a stadard droplet](../.gitbook/assets/choosing_image%20%281%29.png)
+![Choosing a stadard droplet](../.gitbook/assets/choosing_image.png)
 
 ## **Install Privatix Agent on a virtual machine**
 
