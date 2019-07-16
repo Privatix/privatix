@@ -86,6 +86,9 @@ echo -----------------------------------------------------------------------dapp
 mv /dappctrl/dappctrl.service /lib/systemd/system/
 systemctl enable dappctrl.service
 
+echo -----------------------------------------------------------------------resolvconf
+apt-get install resolvconf
+
 echo -----------------------------------------------------------------------remove
 rm -rf /usr/share/doc/*
 find /usr/share/locale -maxdepth 1 -mindepth 1 ! -name en_US -exec rm -rf {} \;
