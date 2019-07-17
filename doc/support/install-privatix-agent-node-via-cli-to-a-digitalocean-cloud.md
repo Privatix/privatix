@@ -1,6 +1,6 @@
 # Install Privatix Agent node \(via CLI\) to a DigitalOcean cloud
 
-## Prepare a virtual machine <a id="InstallPrivatixAgentnode(viaCLi)toDigitalOceancloud-Prepareavirtualmachine"></a>
+## Prepare a virtual machine  <a id="InstallPrivatixAgentnode(viaCLi)toDigitalOceancloud-Prepareavirtualmachine"></a>
 
 Minimum system requirements:
 
@@ -8,7 +8,7 @@ Minimum system requirements:
 * 2 vCPU
 * OS: Ubuntu 16.04 LTS / Ubuntu 18.04 LTS
 
-### Create a droplet <a id="InstallPrivatixAgentnode(viaCLi)toDigitalOceancloud-Createadroplet"></a>
+### Create a droplet  <a id="InstallPrivatixAgentnode(viaCLi)toDigitalOceancloud-Createadroplet"></a>
 
 Before installation you need to create [a droplet:](https://www.digitalocean.com/products/droplets/)
 
@@ -18,7 +18,7 @@ Before installation you need to create [a droplet:](https://www.digitalocean.com
 * Go through the Wizard's steps.
 * After 2-3 minutes the droplet will be available for `ssh` access
 
-![Choosing a stadard droplet](../.gitbook/assets/choosing_image.png)
+![Choosing a stadard droplet](../.gitbook/assets/choosing_image%20%281%29.png)
 
 ## **Install Privatix Agent on a virtual machine**
 
@@ -114,15 +114,15 @@ Output example \(expected status: registered\):
 
 ```text
 Get agent offerings (product_id: 9234b192-e291-4116-a7d5-3c449c15167a, status: ['empty', 'registering', 'registered', 'popping_up', 'popped_up', 'removing', 'removed'], offset: 0, limit: 100)
-	Ok: <Response [200]>
+    Ok: <Response [200]>
 --------------------------------------------------------------------------------
 
 name:
-	Hash: 0xda414c689c40b2369840d63755a0b2120252e4a8681851d0398e295c3cd64001
-	Status: registered
-	Supply: 30
-	Current supply: 30
-	Id: 96a65e42-9828-40f6-b1b9-52cc0424896b
+    Hash: 0xda414c689c40b2369840d63755a0b2120252e4a8681851d0398e295c3cd64001
+    Status: registered
+    Supply: 30
+    Current supply: 30
+    Id: 96a65e42-9828-40f6-b1b9-52cc0424896b
 ```
 
 More information about the offer publication at [https://github.com/Privatix/dappctrl/tree/release/1.0.1/scripts/cli](https://github.com/Privatix/dappctrl/tree/release/1.0.1/scripts/cli)
@@ -156,7 +156,7 @@ python get_transactions.py
 python check_account.py
 ```
 
-Restore your account in any Ethereum wallet \(eg MyEtherWallet or Metamask\) 
+Restore your account in any Ethereum wallet \(eg MyEtherWallet or Metamask\)
 
 ## How to remove the application
 
@@ -169,8 +169,4 @@ cd /opt/privatix_installer &&
 ./remove.sh &&
 sudo apt-get remove privatix
 ```
-
-
-
-
 
