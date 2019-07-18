@@ -1,9 +1,9 @@
 {
-  "GIT_BRANCH": "develop",
+  "GIT_BRANCH": "release/1.0.1",
   "GIT_BRANCH_DEFAULT": "develop",
-  "VERSION_TO_SET_IN_BUILDER": "1.0.0",
-  "DAPPCTRL_CONFIG": "dappctrl.config.json",
-  "DAPP_GUI_NETWORK": "mainnet",
+  "VERSION_TO_SET_IN_BUILDER": "1.0.1",
+  "DAPPCTRL_CONFIG": "dappctrl-dev.config.json",
+  "DAPP_GUI_NETWORK": "rinkeby",
   "DAPPCTRL_LOG_LEVEL": "info",
-  "DAPP_INSTALLER_FORCE_UPDATE": "0"
+  "DAPP_INSTALLER_FORCE_UPDATE": "1"
 }

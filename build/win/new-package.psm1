@@ -302,7 +302,7 @@ function new-package {
     #region dapp-installer artefact
     Copy-Item -Path $dappinstallerbin -Destination "$deployAppPath\dapp-installer.exe"
     Copy-Item -Path $dappinstallerconf -Destination "$deployAppPath\dapp-installer.config.json"
-    Copy-Item -Path $dappinstallerSupervisor -Destination "$deployAppPath\dapp-installer.exe"
+    Copy-Item -Path $dappinstallerSupervisor -Destination "$deployAppPath\dapp-supervisor.exe"
     #endregion
 
     #endregion
