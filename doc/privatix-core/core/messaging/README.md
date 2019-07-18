@@ -2,7 +2,7 @@
 
 ## **How it works today**
 
-In centralized world, Buyer usually surfs the web, then goes to Seller's web-site, study various pages, somehow get pricing via site or by contacting sales. Then, he register's on web-site and sets a password, that will be used to consume a service. Afterwards he downloads a client software, that has preconfigured addresses of servers, various software settings. He logs-in using credentials, he has set up previously. If it is a web-service, he consume service via browser, but still need to understand terms and pricing and setup credentials. Looks not so complicated, but still terms and process are always custom for each provider. 
+In centralized world, Buyer usually surfs the web, then goes to Seller's web-site, study various pages, somehow get pricing via site or by contacting sales. Then, he register's on web-site and sets a password, that will be used to consume a service. Afterwards he downloads a client software, that has preconfigured addresses of servers, various software settings. He logs-in using credentials, he has set up previously. If it is a web-service, he consume service via browser, but still need to understand terms and pricing and setup credentials. Looks not so complicated, but still terms and process are always custom for each provider.
 
 **What's wrong with this process**
 
@@ -28,7 +28,7 @@ As a buyer, if you want to consume a service, you would download DApp that allow
 * Stop using service any moment and do not have to cancel subscription.
 * Do not have to go through custom and complicated process of chargeback.
 
- **Let's simplify it**
+  **Let's simplify it**
 
 Seller need to get offerings. Check that they comply with a standard.
 

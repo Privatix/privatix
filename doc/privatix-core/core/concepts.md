@@ -1,6 +1,6 @@
 # Concepts
 
-Privatix core - software that orchestrates payments, billing, automates service life-cycle, provides offering discovery and communication between Agents and Clients. These features gives ability to provide different services in decentralized and completely autonomous manner.
+Privatix Network core - software that orchestrates payments, billing, automates service life-cycle, provides offering discovery and communication between Agents and Clients. These features gives ability to provide different services in decentralized and completely autonomous manner.
 
 To understand how Privatix Network protocol is designed let's get familiar with some concepts.
 

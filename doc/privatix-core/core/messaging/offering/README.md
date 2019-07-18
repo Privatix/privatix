@@ -1,6 +1,6 @@
 # Offering message
 
-Offering messages \(aka offerings\) are created by Agents according to [`offering template`](offering-template.md). 
+Offering messages \(aka offerings\) are created by Agents according to [`offering template`](offering-template.md).
 
 Offerings are briefly just JSON object, that contains all offering data. To ensure that offering is immutable and to give ability for Clients to discover them, we want it to be placed in blockchain. But storing extensive amount of data in blockchain is costly. We store only hash of offering message and URL address, where full offering message can be retrieved.
 
@@ -25,24 +25,23 @@ In this workflow Agent creates new offering, that is discovered by Client.
    event LogOfferingCreated(address indexed _agent, bytes32 indexed _offering_hash, uint256 indexed _min_deposit, uint16 _current_supply, uint8 _source_type, string _source);
    ```
 
-   where  
+   where
 
+`_agent` - Ethreum addres of agent
 
-   `_agent` - Ethreum addres of agent
+`_offering_hash` - hash of full offering message \(unique\)
 
-   `_offering_hash` - hash of full offering message \(unique\)
+`_min_deposit` - min. deposit for Client
 
-   `_min_deposit` - min. deposit for Client
+`_current_supply` - max. concurrent orders that Agent can deliver. \(limits number of simultaneous state channels that can exists for an offering\)
 
-   `_current_supply` - max. concurrent orders that Agent can deliver. \(limits number of simultaneous state channels that can exists for an offering\)
+`_source_type` - messaging transport types that can be used to get full offering and access message
 
-   `_source_type` - messaging transport types that can be used to get full offering and access message
+`_source` - addresses of sources \(usually URLs\), that can be used to retrieve offering and access message
 
-   `_source` - addresses of sources \(usually URLs\), that can be used to retrieve offering and access message
-
-5. Client receive same Ethereum event `LogOfferingCreated`. Job `ClientAfterOfferingMsgBCPublish` created in order to get full offering message. 
-6. If Client allows to use at least one messaging transport listed in `_source_type`, full offering will be retrieved and validated for compliance with related offering template. If no matching offering template found in Client's database or validation fails, such offering will be ignored.
-7. Successfully retrieved and validated offerings are stored in database. They can be viewed, filtered and accepted.
+1. Client receive same Ethereum event `LogOfferingCreated`. Job `ClientAfterOfferingMsgBCPublish` created in order to get full offering message. 
+2. If Client allows to use at least one messaging transport listed in `_source_type`, full offering will be retrieved and validated for compliance with related offering template. If no matching offering template found in Client's database or validation fails, such offering will be ignored.
+3. Successfully retrieved and validated offerings are stored in database. They can be viewed, filtered and accepted.
 
 ### Offering accept workflow
 
@@ -151,6 +150,4 @@ Keccak-256 hash of offering message \(aka offering hash\) is used to uniquely id
 4. Use Ethereum crypto package `SigToPub()` function to retrieve Agent's public key
 5. Compare provided in message payload Agent's public key to that from step \(4\)
 6. Validate message payload to corresponding template JSON scheme
-
-
 

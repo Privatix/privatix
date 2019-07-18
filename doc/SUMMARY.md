@@ -4,7 +4,6 @@
 
 ## ​Privatix core
 
-
 * [Privatix core](privatix-core/core/README.md)
   * [Software components](privatix-core/core/software-components.md)
   * [Concepts](privatix-core/core/concepts.md)
@@ -33,9 +32,11 @@
 
 ## Support
 
-* [Install Privatix Agent node \(via CLI\) to a DigitalOcean cloud](support/install-privatix-agent-node-via-cli-to-a-digitalocean-cloud.md)
-* [How to detect a trouble cause](support/how-to-detect-a-trouble-cause/README.md)
-  * [Via the application](support/how-to-detect-a-trouble-cause/via-the-application.md)
-  * [Via the scripts](support/how-to-detect-a-trouble-cause/via-the-scripts.md)
-  * [Manually](support/how-to-detect-a-trouble-cause/manually.md)
+* [Install](support/install/README.md)
+  * [Install Privatix Agent node \(via CLI\) to a DigitalOcean cloud](support/install/install-privatix-agent-node-via-cli-to-a-digitalocean-cloud.md)
+* [Feedback](support/feedback/README.md)
+  * [How to detect a trouble cause](support/feedback/how-to-detect-a-trouble-cause/README.md)
+    * [Via the application](support/feedback/how-to-detect-a-trouble-cause/via-the-application.md)
+    * [Via the scripts](support/feedback/how-to-detect-a-trouble-cause/via-the-scripts.md)
+    * [Manually](support/feedback/how-to-detect-a-trouble-cause/manually.md)
 

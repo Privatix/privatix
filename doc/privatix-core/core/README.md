@@ -68,5 +68,3 @@ VPN provider start selling access to VPN using Privatix Network. He publishes hi
 * Start or Pause `3rd party software` service directly from `Privatix GUI`
 * Show seller rating, that is based on seller's trading history
 
-
-

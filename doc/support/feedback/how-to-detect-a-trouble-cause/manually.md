@@ -9,5 +9,3 @@
 3. Analyze database data. Database access credentials you may take from: `${app_path}/dappctrl/dappctrl.config.json`
 4. If necessary, you can access the application via CLI: `${app_path}/util/cli`
 
-
-

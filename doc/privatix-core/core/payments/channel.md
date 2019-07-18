@@ -58,7 +58,7 @@ After channel is created and before it was deleted Client can increase state cha
 function topUpChannel(address _agent_address, uint32 _open_block_number, bytes32 _offering_hash, uint192 _added_deposit)
 ```
 
-Agent then receives event and can continue to provide the service up to new total deposit value. 
+Agent then receives event and can continue to provide the service up to new total deposit value.
 
 ## Close channel
 
@@ -85,7 +85,7 @@ Client will need to call two smart contract methods after some period passes bet
 
 This period is specified in smart contract and doesn't change. Such period is called `Dispute period` or `Challenge period`.
 
-First Client create calls smart contract method: 
+First Client create calls smart contract method:
 
 ```text
 function uncooperativeClose(address _agent_address, uint32 _open_block_number, bytes32 _offering_hash, uint192 _balance)
@@ -113,7 +113,7 @@ and this call will make full deposit return from channel back to Client's accoun
 
 ## Status
 
-There are to statuses related to state channel. 
+There are to statuses related to state channel.
 
 * status of service - responsible for access to service
 * state channel status in blockchain

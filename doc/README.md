@@ -1,16 +1,14 @@
-
 ---
 description: >-
   Privatix Network is decentralized and 100% autonomous peer to peer network
   with is own crypto-economy that allows to buy and sell various services.
 ---
 
-
 # What is Privatix Network
 
+## What is Privatix Network
 
-## Protocol
-
+### Protocol
 
 Privatix Network is based on self-developed protocol that allows to:
 
@@ -20,24 +18,22 @@ Privatix Network is based on self-developed protocol that allows to:
 
 all that in 100% decentralized environment without any 3rd party involved
 
-
-## Privatix core
-
+### Privatix core
 
 Privatix core is a software that orchestrates payments, billing, automates service life-cycle, provides offering discovery and aids to setup service access. Its operation is generic and doesn't depends on service being provided.
 
-
-## Proof of concept products
+### Proof of concept products
 
 * VPN service with simple and advanced user interface
 * Proxy service \(in progress\)
 
-## How to
+### How to
 
-Try Privatix VPN service
+[Try Privatix VPN service](support/install/)
 
 Give a feedback
 
 Contribute
 
 Join community
+

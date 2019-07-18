@@ -12,14 +12,14 @@ Find:
 * the path the application has been installed in
 * the application role \(agent or client\)
 
-E.g.: 
+E.g.:
 
 ```bash
 app_path=/Applications/Privatix
 role=client
 ```
 
-Run the script: 
+Run the script:
 
 ```bash
 "${app_path}/${role}/util/dump/dump_mac.sh" "${app_path}"
@@ -40,14 +40,14 @@ Find:
 * the path the application has been installed in
 * the application role \(agent or client\)
 
-E.g.: 
+E.g.:
 
 ```bash
 app_path=/opt/Privatix
 role=agent
 ```
 
-Run the script: 
+Run the script:
 
 ```bash
 sudo "${app_path}/${role}/util/dump/dump_mac.sh" "${app_path}"
@@ -69,14 +69,14 @@ Find the path the application has been installed in.
 SET app_path="C:\Program Files\Privatix\client"
 ```
 
-Run the script: 
+Run the script:
 
 ```bash
 cd "%app_path%\util\dump"
 .\ps-runner.exe -script ".\new-dump.ps1" -installDir "%app_path%" -outFile "dump.zip"
 ```
 
-Result: 
+Result:
 
 ```text
 .\dump.zip
