@@ -50,7 +50,7 @@ role=agent
 Run the script:
 
 ```bash
-sudo "${app_path}/${role}/util/dump/dump_mac.sh" "${app_path}"
+sudo "${app_path}/${role}/util/dump/dump_ubuntu.sh" "${app_path}"
 ```
 
 The dump will be created in the folder:

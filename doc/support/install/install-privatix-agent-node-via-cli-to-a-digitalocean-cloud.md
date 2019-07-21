@@ -64,8 +64,7 @@ Backup location: /opt/privatix\_installer/autooffer/mainnet/private\_key.json
 You can use the following script to download the backup:
 
 ```bash
-scp your_username@host:/opt/privatix_installer/autooffer/mainnet/private_key.json \
-    ~
+scp your_username@host:/opt/privatix_installer/autooffer/mainnet/private_key.json ~
 ```
 
 #### Transfer to your account ETH and PRIX
