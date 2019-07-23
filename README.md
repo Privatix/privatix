@@ -12,7 +12,7 @@ The payments come from buyers, who purchase the bandwidth via third-party applic
 ## Getting started
 - [Explanation video (~3 min)](https://www.youtube.com/watch?v=kH8tDnMoaYk)
 - [Article : Understanding Privatix Network (~16 min read)](https://medium.com/privatix/understanding-privatix-network-76026eeae870)
-- [Confluence documentation](https://privatix.atlassian.net/wiki/spaces/BVP/)
+- [Documentation](https://docs.privatix.network/)
 - Privatix Network Website : https://privatix.io 
 - Network Status website : https://privatix.network 
 - [Network 3D Graph](https://privatix.network/graph)
@@ -22,12 +22,8 @@ The payments come from buyers, who purchase the bandwidth via third-party applic
 ## Installation
 Privatix Network CORE Software is available for Beta-testing on Windows, MacOS, and Ubuntu (Linux). The software allows to sell and buy bandwidth on Ethereum Testnet (not for real). 
 
-- [How to download it and give it a try](https://privatix.atlassian.net/wiki/spaces/BVP/pages/270860384/How+to+download+it+and+give+it+a+try)
+- [How to download it and give it a try](https://docs.privatix.network/install)
 - [Download builds from the website](https://privatix.io/#download)
-
-## Documentation
-
-- [Technical documentation](doc/README.md)
 
 ## Releases
 
