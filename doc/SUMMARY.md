@@ -33,7 +33,7 @@
 ## Support
 
 * [Install](support/install/README.md)
-  * [GUI Install Privatix Application](support/install/install-privatix-application-via-gui.md)
+  * [GUI: Install Privatix Application](support/install/install-privatix-application-via-gui.md)
   * [CLI: Install Privatix Agent Node to a DigitalOcean cloud](support/install/install-privatix-agent-node-via-cli-to-a-digitalocean-cloud.md)
 * [Feedback](support/feedback/README.md)
   * [How to detect a trouble cause](support/feedback/how-to-detect-a-trouble-cause/README.md)
