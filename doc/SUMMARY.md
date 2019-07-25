@@ -4,7 +4,6 @@
 
 ## ​Privatix core
 
-
 * [Privatix core](privatix-core/core/README.md)
   * [Software components](privatix-core/core/software-components.md)
   * [Concepts](privatix-core/core/concepts.md)
