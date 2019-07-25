@@ -16,7 +16,7 @@ Privatix Network is based on self-developed protocol that allows to:
 * grant/get access to a service
 * send/receive payments for each small portion of service provided/consumed
 
-all that in 100% decentralized environment without any 3rd party involved
+All that in 100% decentralized environment without any 3rd party involved.
 
 ### Privatix core
 

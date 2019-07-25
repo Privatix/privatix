@@ -18,7 +18,7 @@ Then you can collect logs from all parts of the application \(DB included\) by p
 
 You will receive a full archive of the application logs.
 
-![](../../../.gitbook/assets/image%20%281%29.png)
+![](../../../.gitbook/assets/image%20%283%29.png)
 
 If you contact the support team, you should send this archive to them.
 

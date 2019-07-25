@@ -33,6 +33,7 @@
 ## Support
 
 * [Install](support/install/README.md)
+  * [How to change Infura Endpoint](support/install/how-to-change-infura-url.md)
   * [GUI: Install Privatix Application](support/install/install-privatix-application-via-gui.md)
   * [CLI: Install Privatix Agent Node to a DigitalOcean cloud](support/install/install-privatix-agent-node-via-cli-to-a-digitalocean-cloud.md)
 * [Feedback](support/feedback/README.md)
