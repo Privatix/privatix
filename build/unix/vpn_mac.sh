@@ -189,6 +189,7 @@ if [[ -z "$1" ]] || [[ "$1" != "--keep_common_binaries" ]]; then
                         "${app_dir}/${DAPP_INSTALLER_GUI_DIR}/${DAPP_INSTALLER_GUI_BINARY_NAME}" \
                         "${DAPP_GUI_SETTINGS_JSON_MAC}" \
                         "osx" \
+                        "" \
                         || exit 1
 fi
 

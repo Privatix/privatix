@@ -34,6 +34,7 @@ make_packages(){
                       '["target"]="'"${5}"'"' \
                       '["network"]="'"${DAPP_GUI_NETWORK}"'"' \
                       '["role"]="agent"' \
+                      '["log"]["filePath"]="'"${6}"'"' \
                       || exit 1
                       
    # please keep ["role"]="agent", because this default is used for non-GUI OS
@@ -44,4 +45,4 @@ make_packages(){
 }
 
 clean
-make_packages "$1" "$2" "$3" "$4" "$5"
+make_packages "$1" "$2" "$3" "$4" "$5" "$6"

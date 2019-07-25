@@ -151,6 +151,7 @@ if [[ -z "$1" ]] || [[ "$1" != "--keep_common_binaries" ]]; then
                         "${app_dir}/${DAPP_INSTALLER_GUI_DIR}/" \
                         "${DAPP_GUI_SETTINGS_JSON_LINUX}" \
                         "ubuntu" \
+                        "\$HOME/.config/privatix/log.log" \
                         || exit 1
 fi
 

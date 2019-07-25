@@ -23,7 +23,12 @@ find_and_copy(){
 
 get_value(){
     cat "${dappctrl_config}" | \
-        python3 -c 'import json,sys;obj=json.load(sys.stdin);print(obj["DB"]["Conn"]["'$1'"])';
+        python3 -c 'import json,sys;j=json.load(sys.stdin);print(j["DB"]["Conn"]["'$1'"])';
+}
+
+get_dappgui_log_path(){
+  cat "${settings_json}" | \
+        python3 -c 'import json,sys;j=json.load(sys.stdin);print(j["log"]["filePath"]+"/"+j["log"]["fileName"])';
 }
 
 echo "copying files..."
@@ -32,6 +37,10 @@ find_and_copy "settings.json" "${DESTINATION_FOLDER}/configs"
 find_and_copy "*.log" "${DESTINATION_FOLDER}/logs"
 find_and_copy "*.err" "${DESTINATION_FOLDER}/errs"
 find_and_copy "*.ovpn" "${DESTINATION_FOLDER}/ovpn"
+
+settings_json=$(find "${DESTINATION_FOLDER}"  -name "settings.json")
+dappgui_log_path="$(get_dappgui_log_path | envsubst)"
+cp "${dappgui_log_path}" "${DESTINATION_FOLDER}/logs"
 
 dappctrl_config=$(find "${DESTINATION_FOLDER}"  -name "dappctrl.config.json")
 
