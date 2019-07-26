@@ -7,7 +7,7 @@ config=${DAPPCTRL_CONFIG//[\/ -]/_}
 network=${DAPP_GUI_NETWORK//[\/ -]/_}
 force_update=${DAPP_INSTALLER_FORCE_UPDATE}
 
-destination="$(date +%Y_%m_%d)-build${TRAVIS_BUILD_NUMBER}(${network}-${config}-${force_update})"
+destination="$(date +%Y_%m_%d)-build${TRAVIS_BUILD_NUMBER}-${network}-${config}-${force_update}"
 
 deploy_file="${TRAVIS_BUILD_DIR}/travis/encrypted/deploy.txt"
 
