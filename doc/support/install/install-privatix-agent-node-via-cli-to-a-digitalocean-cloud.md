@@ -53,7 +53,7 @@ After the application has been installed, you can create an offering:
 ```bash
 export DAPP_PASSWORD=your_password
 
-cd /opt/privatix_installer/cli
+cd /opt/privatix_installer/cli &&
 python create_account.py
 ```
 
@@ -143,8 +143,7 @@ Transfer all tokens from the Marketplace to the Account
 ```bash
 export DAPP_PASSWORD=your_password
 
-cd /opt/privatix_installer/cli
-
+cd /opt/privatix_installer/cli &&
 python transfer_all_to_account.py
 ```
 
