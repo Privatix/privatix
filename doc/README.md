@@ -31,9 +31,9 @@ Privatix core is a software that orchestrates payments, billing, automates servi
 
 [Try Privatix VPN service](support/install/)
 
-Give a feedback
+[Give a feedback](support/feedback/)
 
-Contribute
+[Contribute](https://github.com/Privatix/privatix#contributing)
 
-Join community
+[Join community](https://github.com/Privatix/privatix#public-place-to-talk-and-get-news)
 

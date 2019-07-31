@@ -2,6 +2,8 @@
 
 ### Telegram
 
+{% embed url="https://t.me/privatix" %}
+
 Contact us on [https://t.me/privatix](https://t.me/privatix)
 
 ### Github

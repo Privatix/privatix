@@ -14,7 +14,7 @@ As always, your application can be switched to a Geth Node in the same way as de
 2. Register your own account
 3. Choose a core subscription plan \(it's free\)
 
-![](../../.gitbook/assets/image%20%281%29.png)
+![](../../.gitbook/assets/image%20%283%29.png)
 
 ## Step 2. Get Infura Endpoint:
 
@@ -22,11 +22,11 @@ As always, your application can be switched to a Geth Node in the same way as de
 2. Create a project
 3. Get the endpoint
 
-![Create new project](../../.gitbook/assets/image%20%289%29.png)
+![Create new project](../../.gitbook/assets/image%20%2823%29.png)
 
-![View Project](../../.gitbook/assets/image%20%287%29.png)
+![View Project](../../.gitbook/assets/image%20%2818%29.png)
 
-![Get endpoint](../../.gitbook/assets/image%20%2811%29.png)
+![Get endpoint](../../.gitbook/assets/image%20%2828%29.png)
 
 {% hint style="info" %}
 In the case of testnet, choose target network on the screen above. 

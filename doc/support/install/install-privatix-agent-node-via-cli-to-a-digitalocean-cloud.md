@@ -1,6 +1,6 @@
 # CLI: Install Privatix Agent Node to a DigitalOcean cloud
 
-## Prepare a virtual machine    <a id="InstallPrivatixAgentnode(viaCLi)toDigitalOceancloud-Prepareavirtualmachine"></a>
+## Prepare a virtual machine <a id="InstallPrivatixAgentnode(viaCLi)toDigitalOceancloud-Prepareavirtualmachine"></a>
 
 Minimum system requirements:
 
@@ -8,7 +8,7 @@ Minimum system requirements:
 * 2 vCPU
 * OS: Ubuntu 16.04 LTS / Ubuntu 18.04 LTS
 
-### Create a droplet    <a id="InstallPrivatixAgentnode(viaCLi)toDigitalOceancloud-Createadroplet"></a>
+### Create a droplet <a id="InstallPrivatixAgentnode(viaCLi)toDigitalOceancloud-Createadroplet"></a>
 
 Before installation you need to create [a droplet:](https://www.digitalocean.com/products/droplets/)
 

@@ -9,6 +9,7 @@
   * [Concepts](privatix-core/core/concepts.md)
   * [Messaging](privatix-core/core/messaging/README.md)
     * [Offering message](privatix-core/core/messaging/offering/README.md)
+      * [Offering template scheme fields](privatix-core/core/messaging/offering/offering-template-scheme-fields.md)
       * [Offering template](privatix-core/core/messaging/offering/offering-template.md)
     * [Access message](privatix-core/core/messaging/access/README.md)
       * [Access template](privatix-core/core/messaging/access/access-template.md)
@@ -41,4 +42,16 @@
     * [Via the application](support/feedback/how-to-detect-a-trouble-cause/via-the-application.md)
     * [Via the scripts](support/feedback/how-to-detect-a-trouble-cause/via-the-scripts.md)
     * [Manually](support/feedback/how-to-detect-a-trouble-cause/manually.md)
+
+## Knowledge base
+
+* [Requirements for Agent and Client](knowledge-base/requirements-for-agent-and-client.md)
+* [How to get PRIX](knowledge-base/how-to-get-prix.md)
+* [What is Simple and Advanced client modes](knowledge-base/simple-and-advanced-client.md)
+* [How to run a node](knowledge-base/how-to-run-a-node.md)
+* [How to open ports for Agent](knowledge-base/how-to-open-ports.md)
+* [How to withdraw funds](knowledge-base/how-to-withdraw-funds.md)
+* [Traffic prices formation](knowledge-base/traffic-prices-formation.md)
+* [How to "clean up"](knowledge-base/how-to-clean-up.md)
+* [Disclaimer for Agents](knowledge-base/faq-for-agents.md)
 
