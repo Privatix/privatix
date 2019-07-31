@@ -49,7 +49,7 @@ copy(){
 	      >> "${deb_package_bin_dir}/install.sh" &&
     chmod +x "${deb_package_bin_dir}/install.sh" || exit 1
 
-    echo "sudo ./dapp-installer remove --workdir /var/lib/container/agent/" \
+    echo "sudo ./dapp-installer remove -workdir /var/lib/container/agent/ -role agent" \
 	      >> "${deb_package_bin_dir}/remove.sh" &&
     chmod +x "${deb_package_bin_dir}/remove.sh" || exit 1
 }
