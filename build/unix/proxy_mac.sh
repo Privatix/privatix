@@ -142,6 +142,8 @@ copy_installer(){
 
     cp -v "${GOPATH}/bin/${DAPP_INSTALLER}" \
           "${installer_bin_dir}/${DAPP_INSTALLER}" || exit 1
+    cp -v "${GOPATH}/bin/${DAPP_SUPERVISOR}" \
+          "${installer_bin_dir}/${DAPP_SUPERVISOR}" || exit 1
 
     cp -v "${DAPP_INSTALLER_DIR}/${DAPP_INSTALLER_CONFIG}" \
           "${installer_bin_dir}/${DAPP_INSTALLER_CONFIG}" || exit 1
@@ -161,6 +163,7 @@ if [[ -z "$1" ]] || [[ "$1" != "--keep_common_binaries" ]]; then
                         "${app_dir}/${DAPP_INSTALLER_GUI_DIR}/${DAPP_INSTALLER_GUI_BINARY_NAME}" \
                         "${DAPP_GUI_SETTINGS_JSON_MAC}" \
                         "proxy_osx" \
+                        "" \
                         || exit 1
 fi
 
@@ -177,7 +180,7 @@ build/bitrock-installer.sh  "${BITROCK_INSTALLER_BIN_MAC}/builder" \
                             "osx" \
                             "${PROXY_PRODUCT_ID}" \
                             "${PROXY_PRODUCT_NAME}" \
-                            "" \
+                            "0" \
                             "${bin_dir}" \
                             "${PROXY_MAC_OUTPUT_DIR}" \
                             || exit 1

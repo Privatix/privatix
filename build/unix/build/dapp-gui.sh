@@ -32,11 +32,17 @@ make_packages(){
    "${PATCH_JSON_SH}" "$3/$4" \
                       '["release"]="'"${VERSION_TO_SET_IN_BUILDER}"'"' \
                       '["target"]="'"${5}"'"' \
+                      '["network"]="'"${DAPP_GUI_NETWORK}"'"' \
+                      '["role"]="agent"' \
+                      '["log"]["filePath"]="'"${6}"'"' \
                       || exit 1
+                      
+   # please keep ["role"]="agent", because this default is used for non-GUI OS
+   # installer (e.g. ubuntu deb)
 
    echo && echo done
 
 }
 
 clean
-make_packages "$1" "$2" "$3" "$4" "$5"
+make_packages "$1" "$2" "$3" "$4" "$5" "$6"

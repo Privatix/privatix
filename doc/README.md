@@ -1,34 +1,39 @@
-# Documentation
+---
+description: >-
+  Privatix Network is decentralized and 100% autonomous peer to peer network
+  with is own crypto-economy that allows to buy and sell various services.
+---
 
-This page contains overview of documentation. It is intended for developers and tech savvy people, that want to understand how Privatix Network works under the hood.
+# What is Privatix Network
 
-# Documentation reference
+## What is Privatix Network
 
-[General](/doc/general.md) - main concept and software components
+### Protocol
 
-[Privatix core](/doc/core.md) - Privatix core in short with links for deeper reading
+Privatix Network is based on self-developed protocol that allows to:
 
-- [Messaging](/doc/messaging.md) - messaging as part of application workflow
+* publish/discover offerings
+* grant/get access to a service
+* send/receive payments for each small portion of service provided/consumed
 
-- [Offerings](/doc/offering.md) - offering proposal, discovery and processing
+All that in 100% decentralized environment without any 3rd party involved.
 
-- [Access](/doc/access.md) - access to service issuing and granting
+### Privatix core
 
-- [Channels](/doc/channel.md) - state channels and related workflow
+Privatix core is a software that orchestrates payments, billing, automates service life-cycle, provides offering discovery and aids to setup service access. Its operation is generic and doesn't depends on service being provided.
 
-- [Payments](/doc/payments.md) - how payments work
+### Proof of concept products
 
-  - [Agent billing](/doc/agent_billing.md) - billing by Agent (seller)
-  - [Client billing](/doc/client_billing.md) - payments by Client (buyer)
+* VPN service with simple and advanced user interface
+* Proxy service \(in progress\)
 
-- [Ethereum monitor](/doc/ethereum_monitor.md) - processing of ethereum events
+### How to
 
-- [Jobs](/doc/job.md) - jobs that control software operations
+[Try Privatix VPN service](support/install/)
 
-[Smart contracts](/doc/smart_contract.md) - Privatix smart contracts
+[Give a feedback](support/feedback/)
 
-[Service plug-in](/doc/service_plug-in.md) - Privatix service plug-in explained
+[Contribute](https://github.com/Privatix/privatix#contributing)
 
-- [Standards](/doc/service_plug-in_standards.md) - standards for service plugin development
+[Join community](https://github.com/Privatix/privatix#public-place-to-talk-and-get-news)
 
-- [Update](/doc/update.md) - software update mechanism

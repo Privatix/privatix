@@ -6,7 +6,7 @@ Install prerequisite software if it's not installed.
 
 * [git](https://git-scm.com/downloads)
 
-* [Golang](https://golang.org/doc/install) 1.11+. Make sure that 
+* [Golang](https://golang.org/doc/install) 1.12+. Make sure that 
 `$GOPATH/bin` is added to system path `$PATH`.
 
 * [gcc](https://gcc.gnu.org/install/)

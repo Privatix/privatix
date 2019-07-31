@@ -160,6 +160,7 @@ function new-package {
     # core installer
     $dappinstallerbin = (Get-Item "$gopath\bin\dapp-installer.exe").FullName
     $dappinstallerconf = (Get-Item "$wrkdir\src\github.com\privatix\dapp-installer\dapp-installer.config.json").FullName
+    $dappinstallerSupervisor = (Get-Item "$gopath\bin\dapp-supervisor.exe").FullName
     # common
     $dappctrlbin = (Get-Item "$gopath\bin\dappctrl.exe").FullName
     $dappctrlconfig = (Get-Item "$wrkdir\src\github.com\privatix\dappctrl\$dappctrlConf").FullName
@@ -301,6 +302,7 @@ function new-package {
     #region dapp-installer artefact
     Copy-Item -Path $dappinstallerbin -Destination "$deployAppPath\dapp-installer.exe"
     Copy-Item -Path $dappinstallerconf -Destination "$deployAppPath\dapp-installer.config.json"
+    Copy-Item -Path $dappinstallerSupervisor -Destination "$deployAppPath\dapp-supervisor.exe"
     #endregion
 
     #endregion

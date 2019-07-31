@@ -32,9 +32,14 @@ copy(){
     cp -v "${DAPP_INSTALLER_DIR}/${DAPP_INSTALLER_LINUX_CONFIG}" \
           "${deb_package_bin_dir}/${DAPP_INSTALLER_CONFIG}" || exit 1
 
-    echo "${DAPP_INSTALLER_DIR}/scripts/autooffer/ ->"
+    echo "${DAPP_INSTALLER_DIR}/scripts/autooffer_rinkeby/ ->"
     echo "${deb_package_bin_dir}"
-    cp -r "${DAPP_INSTALLER_DIR}/scripts/autooffer/" \
+    cp -r "${DAPP_INSTALLER_DIR}/scripts/autooffer_rinkeby/" \
+          "${deb_package_bin_dir}" || exit 1
+
+    echo "${DAPPCTRL_DIR}/scripts/cli/ ->"
+    echo "${deb_package_bin_dir}"
+    cp -r "${DAPPCTRL_DIR}/scripts/cli/" \
           "${deb_package_bin_dir}" || exit 1
 
     cp -v "$1/app.tar.xz" \
@@ -44,7 +49,7 @@ copy(){
 	      >> "${deb_package_bin_dir}/install.sh" &&
     chmod +x "${deb_package_bin_dir}/install.sh" || exit 1
 
-    echo "sudo ./dapp-installer remove --workdir /var/lib/container/agent/" \
+    echo "sudo ./dapp-installer remove -workdir /var/lib/container/agent/ -role agent" \
 	      >> "${deb_package_bin_dir}/remove.sh" &&
     chmod +x "${deb_package_bin_dir}/remove.sh" || exit 1
 }

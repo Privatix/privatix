@@ -24,3 +24,4 @@ if (Test-Path "$bin\installer.exe") { Remove-Item -Path "$bin\installer.exe"}
 if (Test-Path "$bin\dapp-installer.exe") { Remove-Item -Path "$bin\dapp-installer.exe"}
 if (Test-Path "$bin\dapp-proxy.exe") { Remove-Item -Path "$bin\dapp-proxy.exe"}
 if (Test-Path "$bin\dappproxy-inst.exe") { Remove-Item -Path "$bin\dappproxy-inst.exe"}
+if (Test-Path "$bin\dapp-supervisor.exe") { Remove-Item -Path "$bin\dapp-supervisor.exe"}

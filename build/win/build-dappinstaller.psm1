@@ -81,6 +81,8 @@ Function build-dappinstaller {
         Invoke-Scriptblock "go get $goVerbose -u github.com/denisbrodbeck/machineid" -StderrPrefix ""
         Invoke-Scriptblock "go generate $goGenerateVerbose $PROJECT/..." -StderrPrefix ""
         Invoke-Scriptblock "go build -o $gopath\bin\dapp-installer.exe -ldflags `"-X main.Commit=$GIT_COMMIT -X main.Version=$GIT_RELEASE`"" -StderrPrefix ""
+        Set-Location "$PROJECT_PATH\supervisor"
+        Invoke-Scriptblock "go build -o $gopath\bin\dapp-supervisor.exe" -StderrPrefix ""
     }
     catch {Write-Error "Some failures accured during build"}
     finally {Set-Location $lastLocation}
