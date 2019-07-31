@@ -54,4 +54,5 @@
 * [Traffic prices formation](knowledge-base/traffic-prices-formation.md)
 * [How to "clean up"](knowledge-base/how-to-clean-up.md)
 * [Disclaimer for Agents](knowledge-base/faq-for-agents.md)
+* [Tems of use](knowledge-base/terms-of-use.md)
 
