@@ -41,7 +41,8 @@ To install the application, execute the following script:
 
 ```bash
 cd /opt/privatix_installer &&
-./install.sh
+./install.sh &&
+./cli/install_dependencies.sh
 ```
 
 ### Create an offering
