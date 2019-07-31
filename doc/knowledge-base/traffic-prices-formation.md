@@ -1,7 +1,5 @@
 # Traffic prices formation
 
-> **\***
-
 The price of bandwidth in Core software is defined as PRIX/MB only. The unit of account is PRIX \(ERC20 token\), and the basic unit of measurement is MB \(megabytes\).
 
 The software doesn’t refer in any way to a fiat price, as USD/MB for example. But, obviously, the users only care about USD/MB prices.
