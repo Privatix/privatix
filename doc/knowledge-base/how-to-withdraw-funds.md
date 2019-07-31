@@ -4,7 +4,7 @@ description: Funds management
 
 # How to withdraw funds
 
-**PNCS** is operating with **PRIX** tokens which is based on Ethereum, therefore, some amount of ETH is necessary to cover GAS costs. 
+**Core software** is operating with **PRIX** tokens which is based on Ethereum, therefore, some amount of ETH is necessary to cover GAS costs. 
 
 If you are not familiar with Ethereum and ERC20 token standard , please check this first : 
 
@@ -15,13 +15,13 @@ If you are not familiar with Ethereum and ERC20 token standard , please check th
 
 The most important is to understand that no one will be able to restore your passwords or private keys if you lost it. 
 
-When you install the PNCS, you will start with wizard which will guide you step-by-step. 
+When you install the Core software, you will start with wizard which will guide you step-by-step. 
 
 {% hint style="warning" %}
 Please do not forget to write down your password and keep the backup of your private key in a safe place.
 {% endhint %}
 
-The PNCS ****account is represented by your ETH public key. Your private key is encrypted and used only by the software to operate within the network.
+The Core software account is represented by your ETH public key. Your private key is encrypted and used only by the software to operate within the network.
 
 The Agents and Clients should have PRIX to execute any bandwidth deals and certain amount of ETH to cover transaction costs \(GAS\). 
 

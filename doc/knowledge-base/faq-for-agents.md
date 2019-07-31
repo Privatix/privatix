@@ -31,11 +31,11 @@ Legally, many companies using people’s bandwidth on a worldwide scale and a la
 
 ### Can Privatix Network team promise that I won't get in trouble for running the software as an Agent?
 
-No. All new technologies create legal uncertainties, and PNCS is no exception. We cannot guarantee that you will never face any legal liability as a result of running an Agent or a Client. 
+No. All new technologies create legal uncertainties, and Core software is no exception. We cannot guarantee that you will never face any legal liability as a result of running an Agent or a Client. 
 
 ### What can happen If someone will use my Exit node for torrenting ?
 
-In some countries, you can get fines for sharing torrents. There is no way in current PNCS to limit torrent protocol in Agent software.  
+In some countries, you can get fines for sharing torrents. There is no way in current Core software to limit torrent protocol in Agent software.  
 
 We’re working on the “torrent block option” for the next versions, but If you have a concern about this issue right now, we advise you to avoid running the node in your country. 
 
@@ -45,7 +45,7 @@ You can download all the sessions history from the software. It includes timesta
 
 ### Has anyone ever been sued or prosecuted for being an Agent?
 
-No, we aren't aware of anyone being sued or prosecuted for running PNCS as an Agent.  
+No, we aren't aware of anyone being sued or prosecuted for running Core software as an Agent.  
   
 
 

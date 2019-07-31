@@ -2,7 +2,7 @@
 
 The Privatix Client is an application for accessing decentralized \(blockchain\) services on the Privatix Network. Initially, the Client has a large number of displayed settings and details to choose from \(Advanced mode\), but in order to make it more user-friendly, we have created a simplified version of the interface and called it the "Simple mode".
 
-### The PNCS has two main parts: 
+### The Core software has two main parts: 
 
 1. **Agent** - software which allows to share/sell bandwidth. It may also be named as Exit node, Service provider etc. 
 2. **Client**  - software which allows to buy bandwidth from Agents. 
@@ -11,7 +11,7 @@ The main purpose of Core software is to be a building block for future developme
 
 Therefore, the Agent's and Client's user interface looks like a spacecraft panel and has no intention of attracting the ordinary user's attention.
 
-The main targeted auditories for PNCS are developers and tech-savvy users. 
+The main targeted auditories for Core software are developers and tech-savvy users. 
 
 However, the team created a Simple mode for the Client software to allow more users to try it like a regular VPN service.
 

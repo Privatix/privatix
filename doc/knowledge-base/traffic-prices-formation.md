@@ -1,8 +1,8 @@
 # Traffic prices formation
 
-> **PNCS = Privatix Network Core Software**
+> **\***
 
-The price of bandwidth in PNCS is defined as PRIX/MB only. The unit of account is PRIX \(ERC20 token\), and the basic unit of measurement is MB \(megabytes\).
+The price of bandwidth in Core software is defined as PRIX/MB only. The unit of account is PRIX \(ERC20 token\), and the basic unit of measurement is MB \(megabytes\).
 
 The software doesn’t refer in any way to a fiat price, as USD/MB for example. But, obviously, the users only care about USD/MB prices.
 
@@ -16,12 +16,12 @@ The users operate in two primary markets:
 
 #### 1\) PRIX/MB - Bandwidth marketplace on Blockchain : 
 
-* The integral part of PNCS with pure P2P interaction
+* The integral part of Core software with pure P2P interaction
 * The supply within the network is the Agents offerings. 
 * The Agents set PRIX/MB prices, how much bandwidth they want to sell, and on what conditions.  
 * The Clients may see the offerings from Agents and decide whether to accept them or not. 
 * Since prices are dictated by Agents, they must adjust their behavior to the demand of the Clients.
-* On PNCS, Clients can’t "declare" desirable prices; they may accept the offering or not. 
+* On Core software, Clients can’t "declare" desirable prices; they may accept the offering or not. 
 
 ![How Clients see the offerings in Advanced mode](../.gitbook/assets/42mwhig-1.png)
 
@@ -50,7 +50,7 @@ More information you can find in [our technical documentation](../privatix-core/
 
 ### Inevitable price volatility
 
-PNCS is our first step towards building a worldwide distributed broadband network on the mainnet.
+Privatix Network Core software is our first step towards building a worldwide distributed broadband network on the mainnet.
 
 Since we are at the very beginning, the number of Agents and Clients \(capacity of the network\) can be very different from time to time. As less network capacity we have, the more volatility we’ll see.
 
