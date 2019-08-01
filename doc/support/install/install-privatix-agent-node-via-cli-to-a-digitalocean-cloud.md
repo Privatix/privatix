@@ -40,8 +40,10 @@ This script will download and unpack the Privatix Network installer to the **/op
 To install the application, execute the following script:
 
 ```bash
-cd /opt/privatix_installer &&
-./install.sh &&
+cd /opt/privatix_installer 
+./install.sh 
+
+sudo apt-get install python
 ./cli/install_dependencies.sh
 ```
 
