@@ -4,6 +4,10 @@ description: Agent guide
 
 # How to run a node
 
+{% hint style="warning" %}
+Please note, to publish an offering you should have a certain amount of PRIX and ETH on your balance. PRIX is required for Escrow and is calculated according to the offering you are placing. ETH is used to cover GAS costs for blockchain transactions.
+{% endhint %}
+
 ### Open the Privatix Agent application
 
 ### Press "Create an offering" button from the Dashboard or in the Offerings page:
