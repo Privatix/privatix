@@ -45,7 +45,7 @@ After all necessary operations have been completed, you'll see your offering wit
 Now you're ready to sell bandwidth.
 
 {% hint style="info" %}
-Do not forget to configure port forwarding if necessary. 
+Do not forget to configure port forwarding if necessary, otherwise your service offering will not work properly.
 
 Check our guide: [How to open ports](https://docs.privatix.network/knowledge-base/how-to-open-ports)
 {% endhint %}
