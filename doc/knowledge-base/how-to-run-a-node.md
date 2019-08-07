@@ -4,7 +4,7 @@ description: Agent guide
 
 # How to run a node
 
-To start using VPN services, you should install [Pivatix Core software](https://privatix.io/#download) in Agent mode. Follow the wizard's instructions to create account and [load your balance with PRIX /ETH tokens](https://docs.privatix.network/knowledge-base/how-to-get-prix) in order to provide the services across Privatix Network.
+To run a Node, you should install [Pivatix Core software](https://privatix.io/#download) in Agent mode and publish an offering on the marketplace. Follow the wizard's instructions to create account and [load your balance with PRIX /ETH tokens](https://docs.privatix.network/knowledge-base/how-to-get-prix) in order to provide the services across Privatix Network.
 
 {% hint style="warning" %}
 Please note, to publish an offering you should have a certain amount of PRIX and ETH on your balance. PRIX is required for Escrow and is calculated according to the offering you are placing. ETH is used to cover GAS costs for blockchain transactions.
