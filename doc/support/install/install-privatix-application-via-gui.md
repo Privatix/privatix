@@ -14,12 +14,10 @@ Example: "chmod +x privatix\_ubuntu\_x64\_0.23.1\_installer.run"
 
 Pass all the installation steps. 
 
-If you chose an agent mode, then ensure that all required ports are opened.
-
 {% hint style="info" %}
-Try to google how to open ports on your particular router.
+If you chose an Agent mode, then ensure that all required ports are opened. 
 
-General information: [https://www.howtogeek.com/66214/how-to-forward-ports-on-your-router/](https://www.howtogeek.com/66214/how-to-forward-ports-on-your-router/)
+Check our guide: [How to open ports](https://docs.privatix.network/knowledge-base/how-to-open-ports). 
 {% endhint %}
 
 ## Replace Infura Endpoint
