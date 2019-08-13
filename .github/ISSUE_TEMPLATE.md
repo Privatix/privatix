@@ -14,11 +14,14 @@ Put an X between the brackets in corresponding line:
 
 [ ] Reproduced the problem on Mac
 
-[ ] Reproduced the problem in the application, installed from binaries, provided by Privatix: https://github.com/Privatix/privatix/releases
+[ ] Reproduced the problem in the application, installed from binaries, provided by Privatix: 
+https://github.com/Privatix/privatix/releases
 
-[ ] Followed all steps from the guide: https://privatix.atlassian.net/wiki/spaces/BVP/pages/270860384/How+to+download+it+and+give+it+a+try
+[ ] Followed all steps from the guide: 
+https://docs.privatix.network/support/install
 
-[ ] Checked that issue isn't already created: https://github.com/Privatix/privatix/issues
+[ ] Checked that issue isn't already created: 
+https://github.com/Privatix/privatix/issues
 
 ### Description
 
@@ -30,18 +33,24 @@ Put an X between the brackets in corresponding line:
 2. [Second Step]
 3. [and so on...]
 
-**Expected behavior:** [What you expect to happen]
+#### Expected behavior:
+ 
+[What you expect to happen]
 
-**Actual behavior:** [What actually happens]
+#### Actual behavior:
 
-**How often reproduced:** [What percentage of the time does it reproduce?]
+[What actually happens]
+
+#### How often reproduced:
+
+[What percentage of the time does it reproduce?]
 
 ### Versions
 
 Version: [version goes here]
 
 You can get this information from:
-- the settings page of the GUI application
+- from the GUI
 - `dappctrl -version` command via CLI
 
 ### Environment
@@ -49,17 +58,16 @@ You can get this information from:
 Please, provide us with information about the application environment. It will be 
 very helpful during the debugging process.
 
-To do this, execute the following scripts:
+The easiest way to do it: to collect all logs via GUI.
+
+If it is impossible, try the following scripts: 
 * mac: https://github.com/Privatix/privatix/tree/master/tools/dump_mac/dump_mac.sh
 * win: https://github.com/Privatix/privatix/tree/master/tools/dump_win/new-dump.ps1
 * ubuntu: https://github.com/Privatix/privatix/tree/master/tools/dump_ubuntu/dump_ubuntu.py
 
-Attach to the issue the resulting archive.
+Send logs to the [support@privatix.io](mailto:support@privatix.io).
 
-It contains information only about the Privatix application:
-1. logs
-2. configs
-3. db dump
+Do not attach logs to the issue, because they can contains private information, such as IP addresses.
 
 ### Additional Information
 
