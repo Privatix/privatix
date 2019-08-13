@@ -17,7 +17,7 @@ Put an X between the brackets in corresponding line:
 [ ] Reproduced the problem in the application, installed from binaries, provided by Privatix: 
 https://github.com/Privatix/privatix/releases
 
-[ ] Followed all steps from the guide: 
+[ ] Followed all steps from the relevant guide: 
 https://docs.privatix.network/support/install
 
 [ ] Checked that issue isn't already created: 
@@ -58,16 +58,16 @@ You can get this information from:
 Please, provide us with information about the application environment. It will be 
 very helpful during the debugging process.
 
-The easiest way to do it: to collect all logs via GUI.
+The easiest way to do it: to export all logs via GUI from the Logs tab.
 
 If it is impossible, try the following scripts: 
 * mac: https://github.com/Privatix/privatix/tree/master/tools/dump_mac/dump_mac.sh
 * win: https://github.com/Privatix/privatix/tree/master/tools/dump_win/new-dump.ps1
 * ubuntu: https://github.com/Privatix/privatix/tree/master/tools/dump_ubuntu/dump_ubuntu.py
 
-Send logs to the [support@privatix.io](mailto:support@privatix.io).
+Send logs to [support@privatix.io](mailto:support@privatix.io).
 
-Do not attach logs to the issue, because they can contains private information, such as IP addresses.
+Do not attach logs in this issue thread, because they can contain private information, such as IP addresses.
 
 ### Additional Information
 
