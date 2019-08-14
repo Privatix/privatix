@@ -1,36 +1,15 @@
-# How to get Infura Endpoint
+# How to change Infura Endpoint
 
-We use [Infura](https://infura.io) as a Blockchain Access Provider. 
+## Step 1. Get Infura endpoint
 
-Infura has recently limited the number of requests per day. To prevent an application from crashing due to a request limit, we recommend that you use the application through your own Infura account.
+Get Infura endpoint: [How to get Infura Endpoint](how-to-get-infura-enpoint.md)
 
-{% hint style="info" %}
-As always, your application can be switched to a Geth Node in the same way as described below.
-{% endhint %}
+## Step 2. Replace Endpoint in the config file:
 
-## Step 1. Create Infura Account:
+1. Find **dappctrl.config.json**. The path to the configuration depends on which folder you have installed the application in. The relative path will be as follows: `$app_path/client/dappctrl/dappctrl.config.json`
+2. Stop the application if it is running
+3. Replace `GethURL` value in `dappctrl.config.json`
+4. Start the application
 
-1. Go to [https://infura.io/](https://infura.io/)
-2. Register your own account
-3. Choose a core subscription plan \(it's free\)
-
-![](../../.gitbook/assets/image%20%283%29.png)
-
-## Step 2. Get Infura Endpoint:
-
-1. Login to the Infura Account
-2. Create a project
-3. Get the endpoint
-
-![Create new project](../../.gitbook/assets/image%20%2823%29.png)
-
-![View Project](../../.gitbook/assets/image%20%2818%29.png)
-
-![Get endpoint](../../.gitbook/assets/image%20%2828%29.png)
-
-{% hint style="info" %}
-In the case of testnet, choose target network on the screen above. 
-{% endhint %}
-
-
+![Change GethURL](../../.gitbook/assets/image.png)
 
