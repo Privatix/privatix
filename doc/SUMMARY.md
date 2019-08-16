@@ -9,7 +9,6 @@
   * [Concepts](privatix-core/core/concepts.md)
   * [Messaging](privatix-core/core/messaging/README.md)
     * [Offering message](privatix-core/core/messaging/offering/README.md)
-      * [Offering template scheme fields](privatix-core/core/messaging/offering/offering-template-scheme-fields.md)
       * [Offering template](privatix-core/core/messaging/offering/offering-template.md)
     * [Access message](privatix-core/core/messaging/access/README.md)
       * [Access template](privatix-core/core/messaging/access/access-template.md)
@@ -34,8 +33,8 @@
 ## Support
 
 * [Install](support/install/README.md)
-  * [How to change Infura Endpoint](support/install/how-to-change-infura-url.md)
-  * [How to get Infura Endpoint](support/install/how-to-get-infura-enpoint.md)
+  * [How to get Infura Endpoint](support/install/how-to-get-infura-enpoint%20%281%29.md)
+  * [How to get Infura Endpoint](support/install/how-to-get-infura-enpoint%20%281%29.md)
   * [GUI: Install Privatix Application](support/install/install-privatix-application-via-gui.md)
   * [CLI: Install Privatix Agent Node](support/install/cli-install-privatix-agent-node.md)
   * [Install Privatix Agent Node to a DigitalOcean cloud](support/install/install-privatix-agent-node-via-cli-to-a-digitalocean-cloud.md)
