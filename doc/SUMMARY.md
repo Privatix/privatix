@@ -33,8 +33,7 @@
 ## Support
 
 * [Install](support/install/README.md)
-  * [How to get Infura Endpoint](support/install/how-to-get-infura-enpoint%20%281%29.md)
-  * [How to get Infura Endpoint](support/install/how-to-get-infura-enpoint%20%281%29.md)
+  * [How to get Infura Endpoint](support/install/how-to-get-infura-enpoint.md)
   * [GUI: Install Privatix Application](support/install/install-privatix-application-via-gui.md)
   * [CLI: Install Privatix Agent Node](support/install/cli-install-privatix-agent-node.md)
   * [Install Privatix Agent Node to a DigitalOcean cloud](support/install/install-privatix-agent-node-via-cli-to-a-digitalocean-cloud.md)
@@ -52,6 +51,7 @@
 * [How to run a node](knowledge-base/how-to-run-a-node.md)
 * [How to buy VPN service](knowledge-base/how-to-buy-vpn-service.md)
 * [How to open ports for Agent](knowledge-base/how-to-open-ports.md)
+* [How to customize offering \(for CLI\)](knowledge-base/offering-guide-for-cli.md)
 * [How to withdraw funds](knowledge-base/how-to-withdraw-funds.md)
 * [Traffic prices formation](knowledge-base/traffic-prices-formation.md)
 * [How to "clean up"](knowledge-base/how-to-clean-up.md)
