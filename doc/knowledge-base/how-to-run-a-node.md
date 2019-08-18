@@ -18,7 +18,7 @@ Please note, to publish an offering you should have a certain amount of PRIX and
 
 ### Fill the offering
 
-More information about offerings fields see at [Offering template scheme fields]()
+More information about offerings fields see at [Offering template scheme fields](https://docs.privatix.network/privatix-core/core/messaging/offering/offering-template).
 
 ![](../.gitbook/assets/image%20%2815%29.png)
 
