@@ -64,4 +64,4 @@ deploy:
 notifications:
     slack:
         rooms:
-            - privatix:ntmw2wh4PAHoodqtMc95KFDt#dapp-tech
+            - privatix:ntmw2wh4PAHoodqtMc95KFDt#dapp-qa
