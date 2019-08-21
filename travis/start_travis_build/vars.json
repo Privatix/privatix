@@ -4,6 +4,6 @@
   "VERSION_TO_SET_IN_BUILDER": "1.1.0",
   "DAPPCTRL_CONFIG": "dappctrl-dev.config.json",
   "DAPP_GUI_NETWORK": "rinkeby",
-  "DAPPCTRL_LOG_LEVEL": "info",
+  "DAPPCTRL_LOG_LEVEL": "debug",
   "DAPP_INSTALLER_FORCE_UPDATE": "1"
 }
