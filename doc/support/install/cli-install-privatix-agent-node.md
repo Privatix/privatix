@@ -6,7 +6,7 @@ Minimum system requirements:
 
 * 2GB of RAM
 * 2 vCPU
-* OS: Ubuntu 16.04 LTS / Ubuntu 18.04 LTS
+* OS: Ubuntu 18.04 LTS
 
 ## **Install Privatix Agent on a virtual machine**
 
