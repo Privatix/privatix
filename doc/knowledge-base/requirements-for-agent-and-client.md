@@ -4,7 +4,7 @@
 
 #### Supported OS: <a id="id-1.Installtheapplication-SupportedOS"></a>
 
-* All LTS Desktop Ubuntu from 16.04
+* All LTS Desktop Ubuntu from 18.04
 * Debian 8 Desktop 
 * Debian 9 Desktop
 * Windows 10+
