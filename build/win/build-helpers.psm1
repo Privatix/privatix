@@ -158,7 +158,8 @@ function Checkout-Gitbranch {
     param (
         [ValidateScript({Test-Path $_ })]
         [string]$PROJECT_PATH,
-        [string]$branch
+        [string]$branch,
+        [string]$defaultBranch
     )
     
     if (($VerbosePreference -ne 'SilentlyContinue') -or ($PSBoundParameters.ContainsKey('Verbose')) ) {
@@ -167,12 +168,13 @@ function Checkout-Gitbranch {
 
     Invoke-Scriptblock -ScriptBlock "git.exe --git-dir=$PROJECT_PATH\.git --work-tree=$PROJECT_PATH fetch --all $gitQuiet"
     
-    $branchFound = (git.exe rev-parse --verify "origin/$branch") -match "\b[0-9a-f]{5,40}\b"
+    $branchFound = (Invoke-Scriptblock -ScriptBlock {git.exe rev-parse --verify "origin/$branch"}) -match "\b[0-9a-f]{5,40}\b"
     
     # TODO: on unix "GIT_BRANCH_DEFAULT" variable is used to set alternative branch
     if ($branchFound -ne $true) {
         Write-Verbose "branch `"$branch`" not found"
-        $branch = "develop"
+        if ($env:GIT_BRANCH_DEFAULT) {$branch = $env:GIT_BRANCH_DEFAULT}
+        if ($defaultBranch) {$branch = $defaultBranch}
         Write-Verbose "Setting `"$branch`" as a branch. (default)"
     }
 
