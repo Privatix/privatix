@@ -131,7 +131,8 @@ param(
     [string]$dappctrlConf = "dappctrl-dev.config.json",
     [ValidateSet('0', '1')]
     [string]$forceUpdate = '0',
-    [string]$installerOutDir
+    [string]$installerOutDir,
+    [string]$defaultBranch
     
 )
 
@@ -145,6 +146,8 @@ $env:Path += ";$env:GOPATH\bin"
 $env:Path += ";C:\Program Files\nodejs"
 # Bitrock builder Travis location
 $env:Path += ";C:\installbuilder\bin"
+
+if ($defaultBranch) {$env:GIT_BRANCH_DEFAULT = $defaultBranch}
 
 $ctrl_conf = $dappctrlConf
 $network = $guiEthNetwork
