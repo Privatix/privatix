@@ -82,6 +82,9 @@ sed -i.bup 's/AppArmorProfile=system_tor/AppArmorProfile=/g' /lib/systemd/system
 systemctl daemon-reload
 service tor start
 
+echo -----------------------------------------------------------------------gettext-base
+apt-get install gettext-base
+
 echo -----------------------------------------------------------------------dappctrl
 mv /dappctrl/dappctrl.service /lib/systemd/system/
 systemctl enable dappctrl.service
