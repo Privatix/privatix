@@ -2,7 +2,7 @@
 
 ## System requirements
 
-### Supported OS: <a id="id-1.Installtheapplication-SupportedOS"></a>
+### Supported OS <a id="id-1.Installtheapplication-SupportedOS"></a>
 
 * All LTS Desktop Ubuntu from 18.04
 * Debian 8 Desktop 
@@ -10,7 +10,13 @@
 * Windows 10+
 * macOS 10.13: High Sierra +
 
-## Starting the installation process <a id="id-1.Installtheapplication-Startingtheinstallationprocess"></a>
+### Hardware requirements
+
+* CPU: 2 cores
+* RAM: 2 GB
+* Disk space: 500 GB
+
+## Installation process <a id="id-1.Installtheapplication-Startingtheinstallationprocess"></a>
 
 1. Download the appropriate version that depends on your OS from: [https://github.com/Privatix/privatix/releases](https://github.com/Privatix/privatix/releases)
 2. Install the application
