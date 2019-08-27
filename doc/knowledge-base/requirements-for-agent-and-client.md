@@ -12,7 +12,7 @@
 
 ## Starting the installation process <a id="id-1.Installtheapplication-Startingtheinstallationprocess"></a>
 
-1. Download the appropriate version that depends on your OS from: [https://github.com/Privatix/privatix/releases](https://github.com/Privatix/privatix/releases**]%28https://github.com/Privatix/privatix/releases)
+1. Download the appropriate version that depends on your OS from: [https://github.com/Privatix/privatix/releases](https://github.com/Privatix/privatix/releases)
 2. Install the application
 
 ## Role
