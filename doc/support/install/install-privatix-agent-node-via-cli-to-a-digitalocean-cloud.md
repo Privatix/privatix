@@ -18,9 +18,9 @@ Before installation you need to create [a droplet:](https://www.digitalocean.com
 * Go through the Wizard's steps.
 * After 2-3 minutes the droplet will be available for `ssh` access
 
-![Choosing a stadard droplet](../../.gitbook/assets/choosing_image-1%20%281%29.png)
+![Choosing a stadard droplet](../../.gitbook/assets/choosing_image-1-1.png)
 
 ## **Install Privatix Agent**
 
-Connect to the Droplet via ssh and follow the instructions:  [CLI: Install Privatix Agent Node](cli-install-privatix-agent-node.md)
+Connect to the Droplet via ssh and follow the instructions: [CLI: Install Privatix Agent Node](cli-install-privatix-agent-node.md)
 
