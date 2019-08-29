@@ -29,8 +29,8 @@ sudo cp -R ${dappcoredir}/. "${container_location}/"
 sudo systemd-nspawn -D ${container_location}/ << EOF
 
 echo -----------------------------------------------------------------------password
-#set root password: xHd26ksN
-echo -e "xHd26ksN\nxHd26ksN\n" | passwd
+#set root password: root
+echo -e "root\nroot\n" | passwd
 
 echo -----------------------------------------------------------------------settings
 echo "pts/0" >> /etc/securetty
