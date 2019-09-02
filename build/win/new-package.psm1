@@ -174,13 +174,15 @@ function new-package {
     $torFolder = (Get-Item "$staticArtefactsDir\tor").FullName
     $dumpScript = (Get-Item "$privatixSourceCodePath\tools\dump_win\new-dump.ps1").FullName
     $psRunnerBinary = (Get-Item "$privatixSourceCodePath\tools\dump_win\ps-runner.exe").FullName
+    $updateConfigBinary = (Get-Item "$wrkdir\src\github.com\privatix\dapp-installer\tool\update-config\update-config.exe")
+
     # openvpn product
     if ($product -eq 'vpn') {
         $dappopenvpnbin = (Get-Item "$gopath\bin\dappvpn.exe").FullName
         $dappopenvpninst = (Get-Item "$gopath\bin\dappvpn-inst.exe").FullName
         $dappvpntemplatesFolder = (Get-Item "$wrkdir\src\github.com\privatix\dapp-openvpn\files\example").FullName
-        $dappopenvpninstagentconfig = (Get-Item "$wrkdir\src\github.com\privatix\dapp-openvpn\inst\install.agent.config.json").FullName
-        $dappopenvpninstclientconfig = (Get-Item "$wrkdir\src\github.com\privatix\dapp-openvpn\inst\install.client.config.json").FullName
+        $dappopenvpninstagentconfig = (Get-Item "$wrkdir\src\github.com\privatix\dapp-openvpn\inst\install.agent.win.config.json").FullName
+        $dappopenvpninstclientconfig = (Get-Item "$wrkdir\src\github.com\privatix\dapp-openvpn\inst\install.client.win.config.json").FullName
         $dappopenvpnagentAdapterInstallerConfig = (Get-Item "$wrkdir\src\github.com\privatix\dapp-openvpn\inst\installer.agent.config.json").FullName
         $dappopenvpnclientAdpaterInstallerConfig = (Get-Item "$wrkdir\src\github.com\privatix\dapp-openvpn\inst\installer.client.config.json").FullName 
         $dappopenvpnFWruleScript = (Get-Item "$wrkdir\src\github.com\privatix\dapp-openvpn\scripts\win\set-vpnfirewall.ps1").FullName
@@ -237,6 +239,7 @@ function new-package {
     #endregion
 
     #region product
+    Copy-Item -Path $updateConfigBinary -Destination "$prodInstancePath\bin\update-config.exe" 
 
     #region binary
     if ($product -eq 'vpn') {
