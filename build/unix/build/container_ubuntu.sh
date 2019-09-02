@@ -73,7 +73,7 @@ sed -i.buh 's/host.*all.*all.*127.0.0.1\/32.*md5/host all postgres 127.0.0.1\/32
 diff /etc/postgresql/10/main/pg_hba.conf  /etc/postgresql/10/main/pg_hba.conf.bup
 echo
 
-sed -i.buh 's/host.*all.*all.*::1\/128.*md5/host all postgres 127.0.0.1\/32 trust/g' /etc/postgresql/10/main/pg_hba.conf
+sed -i.buh 's/host.*all.*all.*::1\/128.*md5/host all postgres ::1\/128 trust/g' /etc/postgresql/10/main/pg_hba.conf
 diff /etc/postgresql/10/main/pg_hba.conf  /etc/postgresql/10/main/pg_hba.conf.bup
 echo
 
