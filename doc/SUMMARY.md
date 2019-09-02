@@ -33,6 +33,7 @@
 ## Support
 
 * [Install](support/install/README.md)
+  * [How to change Infura Endpoint](support/install/how-to-change-infura-endpoint.md)
   * [How to get Infura Endpoint](support/install/how-to-get-infura-enpoint.md)
   * [GUI: Install Privatix Application](support/install/install-privatix-application-via-gui.md)
   * [CLI: Install Privatix Agent Node](support/install/cli-install-privatix-agent-node.md)
