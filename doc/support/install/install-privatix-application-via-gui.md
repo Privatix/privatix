@@ -24,7 +24,9 @@ Check our guide: [How to open ports](https://docs.privatix.network/knowledge-bas
 
 We use [Infura](https://infura.io) as a Blockchain Access Provider.
 
-Infura has recently limited the number of requests per day. To prevent an application from crashing due to a request limit, we recommend that you use the application through your own Infura account: [how to change Infura Endpoint](how-to-get-infura-enpoint.md)
+Infura has recently limited the number of requests per day. 
+To prevent an application from crashing due to a request limit, we recommend that you use the application through your own Infura account:
+[how to change Infura Endpoint](how-to-change-infura-enpoint.md)
 
 ## Pass the Wizard
 
