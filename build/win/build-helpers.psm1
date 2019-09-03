@@ -170,7 +170,6 @@ function Checkout-Gitbranch {
     
     $branchFound = (Invoke-Scriptblock -ScriptBlock "git.exe --git-dir=$PROJECT_PATH\.git --work-tree=$PROJECT_PATH rev-parse --verify `"origin/$branch`"") -match "\b[0-9a-f]{5,40}\b"
     
-    # TODO: on unix "GIT_BRANCH_DEFAULT" variable is used to set alternative branch
     if ($branchFound -ne $true) {
         Write-Verbose "branch `"$branch`" not found"
         if ($env:GIT_BRANCH_DEFAULT) {$branch = $env:GIT_BRANCH_DEFAULT}

@@ -90,7 +90,7 @@ function new-package {
         
 
     #region Git checkout branch
-    if ($PSBoundParameters.ContainsKey('branch')) {
+    if ($PSBoundParameters.ContainsKey('privatixbranch')) {
         checkout-gitbranch -PROJECT_PATH $privatixSourceCodePath -branch $privatixbranch
     }
     #endregion
