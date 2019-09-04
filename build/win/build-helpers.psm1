@@ -95,7 +95,7 @@ function New-Folder {
             return $($newpath.FullName)
         }
     }
-    catch {throw "Failed to create folder using $root as parent path and $childDirectory as child path. Original error: $($error[0].Exception.Message)"}
+    catch {throw "Failed to create folder using $rootFolder as parent path and $childDirectory as child path. Original error: $($error[0].Exception.Message)"}
 }
 
 function Invoke-GoCommonOperations {
