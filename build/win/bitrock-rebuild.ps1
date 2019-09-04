@@ -3,7 +3,6 @@ param(
     [string]$wkdir,
     [ValidateSet('vpn', 'proxy')]
     [string]$product = 'VPN',
-    [ValidateSet('nothing', 'binaries', 'all')]
     [string]$version,
     [string]$forceUpdate = '0',
     [string]$installerOutDir
