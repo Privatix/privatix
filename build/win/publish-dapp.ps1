@@ -60,7 +60,7 @@
 .PARAMETER guiEthNetwork
     Ethereum network to use in GUI. Can be 'rinkeby' or 'mainnet'
 .PARAMETER asjobs
-    Run build jobs in parallel
+    Run build jobs in parallel.
 
 .EXAMPLE
     .\publish-dapp.ps1 -wkdir "C:\build" -staticArtefactsDir "C:\static_art"
@@ -135,7 +135,7 @@ param(
     [string]$forceUpdate = '0',
     [string]$installerOutDir,
     [string]$defaultBranch,
-    [bool]$asjobs = $false
+    [switch]$asjobs
 )
 
 $ErrorActionPreference = "Stop"
