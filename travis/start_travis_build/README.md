@@ -8,7 +8,10 @@ Steps of the program execution:
      ```
      vars.json -> https://travis-ci.org/Privatix/privatix
      ```
-1. Start build on a [develop branch](https://github.com/Privatix/privatix/tree/develop)
+1. Start travis build 
+    * If `GIT_BRANCH` is presented in https://github.com/Privatix/privatix, then
+start build on a `GIT_BRANCH` branch
+    * Else start build on a `GIT_BRANCH_DEFAULT` branch
 
 ## Install requirements
 
