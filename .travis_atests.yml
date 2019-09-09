@@ -27,6 +27,7 @@ before_install:
   - ssh-add /tmp/id_rsa
   - chmod 600 ~/.ssh/id_rsa
   - echo -e ">>> Copy config"
+  - mv -fv .travis/atests/ssh-config ~/.ssh/config
   - ssh -T stagevm@89.38.99.85 hostname && wget http://ya.ru
 
 
