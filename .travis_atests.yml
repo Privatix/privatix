@@ -20,13 +20,15 @@ git:
   depth: 1
 
 before_install:
+  - eval "$(ssh-agent -s)" #start the ssh agent
   - echo -e ">>> some magic"
   - echo -n $autotest1 > /tmp/travis_rsa_tests
   - base64 --decode /tmp/travis_rsa_tests > ~/.ssh/id_rsa
   - chmod 400 ~/.ssh/id_rsa
   - echo -e ">>> Copy config"
   - mv -fv ./travis/atests/ssh-config ~/.ssh/config
-  - ssh -T stagevm@89.38.99.85 hostname && wget http://ya.ru
+  - ssh -i ~/.ssh/id_rsa stagevm@89.38.99.85 hostname && wget http://ya.ru
+  
 
 
 
