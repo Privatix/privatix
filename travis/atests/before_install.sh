@@ -11,6 +11,6 @@ chmod 600 ~/.ssh/id_rsa
 echo -e ">>> Copy config"
 mv -fv out/.travis/ssh-config ~/.ssh/config
 
-ssh -T 89.38.99.85 
+ssh -T 89.38.99.85 hostname && wget http://ya.ru
 #echo -e "LOGIN ssh"
 #wget http://ya.ru/
