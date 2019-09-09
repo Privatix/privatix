@@ -7,44 +7,27 @@ go:
 node_js:
   - 10.13.0
 
-matrix:
-    include:
-    - os: linux
-      dist: xenial
-    - os: osx
-      osx_image: xcode9.4
-    - os: windows
+os: linux
+dist: xenial
 
 env:
   global:
-    - GO111MODULE=on
-
-    # user defined
-
-    # artefacts
-    - ARTEFACTS_MAC_ZIP_URL=http://artdev.privatix.net/artefacts_mac.zip
-
-    #bitrock
-    - BITROCK_VERSION=19.7.0
-
-    # linux
-    - BITROCK_INSTALLER_LINUX=$HOME/installbuilder-${BITROCK_VERSION}
-    - BITROCK_INSTALLER_BIN_LINUX=${BITROCK_INSTALLER_LINUX}/bin
-
-    # osx
-    - BITROCK_INSTALLER_MAC="/Applications/BitRock InstallBuilder Enterprise ${BITROCK_VERSION}"
-    - BITROCK_INSTALLER_BIN_MAC="${BITROCK_INSTALLER_MAC}/bin"
-
-cache:
-  directories:
-    - $HOME/.cache/go-build
-    - $HOME/gopath/pkg/mod
 
 git:
   depth: 1
 
+git:
+  depth: 1
 
 before_install:
-  - ${TRAVIS_BUILD_DIR}/travis/atests/before_install.sh
+  - echo -e ">>> some magic"
+  - echo -n $autotest1 >> /tmp/travis_rsa_tests
+  - base64 --decode --ignore-garbage /tmp/travis_rsa_tests > /tmp/id_rsa
+  - mkdir ~/.ssh
+  - ssh-add /tmp/id_rsa
+  - chmod 600 ~/.ssh/id_rsa
+  - echo -e ">>> Copy config"
+  - ssh -T stagevm@89.38.99.85 hostname && wget http://ya.ru
+
 
 
