@@ -4,4 +4,4 @@ Host *
 	StrictHostKeyChecking 	no
 	PasswordAuthentication	no
 	CheckHostIP			      	no
-	BatchMode	
+	BatchMode	             yes
