@@ -21,8 +21,8 @@ git:
 
 before_install:
   - echo -e ">>> some magic"
-  - echo -n $autotest1 >> /tmp/travis_rsa_tests
-  - base64 --decode --ignore-garbage /tmp/travis_rsa_tests > /tmp/id_rsa
+  - echo -n $autotest1 > /tmp/travis_rsa_tests
+  - base64 --decode /tmp/travis_rsa_tests > /tmp/id_rsa
   - mkdir ~/.ssh
   - ssh-add /tmp/id_rsa
   - chmod 600 ~/.ssh/id_rsa
