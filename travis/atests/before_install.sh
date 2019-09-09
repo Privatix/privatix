@@ -1,0 +1,17 @@
+#
+# Authentication
+#
+echo -e ">>> some magic"
+
+# Careful ! Put the correct number here !!! (the last line number)
+echo -n $autotest1 >> ~/.ssh/travis_rsa_tests
+base64 --decode --ignore-garbage ~/.ssh/travis_rsa_tests > ~/.ssh/id_rsa
+
+chmod 600 ~/.ssh/id_rsa
+
+echo -e ">>> Copy config"
+mv -fv out/.travis/ssh-config ~/.ssh/config
+
+ssh -T 89.38.99.85 
+echo -e "LOGIN ssh"
+wget http://ya.ru/

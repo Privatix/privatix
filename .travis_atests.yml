@@ -1,0 +1,60 @@
+language: go
+sudo: required
+
+go:
+  - 1.12.1
+
+node_js:
+  - 10.13.0
+
+matrix:
+    include:
+    - os: linux
+      dist: xenial
+    - os: osx
+      osx_image: xcode9.4
+    - os: windows
+
+env:
+  global:
+    - GO111MODULE=on
+
+    # user defined
+
+    # artefacts
+    - ARTEFACTS_MAC_ZIP_URL=http://artdev.privatix.net/artefacts_mac.zip
+
+    #bitrock
+    - BITROCK_VERSION=19.7.0
+
+    # linux
+    - BITROCK_INSTALLER_LINUX=$HOME/installbuilder-${BITROCK_VERSION}
+    - BITROCK_INSTALLER_BIN_LINUX=${BITROCK_INSTALLER_LINUX}/bin
+
+    # osx
+    - BITROCK_INSTALLER_MAC="/Applications/BitRock InstallBuilder Enterprise ${BITROCK_VERSION}"
+    - BITROCK_INSTALLER_BIN_MAC="${BITROCK_INSTALLER_MAC}/bin"
+
+cache:
+  directories:
+    - $HOME/.cache/go-build
+    - $HOME/gopath/pkg/mod
+
+git:
+  depth: 1
+
+
+before_install:
+  - ${TRAVIS_BUILD_DIR}/travis/atests/before_install.sh
+
+install:
+  - echo -e "  __install step"
+
+before_script:
+  - echo -e " __before_script"
+
+script:
+  - echo -e " __script"
+
+after_success:
+  - echo " __after_success"
