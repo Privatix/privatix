@@ -1,5 +1,5 @@
 Host *
-	User				          	git
+	User				          	stagevm
 	IdentityFile		      	~/.ssh/id_rsa
 	StrictHostKeyChecking 	no
 	PasswordAuthentication	no
