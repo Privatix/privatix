@@ -47,14 +47,4 @@ git:
 before_install:
   - ${TRAVIS_BUILD_DIR}/travis/atests/before_install.sh
 
-install:
-  - echo -e "  __install step"
 
-before_script:
-  - echo -e " __before_script"
-
-script:
-  - echo -e " __script"
-
-after_success:
-  - echo " __after_success"
