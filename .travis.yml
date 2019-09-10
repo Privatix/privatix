@@ -23,7 +23,7 @@ before_install:
   - ssh stagevm@89.38.99.85 pwd
 
 install:
-  - ./travis/atests/deploy.sh;
+  - /bin/bash ./travis/atests/deploy.sh;
 
 #after_success:
 # - /bin/bash ./travis/atests/deploy.sh;
