@@ -7,71 +7,28 @@ go:
 node_js:
   - 10.13.0
 
-matrix:
-    include:
-    - os: linux
-      dist: xenial
-    - os: osx
-      osx_image: xcode9.4
-    - os: windows
+os: linux
+dist: xenial
 
 env:
   global:
-    - GO111MODULE=on
-
-    # user defined
-
-    # artefacts
-    - ARTEFACTS_MAC_ZIP_URL=http://artdev.privatix.net/artefacts_mac.zip
-
-    #bitrock
-    - BITROCK_VERSION=19.7.0
-
-    # linux
-    - BITROCK_INSTALLER_LINUX=$HOME/installbuilder-${BITROCK_VERSION}
-    - BITROCK_INSTALLER_BIN_LINUX=${BITROCK_INSTALLER_LINUX}/bin
-
-    # osx
-    - BITROCK_INSTALLER_MAC="/Applications/BitRock InstallBuilder Enterprise ${BITROCK_VERSION}"
-    - BITROCK_INSTALLER_BIN_MAC="${BITROCK_INSTALLER_MAC}/bin"
-
-cache:
-  directories:
-    - $HOME/.cache/go-build
-    - $HOME/gopath/pkg/mod
 
 git:
   depth: 1
 
+git:
+  depth: 1
 
 before_install:
-  - ${TRAVIS_BUILD_DIR}/travis/before_install.sh
+  - eval "$(ssh-agent -s)" #start the ssh agent
+  - echo -e ">>> some magic"
+  - echo -n $autotest1 > /tmp/travis_rsa_tests
+  - base64 --decode /tmp/travis_rsa_tests > ~/.ssh/id_rsa
+  - chmod 600 ~/.ssh/id_rsa
+  - ssh-add ~/.ssh/id_rsa
+  - mv -fv ./travis/atests/ssh-config ~/.ssh/config
+  - ssh -i ~/.ssh/id_rsa stagevm@89.38.99.85 hostname && wget http://ya.ru
+  
 
-install:
-  - ${TRAVIS_BUILD_DIR}/travis/install.sh
 
-before_script:
-  - ${TRAVIS_BUILD_DIR}/travis/before_script.sh
 
-script:
-  - ${TRAVIS_BUILD_DIR}/travis/script.sh
-
-after_success:
-  - ${TRAVIS_BUILD_DIR}/travis/after_success.sh
-
-notifications:
-    slack:
-        rooms:
-            - privatix:ntmw2wh4PAHoodqtMc95KFDt#dapp-qa
-        template:
-          - "Build <%{build_url}|#%{build_number}> (<%{compare_url}|%{commit}>) of %{repository_slug}@%{branch} %{result} in %{duration}"
-        on_success: always
-        on_failure: never
-        on_cancel:  never
-        on_error:   never
-    email:
-        recipients:
-          - secure: "ltdOZTS/Ogjabav0d3HfvPPav93X+8lBnJFMMEHAohHW+U8ZLyxhYt4Evw/uQ22i9+bUsH27Sa8K797XYxEVvzKwPN/67BP+xOgYmPPiBHfNdsU9tjZ5JEpjCmxWm9PORdbJZTzoJo6nHzXZEeEIHMhOBFrbbzWf86xXE1D6j1LFm/Fa7C1UCZWdI/6U9/UFg0M9yla18YRwW0l2MW1JTPICTi27gLznlT/VQR7fsHJBjn9TYsJI/ZiAZu78VW6UHhb44Fp5qAoVQNg6o1QNUvhV79GN6MMTgUEme797X2zx6G+yQcmBzNjLBWhOcZTkE8WE34BSFfPcdedfl1dT4DkogCWKLh3fvNCxdCbLRbf5I81jF2DaaU2qcqNeXDHldNpgWspqLFwoXjL5V+yAQlLVfobesgJ/LjJa6beuwe9hBIOyJLG7ugpt0z0Z7dQRB0nEhUX8XlqkH72KEn6cbtc0YoWuj85HS0tuxe9Lg1jhmI4kb3WMVb/zNW5GxOkYw/lKOr1YSZPPe7IUPKmT4+Co3gbsCr6bC1UGT5vkODQ+BoQ0RBq/peOWjZODeKKCzKReyQAEYqccmVpdk3Y4lcLIvVhWOPTz/IQ0+lynw+1trAF1N2D/ogU/SEGdLvzLh1saIAQPnsgw570Wbfs6OnosQc++FugdAIaQB1VHqJA="
-        on_success: never
-        on_failure: always
-        on_error:   always
