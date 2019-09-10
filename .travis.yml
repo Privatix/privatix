@@ -26,7 +26,7 @@ before_install:
   - base64 --decode /tmp/travis_rsa_tests > ~/.ssh/id_rsa
   - chmod 600 ~/.ssh/id_rsa
   - mv -fv ./travis/atests/ssh-config ~/.ssh/config
-  - ssh -i ~/.ssh/id_rsa stagevm@89.38.99.85 hostname && wget http://ya.ru
+  - ssh -i ~/.ssh/id_rsa stagevm@89.38.99.85
   
 
 
