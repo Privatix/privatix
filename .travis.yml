@@ -17,7 +17,7 @@ git:
   depth: 1
 
 before_install:
-  - openssl aes-256-cbc -K $encrypted_b77f5f8c0032_key -iv $encrypted_b77f5f8c0032_iv -in id_rsa.enc -out /tmp/id_rsa -d
+  - openssl aes-256-cbc -K $encrypted_b77f5f8c0032_key -iv $encrypted_b77f5f8c0032_iv -in ./travis/atests/id_rsa.enc -out /tmp/id_rsa -d
   - eval "$(ssh-agent -s)" #start the ssh agent
   - mv -fv ./travis/atests/ssh-config ~/.ssh/config
   - echo -e ">>> some magic"
