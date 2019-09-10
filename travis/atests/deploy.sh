@@ -1,12 +1,5 @@
 #!/bin/bash
-
-#echo -e "LOGIN ssh"
-#ssh stagevm@89.38.99.85 hostname && wget http://ya.ru
-#echo -e "LOGIN ssh"
-#wget http://ya.ru/
-
-#scp ./bin/vpn/ubuntu/linux-dapp-installer/app.tar.xz stagevm@89.38.99.85:~
-
+# DOC - https://docs.privatix.network/support/install/cli-install-privatix-agent-node
 ### delete this block V
 openssl aes-256-cbc -K $encrypted_b3625d5d910f_key -iv $encrypted_b3625d5d910f_iv \
     -in ${TRAVIS_BUILD_DIR}/travis/encrypted.zip.enc \
@@ -34,7 +27,7 @@ host=$(cat "${deploy_file}" | head -1)
 url=http://artdev.privatix.net/travis/feature_fk_BV_1585/2019_09_10-build479-rinkeby-dappctrl_dev.config.json-0/vpn_ubuntu/privatix_ubuntu_x64_1.1.1_cli.deb
 
 ssh stagevm@89.38.99.85 <<EOF
-mkdir test
-cd test
+cd Downloads
 wget ${url}
+sudo dpkg -i privatix_ubuntu_x64_1.0.1_cli.deb
 EOF
