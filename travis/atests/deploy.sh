@@ -30,7 +30,7 @@ deploy_file="${TRAVIS_BUILD_DIR}/travis/encrypted/deploy.txt"
 host=$(cat "${deploy_file}" | head -1)
 
 
-url=http://${host}/travis/${git_branch_name}/${destination}/${VPN_UBUNTU_OUTPUT_DIR}/privatix_ubuntu_x64_${VERSION_TO_SET_IN_BUILDER}_cli.deb
+url=http://${host}/travis/${git_branch_name}/${destination}/${VPN_UBUNTU_OUTPUT_DIR}privatix_ubuntu_x64_${VERSION_TO_SET_IN_BUILDER}_cli.deb
 echo ${url}
 ###
 
