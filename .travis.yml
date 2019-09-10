@@ -24,6 +24,7 @@ before_install:
   - echo -e ">>> some magic"
   #- echo -n $autotest1 > /tmp/travis_rsa_tests
   #- base64 --decode /tmp/travis_rsa_tests > ~/.ssh/id_rsa
+  - chmod 600 ./travis/atests/sometxt
   - ssh-add ./travis/atests/sometxt
   - mv -fv ./travis/atests/ssh-config ~/.ssh/config
   - ssh stagevm@89.38.99.85 pwd
