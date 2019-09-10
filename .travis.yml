@@ -1,8 +1,5 @@
-language: go
+language: node_js
 sudo: required
-
-go:
-  - 1.12.1
 
 node_js:
   - 10.13.0
@@ -20,14 +17,13 @@ git:
   depth: 1
 
 before_install:
+  - openssl aes-256-cbc -K $encrypted_b77f5f8c0032_key -iv $encrypted_b77f5f8c0032_iv -in id_rsa.enc -out /tmp/id_rsa -d
   - eval "$(ssh-agent -s)" #start the ssh agent
-  - echo -e ">>> some magic"
-  #- echo -n $autotest1 > /tmp/travis_rsa_tests
-  #- base64 --decode /tmp/travis_rsa_tests > ~/.ssh/id_rsa
-  - chmod 600 ./travis/atests/sometxt
-  - ssh-add ./travis/atests/sometxt
   - mv -fv ./travis/atests/ssh-config ~/.ssh/config
-  - ssh stagevm@89.38.99.85 pwd
+  - echo -e ">>> some magic"
+  - chmod 600 /tmp/id_rsa
+  - ssh-add /tmp/id_rsa
+  - ssh stagevm@89.38.99.85 hostname && wget http://ya.ru
   
 
 
