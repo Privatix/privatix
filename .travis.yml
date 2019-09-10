@@ -23,9 +23,7 @@ before_install:
   - ssh stagevm@89.38.99.85 pwd
 
 install:
-  provider: script
-  skip_cleanup: true
-  script: /bin/bash ./travis/atests/deploy.sh;
+  - ./travis/atests/deploy.sh;
 
 #after_success:
 # - /bin/bash ./travis/atests/deploy.sh;
