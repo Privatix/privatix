@@ -28,6 +28,6 @@ url=http://artdev.privatix.net/travis/feature_fk_BV_1585/2019_09_10-build479-rin
 
 ssh stagevm@89.38.99.85 <<EOF
 cd Downloads
-wget ${url}
+wget -q ${url}
 sudo dpkg -i privatix_ubuntu_x64_1.0.1_cli.deb
 EOF
