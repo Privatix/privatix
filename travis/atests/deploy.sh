@@ -35,7 +35,7 @@ sudo dpkg -i privatix_ubuntu_x64_1.1.1_cli.deb
 cd /opt/privatix_installer 
 ./install.sh 
 sudo apt-get install python
-sudo ./cli/install_dependencies.sh
+sudo -H ./cli/install_dependencies.sh
 
 sudo sed -i 's/localhost:8888/0.0.0.0:8888/g' /var/lib/container/agent/dappctrl/dappctrl.config.json
 sudo systemctl stop systemd-nspawn@agent.service
