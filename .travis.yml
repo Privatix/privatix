@@ -21,6 +21,7 @@ before_install:
   - chmod 600 /tmp/id_rsa
   - ssh-add /tmp/id_rsa
   - ssh stagevm@89.38.99.85 pwd
+  #- ssh stagevm@89.38.99.85 'bash -s' < ./travis/atests/clear.sh
 
 install:
   - /bin/bash ./travis/atests/deploy.sh;
