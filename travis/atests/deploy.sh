@@ -37,7 +37,7 @@ cd /opt/privatix_installer
 sudo apt-get install python
 sudo ./cli/install_dependencies.sh
 
-sudo sed -i 's/127.0.0.1/0.0.0.0/g' /var/lib/container/agent/dappctrl/dappctrl.config.json
+sudo sed -i 's/localhost:8888/0.0.0.0:8888/g' /var/lib/container/agent/dappctrl/dappctrl.config.json
 sudo systemctl stop systemd-nspawn@agent.service
 sudo systemctl start systemd-nspawn@agent.service
 EOF
