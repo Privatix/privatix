@@ -26,8 +26,18 @@ host=$(cat "${deploy_file}" | head -1)
 #url=http://${host}/travis/${git_branch_name}/${destination}/${VPN_UBUNTU_OUTPUT_DIR}privatix_ubuntu_x64_${VERSION_TO_SET_IN_BUILDER}_cli.deb
 url=http://artdev.privatix.net/travis/feature_fk_BV_1585/2019_09_10-build479-rinkeby-dappctrl_dev.config.json-0/vpn_ubuntu/privatix_ubuntu_x64_1.1.1_cli.deb
 
+echo "Install Agent"
 ssh stagevm@89.38.99.85 <<EOF
 cd Downloads
 wget -q ${url}
 sudo dpkg -i privatix_ubuntu_x64_1.1.1_cli.deb
+
+cd /opt/privatix_installer 
+./install.sh 
+sudo apt-get install python
+sudo ./cli/install_dependencies.sh
+
+sudo sed -i 's/127.0.0.1/0.0.0.0/g' /var/lib/container/agent/dappctrl/dappctrl.config.json
+sudo systemctl stop systemd-nspawn@agent.service
+sudo systemctl start systemd-nspawn@agent.service
 EOF
