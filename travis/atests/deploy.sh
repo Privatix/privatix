@@ -50,7 +50,7 @@ wget -q ${url}
 sudo dpkg -i privatix_ubuntu_x64_1.1.0_cli.deb
 
 cd /opt/privatix_installer
-cp ./dapp-supervisor /var/lib/container/dapp-supervisor
+cp ./dapp-supervisor /var/lib/container/
 sudo sed -i 's/agent/client/g' dapp-installer.config.json 
 ./install.sh 
 sudo apt-get install python
