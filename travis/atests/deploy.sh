@@ -26,12 +26,13 @@ host=$(cat "${deploy_file}" | head -1)
 #url=http://${host}/travis/${git_branch_name}/${destination}/${VPN_UBUNTU_OUTPUT_DIR}privatix_ubuntu_x64_${VERSION_TO_SET_IN_BUILDER}_cli.deb
 #url=http://artdev.privatix.net/travis/feature_fk_BV_1585/2019_09_10-build479-rinkeby-dappctrl_dev.config.json-0/vpn_ubuntu/privatix_ubuntu_x64_1.1.1_cli.deb
 url=http://artdev.privatix.net/travis/develop/2019_09_12-build508-rinkeby-dappctrl_dev.config.json-1/vpn_ubuntu/privatix_ubuntu_x64_1.1.0_cli.deb
+pkg=$(echo $url | awk -F / '{print $8}')
 
 echo "Install Agent"
 ssh stagevm@89.38.99.85 <<EOF
 cd Downloads
 wget -q ${url}
-sudo dpkg -i privatix_ubuntu_x64_1.1.0_cli.deb
+sudo dpkg -i $pkg
 
 cd /opt/privatix_installer 
 ./install.sh 
@@ -47,10 +48,10 @@ echo "Install Client"
 ssh stagevm@89.38.99.176 <<EOF
 cd Downloads
 wget -q ${url}
-sudo dpkg -i privatix_ubuntu_x64_1.1.0_cli.deb
+sudo dpkg -i $pkg
 
 cd /opt/privatix_installer
-cp ./dapp-supervisor /var/lib/container/
+sudo cp ./dapp-supervisor /var/lib/container/
 sudo sed -i 's/agent/client/g' dapp-installer.config.json 
 ./install.sh 
 sudo apt-get install python
