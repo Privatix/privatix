@@ -29,6 +29,9 @@ copy(){
     cp -v "${GOPATH}/bin/${DAPP_INSTALLER}" \
           "${deb_package_bin_dir}/${DAPP_INSTALLER}" || exit 1
 
+    cp -v "${GOPATH}/bin/${DAPP_SUPERVISOR}" \
+          "${deb_package_bin_dir}/${DAPP_SUPERVISOR}" || exit 1
+
     cp -v "${DAPP_INSTALLER_DIR}/${DAPP_INSTALLER_LINUX_CONFIG}" \
           "${deb_package_bin_dir}/${DAPP_INSTALLER_CONFIG}" || exit 1
 
