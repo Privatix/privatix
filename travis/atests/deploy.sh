@@ -31,7 +31,7 @@ echo "Install Agent"
 ssh stagevm@89.38.99.85 <<EOF
 cd Downloads
 wget -q ${url}
-sudo dpkg -i privatix_ubuntu_x64_1.1.1_cli.deb
+sudo dpkg -i privatix_ubuntu_x64_1.1.0_cli.deb
 
 cd /opt/privatix_installer 
 ./install.sh 

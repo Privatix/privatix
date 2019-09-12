@@ -18,9 +18,9 @@ if [ -d "$install_dir" ]; then
     $client
     fi
 
-    rm /opt/privatix_installer/*
+    sudo rm /opt/privatix_installer/*
     sudo apt-get remove privatix -y
-    rm ~/Downloads/privatix*
+    sudo rm ~/Downloads/privatix*
 else
  	echo "Nothing to do"
 fi
