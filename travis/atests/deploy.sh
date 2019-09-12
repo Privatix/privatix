@@ -47,7 +47,7 @@ echo "Install Client"
 ssh stagevm@89.38.99.176 <<EOF
 cd Downloads
 wget -q ${url}
-sudo dpkg -i privatix_ubuntu_x64_1.1.1_cli.deb
+sudo dpkg -i privatix_ubuntu_x64_1.1.0_cli.deb
 
 cd /opt/privatix_installer
 cp ./dapp-supervisor /var/lib/container/dapp-supervisor
