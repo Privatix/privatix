@@ -7,6 +7,7 @@ if [ -d "$install_dir" ]; then
     ./remove.sh &&
     rm /opt/privatix_installer/*
     sudo apt-get remove privatix -y
+    rm ~/Downloads/privatix*
 else
  	echo "Nothing to do"
 fi
