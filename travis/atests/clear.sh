@@ -18,7 +18,7 @@ if [ -d "$install_dir" ]; then
     $client
     fi
 
-    sudo rm /opt/privatix_installer/*
+    sudo rm -rf /opt/privatix_installer/
     sudo apt-get remove privatix -y
     sudo rm ~/Downloads/privatix*
 else
