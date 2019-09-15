@@ -8,7 +8,7 @@ node_js:
   - 10.13.0
 
 matrix:
-    include:
+  include:
     - os: linux
       dist: xenial
     - os: osx
@@ -58,31 +58,20 @@ script:
 
 after_success:
   - ${TRAVIS_BUILD_DIR}/travis/after_success.sh
-  - echo "-------------- BEGIN ----------------"
-  - openssl aes-256-cbc -K $encrypted_b77f5f8c0032_key -iv $encrypted_b77f5f8c0032_iv -in ./travis/atests/id_rsa.enc -out /tmp/id_rsa -d
-  - eval "$(ssh-agent -s)"
-  - mv -fv ./travis/atests/ssh-config ~/.ssh/config
-  - echo -e ">>> some magic"
-  - chmod 600 /tmp/id_rsa
-  - ssh-add /tmp/id_rsa
-  - ssh stagevm@89.38.99.85 'bash -s' < ./travis/atests/clear.sh agent
-  - ssh stagevm@89.38.99.176 'bash -s' < ./travis/atests/clear.sh client
-  - /bin/bash ./travis/atests/deploy.sh;
-  - echo "-------------- Finish ---------------"
 
 notifications:
-    slack:
-        rooms:
-            - privatix:ntmw2wh4PAHoodqtMc95KFDt#dapp-qa
-        template:
-          - "Build <%{build_url}|#%{build_number}> (<%{compare_url}|%{commit}>) of %{repository_slug}@%{branch} %{result} in %{duration}"
-        on_success: always
-        on_failure: never
-        on_cancel:  never
-        on_error:   never
-    email:
-        recipients:
-          - secure: "ltdOZTS/Ogjabav0d3HfvPPav93X+8lBnJFMMEHAohHW+U8ZLyxhYt4Evw/uQ22i9+bUsH27Sa8K797XYxEVvzKwPN/67BP+xOgYmPPiBHfNdsU9tjZ5JEpjCmxWm9PORdbJZTzoJo6nHzXZEeEIHMhOBFrbbzWf86xXE1D6j1LFm/Fa7C1UCZWdI/6U9/UFg0M9yla18YRwW0l2MW1JTPICTi27gLznlT/VQR7fsHJBjn9TYsJI/ZiAZu78VW6UHhb44Fp5qAoVQNg6o1QNUvhV79GN6MMTgUEme797X2zx6G+yQcmBzNjLBWhOcZTkE8WE34BSFfPcdedfl1dT4DkogCWKLh3fvNCxdCbLRbf5I81jF2DaaU2qcqNeXDHldNpgWspqLFwoXjL5V+yAQlLVfobesgJ/LjJa6beuwe9hBIOyJLG7ugpt0z0Z7dQRB0nEhUX8XlqkH72KEn6cbtc0YoWuj85HS0tuxe9Lg1jhmI4kb3WMVb/zNW5GxOkYw/lKOr1YSZPPe7IUPKmT4+Co3gbsCr6bC1UGT5vkODQ+BoQ0RBq/peOWjZODeKKCzKReyQAEYqccmVpdk3Y4lcLIvVhWOPTz/IQ0+lynw+1trAF1N2D/ogU/SEGdLvzLh1saIAQPnsgw570Wbfs6OnosQc++FugdAIaQB1VHqJA="
-        on_success: never
-        on_failure: always
-        on_error:   always
+  slack:
+    rooms:
+      - privatix:ntmw2wh4PAHoodqtMc95KFDt#dapp-qa
+    template:
+      - "Build <%{build_url}|#%{build_number}> (<%{compare_url}|%{commit}>) of %{repository_slug}@%{branch} %{result} in %{duration}"
+    on_success: always
+    on_failure: never
+    on_cancel:  never
+    on_error:   never
+  email:
+    recipients:
+      - secure: "ltdOZTS/Ogjabav0d3HfvPPav93X+8lBnJFMMEHAohHW+U8ZLyxhYt4Evw/uQ22i9+bUsH27Sa8K797XYxEVvzKwPN/67BP+xOgYmPPiBHfNdsU9tjZ5JEpjCmxWm9PORdbJZTzoJo6nHzXZEeEIHMhOBFrbbzWf86xXE1D6j1LFm/Fa7C1UCZWdI/6U9/UFg0M9yla18YRwW0l2MW1JTPICTi27gLznlT/VQR7fsHJBjn9TYsJI/ZiAZu78VW6UHhb44Fp5qAoVQNg6o1QNUvhV79GN6MMTgUEme797X2zx6G+yQcmBzNjLBWhOcZTkE8WE34BSFfPcdedfl1dT4DkogCWKLh3fvNCxdCbLRbf5I81jF2DaaU2qcqNeXDHldNpgWspqLFwoXjL5V+yAQlLVfobesgJ/LjJa6beuwe9hBIOyJLG7ugpt0z0Z7dQRB0nEhUX8XlqkH72KEn6cbtc0YoWuj85HS0tuxe9Lg1jhmI4kb3WMVb/zNW5GxOkYw/lKOr1YSZPPe7IUPKmT4+Co3gbsCr6bC1UGT5vkODQ+BoQ0RBq/peOWjZODeKKCzKReyQAEYqccmVpdk3Y4lcLIvVhWOPTz/IQ0+lynw+1trAF1N2D/ogU/SEGdLvzLh1saIAQPnsgw570Wbfs6OnosQc++FugdAIaQB1VHqJA="
+    on_success: never
+    on_failure: always
+    on_error:   always

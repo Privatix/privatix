@@ -1,6 +1,6 @@
 Host *
 	User				          	stagevm
-	IdentityFile		      	~/.ssh/id_rsa
+	IdentityFile		      	/tmp/id_rsa
 	StrictHostKeyChecking 	no
 	PasswordAuthentication	no
 	CheckHostIP			      	no

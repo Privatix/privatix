@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # Clear before install
 
 install_dir="/opt/privatix_installer"
