@@ -10,7 +10,7 @@ ${TRAVIS_BUILD_DIR}/travis/atests/add_rsa.sh || exit 1
 ## clear vm's
 ##
 ssh stagevm@89.38.99.85 'bash -s' < ${TRAVIS_BUILD_DIR}/travis/atests/clear.sh agent
-ssh stagevm@89.38.99.176 'bash -s' < ${TRAVIS_BUILD_DIR}/travis/atests/clear.sh client
+ssh stagevm@89.38.99.127 -p 2222 'bash -s' < ${TRAVIS_BUILD_DIR}/travis/atests/clear.sh client
 
 #
 # calculate download link
@@ -54,7 +54,7 @@ EOF
 #
 echo
 echo "Install Client"
-ssh stagevm@89.38.99.176 <<EOF || exit 1
+ssh stagevm@89.38.99.127 -p 2222 <<EOF || exit 1
 cd ~/Downloads &&
 wget -q ${url} &&
 sudo dpkg -i $package_name &&
