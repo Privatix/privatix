@@ -59,7 +59,7 @@ cd ~/Downloads &&
 wget -q ${url} &&
 sudo dpkg -i $package_name &&
 cd /opt/privatix_installer &&
-sudo cp ./dapp-supervisor /var/lib/container/ &&
+sudo cp /opt/privatix_installer/dapp-supervisor /var/lib/container/ &&
 sudo sed -i 's/agent/client/g' dapp-installer.config.json &&
 ./install.sh &&
 sudo sed -i 's/localhost:8888/0.0.0.0:8888/g' /var/lib/container/client/dappctrl/dappctrl.config.json || exit 1
