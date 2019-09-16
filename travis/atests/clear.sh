@@ -12,6 +12,10 @@ if [ -d "$install_dir" ]; then
     sudo rm -rf /opt/privatix_installer/
     sudo apt-get remove privatix -y
     sudo rm ~/Downloads/privatix*
+    if [ "${1}" == "client" ]; then
+    echo "Remove supervisor on client"
+    sudo /var/lib/container/dapp-supervisor remove
+    fi
 else
      echo "Nothing to do"
 fi
