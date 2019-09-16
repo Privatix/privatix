@@ -46,7 +46,7 @@ if [ "$TRAVIS_OS_NAME" = "linux" ]; then
         ##
         ## deploy
         ##
-        ${TRAVIS_BUILD_DIR}/travis/atests/deploy.sh
+        ${TRAVIS_BUILD_DIR}/travis/atests/deploy.sh || exit 1
     fi
 fi
 

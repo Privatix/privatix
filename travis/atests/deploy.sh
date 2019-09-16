@@ -4,7 +4,7 @@
 ##
 ## add rsa for deploy
 ##
-${TRAVIS_BUILD_DIR}/travis/atests/add_rsa.sh
+${TRAVIS_BUILD_DIR}/travis/atests/add_rsa.sh || exit 1
 
 ##
 ## clear vm's
@@ -29,39 +29,38 @@ deploy_file="${TRAVIS_BUILD_DIR}/travis/encrypted/deploy.txt"
 host=$(cat "${deploy_file}" | head -1)
 
 
-url=http://${host}/travis/${git_branch_name}/${destination}/${VPN_UBUNTU_OUTPUT_DIR}privatix_ubuntu_x64_${VERSION_TO_SET_IN_BUILDER}_cli.deb
-pkg=$(echo $url | awk -F / '{print $8}')
+package_name=privatix_ubuntu_x64_${VERSION_TO_SET_IN_BUILDER}_cli.deb
+url=http://${host}/travis/${git_branch_name}/${destination}/$(basename "${VPN_UBUNTU_OUTPUT_DIR}")/${package_name}
 
+echo Package name: ${package_name}
 #
 # install an agent
 #
+echo
 echo "Install Agent"
-ssh stagevm@89.38.99.85 <<EOF
-cd Downloads
-wget -q ${url}
-sudo dpkg -i $pkg
-
-cd /opt/privatix_installer 
-./install.sh 
-
-sudo sed -i 's/localhost:8888/0.0.0.0:8888/g' /var/lib/container/agent/dappctrl/dappctrl.config.json
-sudo systemctl stop systemd-nspawn@agent.service
-sudo systemctl start systemd-nspawn@agent.service
+ssh stagevm@89.38.99.85 <<EOF || exit 1
+cd ~/Downloads &&
+wget -q ${url} &&
+sudo dpkg -i ${package_name} &&
+cd /opt/privatix_installer &&
+./install.sh &&
+sudo sed -i 's/localhost:8888/0.0.0.0:8888/g' /var/lib/container/agent/dappctrl/dappctrl.config.json &&
+sudo systemctl stop systemd-nspawn@agent.service &&
+sudo systemctl start systemd-nspawn@agent.service || exit 1
 EOF
 
 #
 # install a client
 #
+echo
 echo "Install Client"
-ssh stagevm@89.38.99.176 <<EOF
-cd Downloads
-wget -q ${url}
-sudo dpkg -i $pkg
-
-cd /opt/privatix_installer
-sudo cp ./dapp-supervisor /var/lib/container/dapp-supervisor
-sudo sed -i 's/agent/client/g' dapp-installer.config.json 
-./install.sh 
-
-sudo sed -i 's/localhost:8888/0.0.0.0:8888/g' /var/lib/container/client/dappctrl/dappctrl.config.json
+ssh stagevm@89.38.99.176 <<EOF || exit 1
+cd ~/Downloads &&
+wget -q ${url} &&
+sudo dpkg -i $package_name &&
+cd /opt/privatix_installer &&
+sudo cp ./dapp-supervisor /var/lib/container/dapp-supervisor &&
+sudo sed -i 's/agent/client/g' dapp-installer.config.json &&
+./install.sh &&
+sudo sed -i 's/localhost:8888/0.0.0.0:8888/g' /var/lib/container/client/dappctrl/dappctrl.config.json || exit 1
 EOF
