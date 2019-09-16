@@ -5,6 +5,6 @@
   "DAPPCTRL_CONFIG": "dappctrl-dev.config.json",
   "DAPP_GUI_NETWORK": "rinkeby",
   "DAPPCTRL_LOG_LEVEL": "debug",
-  "DAPP_INSTALLER_FORCE_UPDATE": "0",
+  "DAPP_INSTALLER_FORCE_UPDATE": "0"
   "RUN_TESTS": "1"
 }

@@ -8,29 +8,32 @@ import {
 } from '../../typings/test-models';
 
 export const backupPrivateKey: TestModel = {
-  name: 'backup private key',
-  scope: TestScope.AGENT,
-  testFn: (settings: TestInputSettings) => {
-    const { agentWs } = settings;
+    name: 'backup private key',
+    scope: TestScope.UNI,
+    testFn: (settings: TestInputSettings) => {
+        const { ws } = settings;
 
-    describe('backup private key', () => {
+        describe('backup private key', () => {
 
-        it('should be one account', async () => {
-          const accounts = await agentWs.getAccounts();
+            it('should be one account', async () => {
 
-          expect(accounts.length).to.equal(1);
+                const accounts = await ws.getAccounts();
+
+                expect(accounts.length).to.equal(1);
+            });
+
+            it('should export account', async () => {
+
+                const accounts = await ws.getAccounts();
+
+                await ws.exportAccount(accounts[0].id, (res: any) => {
+                    const account = JSON.parse(atob(res.result));
+
+                    expect(account.address).to.equal(accounts[0].ethAddr);
+                });
+
+            });
+
         });
-
-        it('should export account', async () => {
-          const accounts = await agentWs.getAccounts();
-          await agentWs.exportAccount(accounts[0].id, (res: any) => {
-              const account = JSON.parse(atob(res.result));
-
-              expect(account.address).to.equal(accounts[0].ethAddr);
-          });
-
-        });
-
-    });
-  }
+    }
 };

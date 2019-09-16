@@ -50,9 +50,9 @@ export class WS {
 
         socket.on('close', function(event: any) {
             if (event === 1000) {
-                console.log('Connection closed.');
+                // console.log('Connection closed.');
             } else {
-                console.log('Connection interrupted.');
+                // console.log('Connection interrupted.');
             }
         });
 
@@ -325,7 +325,7 @@ export class WS {
 
 // offerings
 
-    getAgentOfferings(productId: string='', status: OfferStatus = OfferStatus.undef, offset: number = 0, limit: number = 0): Promise<OfferingResponse>{
+    getAgentOfferings(productId: string='', status: OfferStatus[] = [OfferStatus.undef], offset: number = 0, limit: number = 0): Promise<OfferingResponse>{
         return this.send('ui_getAgentOfferings', [productId, status, offset, limit]) as Promise<OfferingResponse>;
     }
 

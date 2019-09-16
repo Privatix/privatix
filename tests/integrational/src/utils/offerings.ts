@@ -1,4 +1,4 @@
-const templateId = 'efc61769-96c8-4c0d-b50a-e4d11fc30523';
+const templateId = '7c4da191-305c-4eab-8dce-49731c4ad166';
 
 const random_names = ['First', 'Second', 'Third'];
 
@@ -22,6 +22,7 @@ export const generateOffering =
     'unitPrice': 100000,
     'minUnits': 100,
     'maxUnit': 200,
+    'deposit': 3*100000*100,
     'billingInterval': 1,
     'maxBillingUnitLag': 3,
     'maxSuspendTime': 1800,
@@ -31,7 +32,8 @@ export const generateOffering =
       'minDownloadMbits': 100,
       'minUploadMbits': 80
     },
-    'autoPopUp': false
+    'autoPopUp': false,
+    'iptype': 'residential'
   });
 
 export const generateSomeOfferings =

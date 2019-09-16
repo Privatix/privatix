@@ -13,7 +13,7 @@ export const getClientIP = async (endpoint) =>  {
     http.get(endpoint, res => {
       let data = '';
 
-      res.on('data', chumk => data += chumk);
+      res.on('data', chunk => data += chunk);
       res.on('end', () => resolve(data))
     }, err => reject(err));
   });
