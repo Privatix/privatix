@@ -9,6 +9,7 @@ export interface BotEndpoint {
 export interface LocalSettings {
     agentWsEndpoint: string;
     clientWsEndpoint: string;
+    clientSupervisorEndpoint: string;
     getPrixEndpoint: BotEndpoint;
     timeouts: {
         blocktime: number;

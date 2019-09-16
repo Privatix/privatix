@@ -5,7 +5,7 @@ import { Until } from '../../utils/until';
 
 import {
   generateOffering,
-  generateSomeOfferings
+  // generateSomeOfferings
 } from '../../utils/offerings';
 
 import { Offering, OfferStatus } from '../../typings/offerings';
@@ -19,18 +19,18 @@ import { getItFunc } from "../../utils/test-utils";
 
 export const offerings: TestModel = {
   name: 'offerings',
-  scope: TestScope.BOTH,
+  scope: TestScope.AGENT,
   testFn: (settings: TestInputSettings) => {
     const {
-      agentWs, clientWs,
+      ws, /* clientWs, */
       allowedScope
     } = settings;
 
-    const until = Until(agentWs);
-    const clientUntil = Until(clientWs);
+    const until = Until(ws);
+    // const clientUntil = Until(clientWs);
 
     const agentIt = getItFunc({scope: TestScope.AGENT}, allowedScope);
-    const clientIt = getItFunc({scope: TestScope.CLIENT}, allowedScope);
+    // const clientIt = getItFunc({scope: TestScope.CLIENT}, allowedScope);
 
     describe('offerings', () => {
       let offeringId: string;
@@ -39,11 +39,11 @@ export const offerings: TestModel = {
 
       describe('create offering', () => {
         agentIt('should create an offering', async () => {
-          const productId = (await agentWs.getProducts())[0].id;
-          const accounts = await agentWs.getAccounts();
+          const productId = (await ws.getProducts())[0].id;
+          const accounts = await ws.getAccounts();
           const agentWsId = accounts[0].id;
 
-          offeringId = await agentWs.createOffering(
+          offeringId = await ws.createOffering(
             generateOffering(productId, agentWsId, 'Main Service')
           ) as string;
 
@@ -54,8 +54,8 @@ export const offerings: TestModel = {
           const timeouts = settings.configs.timeouts;
           this.timeout(timeouts.blocktime*4);
 
-          const gasPrice = parseInt((await agentWs.getSettings())['eth.default.gasprice'].value, 10);
-          await agentWs.changeOfferingStatus(offeringId, 'publish', gasPrice);
+          const gasPrice = 20*10e9;
+          await ws.changeOfferingStatus(offeringId, 'publish', gasPrice);
 
           await until
             .object('offering')
@@ -63,25 +63,25 @@ export const offerings: TestModel = {
             .prop('status')
             .becomes(OfferStatus.registered);
 
-          const offering = await agentWs.getOffering(offeringId);
+          const offering = await ws.getOffering(offeringId);
           offeringHash = offering.hash;
 
           expect(offering.status).to.equal(OfferStatus.registered)
         });
-
+/*
         agentIt('should create some additional offerings', async function() {
-          const productId = (await agentWs.getProducts())[0].id;
-          const gasPrice = parseInt((await agentWs.getSettings())['eth.default.gasprice'].value, 10);
-          const accounts = await agentWs.getAccounts();
+          const productId = (await ws.getProducts())[0].id;
+          const gasPrice = 20*10e9;
+          const accounts = await ws.getAccounts();
           const agentWsId = accounts[0].id;
 
           const timeouts = settings.configs.timeouts;
           this.timeout(timeouts.blocktime * 10);
 
           for (let offering of generateSomeOfferings(productId, agentWsId)) {
-            const tmpOfferingId = await agentWs.createOffering(offering);
+            const tmpOfferingId = await ws.createOffering(offering);
 
-            await agentWs.changeOfferingStatus(
+            await ws.changeOfferingStatus(
               tmpOfferingId, 'publish', gasPrice
             );
 
@@ -92,12 +92,12 @@ export const offerings: TestModel = {
               .becomes(OfferStatus.registered);
           }
         });
-
-        agentIt('should contain already created offerings for agentWs', async () => {
-          const productId = (await agentWs.getProducts())[0].id;
-          const offerings = await agentWs.getAgentOfferings(
+*/
+        agentIt('agent: should contain already created offerings', async () => {
+          const productId = (await ws.getProducts())[0].id;
+          const offerings = await ws.getAgentOfferings(
             productId,
-            OfferStatus.registered,
+            [OfferStatus.registered],
             0, 10
           ) as PaginatedResponse<Array<Offering>>;
 
@@ -111,6 +111,7 @@ export const offerings: TestModel = {
       });
 
       describe('popup offering', () => {
+          /*
         clientIt('first offering should be last for client', async () => {
           const accounts = await agentWs.getAccounts();
           const agentEthAddr = accounts[0].ethAddr;
@@ -124,15 +125,16 @@ export const offerings: TestModel = {
 
           expect((offerings.items[offerings.totalItems - 1]).hash).to.equal(offeringHash);
         });
-
+       */
+/*
         agentIt('should popup an offering', async function() {
           const timeouts = settings.configs.timeouts;
           this.timeout(timeouts.blocktime * 12);
 
-          const blockNumberCreated = (await agentWs.getOffering(offeringId) as Offering).blockNumberUpdated;
+          const blockNumberCreated = (await ws.getOffering(offeringId) as Offering).blockNumberUpdated;
 
-          const gasPrice = parseInt((await agentWs.getSettings())['eth.default.gasprice'].value, 10);
-          await agentWs.changeOfferingStatus(
+          const gasPrice = 20*10e9;
+          await ws.changeOfferingStatus(
             offeringId,
             'popup',
             gasPrice
@@ -144,11 +146,12 @@ export const offerings: TestModel = {
             .prop('status')
             .becomes(OfferStatus.popped_up);
 
-          const blockNumberUpdated = (await agentWs.getOffering(offeringId) as Offering).blockNumberUpdated;
+          const blockNumberUpdated = (await ws.getOffering(offeringId) as Offering).blockNumberUpdated;
 
           expect(blockNumberUpdated > blockNumberCreated).to.be.true;
         });
-
+*/
+/*
         clientIt('after popup the offering should be on top', async function () {
           const accounts = await agentWs.getAccounts();
           const agentEthAddr = accounts[0].ethAddr;
@@ -174,6 +177,7 @@ export const offerings: TestModel = {
           expect(offerings.totalItems).to.equal(4);
           expect(offerings.items[0].hash).to.equal(offeringHash);
         });
+*/
       });
 
       describe('delete offering', () => {
@@ -181,8 +185,8 @@ export const offerings: TestModel = {
           const timeouts = settings.configs.timeouts;
           this.timeout(timeouts.blocktime * 10);
 
-          const gasPrice = parseInt((await agentWs.getSettings())['eth.default.gasprice'].value, 10);
-          await agentWs.changeOfferingStatus(
+          const gasPrice = 20*10e9;
+          await ws.changeOfferingStatus(
             offeringToDeleteId, 'deactivate', gasPrice
           );
 
@@ -192,11 +196,14 @@ export const offerings: TestModel = {
             .prop('status')
             .becomes(OfferStatus.removed);
 
-          const offering = await agentWs.getOffering(offeringToDeleteId);
+          const offering = await ws.getOffering(offeringToDeleteId);
 
           expect(offering.status).to.equal(OfferStatus.removed)
         });
       });
+
+      console.log(offeringHash);
+
     });
   }
 };

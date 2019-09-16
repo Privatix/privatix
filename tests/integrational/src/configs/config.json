@@ -1,6 +1,7 @@
 {
   "agentWsEndpoint": "ws://localhost:8888/ws",
   "clientWsEndpoint": "ws://localhost:8888/ws",
+  "clientSupervisorEndpoint": "http://localhost:7777",
   "externalClientIpEndpoint": "http://localhost:6060/",
   "getPrixEndpoint": {
       "protocol": "http:",
