@@ -1,5 +1,5 @@
 {
-  "GIT_BRANCH": "develop",
+  "GIT_BRANCH": "release/1.1.0",
   "GIT_BRANCH_DEFAULT": "develop",
   "VERSION_TO_SET_IN_BUILDER": "1.1.0",
   "DAPPCTRL_CONFIG": "dappctrl-dev.config.json",
