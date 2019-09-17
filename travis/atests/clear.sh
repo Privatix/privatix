@@ -3,7 +3,7 @@
 
 install_dir="/opt/privatix_installer"
 if [ -d "$install_dir" ]; then
-      echo "Installation present, prepare for clean"
+    echo "Installation is present. Preparing for cleaning.."
     cd /opt/privatix_installer || exit 1
 
     echo Removing ${1}...
