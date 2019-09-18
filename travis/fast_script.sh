@@ -16,6 +16,8 @@ if [ "$TRAVIS_OS_NAME" = "linux" ] || [ "$TRAVIS_OS_NAME" = "osx" ]; then
     [ "$TRAVIS_OS_NAME" = "linux" ] && output_folder=${VPN_UBUNTU_OUTPUT_DIR}
     [ "$TRAVIS_OS_NAME" = "osx" ] && output_folder=${VPN_MAC_OUTPUT_DIR}
 
+    mkdir -p "${output_folder}"
+
     cp -v   "${GOPATH}/bin/${DAPPCTRL}" \
             "${output_folder}/${DAPPCTRL}" || exit 1
 
