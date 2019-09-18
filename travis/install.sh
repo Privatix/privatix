@@ -40,8 +40,8 @@ if [ "$TRAVIS_OS_NAME" = "osx" ]; then
     bitrock_installer=installbuilder-enterprise-${BITROCK_VERSION}-osx-installer
 
     # curl -L -O  https://installbuilder.bitrock.com/installbuilder-enterprise-19.5.0-osx-installer.dmg
-    echo curl -L -O http://artdev.privatix.net/installbuilder/${bitrock_installer}.dmg
-    curl -L -O http://artdev.privatix.net/installbuilder/${bitrock_installer}.dmg || exit 1
+    echo curl -LOf http://artdev.privatix.net/installbuilder/${bitrock_installer}.dmg
+    curl -LOf http://artdev.privatix.net/installbuilder/${bitrock_installer}.dmg || exit 1
 
     # mount
     hdiutil attach -mountpoint ${bitrock_installer} ${bitrock_installer}.dmg || exit 1
