@@ -46,7 +46,7 @@ function new-fastpackage {
     # import helpers
     import-module (join-path $PSScriptRoot "build-helpers.psm1" -resolve) -DisableNameChecking -Verbose:$false
 
-    $rootAppPath = Join-Path $wrkdir "win-dapp-installer"
+    $rootAppPath = Join-Path $wrkdir "\project\out\win_$($product.ToLower())"
     
     # Product ID supposed to be unchangable for single product (e.g. VPN)
     if ($product -eq 'vpn') {$productID = '73e17130-2a1d-4f7d-97a8-93a9aaa6f10d'}
