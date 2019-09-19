@@ -35,7 +35,7 @@ function new-fastpackage {
         [ValidateSet('vpn', 'proxy')]
         [string]$product = 'vpn'
     )
-
+    
     $ErrorActionPreference = "Stop"
 
     if ($PSBoundParameters.ContainsKey('Verbose')) {
@@ -46,15 +46,11 @@ function new-fastpackage {
     # import helpers
     import-module (join-path $PSScriptRoot "build-helpers.psm1" -resolve) -DisableNameChecking -Verbose:$false
 
-    $rootAppPath = Join-Path $wrkdir "\project\out\win_$($product.ToLower())"
+    $rootAppPath = "$wrkdir\project\out\$($product.tolower())_win"
     
-    # Product ID supposed to be unchangable for single product (e.g. VPN)
-    if ($product -eq 'vpn') {$productID = '73e17130-2a1d-4f7d-97a8-93a9aaa6f10d'}
-    if ($product -eq 'proxy') {$productID = '881da45b-ce8c-46bf-943d-730e9cee5740'}
-
     #region create working dir 
     if (!(Test-Path $wrkdir)) {New-Folder $wrkdir | Out-Null}
-    if (!(Test-Path $rootAppPath)) {New-Folder $rootAppPath | Out-Null}
+    New-Item $rootAppPath -ItemType Directory | Out-Null
     #endregion
 
     # Check GOPATH is defined
