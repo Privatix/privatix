@@ -8,7 +8,7 @@ node_js:
   - 10.13.0
 
 matrix:
-    include:
+  include:
     - os: linux
       dist: xenial
     - os: osx
@@ -25,7 +25,7 @@ env:
     - ARTEFACTS_MAC_ZIP_URL=http://artdev.privatix.net/artefacts_mac.zip
 
     #bitrock
-    - BITROCK_VERSION=19.7.0
+    - BITROCK_VERSION=19.8.0
 
     # linux
     - BITROCK_INSTALLER_LINUX=$HOME/installbuilder-${BITROCK_VERSION}
@@ -48,20 +48,31 @@ before_install:
   - ${TRAVIS_BUILD_DIR}/travis/before_install.sh
 
 install:
-  - ${TRAVIS_BUILD_DIR}/travis/install.sh
+  - if [ "${FAST_BUILD}" = "0" ]; then ${TRAVIS_BUILD_DIR}/travis/install.sh; fi
 
 before_script:
   - ${TRAVIS_BUILD_DIR}/travis/before_script.sh
 
 script:
-  - ${TRAVIS_BUILD_DIR}/travis/script.sh
+  - if [ "${FAST_BUILD}" = "0" ]; then ${TRAVIS_BUILD_DIR}/travis/script.sh; fi
+  - if [ "${FAST_BUILD}" = "1" ]; then ${TRAVIS_BUILD_DIR}/travis/fast_script.sh; fi
 
 after_success:
   - ${TRAVIS_BUILD_DIR}/travis/after_success.sh
 
-deploy:
-
 notifications:
-    slack:
-        rooms:
-            - privatix:ntmw2wh4PAHoodqtMc95KFDt#dapp-tech
+  slack:
+    rooms:
+      - privatix:ntmw2wh4PAHoodqtMc95KFDt#dapp-qa
+    template:
+      - "Build <%{build_url}|#%{build_number}> (<%{compare_url}|%{commit}>) of %{repository_slug}@%{branch} %{result} in %{duration}"
+    on_success: always
+    on_failure: never
+    on_cancel:  never
+    on_error:   never
+  email:
+    recipients:
+      - secure: "ltdOZTS/Ogjabav0d3HfvPPav93X+8lBnJFMMEHAohHW+U8ZLyxhYt4Evw/uQ22i9+bUsH27Sa8K797XYxEVvzKwPN/67BP+xOgYmPPiBHfNdsU9tjZ5JEpjCmxWm9PORdbJZTzoJo6nHzXZEeEIHMhOBFrbbzWf86xXE1D6j1LFm/Fa7C1UCZWdI/6U9/UFg0M9yla18YRwW0l2MW1JTPICTi27gLznlT/VQR7fsHJBjn9TYsJI/ZiAZu78VW6UHhb44Fp5qAoVQNg6o1QNUvhV79GN6MMTgUEme797X2zx6G+yQcmBzNjLBWhOcZTkE8WE34BSFfPcdedfl1dT4DkogCWKLh3fvNCxdCbLRbf5I81jF2DaaU2qcqNeXDHldNpgWspqLFwoXjL5V+yAQlLVfobesgJ/LjJa6beuwe9hBIOyJLG7ugpt0z0Z7dQRB0nEhUX8XlqkH72KEn6cbtc0YoWuj85HS0tuxe9Lg1jhmI4kb3WMVb/zNW5GxOkYw/lKOr1YSZPPe7IUPKmT4+Co3gbsCr6bC1UGT5vkODQ+BoQ0RBq/peOWjZODeKKCzKReyQAEYqccmVpdk3Y4lcLIvVhWOPTz/IQ0+lynw+1trAF1N2D/ogU/SEGdLvzLh1saIAQPnsgw570Wbfs6OnosQc++FugdAIaQB1VHqJA="
+    on_success: never
+    on_failure: always
+    on_error:   always

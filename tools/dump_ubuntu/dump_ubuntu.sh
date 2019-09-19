@@ -38,6 +38,11 @@ find_and_copy "*.log" "${DESTINATION_FOLDER}/logs"
 find_and_copy "*.err" "${DESTINATION_FOLDER}/errs"
 find_and_copy "*.ovpn" "${DESTINATION_FOLDER}/ovpn"
 
+echo "getting dappctrl version..."
+find "${PRIVATIX_APP_FOLDER}" -name "dappctrl" -exec \
+   '{}' --version \; 2>/dev/null > "${DESTINATION_FOLDER}/dappctrl_version.txt"
+
+
 settings_json=$(find "${DESTINATION_FOLDER}"  -name "settings.json")
 dappgui_log_path="$(get_dappgui_log_path | envsubst)"
 cp "${dappgui_log_path}" "${DESTINATION_FOLDER}/logs"

@@ -51,6 +51,9 @@ try {
     exit 1
 }
 
+# AppData
+$AppDataDir = "$env:APPDATA\Privatix\"
+
 # Root install artefacts
 $rootDir = Split-Path -Path $installDir -Parent -ErrorAction Stop
 $version = Join-Path -Path $rootDir -ChildPath "version" -Resolve
@@ -69,6 +72,7 @@ $dappctrlconf = Join-Path -Path $installDir -ChildPath "dappctrl\dappctrl.config
 $dappguiSettingsJson = Join-Path -Path $installDir -ChildPath "dappgui\resources\app\settings.json" -Resolve
 $dappguiPackageJson = Join-Path -Path $installDir -ChildPath "dappgui\resources\app\package.json" -Resolve
 $ProdConf = Join-Path -Path $installDir -ChildPath "product\73e17130-2a1d-4f7d-97a8-93a9aaa6f10d\config" -Resolve
+
 # DB dump
 $DBconf = (Get-Content $dappctrlconf | ConvertFrom-Json).DB.conn 
 if ($DBconf.password) {$env:PGPASSWORD = $DBconf.password}
@@ -82,6 +86,7 @@ Copy-Item -Path $rootItems -Destination "$OutFolder\rootinstall"
 # Copy artefacts
 New-Item -Path $OutFolder -Name "coreconfig" -ItemType Directory -Force | Out-Null
 Copy-Item -Path $CoreLog -Destination "$OutFolder\corelog" -Recurse -Force
+Copy-Item -Path $AppDataDir -Destination "$OutFolder\corelog\AppData" -Recurse -Force
 Copy-Item -Path $ProdLog -Destination "$OutFolder\prodlog" -Recurse -Force
 Copy-Item -Path $coreEnv -Destination "$OutFolder\coreconfig\.env.config.json" -Force
 Copy-Item -Path $dappctrlconf -Destination "$OutFolder\coreconfig\dappctrl.config.json"  -Force

@@ -12,25 +12,23 @@ Example: "chmod +x privatix\_ubuntu\_x64\_0.23.1\_installer.run"
 
 ## Install the Application
 
-Pass all the installation steps. 
-
-If you chose an agent mode, then ensure that all required ports are opened.
+Pass all the installation steps.
 
 {% hint style="info" %}
-Try to google how to open ports on your particular router.
+If you chose an Agent mode, then ensure that all required ports are opened.
 
-General information: [https://www.howtogeek.com/66214/how-to-forward-ports-on-your-router/](https://www.howtogeek.com/66214/how-to-forward-ports-on-your-router/)
+Check our guide: [How to open ports](https://docs.privatix.network/knowledge-base/how-to-open-ports).
 {% endhint %}
 
 ## Replace Infura Endpoint
 
-We use [Infura](https://infura.io) as a Blockchain Access Provider. 
+We use [Infura](https://infura.io) as a Blockchain Access Provider.
 
-Infura has recently limited the number of requests per day. To prevent an application from crashing due to a request limit, we recommend that you use the application through your own Infura account: [how to change Infura Endpoint](how-to-change-infura-url.md)
+Infura has recently limited the number of requests per day. To prevent an application from crashing due to a request limit, we recommend that you use the application through your own Infura account: [how to change Infura Endpoint](how-to-change-infura-endpoint.md)
 
 ## Pass the Wizard
 
-Pass all the wizard's steps one-by-one. 
+Pass all the wizard's steps one-by-one.
 
 {% hint style="info" %}
 The password that you use is used both for the application's autentification and for encrypting private key.
@@ -38,11 +36,5 @@ The password that you use is used both for the application's autentification and
 In case you lose your password, you will lose access to the application and account without the possibility of returning it.
 {% endhint %}
 
- After passing the Wizard you can use the application.
-
-
-
-
-
-
+After passing the Wizard you can use the application.
 

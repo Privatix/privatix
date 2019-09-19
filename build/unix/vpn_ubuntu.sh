@@ -72,6 +72,9 @@ copy_product(){
     cp -va "${DAPP_OPENVPN_DIR}/${DAPP_OPENVPN_SCRIPTS_LOCATION_LINUX}/." \
            "${app_dir}/${PRODUCT}/${VPN_PRODUCT_ID}/${BIN}" || exit 1
 
+    cp -v "${GOPATH}/bin/${DAPP_UPDATE_CONFIG}" \
+           "${app_dir}/${PRODUCT}/${VPN_PRODUCT_ID}/${BIN}/${DAPP_UPDATE_CONFIG}" || exit 1
+
     echo && echo done
     echo -----------------------------------------------------------------------
     echo copy product configs
@@ -151,7 +154,7 @@ if [[ -z "$1" ]] || [[ "$1" != "--keep_common_binaries" ]]; then
                         "${app_dir}/${DAPP_INSTALLER_GUI_DIR}/" \
                         "${DAPP_GUI_SETTINGS_JSON_LINUX}" \
                         "ubuntu" \
-                        "\$HOME/.config/privatix/log.log" \
+                        "\$HOME/.config/privatix" \
                         || exit 1
 fi
 

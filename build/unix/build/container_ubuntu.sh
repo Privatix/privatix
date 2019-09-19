@@ -29,8 +29,8 @@ sudo cp -R ${dappcoredir}/. "${container_location}/"
 sudo systemd-nspawn -D ${container_location}/ << EOF
 
 echo -----------------------------------------------------------------------password
-#set root password: xHd26ksN
-echo -e "xHd26ksN\nxHd26ksN\n" | passwd
+#set root password: root
+echo -e "root\nroot\n" | passwd
 
 echo -----------------------------------------------------------------------settings
 echo "pts/0" >> /etc/securetty
@@ -73,6 +73,10 @@ sed -i.buh 's/host.*all.*all.*127.0.0.1\/32.*md5/host all postgres 127.0.0.1\/32
 diff /etc/postgresql/10/main/pg_hba.conf  /etc/postgresql/10/main/pg_hba.conf.bup
 echo
 
+sed -i.buh 's/host.*all.*all.*::1\/128.*md5/host all postgres ::1\/128 trust/g' /etc/postgresql/10/main/pg_hba.conf
+diff /etc/postgresql/10/main/pg_hba.conf  /etc/postgresql/10/main/pg_hba.conf.bup
+echo
+
 service postgresql start
 
 echo -----------------------------------------------------------------------tor
@@ -81,6 +85,12 @@ service tor stop
 sed -i.bup 's/AppArmorProfile=system_tor/AppArmorProfile=/g' /lib/systemd/system/tor@default.service
 systemctl daemon-reload
 service tor start
+
+echo -----------------------------------------------------------------------gettext-base
+apt-get install gettext-base
+
+echo -----------------------------------------------------------------------python
+apt-get install python3
 
 echo -----------------------------------------------------------------------dappctrl
 mv /dappctrl/dappctrl.service /lib/systemd/system/

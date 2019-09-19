@@ -27,7 +27,7 @@ In this workflow Agent creates new offering, that is discovered by Client.
 
    where
 
-`_agent` - Ethreum addres of agent
+`_agent` - Ethereum address of agent
 
 `_offering_hash` - hash of full offering message \(unique\)
 

@@ -59,6 +59,8 @@
     
 .PARAMETER guiEthNetwork
     Ethereum network to use in GUI. Can be 'rinkeby' or 'mainnet'
+.PARAMETER asjobs
+    Run build jobs in parallel.
 
 .EXAMPLE
     .\publish-dapp.ps1 -wkdir "C:\build" -staticArtefactsDir "C:\static_art"
@@ -131,11 +133,17 @@ param(
     [string]$dappctrlConf = "dappctrl-dev.config.json",
     [ValidateSet('0', '1')]
     [string]$forceUpdate = '0',
-    [string]$installerOutDir
-    
+    [string]$installerOutDir,
+    [string]$defaultBranch,
+    [switch]$asjobs
 )
 
 $ErrorActionPreference = "Stop"
+
+$TotalTime = 0
+$TotalTime = [Diagnostics.Stopwatch]::StartNew()
+
+$jobs = @()
 
 $vers = $version
 
@@ -145,6 +153,8 @@ $env:Path += ";$env:GOPATH\bin"
 $env:Path += ";C:\Program Files\nodejs"
 # Bitrock builder Travis location
 $env:Path += ";C:\installbuilder\bin"
+
+if ($defaultBranch) {$env:GIT_BRANCH_DEFAULT = $defaultBranch}
 
 $ctrl_conf = $dappctrlConf
 $network = $guiEthNetwork
@@ -190,37 +200,90 @@ if ($clean -eq 'all') {
 $builddapp = (Join-Path $PSScriptRoot build-dapp.ps1 -Resolve -ErrorAction Stop)
 Import-Module (Join-Path $PSScriptRoot "new-package.psm1" -Resolve) -ErrorAction Stop -DisableNameChecking
 
-$TotalTime = 0
+$dappctrl_sb = [scriptblock] {. $args[0] -dappctrl -wd $args[1] -branch $args[2] -gitpull:$args[3] -version:$args[4]}
 
-$sw = [Diagnostics.Stopwatch]::StartNew()
-. $builddapp -dappctrl -wd $wkdir -branch $dappctrlbranch -gitpull:$gitpull -version:$vers
-$TotalTime += $sw.Elapsed.TotalSeconds
-Write-Host "It took $($sw.Elapsed.TotalSeconds) seconds to complete" -ForegroundColor Green
+if ($asjobs) {
+    $jobs += Start-Job -Name build_dappctrl -ScriptBlock $dappctrl_sb -ArgumentList $builddapp, $wkdir, $dappctrlbranch, $gitpull, $vers
+} else {
+    Invoke-Command -ScriptBlock $dappctrl_sb -ArgumentList $builddapp, $wkdir, $dappctrlbranch, $gitpull, $vers
+}
 
-$sw.Restart()
 if ($product -eq 'vpn') {
-    . $builddapp -dappopenvpn -wd $wkdir -branch $dappopenvpnbranch -gitpull:$gitpull -version:$vers
+    $dappopenvpn_sb = [scriptblock] {. $args[0] -dappopenvpn -wd $args[1] -branch $args[2] -gitpull:$args[3] -version:$args[4]}
+    if ($asjobs) {
+        $jobs += Start-Job -Name build_dappopenvpn -ScriptBlock $dappopenvpn_sb -ArgumentList $builddapp, $wkdir, $dappopenvpnbranch, $gitpull, $vers
+    } else {
+        Invoke-Command -ScriptBlock $dappopenvpn_sb -ArgumentList $builddapp, $wkdir, $dappopenvpnbranch, $gitpull, $vers
+    }
+
 }
 if ($product -eq 'proxy') {
-    . $builddapp -dappproxy -wd $wkdir -branch $dappproxybranch -gitpull:$gitpull -version:$vers
+    $dappproxy_sb = [scriptblock] {. $args[0] -dappproxy -wd $args[1] -branch $args[2] -gitpull:$args[3] -version:$args[4]}
+    if ($asjobs) {
+        $jobs += Start-Job -Name build_dappopenvpn -ScriptBlock $dappproxy_sb -ArgumentList $builddapp, $wkdir, $dappproxybranch, $gitpull, $vers
+    } else {
+        Invoke-Command -ScriptBlock $dappproxy_sb -ArgumentList $builddapp, $wkdir, $dappproxybranch, $gitpull, $vers
+    }
 }
-$TotalTime += $sw.Elapsed.TotalSeconds
-Write-Host "It took $($sw.Elapsed.TotalSeconds) seconds to complete" -ForegroundColor Green
 
-$sw.Restart()
-. $builddapp -dappinstaller -wd $wkdir -branch $dappinstbranch -gitpull:$gitpull -version:$vers
-$TotalTime += $sw.Elapsed.TotalSeconds
-Write-Host "It took $($sw.Elapsed.TotalSeconds) seconds to complete" -ForegroundColor Green
-
-$sw.Restart()
+$dappinstaller_sb = [scriptblock] {. $args[0] -dappinstaller -wd $args[1] -branch $args[2] -gitpull:$args[3] -version:$args[4]}
+if ($asjobs) {
+    $jobs += Start-Job -Name build_dappinstaller -ScriptBlock $dappinstaller_sb -ArgumentList $builddapp, $wkdir, $dappinstbranch, $gitpull, $vers
+} else {
+    Invoke-Command -ScriptBlock $dappinstaller_sb -ArgumentList $builddapp, $wkdir, $dappinstbranch, $gitpull, $vers
+}
 
 if ($installer) {
-        
-    . $builddapp -dappgui -wd $wkdir -branch $dappguibranch -gitpull:$gitpull -package -version:$vers -guiEthNetwork $network
-    $TotalTime += $sw.Elapsed.TotalSeconds
-    Write-Host "It took $($sw.Elapsed.TotalSeconds) seconds to complete" -ForegroundColor Green
+    $dappgui_sb = [scriptblock] {. $args[0] -dappgui -package -wd $args[1] -branch $args[2] -gitpull:$args[3] -version:$args[4] -guiEthNetwork $args[5]}
+    if ($asjobs) {
+        $jobs += Start-Job -Name build_dappgui -ScriptBlock $dappgui_sb -ArgumentList $builddapp, $wkdir, $dappinstbranch, $gitpull, $vers, $network
+    } else {
+        Invoke-Command -ScriptBlock $dappgui_sb -ArgumentList $builddapp, $wkdir, $dappinstbranch, $gitpull, $vers, $network
+    }
+}
+else {
+    $dappgui_sb = [scriptblock] {. $args[0] -dappgui -wd $args[1] -branch $args[2] -gitpull:$args[3] -version:$args[4] -guiEthNetwork $args[5]}
+    if ($asjobs) {
+        $jobs += Start-Job -Name build_dappgui -ScriptBlock $dappgui_sb -ArgumentList $builddapp, $wkdir, $dappinstbranch, $gitpull, $vers, $network
+    } else {
+        Invoke-Command -ScriptBlock $dappgui_sb -ArgumentList $builddapp, $wkdir, $dappinstbranch, $gitpull, $vers, $network
+    }
+}
 
-    $sw.Restart()
+if ($asjobs) {
+    Get-Job | Format-Table -AutoSize
+
+    $buidjobsComplete = $false
+    [int[]]$UnrepJobsIDs = $null
+    while (-not $buidjobsComplete) {
+        $jobs = $jobs | Get-Job
+        $CompletedJobs = $jobs | Where-Object { ($_.state -eq "Completed") -or ($_.state -eq "Failed")}
+        $UnrepJobsIDs = $CompletedJobs.id | Where-Object {$ReportedJobs -notcontains $_}
+        if ($UnrepJobsIDs.length -gt 0) {
+            foreach ($UnrepJobsID in $UnrepJobsIDs) {
+                Get-Job -Id $UnrepJobsID | Select-Object ID, Name, State, @{Name = 'SecondsToComplete'; Expression = {[int]($_.PSEndTime - $_.PSBeginTime).TotalSeconds}}
+                $ReportedJobs += $UnrepJobsIDs
+            }
+        }
+        Write-Progress -Activity "Building jobs running..." -PercentComplete $([int]($CompletedJobs.length / $jobs.length * 100)) -CurrentOperation "Completed $($CompletedJobs.length)/$($jobs.length) jobs"
+        if ($CompletedJobs.length -eq $jobs.length) {$buidjobsComplete = $true; Write-Progress -Activity "Building jobs running..." -Completed} else {Start-Sleep -Seconds 3}
+
+    }
+
+    foreach ($job in $jobs) {
+        $log += "#######################" | Out-String 
+        $log += "##### $($job.name) ####" | Out-String 
+        $log += "#######################" | Out-String 
+        $log += $job | Select-Object -Property * | Format-List | Out-String
+        $log += $job | Receive-Job | Out-String
+    }
+
+    $log |  Out-File -FilePath "$wkdir\build.log" -Append 
+    $log
+    Remove-Job $jobs.id -Force
+}
+
+if ($installer) {
     try {Get-Command "builder-cli.exe" | Out-Null} 
     catch {
         Write-Error "builder-cli.exe of BitRock installer not found in %PATH%. Please, resolve"
@@ -237,18 +300,10 @@ if ($installer) {
     }
 }
 else {
-    . $builddapp -dappgui -wd $wkdir -branch $dappguibranch -gitpull:$gitpull -version:$vers -guiEthNetwork $network
-    $TotalTime += $sw.Elapsed.TotalSeconds
-    Write-Host "It took $($sw.Elapsed.TotalSeconds) seconds to complete" -ForegroundColor Green
-    
-    $sw.Restart()
     new-package -wrkdir $wkdir -staticArtefactsDir $staticArtefactsDir -privatixbranch $privatixbranch -gitpull:$gitpull -dappctrlConf:$ctrl_conf -product:$product
 }
 
-$TotalTime += $sw.Elapsed.TotalSeconds
-Write-Host "It took $($sw.Elapsed.TotalSeconds) seconds to complete" -ForegroundColor Green
-
 Remove-Module new-package
 
-Write-Host "Total execution time: $TotalTime seconds" -ForegroundColor Green
+Write-Host "Total execution time: $($TotalTime.Elapsed.TotalSeconds) seconds" -ForegroundColor Green
 Write-Host "Resulting folder: $wkdir" -ForegroundColor Green

@@ -6,8 +6,8 @@
 if [ "$TRAVIS_OS_NAME" = "linux" ]; then
 
     # install debootstrap
-    sudo apt-get install debootstrap -y
-    sudo apt-get install systemd-container -y
+    sudo apt-get install debootstrap -y || exit 1
+    sudo apt-get install systemd-container -y || exit 1
 
     # bitrock
     #
@@ -16,9 +16,9 @@ if [ "$TRAVIS_OS_NAME" = "linux" ]; then
     downloading_binary=installbuilder-enterprise-${BITROCK_VERSION}-linux-x64-installer.run
 
     echo wget http://artdev.privatix.net/installbuilder/${downloading_binary}
-    wget http://artdev.privatix.net/installbuilder/${downloading_binary}
+    wget http://artdev.privatix.net/installbuilder/${downloading_binary} || exit 1
 
-    chmod u+x ./${downloading_binary}
+    chmod u+x ./${downloading_binary} || exit 1
 
     # install
     echo install: ./${downloading_binary} --mode unattended || exit 1
@@ -40,11 +40,11 @@ if [ "$TRAVIS_OS_NAME" = "osx" ]; then
     bitrock_installer=installbuilder-enterprise-${BITROCK_VERSION}-osx-installer
 
     # curl -L -O  https://installbuilder.bitrock.com/installbuilder-enterprise-19.5.0-osx-installer.dmg
-    echo curl -L -O http://artdev.privatix.net/installbuilder/${bitrock_installer}.dmg
-    curl -L -O http://artdev.privatix.net/installbuilder/${bitrock_installer}.dmg
+    echo curl -LOf http://artdev.privatix.net/installbuilder/${bitrock_installer}.dmg
+    curl -LOf http://artdev.privatix.net/installbuilder/${bitrock_installer}.dmg || exit 1
 
     # mount
-    hdiutil attach -mountpoint ${bitrock_installer} ${bitrock_installer}.dmg
+    hdiutil attach -mountpoint ${bitrock_installer} ${bitrock_installer}.dmg || exit 1
 
     # install
     "./${bitrock_installer}/${bitrock_installer}.app/Contents/MacOS/installbuilder.sh" --mode unattended || exit 1
