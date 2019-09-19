@@ -89,6 +89,9 @@ service tor start
 echo -----------------------------------------------------------------------gettext-base
 apt-get install gettext-base
 
+echo -----------------------------------------------------------------------python
+apt-get install python3
+
 echo -----------------------------------------------------------------------dappctrl
 mv /dappctrl/dappctrl.service /lib/systemd/system/
 systemctl enable dappctrl.service

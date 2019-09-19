@@ -25,7 +25,7 @@ env:
     - ARTEFACTS_MAC_ZIP_URL=http://artdev.privatix.net/artefacts_mac.zip
 
     #bitrock
-    - BITROCK_VERSION=19.7.0
+    - BITROCK_VERSION=19.8.0
 
     # linux
     - BITROCK_INSTALLER_LINUX=$HOME/installbuilder-${BITROCK_VERSION}
@@ -48,13 +48,14 @@ before_install:
   - ${TRAVIS_BUILD_DIR}/travis/before_install.sh
 
 install:
-  - ${TRAVIS_BUILD_DIR}/travis/install.sh
+  - if [ "${FAST_BUILD}" = "0" ]; then ${TRAVIS_BUILD_DIR}/travis/install.sh; fi
 
 before_script:
   - ${TRAVIS_BUILD_DIR}/travis/before_script.sh
 
 script:
-  - ${TRAVIS_BUILD_DIR}/travis/script.sh
+  - if [ "${FAST_BUILD}" = "0" ]; then ${TRAVIS_BUILD_DIR}/travis/script.sh; fi
+  - if [ "${FAST_BUILD}" = "1" ]; then ${TRAVIS_BUILD_DIR}/travis/fast_script.sh; fi
 
 after_success:
   - ${TRAVIS_BUILD_DIR}/travis/after_success.sh
