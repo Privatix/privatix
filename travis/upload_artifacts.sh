@@ -19,6 +19,9 @@ pass=$(cat "${deploy_file}" | head -3 | tail -1)
 # ubuntu
 #
 if [ "$TRAVIS_OS_NAME" = "linux" ]; then
+    ##
+    ## upload artefact
+    ##
     cd "${TRAVIS_BUILD_DIR}/build/unix"
     . "./build.global.config"
 

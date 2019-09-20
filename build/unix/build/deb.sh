@@ -55,6 +55,10 @@ copy(){
     echo "sudo ./dapp-installer remove -workdir /var/lib/container/agent/ -role agent" \
 	      >> "${deb_package_bin_dir}/remove.sh" &&
     chmod +x "${deb_package_bin_dir}/remove.sh" || exit 1
+
+    echo "sudo ./dapp-installer update -workdir /var/lib/container/agent/ -role agent" \
+	      >> "${deb_package_bin_dir}/update.sh" &&
+    chmod +x "${deb_package_bin_dir}/update.sh" || exit 1
 }
 
 
