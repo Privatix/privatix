@@ -32,15 +32,11 @@ describe('integrational tests', async () => {
                 it(tm.name, () => tm.testFn({allowedScope, ws: testSettings.clientWs, ...testSettings}));
             }
             if(allowedScope === 'AGENT' && (tm.scope === 'UNI' || tm.scope === 'AGENT')){
-                testSettings.ws = testSettings.agentWs;
-                it(tm.name, () => tm.testFn({allowedScope, ...testSettings}));
+                it(tm.name, () => tm.testFn({allowedScope, ws: testSettings.agentWs, ...testSettings}));
             }
             if(allowedScope === 'UNI' && tm.scope === 'UNI'){
-                testSettings.ws = testSettings.clientWs;
-                it(tm.name, () => tm.testFn({allowedScope, ...testSettings}));
-
-                testSettings.ws = testSettings.agentWs;
-                it(tm.name, () => tm.testFn({allowedScope, ...testSettings}));
+                it(tm.name, () => tm.testFn({allowedScope, ws: testSettings.clientWs, ...testSettings}));
+                it(tm.name, () => tm.testFn({allowedScope, ws: testSettings.agentWs, ...testSettings}));
             }
 
             if(allowedScope === 'BOTH'){
