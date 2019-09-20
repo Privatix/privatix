@@ -39,15 +39,6 @@ if [ "$TRAVIS_OS_NAME" = "linux" ]; then
     mkdir $(basename "${VPN_UBUNTU_OUTPUT_DIR}")
     put -r ${VPN_UBUNTU_OUTPUT_DIR}
     ") | sftp -oStrictHostKeyChecking=no -i "${TRAVIS_BUILD_DIR}/travis/encrypted/travis.ed25519" ${user}@${host}
-
-    if [ "$RUN_TESTS" = "1" ]; then
-        echo Starting automated tests execution...
-
-        ##
-        ## deploy
-        ##
-        ${TRAVIS_BUILD_DIR}/travis/atests/deploy.sh || exit 1
-    fi
 fi
 
 

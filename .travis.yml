@@ -54,11 +54,12 @@ before_script:
   - ${TRAVIS_BUILD_DIR}/travis/before_script.sh
 
 script:
-  - if [ "${FAST_BUILD}" = "0" ]; then ${TRAVIS_BUILD_DIR}/travis/script.sh; fi
+  - if [ "${FAST_BUILD}" = "0" ]; then ${TRAVIS_BUILD_DIR}/travis/script.sh     ; fi
   - if [ "${FAST_BUILD}" = "1" ]; then ${TRAVIS_BUILD_DIR}/travis/fast_script.sh; fi
 
 after_success:
-  - ${TRAVIS_BUILD_DIR}/travis/after_success.sh
+  - ${TRAVIS_BUILD_DIR}/travis/upload_artifacts.sh
+  - if [ "${$RUN_TESTS}" = "1" ]; then ${TRAVIS_BUILD_DIR}/travis/automated_tests.sh; fi
 
 notifications:
   slack:
