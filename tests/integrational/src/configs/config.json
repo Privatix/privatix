@@ -13,7 +13,7 @@
   "timeouts": {
       "blocktime": 20000,
       "getEther": {
-          "skipBlocks": 5,
+          "skipBlocks": 8,
           "botTimeoutMs": 45000
       }
   },

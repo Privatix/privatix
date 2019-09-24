@@ -1,12 +1,11 @@
-const templateId = '7c4da191-305c-4eab-8dce-49731c4ad166';
-
 const random_names = ['First', 'Second', 'Third'];
 
 export const generateOffering =
   (
     productId: string,
     agentId: string,
-    offeringName: string
+    offeringName: string,
+    templateId: string
   ) => ({
     'product': productId,
     'template': templateId,
@@ -37,8 +36,8 @@ export const generateOffering =
   });
 
 export const generateSomeOfferings =
-  (productId: string, agentId: string) => {
+  (productId: string, agentId: string, templateId: string) => {
     return random_names
       .map(name =>
-        generateOffering(productId, agentId, `${name} Service`))
+        generateOffering(productId, agentId, `${name} Service`, templateId))
   };
