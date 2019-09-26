@@ -121,9 +121,6 @@ copy_installer(){
     cp -v "${GOPATH}/bin/${DAPP_SUPERVISOR}" \
           "${installer_bin_dir}/${DAPP_SUPERVISOR}" || exit 1
 
-    cp -v "${DAPP_INSTALLER_DIR}/${DAPP_INSTALLER_LINUX_CONFIG}" \
-          "${installer_bin_dir}/${DAPP_INSTALLER_CONFIG}" || exit 1
-
     echo && echo done
 }
 
