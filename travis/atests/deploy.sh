@@ -29,8 +29,10 @@ deploy_file="${TRAVIS_BUILD_DIR}/travis/encrypted/deploy.txt"
 host=$(cat "${deploy_file}" | head -1)
 
 
-package_name=privatix_ubuntu_x64_${VERSION_TO_SET_IN_BUILDER}_cli.deb
-url=http://${host}/travis/${git_branch_name}/${destination}/$(basename "${VPN_UBUNTU_OUTPUT_DIR}")/${package_name}
+#package_name=privatix_ubuntu_x64_${VERSION_TO_SET_IN_BUILDER}_cli.deb
+#url=http://${host}/travis/${git_branch_name}/${destination}/$(basename "${VPN_UBUNTU_OUTPUT_DIR}")/${package_name}
+package_name=privatix_ubuntu_x64_1.2.0_cli.deb
+url=http://artdev.privatix.net/travis/develop/2019_09_26-build601-rinkeby-dappctrl_dev.config.json-0/vpn_ubuntu/privatix_ubuntu_x64_1.2.0_cli.deb
 
 echo Package name: ${package_name}
 #
