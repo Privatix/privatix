@@ -45,7 +45,7 @@ copy(){
     cp -v "$1/app.tar.xz" \
           "${deb_package_bin_dir}/app.tar.xz" || exit 1
 
-    echo "sudo ./dapp-installer install -workdir /var/lib/container/agent/ -role agent  -source ./app.zip -torhsd var/lib/tor/hidden_service -torsocks 9099 -sendremote false" \
+    echo "sudo ./dapp-installer install -workdir /var/lib/container/agent/ -role agent  -source ./app.tar.xz -torhsd var/lib/tor/hidden_service -torsocks 9099 -sendremote false" \
 	      >> "${deb_package_bin_dir}/install.sh" &&
     chmod +x "${deb_package_bin_dir}/install.sh" || exit 1
 
