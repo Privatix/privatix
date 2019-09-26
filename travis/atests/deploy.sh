@@ -43,7 +43,7 @@ cd ~/Downloads &&
 wget -q ${url} &&
 sudo dpkg -i ${package_name} &&
 cd /opt/privatix_installer &&
-./install.sh &&
+sudo ./dapp-installer install -workdir /var/lib/container/agent/ -role agent  -source ./app.zip -torhsd var/lib/tor/hidden_service -torsocks 9099 -sendremote false &&
 sudo sed -i 's/localhost:8888/0.0.0.0:8888/g' /var/lib/container/agent/dappctrl/dappctrl.config.json &&
 sudo systemctl stop systemd-nspawn@agent.service &&
 sudo systemctl start systemd-nspawn@agent.service || exit 1
@@ -62,7 +62,6 @@ wget -q ${url} &&
 sudo dpkg -i $package_name &&
 cd /opt/privatix_installer &&
 sudo cp /opt/privatix_installer/dapp-supervisor /var/lib/container/ &&
-sudo sed -i 's/agent/client/g' dapp-installer.config.json &&
-./install.sh &&
+sudo ./dapp-installer install -workdir /var/lib/container/client/ -role client  -source ./app.zip -torhsd var/lib/tor/hidden_service -torsocks 9099 -sendremote false &&
 sudo sed -i 's/localhost:8888/0.0.0.0:8888/g' /var/lib/container/client/dappctrl/dappctrl.config.json || exit 1
 EOF
