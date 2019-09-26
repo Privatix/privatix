@@ -1,5 +1,5 @@
 {
-  "GIT_BRANCH": "develop",
+  "GIT_BRANCH": "origin/feature/ks-BV-1675",
   "GIT_BRANCH_DEFAULT": "develop",
   "VERSION_TO_SET_IN_BUILDER": "1.2.0",
   "DAPPCTRL_CONFIG": "dappctrl-dev.config.json",
@@ -7,5 +7,5 @@
   "DAPPCTRL_LOG_LEVEL": "debug",
   "DAPP_INSTALLER_FORCE_UPDATE": "0",
   "FAST_BUILD": "0",
-  "RUN_TESTS": "0"
+  "RUN_TESTS": "1"
 }

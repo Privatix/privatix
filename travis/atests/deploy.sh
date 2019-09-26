@@ -47,6 +47,7 @@ cd /opt/privatix_installer &&
 sudo sed -i 's/localhost:8888/0.0.0.0:8888/g' /var/lib/container/agent/dappctrl/dappctrl.config.json &&
 sudo systemctl stop systemd-nspawn@agent.service &&
 sudo systemctl start systemd-nspawn@agent.service || exit 1
+sleep 7
 psql -h 127.0.0.1 -p 5433 -U postgres -d dappctrl -c "update settings set value='5' where key = 'psc.periods.remove'"
 EOF
 
