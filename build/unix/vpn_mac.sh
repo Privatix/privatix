@@ -165,10 +165,6 @@ copy_utils()
     cp -r  "${CHECK_AGENT_MAC}/." \
        "${app_dir}/${UTIL}/${CHECK_AGENT}" || exit 1
 
-    echo "${app_dir}/${UTIL}/${PATCH_JSON}"
-    cp -r  "${PATCH_JSON_DIR}/." \
-       "${app_dir}/${UTIL}/${PATCH_JSON}" || exit 1
-
     echo && echo done
 }
 
