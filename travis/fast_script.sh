@@ -32,6 +32,9 @@ if [ "$TRAVIS_OS_NAME" = "linux" ] || [ "$TRAVIS_OS_NAME" = "osx" ]; then
 
     cp -v "${GOPATH}/bin/${OPENVPN_INST}" \
           "${output_folder}/${DAPP_INST}" || exit 1
+
+    cp -v "${GOPATH}/bin/${DAPP_AGENT_CHECKER}" \
+          "${output_folder}/${DAPP_AGENT_CHECKER}" || exit 1
 fi
 
 #

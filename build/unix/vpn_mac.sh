@@ -161,6 +161,10 @@ copy_utils()
     cp -r  "${DUMP_MAC}/." \
        "${app_dir}/${UTIL}/${DUMP}" || exit 1
 
+    echo "${app_dir}/${UTIL}/${CHECK_AGENT}"
+    cp -r  "${CHECK_AGENT_MAC}/." \
+       "${app_dir}/${UTIL}/${CHECK_AGENT}" || exit 1
+
     echo && echo done
 }
 
@@ -173,6 +177,8 @@ copy_installer(){
           "${installer_bin_dir}/${DAPP_INSTALLER}" || exit 1
     cp -v "${GOPATH}/bin/${DAPP_SUPERVISOR}" \
           "${installer_bin_dir}/${DAPP_SUPERVISOR}" || exit 1
+    cp -v "${GOPATH}/bin/${DAPP_AGENT_CHECKER}" \
+          "${installer_bin_dir}/${DAPP_AGENT_CHECKER}" || exit 1
 
     echo && echo done
 }
