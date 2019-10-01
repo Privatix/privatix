@@ -59,7 +59,7 @@ script:
 
 after_success:
   - ${TRAVIS_BUILD_DIR}/travis/upload_artifacts.sh
-  - if [ "${$RUN_TESTS}" = "1" ]; then ${TRAVIS_BUILD_DIR}/travis/automated_tests.sh; fi
+  - if [ "${RUN_TESTS}" = "1" ]; then ${TRAVIS_BUILD_DIR}/travis/automated_tests.sh; fi
 
 notifications:
   slack:

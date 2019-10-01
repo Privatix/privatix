@@ -22,7 +22,7 @@ The payments come from buyers, who purchase the bandwidth via third-party applic
 ## Installation
 Privatix Network CORE Software is available for Beta-testing on Windows, MacOS, and Ubuntu (Linux). The software allows to sell and buy bandwidth on Ethereum Testnet (not for real). 
 
-- [How to download it and give it a try](https://docs.privatix.network/install)
+- [How to download it and give it a try](https://docs.privatix.network/support/install)
 - [Download builds from the website](https://privatix.io/#download)
 
 ## Releases
