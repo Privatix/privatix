@@ -1,8 +1,8 @@
 {
-  "agentWsEndpoint": "ws://localhost:8888/ws",
-  "clientWsEndpoint": "ws://localhost:8888/ws",
-  "clientSupervisorEndpoint": "http://localhost:7777",
-  "externalClientIpEndpoint": "http://localhost:6060/",
+  "agentWsEndpoint": "ws://89.38.99.85:8888/ws",
+  "clientWsEndpoint": "ws://89.38.99.176:8888/ws",
+  "clientSupervisorEndpoint": "http://89.38.99.127:7777",
+  "externalClientIpEndpoint": "http://89.38.99.176:6060/",
   "getPrixEndpoint": {
       "protocol": "http:",
       "host": "89.38.96.53",
@@ -13,7 +13,7 @@
   "timeouts": {
       "blocktime": 20000,
       "getEther": {
-          "skipBlocks": 8,
+          "skipBlocks": 5,
           "botTimeoutMs": 45000
       }
   },
