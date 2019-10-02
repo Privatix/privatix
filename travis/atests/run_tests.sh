@@ -16,12 +16,11 @@ if [ "$TRAVIS_OS_NAME" = "linux" ]; then
   #source /home/stagevm/tests/privatix/tests/integrational/helpers/setenv.sh || exit 1
   export TELEGRAM_BOT_USER=user
   export TELEGRAM_BOT_PASSWORD=$TELEGRAMPASSW
-  export npm_config_scope=agent
+  export npm_config_scope=both
   cd /home/stagevm/tests/privatix/tests/integrational || exit 1
   npm install || exit 1
   npm run test || exit 1 
   echo Run CLIENT tests 
-  export npm_config_scope=client
   npm run test || exit 1
 EOF
 
