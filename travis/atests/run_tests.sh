@@ -13,7 +13,10 @@ if [ "$TRAVIS_OS_NAME" = "linux" ]; then
   git clone git@github.com:Privatix/privatix.git
   cd /home/stagevm/tests/privatix/
   git checkout ${TRAVIS_BRANCH}
-  source /home/stagevm/tests/privatix/tests/integrational/helpers/setenv.sh || exit 1
+  #source /home/stagevm/tests/privatix/tests/integrational/helpers/setenv.sh || exit 1
+  export TELEGRAM_BOT_USER=user
+  export TELEGRAM_BOT_PASSWORD=$TELEGRAMPASSW
+  export npm_config_scope=agent
   cd /home/stagevm/tests/privatix/tests/integrational || exit 1
   npm install || exit 1
   npm run test || exit 1 
