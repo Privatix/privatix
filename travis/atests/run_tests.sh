@@ -12,7 +12,7 @@ if [ "$TRAVIS_OS_NAME" = "linux" ]; then
   cd /home/stagevm/tests/
   git clone git@github.com:Privatix/privatix.git
   cd /home/stagevm/tests/privatix/
-  git checkout feature/ks-BV-1675
+  git checkout ${TRAVIS_BRANCH}
   source /home/stagevm/tests/privatix/tests/integrational/helpers/setenv.sh || exit 1
   cd /home/stagevm/tests/privatix/tests/integrational || exit 1
   npm install || exit 1
