@@ -20,8 +20,6 @@ if [ "$TRAVIS_OS_NAME" = "linux" ]; then
   cd /home/stagevm/tests/privatix/tests/integrational || exit 1
   npm install || exit 1
   npm run test || exit 1 
-  echo Run CLIENT tests 
-  npm run test || exit 1
-EOF
+  EOF
 
 fi
