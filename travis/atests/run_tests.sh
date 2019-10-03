@@ -5,7 +5,7 @@
 #
 if [ "$TRAVIS_OS_NAME" = "linux" ]; then
   echo Start running tests...
-  ssh stagevm@89.38.99.188 <<EOF || exit 1
+  ssh stagevm@89.38.99.188 << 'EOF' || exit 1
   #tests_dir=/home/stagevm/tests
   /bin/rm -rf /home/stagevm/tests/
   mkdir /home/stagevm/tests
@@ -20,6 +20,6 @@ if [ "$TRAVIS_OS_NAME" = "linux" ]; then
   cd /home/stagevm/tests/privatix/tests/integrational || exit 1
   npm install || exit 1
   npm run test || exit 1 
-  EOF
+EOF
 
 fi
