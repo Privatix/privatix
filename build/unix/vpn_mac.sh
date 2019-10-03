@@ -84,7 +84,7 @@ copy_product(){
            "${app_dir}/${PRODUCT}/${VPN_PRODUCT_ID}/${BIN}/${DAPP_UPDATE_CONFIG}" || exit 1
 
     cp -v "${GOPATH}/bin/${DAPP_AGENT_CHECKER}" \
-          "${app_dir}/${PRODUCT}/${VPN_PRODUCT_ID}/${BIN}//${DAPP_AGENT_CHECKER}" || exit 1
+          "${app_dir}/${PRODUCT}/${VPN_PRODUCT_ID}/${BIN}/${DAPP_AGENT_CHECKER}" || exit 1
 
     echo && echo done
     echo -----------------------------------------------------------------------
