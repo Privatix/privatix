@@ -5,7 +5,7 @@ go:
   - 1.12.1
 
 node_js:
-  - 10.13.0
+  - 10.16.3
 
 matrix:
   include:
