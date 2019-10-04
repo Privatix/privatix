@@ -3,7 +3,7 @@
   "version": "0.19.0",
   "description": "Intergrational tests.",
   "scripts": {
-    "test": "mocha -R xunit-file -r ts-node/register src/tests/index.spec.ts",
+    "test": "mocha --timeout 20000 -R xunit-file -r ts-node/register src/tests/index.spec.ts",
     "clean": "rimraf coverage build tmp",
     "build": "tsc -p tsconfig.release.json",
     "build:watch": "tsc -w -p tsconfig.release.json",
