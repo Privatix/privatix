@@ -25,6 +25,8 @@ if [ "$TRAVIS_OS_NAME" = "linux" ]; then
   npm install 
   npm run test 
 '
+echo wait 10 sec ...
+sleep 10
 
 echo Start running client tests...
   ssh stagevm@89.38.99.188 export travis_branch=$travis_branch TELEGRAM_BOT_PASSWORD=$TELEGRAMPASSW '
