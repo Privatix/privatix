@@ -18,11 +18,14 @@ if [ "$TRAVIS_OS_NAME" = "linux" ]; then
   echo git checkout ${travis_branch}
   #source /home/stagevm/tests/privatix/tests/integrational/helpers/setenv.sh || exit 1
   export TELEGRAM_BOT_USER=user
-  export npm_config_scope=both
+  export npm_config_scope=agent
   cd /home/stagevm/tests/privatix/tests/integrational 
   echo TELEGRAM_user $TELEGRAM_BOT_USER
   echo TEST_MODE $npm_config_scope
   npm install 
-  npm run test || exit 1 
+  npm run test 
+  export npm_config_scope=client
+  echo TEST_MODE $npm_config_scope
+  npm run test
 '
 fi
