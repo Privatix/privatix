@@ -1,6 +1,6 @@
 # Tools
 
-## dump_ubuntu.py
+## dump_ubuntu.sh
 
 The script collects information about dapp environment.
 

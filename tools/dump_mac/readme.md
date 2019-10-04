@@ -1,6 +1,6 @@
 # Tools
 
-## dump_mac.py
+## dump_mac.sh
 
 The script collects information about dapp environment.
 
