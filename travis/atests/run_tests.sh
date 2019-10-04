@@ -9,7 +9,6 @@ echo Travis branch: ${travis_branch}
 if [ "$TRAVIS_OS_NAME" = "linux" ]; then
   echo Start running tests...
   ssh stagevm@89.38.99.188 export travis_branch=$travis_branch TELEGRAM_BOT_PASSWORD=$TELEGRAMPASSW '
-  #tests_dir=/home/stagevm/tests
   /bin/rm -rf /home/stagevm/tests/
   mkdir /home/stagevm/tests
   cd /home/stagevm/tests/
@@ -20,8 +19,10 @@ if [ "$TRAVIS_OS_NAME" = "linux" ]; then
   #source /home/stagevm/tests/privatix/tests/integrational/helpers/setenv.sh || exit 1
   export TELEGRAM_BOT_USER=user
   export npm_config_scope=both
-  cd /home/stagevm/tests/privatix/tests/integrational || exit 1
-  npm install || exit 1
+  cd /home/stagevm/tests/privatix/tests/integrational 
+  echo TELEGRAM_user $TELEGRAM_BOT_USER
+  echo TEST_MODE $npm_config_scope
+  npm install 
   npm run test || exit 1 
 '
 fi
