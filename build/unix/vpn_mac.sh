@@ -83,6 +83,9 @@ copy_product(){
     cp -v "${GOPATH}/bin/${DAPP_UPDATE_CONFIG}" \
            "${app_dir}/${PRODUCT}/${VPN_PRODUCT_ID}/${BIN}/${DAPP_UPDATE_CONFIG}" || exit 1
 
+    cp -v "${GOPATH}/bin/${DAPP_AGENT_CHECKER}" \
+          "${app_dir}/${PRODUCT}/${VPN_PRODUCT_ID}/${BIN}/${DAPP_AGENT_CHECKER}" || exit 1
+
     echo && echo done
     echo -----------------------------------------------------------------------
     echo copy product configs
@@ -177,8 +180,7 @@ copy_installer(){
           "${installer_bin_dir}/${DAPP_INSTALLER}" || exit 1
     cp -v "${GOPATH}/bin/${DAPP_SUPERVISOR}" \
           "${installer_bin_dir}/${DAPP_SUPERVISOR}" || exit 1
-    cp -v "${GOPATH}/bin/${DAPP_AGENT_CHECKER}" \
-          "${installer_bin_dir}/${DAPP_AGENT_CHECKER}" || exit 1
+
 
     echo && echo done
 }
