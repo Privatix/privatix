@@ -27,7 +27,6 @@ pay_port=$(python3 -c 'import json,sys;j=json.load(sys.stdin);print(j["PayAddres
 echo Pay port: "${pay_port}"
 
 openvpn_port=$(grep -Eo "^port[ ]+[0-9]+" "${openvpn_config}" | grep -Eo "[0-9]+")
-
 echo Openvpn port: "${openvpn_port}"
 
 torhs=$(sudo cat "$hidden_service/hostname")
@@ -35,7 +34,6 @@ echo Torhs: "${torhs}"
 
 torsocks=$(python3 -c 'import json,sys;j=json.load(sys.stdin);print(j["TorSocksListener"]);' \
            < "${dappctrl_config}")
-           
 echo Torsocks: "${torsocks}"
 
 echo && echo && echo

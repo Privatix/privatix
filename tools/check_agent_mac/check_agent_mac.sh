@@ -10,20 +10,33 @@ PRIVATIX_APP_FOLDER=${1:-/Applications/Privatix}
 
 
 agent_checker=$(find "${PRIVATIX_APP_FOLDER}" -name "agent-checker" | head -1)
-echo Agent checker:   $agent_checker
+echo Agent checker: "${agent_checker}"
 
 dappctrl_config=$(find "${PRIVATIX_APP_FOLDER}" -name "dappctrl.config.json" | head -1)
-echo Dappctrl config: $dappctrl_config
+echo Dappctrl config: "${dappctrl_config}"
 
 openvpn_config=$(find "${PRIVATIX_APP_FOLDER}" -name "server.conf" | head -1)
-echo Openvpn config: $openvpn_config
+echo Openvpn config: "${openvpn_config}"
 
-pay_port=$(cat "${dappctrl_config}" | \
-        python -c 'import json,sys;j=json.load(sys.stdin);print j["PayAddress"].split(":")[2].split("/")[0]';)
-echo Pay port: $pay_port
+hidden_service=$(find "${PRIVATIX_APP_FOLDER}" -name "hidden_service")
+echo Hidden service: "${hidden_service}"
+echo
 
-openvpn_port=$(cat "${openvpn_config}" | grep -Eo "^port[ ]+[0-9]+" | grep -Eo "[0-9]+")
-echo Openvpn port: $openvpn_port
+
+pay_port=$(python -c 'import json,sys;j=json.load(sys.stdin);print j["PayAddress"].split(":")[2].split("/")[0]' \
+           < "${dappctrl_config}")
+echo Pay port: "${pay_port}"
+
+openvpn_port=$(grep -Eo "^port[ ]+[0-9]+" "${openvpn_config}" | grep -Eo "[0-9]+")
+echo Openvpn port: "${openvpn_port}"
+
+torhs=$(cat "$hidden_service/hostname")
+echo Torhs: "${torhs}"
+
+torsocks=$(python -c 'import json,sys;j=json.load(sys.stdin);print j["TorSocksListener"];' \
+           < "${dappctrl_config}")
+echo Torsocks: "${torsocks}"
 
 echo && echo && echo
-${agent_checker} -torhs tor/hidden_service -torsocks 9999 -payport ${pay_port} -ovpnport ${openvpn_port}
+set -x
+${agent_checker} -torhs "${torhs}" -torsocks "${torsocks}" -payport "${pay_port}" -ovpnport "${openvpn_port}"
