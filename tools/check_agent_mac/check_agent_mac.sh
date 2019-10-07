@@ -9,16 +9,16 @@ fi
 PRIVATIX_APP_FOLDER=${1:-/Applications/Privatix}
 
 
-agent_checker=$(find "${PRIVATIX_APP_FOLDER}" -name "agent-checker" | head -1)
+agent_checker=$(find "${PRIVATIX_APP_FOLDER}" -name "agent-checker" -not -path "*/*.old/*" | head -1)
 echo Agent checker: "${agent_checker}"
 
-dappctrl_config=$(find "${PRIVATIX_APP_FOLDER}" -name "dappctrl.config.json" | head -1)
+dappctrl_config=$(find "${PRIVATIX_APP_FOLDER}" -name "dappctrl.config.json" -not -path "*/*.old/*" | head -1)
 echo Dappctrl config: "${dappctrl_config}"
 
-openvpn_config=$(find "${PRIVATIX_APP_FOLDER}" -name "server.conf" | head -1)
+openvpn_config=$(find "${PRIVATIX_APP_FOLDER}" -name "server.conf" -not -path "*/*.old/*" | head -1)
 echo Openvpn config: "${openvpn_config}"
 
-hidden_service=$(find "${PRIVATIX_APP_FOLDER}" -name "hidden_service")
+hidden_service=$(find "${PRIVATIX_APP_FOLDER}" -name "hidden_service" -not -path "*/*.old/*")
 echo Hidden service: "${hidden_service}"
 echo
 
