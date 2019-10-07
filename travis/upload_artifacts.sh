@@ -9,12 +9,6 @@ force_update=${DAPP_INSTALLER_FORCE_UPDATE}
 
 destination="$(date +%Y_%m_%d)-build${TRAVIS_BUILD_NUMBER}-${network}-${config}-${force_update}"
 
-deploy_file="${TRAVIS_BUILD_DIR}/travis/encrypted/deploy.txt"
-
-host=$(cat "${deploy_file}" | head -1)
-user=$(cat "${deploy_file}" | head -2 | tail -1)
-pass=$(cat "${deploy_file}" | head -3 | tail -1)
-
 #
 # ubuntu
 #
@@ -38,7 +32,7 @@ if [ "$TRAVIS_OS_NAME" = "linux" ]; then
 
     mkdir $(basename "${VPN_UBUNTU_OUTPUT_DIR}")
     put -r ${VPN_UBUNTU_OUTPUT_DIR}
-    ") | sftp -oStrictHostKeyChecking=no -i "${TRAVIS_BUILD_DIR}/travis/encrypted/travis.ed25519" ${user}@${host}
+    ") | sftp -oStrictHostKeyChecking=no -i "${TRAVIS_BUILD_DIR}/travis/encrypted/travis.ed25519" ${DEPLOY_USER}@${DEPLOY_HOST}
 fi
 
 
@@ -65,7 +59,7 @@ if [ "$TRAVIS_OS_NAME" = "osx" ]; then
 
     mkdir $(basename "${PROXY_MAC_OUTPUT_DIR}")
     put -r ${PROXY_MAC_OUTPUT_DIR}
-    ") | sftp -oStrictHostKeyChecking=no -i "${TRAVIS_BUILD_DIR}/travis/encrypted/travis.ed25519" ${user}@${host}
+    ") | sftp -oStrictHostKeyChecking=no -i "${TRAVIS_BUILD_DIR}/travis/encrypted/travis.ed25519" ${DEPLOY_USER}@${DEPLOY_HOST}
 fi
 
 if [ "$TRAVIS_OS_NAME" = "windows" ]; then
@@ -85,5 +79,5 @@ if [ "$TRAVIS_OS_NAME" = "windows" ]; then
 
     mkdir $(basename "${VPN_WIN_OUTPUT_DIR}")
     put -r ${VPN_WIN_INPUT_DIR}
-    ") | sftp -oStrictHostKeyChecking=no -i "${TRAVIS_BUILD_DIR}/travis/encrypted/travis.ed25519" ${user}@${host}
+    ") | sftp -oStrictHostKeyChecking=no -i "${TRAVIS_BUILD_DIR}/travis/encrypted/travis.ed25519" ${DEPLOY_USER}@${DEPLOY_HOST}
 fi
