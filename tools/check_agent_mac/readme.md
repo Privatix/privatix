@@ -8,14 +8,13 @@ for privatix agent
 ## Usage
 
 ```
-check_agent_mac.sh [privatix_app_folder_path]
+check_agent_mac.sh
 ```
 
 ### Example of usage:
 
 ```
 ./check_agent_mac.sh
-./check_agent_mac.sh /Applications/Privatix
 ```
 
 ### Result

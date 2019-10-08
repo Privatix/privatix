@@ -8,15 +8,13 @@ for privatix agent
 ## Usage
 
 ```
-check_agent_ubuntu.sh [privatix_app_folder_path]
+check_agent_ubuntu.sh
 ```
 
 ### Example of usage:
 
 ```
 ./check_agent_ubuntu.sh
-./check_agent_ubuntu.sh /opt/Privatix
-./check_agent_ubuntu.sh /var/lib/container/agent/
 ```
 
 ### Result
