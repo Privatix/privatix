@@ -75,6 +75,9 @@ copy_product(){
     cp -v "${GOPATH}/bin/${DAPP_UPDATE_CONFIG}" \
            "${app_dir}/${PRODUCT}/${VPN_PRODUCT_ID}/${BIN}/${DAPP_UPDATE_CONFIG}" || exit 1
 
+    cp -v "${GOPATH}/bin/${DAPP_AGENT_CHECKER}" \
+          "${app_dir}/${PRODUCT}/${VPN_PRODUCT_ID}/${BIN}/${DAPP_AGENT_CHECKER}" || exit 1
+
     echo && echo done
     echo -----------------------------------------------------------------------
     echo copy product configs
@@ -121,9 +124,6 @@ copy_installer(){
     cp -v "${GOPATH}/bin/${DAPP_SUPERVISOR}" \
           "${installer_bin_dir}/${DAPP_SUPERVISOR}" || exit 1
 
-    cp -v "${DAPP_INSTALLER_DIR}/${DAPP_INSTALLER_LINUX_CONFIG}" \
-          "${installer_bin_dir}/${DAPP_INSTALLER_CONFIG}" || exit 1
-
     echo && echo done
 }
 
@@ -137,6 +137,9 @@ copy_utils()
     cp -r  "${DUMP_LINUX}/." \
        "${app_dir}/${UTIL}/${DUMP}" || exit 1
 
+    echo "${app_dir}/${UTIL}/${CHECK_AGENT}"
+    cp -r  "${CHECK_AGENT_LINUX}/." \
+       "${app_dir}/${UTIL}/${CHECK_AGENT}" || exit 1
 
     echo && echo done
 }

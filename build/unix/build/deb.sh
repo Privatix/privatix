@@ -32,9 +32,6 @@ copy(){
     cp -v "${GOPATH}/bin/${DAPP_SUPERVISOR}" \
           "${deb_package_bin_dir}/${DAPP_SUPERVISOR}" || exit 1
 
-    cp -v "${DAPP_INSTALLER_DIR}/${DAPP_INSTALLER_LINUX_CONFIG}" \
-          "${deb_package_bin_dir}/${DAPP_INSTALLER_CONFIG}" || exit 1
-
     echo "${DAPP_INSTALLER_DIR}/scripts/autooffer_rinkeby/ ->"
     echo "${deb_package_bin_dir}"
     cp -r "${DAPP_INSTALLER_DIR}/scripts/autooffer_rinkeby/" \
@@ -48,7 +45,7 @@ copy(){
     cp -v "$1/app.tar.xz" \
           "${deb_package_bin_dir}/app.tar.xz" || exit 1
 
-    echo "sudo ./dapp-installer install --config dapp-installer.config.json" \
+    echo "sudo ./dapp-installer install -workdir /var/lib/container/agent/ -role agent  -source ./app.tar.xz -torhsd var/lib/tor/hidden_service -torsocks 9099 -sendremote false" \
 	      >> "${deb_package_bin_dir}/install.sh" &&
     chmod +x "${deb_package_bin_dir}/install.sh" || exit 1
 
@@ -61,13 +58,6 @@ copy(){
     chmod +x "${deb_package_bin_dir}/update.sh" || exit 1
 }
 
-
-patch(){
-	"${PATCH_JSON_SH}" "${deb_package_bin_dir}/${DAPP_INSTALLER_CONFIG}" \
-              '["Role"]="agent"' \
-              '["Path"]="/var/lib/container/agent"' \
-              || exit 1
-}
 
 create_info(){
 	cat > "${deb_package_control_dir}/control" <<EOL
@@ -84,6 +74,7 @@ EOL
 
 }
 
+
 build(){
 	dpkg-deb --build "${deb_package_dir}"
 
@@ -96,9 +87,9 @@ build(){
     echo && echo done
 }
 
+
 clear
 copy $1
-patch
 create_info
 build $2
 

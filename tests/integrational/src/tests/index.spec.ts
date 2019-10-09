@@ -6,7 +6,7 @@ import { TestInputSettings, TestModel } from '../typings/test-models';
 import { getAllowedScope } from '../utils/misc';
 
 import { configurationCheckTest } from './init-tests/configuration.spec';
-import { wsInitializationTest } from './init-tests/ws-initialization.spec';
+import { wsInitialization } from './init-tests/ws-initialization.spec';
 
 import { smokeAutoTests } from './smoke-tests';
 
@@ -14,35 +14,70 @@ let testSettings: TestInputSettings = {
     configs: require('../configs/config.json') as LocalSettings
 };
 
-describe('integrational tests', () => {
+// initialize websocket connections
+before(async function(){await wsInitialization.call(testSettings, testSettings)});
 
-  // check config file and environment
-  configurationCheckTest(testSettings);
+describe('integrational tests', async () => {
 
-  // initialize websocket connections
-  wsInitializationTest.call(testSettings, testSettings);
+    // check config file and environment
+    configurationCheckTest(testSettings);
 
-  // start smoke auto-tests
-  describe('smoke auto-tests', () => {
-    const allowedScope = getAllowedScope();
-    // smokeAutoTests.forEach(createSmokeTestFactory(testSettings, allowedScope));
+    // start smoke auto-tests
+    describe('smoke auto-tests', async () => {
+        const allowedScope = getAllowedScope();
 
-    smokeAutoTests.forEach((tm: TestModel) => {
-      it(tm.name, () => tm.testFn({
-        allowedScope,
-        ...testSettings
-      }));
+        smokeAutoTests.forEach((tm: TestModel) => {
+
+            if(allowedScope === 'CLIENT' && (tm.scope === 'UNI' || tm.scope === 'CLIENT')){
+                it(tm.name, () => tm.testFn({allowedScope, ws: testSettings.clientWs, ...testSettings}));
+            }
+            if(allowedScope === 'AGENT' && (tm.scope === 'UNI' || tm.scope === 'AGENT')){
+                it(tm.name, () => tm.testFn({allowedScope, ws: testSettings.agentWs, ...testSettings}));
+            }
+            if(allowedScope === 'UNI' && tm.scope === 'UNI'){
+                it(tm.name, () => tm.testFn({allowedScope, ws: testSettings.clientWs, ...testSettings}));
+                it(tm.name, () => tm.testFn({allowedScope, ws: testSettings.agentWs, ...testSettings}));
+            }
+
+            if(allowedScope === 'BOTH'){
+                switch(tm.scope){
+                    case 'BOTH':
+                        it(tm.name, () => tm.testFn({allowedScope, ...testSettings}));
+                        break;
+                    case 'UNI':
+                        testSettings.ws = testSettings.clientWs;
+                        it(tm.name, () => tm.testFn({allowedScope, ...testSettings}));
+
+                        testSettings.ws = testSettings.agentWs;
+                        it(tm.name, () => tm.testFn({allowedScope, ...testSettings}));
+                        break;
+                    case 'CLIENT':
+                        testSettings.ws = testSettings.clientWs;
+                        it(tm.name, () => tm.testFn({allowedScope, ...testSettings}));
+                        break;
+                    case 'AGENT':
+                        testSettings.ws = testSettings.agentWs;
+                        it(tm.name, () => tm.testFn({allowedScope, ...testSettings}));
+                        break;
+                }
+            }
+        });
     });
-  });
 
 });
 
 after(function (done) {
-    const {
-        agentWs, clientWs
-    } = testSettings;
 
-    agentWs.closeWsConnection();
-    clientWs.closeWsConnection();
+    const { agentWs, clientWs } = testSettings;
+
+    if(agentWs){
+        agentWs.closeWsConnection();
+    }
+
+    if(clientWs){
+        clientWs.closeWsConnection();
+    }
+
     done();
+
 });

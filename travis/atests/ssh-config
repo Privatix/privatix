@@ -1,0 +1,7 @@
+Host *
+	User				          	stagevm
+	IdentityFile		      	/tmp/id_rsa
+	StrictHostKeyChecking 	no
+	PasswordAuthentication	no
+	CheckHostIP			      	no
+	BatchMode	             yes

@@ -1,12 +1,11 @@
-const templateId = 'efc61769-96c8-4c0d-b50a-e4d11fc30523';
-
 const random_names = ['First', 'Second', 'Third'];
 
 export const generateOffering =
   (
     productId: string,
     agentId: string,
-    offeringName: string
+    offeringName: string,
+    templateId: string
   ) => ({
     'product': productId,
     'template': templateId,
@@ -22,6 +21,7 @@ export const generateOffering =
     'unitPrice': 100000,
     'minUnits': 100,
     'maxUnit': 200,
+    'deposit': 3*100000*100,
     'billingInterval': 1,
     'maxBillingUnitLag': 3,
     'maxSuspendTime': 1800,
@@ -31,12 +31,13 @@ export const generateOffering =
       'minDownloadMbits': 100,
       'minUploadMbits': 80
     },
-    'autoPopUp': false
+    'autoPopUp': false,
+    'iptype': 'residential'
   });
 
 export const generateSomeOfferings =
-  (productId: string, agentId: string) => {
+  (productId: string, agentId: string, templateId: string) => {
     return random_names
       .map(name =>
-        generateOffering(productId, agentId, `${name} Service`))
+        generateOffering(productId, agentId, `${name} Service`, templateId))
   };

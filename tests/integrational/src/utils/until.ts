@@ -33,15 +33,15 @@ class Observer {
 
     }
 
-    becomes(goal: string){
+    becomes(goal: any){
         return new Promise(async (resolve, reject) => {
             this.subscriptionId = await this.ws.subscribe(this.objectType, [this.objectId], async () => {
                 const object = await this.ws.getObject(this.objectType, this.objectId);
-                if(object[this.target] === goal){
-                    this.ws.unsubscribe(this.subscriptionId);
-                    this.subscriptionId = undefined;
-                    resolve(true);
-                }
+                    if(typeof goal === 'function' ? goal(object[this.target]) : object[this.target] === goal){
+                        this.ws.unsubscribe(this.subscriptionId);
+                        this.subscriptionId = undefined;
+                        resolve(true);
+                    }
             });
         });
     }

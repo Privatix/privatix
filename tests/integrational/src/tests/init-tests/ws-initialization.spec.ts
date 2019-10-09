@@ -1,73 +1,34 @@
 import { expect } from 'chai';
 import 'mocha';
+import fetch from 'node-fetch';
 
+import { getAllowedScope } from '../../utils/misc';
 import { WS } from '../../utils/ws';
 import { TestInputSettings } from '../../typings/test-models';
 
-export function wsInitializationTest(settings: TestInputSettings) {
+export async function wsInitialization(settings: TestInputSettings) {
   const { configs } = settings;
 
-  describe('set up websockets', () => {
-    it('initialize agent websocket connection', async () => {
-      this.agentWs = new WS(configs['agentWsEndpoint']);
+    const agentWsEndpoint = process.env['AGENT_WS_ENDPOINT'] ? process.env['AGENT_WS_ENDPOINT'] : configs.agentWsEndpoint;
+    const clientWsEndpoint = process.env['CLIENT_WS_ENDPOINT'] ? process.env['CLIENT_WS_ENDPOINT'] : configs.clientWsEndpoint;
+    const clientSupervisorEndpoint = process.env['CLIENT_SUPERVISOR_ENDPOINT'] ? process.env['CLIENT_SUPERVISOR_ENDPOINT'] : configs.clientSupervisorEndpoint;
 
-      // wait for ws ready
-      await this.agentWs.whenReady();
-    });
+  const scopes = getAllowedScope();
 
-    it('initialize client websocket connection', async () => {
-      this.clientWs = new WS(configs['clientWsEndpoint']);
+      this.timeout = 20000;
+      if(scopes.includes('AGENT') || scopes.includes('BOTH') || scopes.includes('UNI')){
+          this.agentWs = new WS(agentWsEndpoint);
+          settings.agentWs = this.agentWs;
+          // wait for ws ready
+          await this.agentWs.whenReady();
+      }
 
-      // wait for ws ready
-      await this.clientWs.whenReady();
-    });
-
-    describe('setting passwords', () => {
-      let agentPwd: string;
-      let clientPwd: string;
-
-      it('should generate agent and client passwords', () => {
-
-        agentPwd = Math.random().toString(36).substring(5);
-        clientPwd = Math.random().toString(36).substring(5);
-
-        expect(agentPwd.length).to.be.greaterThan(6);
-        expect(clientPwd.length).to.be.greaterThan(6);
-        // expect(agentPwd).to.not.equal(clientPwd);
-      });
-
-      it('should set agent password', async () => {
-
-        if('AGENT_PWD' in process.env){
-          agentPwd = process.env.AGENT_PWD;
-        }
-
-        const res = await this.agentWs.setPassword(agentPwd);
-
-        expect(res).to.be.true;
-
-      });
-
-      it('should set client password', async () => {
-        if('CLIENT_PWD' in process.env){
-          clientPwd = process.env.CLIENT_PWD;
-        }
-
-        const res = await this.clientWs.setPassword(clientPwd);
-
-        expect(res).to.be.true;
-
-      });
-
-      it('should fail with wrong agent password', async () => {
-        await this.agentWs.setPassword('wrongPasswd')
-            .catch(e => {
-                expect(e.code).to.equal(-32000);
-            });
-
-        // Set right password
-        await this.agentWs.setPassword(agentPwd);
-      });
-    });
-  });
+      if(scopes.includes('CLIENT') || scopes.includes('BOTH') || scopes.includes('UNI')){
+            const res = await fetch(`${clientSupervisorEndpoint}/start`);
+            expect(res.status).to.be.equal(200);
+            this.clientWs = new WS(clientWsEndpoint);
+            settings.clientWs = this.clientWs;
+            // wait for ws ready
+            await this.clientWs.whenReady();
+      }
 }

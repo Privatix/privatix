@@ -32,14 +32,17 @@ if [ "$TRAVIS_OS_NAME" = "linux" ] || [ "$TRAVIS_OS_NAME" = "osx" ]; then
 
     cp -v "${GOPATH}/bin/${OPENVPN_INST}" \
           "${output_folder}/${DAPP_INST}" || exit 1
+
+    cp -v "${GOPATH}/bin/${DAPP_AGENT_CHECKER}" \
+          "${output_folder}/${DAPP_AGENT_CHECKER}" || exit 1
 fi
 
 #
 # windows
 #
-#if [ "$TRAVIS_OS_NAME" = "windows" ]; then
-#    cd "${TRAVIS_BUILD_DIR}/build/win"
-#    . "./build.win.global.config"
-#
-#    powershell -File '.\publish-dapp.ps1' -wkdir "${BUILD_WIN_DIR}" -staticArtefactsDir "${ARTEFACTS_WIN_LOCATION}" -product VPN -installer -version "${VERSION_TO_SET_IN_BUILDER}" -forceUpdate "${DAPP_INSTALLER_FORCE_UPDATE}" -dappctrlConf "${DAPPCTRL_CONFIG}" -guiEthNetwork "${DAPP_GUI_NETWORK}" -dappguibranch "${GIT_BRANCH}" -dappctrlbranch "${GIT_BRANCH}" -dappinstbranch "${GIT_BRANCH}" -dappopenvpnbranch "${GIT_BRANCH}" -defaultBranch "${GIT_BRANCH_DEFAULT}" -asjobs -Verbose
-#fi
+if [ "$TRAVIS_OS_NAME" = "windows" ]; then
+    cd "${TRAVIS_BUILD_DIR}/build/win"
+    . "./build.win.global.config"
+
+    powershell -File '.\publish-fastdapp.ps1' -wkdir "${BUILD_WIN_DIR}" -product VPN -version "${VERSION_TO_SET_IN_BUILDER}" -dappctrlbranch "${GIT_BRANCH}" -dappinstbranch "${GIT_BRANCH}" -dappopenvpnbranch "${GIT_BRANCH}" -defaultBranch "${GIT_BRANCH_DEFAULT}" -asjobs -Verbose
+fi
