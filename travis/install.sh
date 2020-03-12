@@ -57,7 +57,7 @@ fi
 if [ "$TRAVIS_OS_NAME" = "windows" ]; then
     # download and unpack static artefacts
     powershell -Command 'mkdir c:\art'
-    powershell -Command 'curl.exe -L -O -f "http://artdev.privatix.net/artefacts_win.zip" --output c:\art\artefacts_win.zip'
+    powershell -Command 'curl.exe -L -O -f "https://github.com/Privatix/privatix/releases/download/1.2.0/artefacts_win.zip" --output c:\art\artefacts_win.zip'
     powershell -Command 'Expand-Archive -Path c:\art\artefacts_win.zip -DestinationPath c:\art'
     # download and install Bitrock installer
     powershell -Command 'mkdir c:\installbuilder'
