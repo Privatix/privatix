@@ -37,6 +37,9 @@ env:
     - BITROCK_INSTALLER_MAC="/Applications/BitRock InstallBuilder Enterprise ${BITROCK_VERSION}"
     - BITROCK_INSTALLER_BIN_MAC="${BITROCK_INSTALLER_MAC}/bin"
 
+    # win
+    - BITROCK_INSTALLER_URL_WIN=https://github.com/Privatix/privatix/releases/download/1.2.0/installbuilder-enterprise-${BITROCK_VERSION}-windows-x64-installer.exe
+
 cache:
   directories:
     - $HOME/.cache/go-build
