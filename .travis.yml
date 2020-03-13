@@ -25,7 +25,7 @@ env:
     - ARTEFACTS_MAC_ZIP_URL=https://github.com/Privatix/privatix/releases/download/1.2.0/artefacts_mac.zip
 
     #bitrock
-    - BITROCK_VERSION=19.8.0
+    - BITROCK_VERSION=20.2.0
 
     # linux
     - BITROCK_INSTALLER_LINUX=$HOME/installbuilder-${BITROCK_VERSION}

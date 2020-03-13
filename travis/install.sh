@@ -37,12 +37,11 @@ if [ "$TRAVIS_OS_NAME" = "osx" ]; then
     #
     # download
     # https://installbuilder.bitrock.com/installbuilder-enterprise-19.5.0-osx-installer.dmg
+    set -x
     bitrock_installer=installbuilder-enterprise-${BITROCK_VERSION}-osx-installer
 
     # curl -L -O  https://installbuilder.bitrock.com/installbuilder-enterprise-19.5.0-osx-installer.dmg
-    set -x &&
-    curl -LOf https://installbuilder.bitrock.com/${bitrock_installer}.dmg &&
-    set +x || exit 1
+    curl -LOf https://installbuilder.bitrock.com/${bitrock_installer}.dmg || exit 1
 
     # mount
     hdiutil attach -mountpoint ${bitrock_installer} ${bitrock_installer}.dmg || exit 1
@@ -51,6 +50,7 @@ if [ "$TRAVIS_OS_NAME" = "osx" ]; then
     "./${bitrock_installer}/${bitrock_installer}.app/Contents/MacOS/installbuilder.sh" --mode unattended || exit 1
 
     # add license
+    set +x
     cp "${TRAVIS_BUILD_DIR}/travis/encrypted/license.xml" \
        "${BITROCK_INSTALLER_MAC}/license.xml" || exit 1
 fi
