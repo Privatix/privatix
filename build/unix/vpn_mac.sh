@@ -130,7 +130,7 @@ copy_artefacts()
 
     if ! [ -f "${ARTEFACTS_LOCATION}" ]; then
         echo Downloading: "${ARTEFACTS_MAC_ZIP_URL}"
-        curl -o "${ARTEFACTS_LOCATION}" "${ARTEFACTS_MAC_ZIP_URL}" || exit 1
+        curl -Lfo "${ARTEFACTS_LOCATION}" "${ARTEFACTS_MAC_ZIP_URL}" || exit 1
     fi
 
     if [[ ! -d "${ARTEFACTS_BIN}" ]]; then
