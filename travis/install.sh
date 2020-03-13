@@ -13,10 +13,10 @@ if [ "$TRAVIS_OS_NAME" = "linux" ]; then
     #
     # download
     # https://installbuilder.bitrock.com/installbuilder-enterprise-19.5.0-linux-x64-installer.run
+    set -x
     downloading_binary=installbuilder-enterprise-${BITROCK_VERSION}-linux-x64-installer.run
 
-    echo wget http://artdev.privatix.net/installbuilder/${downloading_binary}
-    wget http://artdev.privatix.net/installbuilder/${downloading_binary} || exit 1
+    wget  https://installbuilder.bitrock.com/${downloading_binary} || exit 1
 
     chmod u+x ./${downloading_binary} || exit 1
 
@@ -24,6 +24,7 @@ if [ "$TRAVIS_OS_NAME" = "linux" ]; then
     echo install: ./${downloading_binary} --mode unattended || exit 1
     ./${downloading_binary} --mode unattended || exit 1
 
+    set +x
     # add license
     cp "${TRAVIS_BUILD_DIR}/travis/encrypted/license.xml" \
        "${BITROCK_INSTALLER_LINUX}/license.xml" || exit 1
