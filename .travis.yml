@@ -25,13 +25,15 @@ env:
     - ARTEFACTS_MAC_ZIP_URL=https://github.com/Privatix/privatix/releases/download/1.2.0/artefacts_mac.zip
 
     #bitrock
-    - BITROCK_VERSION=20.2.0
+    - BITROCK_VERSION=19.8.0
 
     # linux
+    - BITROCK_INSTALLER_URL_LINUX=https://github.com/Privatix/privatix/releases/download/1.2.0/installbuilder-enterprise-${BITROCK_VERSION}-linux-x64-installer.run
     - BITROCK_INSTALLER_LINUX=$HOME/installbuilder-${BITROCK_VERSION}
     - BITROCK_INSTALLER_BIN_LINUX=${BITROCK_INSTALLER_LINUX}/bin
 
     # osx
+    - BITROCK_INSTALLER_URL_MAC=https://github.com/Privatix/privatix/releases/download/1.2.0/installbuilder-enterprise-${BITROCK_VERSION}-osx-installer.dmg
     - BITROCK_INSTALLER_MAC="/Applications/BitRock InstallBuilder Enterprise ${BITROCK_VERSION}"
     - BITROCK_INSTALLER_BIN_MAC="${BITROCK_INSTALLER_MAC}/bin"
 
