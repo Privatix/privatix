@@ -40,8 +40,9 @@ if [ "$TRAVIS_OS_NAME" = "osx" ]; then
     bitrock_installer=installbuilder-enterprise-${BITROCK_VERSION}-osx-installer
 
     # curl -L -O  https://installbuilder.bitrock.com/installbuilder-enterprise-19.5.0-osx-installer.dmg
-    echo curl -LOf http://artdev.privatix.net/installbuilder/${bitrock_installer}.dmg
-    curl -LOf http://artdev.privatix.net/installbuilder/${bitrock_installer}.dmg || exit 1
+    set -x &&
+    curl -LOf https://installbuilder.bitrock.com/${bitrock_installer}.dmg &&
+    set +x || exit 1
 
     # mount
     hdiutil attach -mountpoint ${bitrock_installer} ${bitrock_installer}.dmg || exit 1
@@ -61,7 +62,7 @@ if [ "$TRAVIS_OS_NAME" = "windows" ]; then
     powershell -Command 'Expand-Archive -Path c:\art\artefacts_win.zip -DestinationPath c:\art'
     # download and install Bitrock installer
     powershell -Command 'mkdir c:\installbuilder'
-    powershell -Command 'curl.exe -L -O -f "http://artdev.privatix.net/installbuilder/installbuilder-enterprise-'${BITROCK_VERSION}'-windows-x64-installer.exe" --output .\installbuilder-installer.exe'
+    powershell -Command 'curl.exe -L -O -f "https://installbuilder.bitrock.com/installbuilder-enterprise-'${BITROCK_VERSION}'-windows-x64-installer.exe" --output .\installbuilder-installer.exe'
     powershell -Command '.\installbuilder-installer.exe --mode unattended --prefix c:\installbuilder'
     # add license to Bitrock installer
     powershell -Command 'Copy-Item -Path "c:\Users\travis\gopath\src\github.com\Privatix\privatix\travis\encrypted\license.xml" -Destination "c:\installbuilder\"'
