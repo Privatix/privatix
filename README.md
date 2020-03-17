@@ -72,5 +72,4 @@ Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduc
 
 # License
 
-This project is licensed under the **GPL-3.0 License** - see the
-[COPYING](COPYING) file for details.
+To see the license, please following the [COPYING](COPYING) file.
